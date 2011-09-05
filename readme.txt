@@ -11,9 +11,9 @@ absolute beginning of your webpages.
 
 == Description ==
 
-Since Twitter Bootstrap was released we, at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"), needed a way to consistenly add the bootstrap CSS to the very beginning of the <head> section on all web pages, regardless of the Wordpress Theme.
+Since Twitter Bootstrap was released we, at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"), needed a way to consistenly add the bootstrap CSS to the very beginning of the *head* section on all web pages, regardless of the Wordpress Theme.
 
-It's good to have a core, underlying CSS definition so that your website appears and acts consistently across all
+It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
 browsers as far as possible.
 
 Twitter Bootstrap does this extremely well.
@@ -54,7 +54,7 @@ This plugin should install as any other Wordpress.org respository plugin.
 Alternatively using FTP:
 
 1.	Download the zip file using the download link to the right.
-1.	Extract the contents of the file and locate the folder containing the files:
+1.	Extract the contents of the file and locate the folder called 'wordpress-bootstrap-css' containing the plugin files.
 1.	Upload this whole folder to your '/wp-content/plugins/' directory
 1.	From the plugins page within Wordpress locate the plugin 'Wordpress Bootstrap CSS' and click Activate
 
@@ -94,7 +94,7 @@ Otherwise, consult your caching program's documentation.
 
 = Is the CSS "minified"? =
 
-Yes, but only in the case of Twitter Bootstrap CSS.
+Yes, but only in the case of Yahoo! YUI 2, and Twitter Bootstrap CSS.
 
 = Where is the CSS served from - my server or the source of the CSS? =
 
