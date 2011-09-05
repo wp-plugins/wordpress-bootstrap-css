@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.1
+Stable tag: 0.1.1
 
 Wordpress Bootstrap CSS allows you to add either reset.css (YUI2), normalize.css or twitter bootstrap.css to the
 absolute beginning of your webpages.
