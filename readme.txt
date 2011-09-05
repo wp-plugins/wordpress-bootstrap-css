@@ -116,6 +116,9 @@ No screenshots yet.
 
 == Changelog ==
 
+= 0.1.1 =
+* bugfix for 'None' option. Update recommended.
+
 = 0.1 =
 * First public release
 * Allows you to select 1 of 3 possible styles: YUI 2 Reset; normalize CSS; or Twitter Bootstrap CSS.
@@ -124,6 +127,9 @@ No screenshots yet.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+* bugfix for 'None' option. Update recommended.
 
 = 0.1 =
 * First public release
