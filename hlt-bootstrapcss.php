@@ -64,7 +64,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$fHotlink = (get_option( 'hlt_bootstrapcss_hotlink' ) == 'Y');
 		
 		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter' ) ) ) {
-			return $insContent;
+			return $insContents;
 		}
 		
 		$aLocalCss = array(
