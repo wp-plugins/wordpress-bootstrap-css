@@ -112,7 +112,7 @@ settings page each time (as is the case with most plugins out there).
 
 == Screenshots ==
 
-No screenshots yet.
+1. The complete plugin window. Here you select which CSS to use, whether to hotlink it, and then save settings
 
 == Changelog ==
 
