@@ -117,7 +117,7 @@ settings page each time (as is the case with most plugins out there).
 == Changelog ==
 
 = 0.2 =
-* Updated Twitter Bootstrap CSS link to version 1.3.0
+* Updated Twitter Bootstrap CSS link to version 1.3.0.
 
 = 0.1.2 =
 * Removed support for automatic W3 Total Cache flushing as the author of the other plugin has altered his code. This
@@ -136,7 +136,7 @@ is temporary until we fix.
 == Upgrade Notice ==
 
 = 0.2 =
-* Updated Twitter Bootstrap CSS link to version 1.3.0
+* Updated Twitter Bootstrap CSS link to version 1.3.0.
 
 = 0.1.2 =
 * Removed support for automatic W3 Total Cache flushing as the author of the other plugin has altered his code. This
