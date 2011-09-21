@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wp-plugins/bootstrapcss/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 0.1.1
+Version: 0.1.2
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com 
 */
