@@ -141,11 +141,12 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			
 			update_option( 'hlt_bootstrapcss_hotlink', isset( $_POST['hlt_bootstrap_hotlink'] )? 'Y': 'N' );
-			
+/*			
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
 				$oW3TotalCache =& W3_Plugin_TotalCache::instance();
 				$oW3TotalCache->flush_all();
 			}
+*/
 		}
 	}
 }
