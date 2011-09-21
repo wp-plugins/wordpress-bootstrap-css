@@ -7,8 +7,9 @@
 				<div class="inside">
 					<p>Why not do any or all of the following:</p>
 					<ul>
-						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/">Give it a 5 star rating on WordPress.org.</a></li>
-						<li><a href="#">Donate a token of your appreciation.</a></li>
+						<li><a href="http://www.hostliketoast.com/">Get Quality Wordpress Web Hosting</a>!</li>
+						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/">Give this plugin a 5 star rating on WordPress.org.</a></li>
+						<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" data-text="Why not tweet about it?" data-count="horizontal" data-via="PaulGoodchild">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script></li>
 					</ul>
 				</div>
 			</div>
