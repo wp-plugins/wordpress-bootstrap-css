@@ -38,7 +38,7 @@
 							<input type="radio" name="hlt_bootstrap_option" value="twitter" id="hlt-twitter" <?php if ( $hlt_option == 'twitter' ): ?>checked="checked"<?php endif; ?> />
 							<label for="hlt-twitter">Twitter Bootstrap CSS</label>
 							<br class="clear">
-							<p class="desc" style="display: block;">Twitter bootsrap description with links etc.</p>
+							<p class="desc" style="display: block;">Bootstrap, from Twitter. [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p>
 							
 							<p><strong>Extra</strong></p>
 							<input type="checkbox" name="hlt_bootstrap_hotlink" value="Y" id="hlt-hotlink" <?php if ( $hlt_hotlink == 'Y' ): ?>checked="checked"<?php endif; ?> />
