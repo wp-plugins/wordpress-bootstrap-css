@@ -97,15 +97,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sBootstrapVersion = '1.3.0';
 		
 		$aBootstrapJsOptions = array (
-			'alerts'	=> (get_option( 'hlt_bootstrapcss_alerts_js' ) == 'Y'),
-			'dropdown'	=> (get_option( 'hlt_bootstrapcss_dropdown_js' ) == 'Y'),
-			'modal'		=> (get_option( 'hlt_bootstrapcss_modal_js' ) == 'Y'),
-			'popover'	=> (get_option( 'hlt_bootstrapcss_popover_js' ) == 'Y'),
-			'scrollspy'	=> (get_option( 'hlt_bootstrapcss_scrollspy_js' ) == 'Y'),
-			'tabs'		=> (get_option( 'hlt_bootstrapcss_tabs_js' ) == 'Y'),
-			'twipsy'	=> (get_option( 'hlt_bootstrapcss_twipsy_js' ) == 'Y'),
+			'alerts'	=> get_option( 'hlt_bootstrapcss_alerts_js' ),
+			'dropdown'	=> get_option( 'hlt_bootstrapcss_dropdown_js' ),
+			'modal'		=> get_option( 'hlt_bootstrapcss_modal_js' ),
+			'popover'	=> get_option( 'hlt_bootstrapcss_popover_js' ),
+			'scrollspy'	=> get_option( 'hlt_bootstrapcss_scrollspy_js' ),
+			'tabs'		=> get_option( 'hlt_bootstrapcss_tabs_js' ),
+			'twipsy'	=> get_option( 'hlt_bootstrapcss_twipsy_js' ),
 		);
-		
+
 		$aHotlinkJs = array(
 			'alerts'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-alerts.js',
 			'dropdown'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-dropdown.js',
@@ -117,8 +117,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		);
 
 		foreach ($aBootstrapJsOptions as $sJsLib => $display) {
-			$display = true;
-			if ($display) {
+
+			if ($display == 'Y') {
 				echo '<script type="text/javascript" src="' . $aHotlinkJs[$sJsLib] . '" /></script>';
 			}
 		}
@@ -131,11 +131,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( !is_admin() ) {
 			ob_start( array( &$this, 'onOutputBufferFlush' ) );
 			
-			if ( get_option( 'hlt_bootstrapcss_js_head' ) == 'Y' ) {
-				add_action('wp_head','HLT_BootstrapCss::linkBootstrapJavascript');
-			} else {
-				add_action('wp_footer','HLT_BootstrapCss::linkBootstrapJavascript');
-			}
+			if ( get_option( 'hlt_bootstrapcss_option' ) == 'twitter' ) {
+				if ( get_option( 'hlt_bootstrapcss_js_head' ) == 'Y' ) {
+					add_action('wp_head','HLT_BootstrapCss::linkBootstrapJavascript');
+				} else {
+					add_action('wp_footer','HLT_BootstrapCss::linkBootstrapJavascript');
+				}
+			} 
 		}
 	}
 	
@@ -160,10 +162,24 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	public function onDisplayPlugin() {
+		
+		$aBootstrapJsOptions = array (
+		);
+	
 		$aData = array(
 			'plugin_url'	=> self::$PLUGIN_URL,
 			'option'		=> get_option( 'hlt_bootstrapcss_option' ),
 			'hotlink'		=> get_option( 'hlt_bootstrapcss_hotlink' ),
+
+			'option_alerts_js'		=> get_option( 'hlt_bootstrapcss_alerts_js' ),
+			'option_dropdown_js'	=> get_option( 'hlt_bootstrapcss_dropdown_js' ),
+			'option_modal_js'		=> get_option( 'hlt_bootstrapcss_modal_js' ),
+			'option_popover_js'		=> get_option( 'hlt_bootstrapcss_popover_js' ),
+			'option_scrollspy_js'	=> get_option( 'hlt_bootstrapcss_scrollspy_js' ),
+			'option_tabs_js'		=> get_option( 'hlt_bootstrapcss_tabs_js' ),
+			'option_twipsy_js'		=> get_option( 'hlt_bootstrapcss_twipsy_js' ),
+			'option_js_head'		=> get_option( 'hlt_bootstrapcss_js_head' ),
+
 			'form_action'	=> 'admin.php?page=hlt-directory-bootstrap-css'
 		);
 		$this->display( 'bootstrapcss_index', $aData );
@@ -178,17 +194,25 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			if ( update_option( 'hlt_bootstrapcss_option', $_POST['hlt_bootstrap_option'] ) === false ) {
 				// TODO: need to say it hasn't worked
 			}
-			
 			update_option( 'hlt_bootstrapcss_hotlink', isset( $_POST['hlt_bootstrap_hotlink'] )? 'Y': 'N' );
-			
-			update_option( 'hlt_bootstrapcss_js_head', isset( $_POST['hlt_bootstrap_javascript_head'] )? 'Y': 'N' );
+		
+			update_option( 'hlt_bootstrapcss_alerts_js', isset( $_POST['hlt_bootstrap_option_alerts_js'] )? 'Y': 'N');
+			update_option( 'hlt_bootstrapcss_dropdown_js', isset( $_POST['hlt_bootstrap_option_dropdown_js'] )? 'Y': 'N');
+			update_option( 'hlt_bootstrapcss_modal_js', isset( $_POST['hlt_bootstrap_option_modal_js'] )? 'Y': 'N' );
+			update_option( 'hlt_bootstrapcss_popover_js', isset( $_POST['hlt_bootstrap_option_popover_js'] )? 'Y': 'N' );
+			update_option( 'hlt_bootstrapcss_scrollspy_js', isset( $_POST['hlt_bootstrap_option_scrollspy_js'] )? 'Y': 'N' );
+			update_option( 'hlt_bootstrapcss_tabs_js', isset( $_POST['hlt_bootstrap_option_tabs_js'] )? 'Y': 'N' );
+			update_option( 'hlt_bootstrapcss_twipsy_js', isset( $_POST['hlt_bootstrap_option_twipsy_js'] )? 'Y': 'N' );
+				
+			update_option( 'hlt_bootstrapcss_js_head', isset( $_POST['hlt_bootstrap_option_js_head'] )? 'Y': 'N' );
+		}
+
 /*			
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
 				$oW3TotalCache =& W3_Plugin_TotalCache::instance();
 				$oW3TotalCache->flush_all();
 			}
 */
-		}
 	}
 }
 
