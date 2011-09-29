@@ -90,7 +90,20 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sRegExp = "/(<head([^>]*)>)/i";
 		$sReplace = '${1}'."\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 		return preg_replace( $sRegExp, $sReplace, $insContents );
-	} 
+	}
+	
+	public function linkBootstrapJavascript() {
+		
+		$aHotlinkJs = array(
+			'alerts-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-alerts.js',
+			'dropdown-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-dropdown.js',
+			'modal-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-modal.js',
+			'popover-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-popover.js',
+			'scrollspy-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-scrollspy.js',
+			'tabs-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-tabs.js',
+			'twipsy-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-twipsy.js'
+		);
+	}
 
 	public function onWpInit() {
 		parent::onWpInit();
@@ -141,6 +154,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			
 			update_option( 'hlt_bootstrapcss_hotlink', isset( $_POST['hlt_bootstrap_hotlink'] )? 'Y': 'N' );
+			
+			update_option( 'hlt_bootstrapcss_js_head', isset( $_POST['hlt_bootstrap_javascript_head'] )? 'Y': 'N' );
 /*			
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
 				$oW3TotalCache =& W3_Plugin_TotalCache::instance();
@@ -160,6 +175,7 @@ class HLT_BootstrapCss_Install {
 	public function onWpActivatePlugin() {
 		add_option( 'hlt_bootstrapcss_option', 'none' );
 		add_option( 'hlt_bootstrapcss_hotlink', 'N' );
+		add_option( 'hlt_bootstrapcss_js_head', 'N' );
 	}
 }
 
@@ -174,6 +190,7 @@ class HLT_BootstrapCss_Uninstall {
 	public function onWpDeactivatePlugin() {
 		delete_option( 'hlt_bootstrapcss_option' );
 		delete_option( 'hlt_bootstrapcss_hotlink' );
+		delete_option( 'hlt_bootstrapcss_js_head' );
 	}
 }
 
