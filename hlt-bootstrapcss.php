@@ -93,16 +93,36 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	public function linkBootstrapJavascript() {
+
+		$sBootstrapVersion = '1.3.0';
+		
+		$aBootstrapJsOptions = array (
+			'alerts'	=> (get_option( 'hlt_bootstrapcss_alerts_js' ) == 'Y'),
+			'dropdown'	=> (get_option( 'hlt_bootstrapcss_dropdown_js' ) == 'Y'),
+			'modal'		=> (get_option( 'hlt_bootstrapcss_modal_js' ) == 'Y'),
+			'popover'	=> (get_option( 'hlt_bootstrapcss_popover_js' ) == 'Y'),
+			'scrollspy'	=> (get_option( 'hlt_bootstrapcss_scrollspy_js' ) == 'Y'),
+			'tabs'		=> (get_option( 'hlt_bootstrapcss_tabs_js' ) == 'Y'),
+			'twipsy'	=> (get_option( 'hlt_bootstrapcss_twipsy_js' ) == 'Y'),
+		);
 		
 		$aHotlinkJs = array(
-			'alerts-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-alerts.js',
-			'dropdown-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-dropdown.js',
-			'modal-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-modal.js',
-			'popover-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-popover.js',
-			'scrollspy-js'	=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-scrollspy.js',
-			'tabs-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-tabs.js',
-			'twipsy-js'		=> 'https://github.com/twitter/bootstrap/raw/master/js/bootstrap-twipsy.js'
+			'alerts'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-alerts.js',
+			'dropdown'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-dropdown.js',
+			'modal'		=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-modal.js',
+			'popover'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-popover.js',
+			'scrollspy'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-scrollspy.js',
+			'tabs'		=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-tabs.js',
+			'twipsy'	=> 'http://twitter.github.com/bootstrap/' . $sBootstrapVersion . '/bootstrap-twipsy.js'
 		);
+
+		foreach ($aBootstrapJsOptions as $sJsLib => $display) {
+			$display = true;
+			if ($display) {
+				echo '<script type="text/javascript" src="' . $aHotlinkJs[$sJsLib] . '" /></script>';
+			}
+		}
+		
 	}
 
 	public function onWpInit() {
@@ -110,6 +130,12 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		if ( !is_admin() ) {
 			ob_start( array( &$this, 'onOutputBufferFlush' ) );
+			
+			if ( get_option( 'hlt_bootstrapcss_js_head' ) == 'Y' ) {
+				add_action('wp_head','HLT_BootstrapCss::linkBootstrapJavascript');
+			} else {
+				add_action('wp_footer','HLT_BootstrapCss::linkBootstrapJavascript');
+			}
 		}
 	}
 	
@@ -175,6 +201,14 @@ class HLT_BootstrapCss_Install {
 	public function onWpActivatePlugin() {
 		add_option( 'hlt_bootstrapcss_option', 'none' );
 		add_option( 'hlt_bootstrapcss_hotlink', 'N' );
+		
+		add_option( 'hlt_bootstrapcss_alerts_js', 'N' );
+		add_option( 'hlt_bootstrapcss_dropdown_js', 'N' );
+		add_option( 'hlt_bootstrapcss_modal_js', 'N' );
+		add_option( 'hlt_bootstrapcss_popover_js', 'N' );
+		add_option( 'hlt_bootstrapcss_scrollspy_js', 'N' );
+		add_option( 'hlt_bootstrapcss_tabs_js', 'N' );
+		add_option( 'hlt_bootstrapcss_twipsy_js', 'N' );
 		add_option( 'hlt_bootstrapcss_js_head', 'N' );
 	}
 }
@@ -190,6 +224,14 @@ class HLT_BootstrapCss_Uninstall {
 	public function onWpDeactivatePlugin() {
 		delete_option( 'hlt_bootstrapcss_option' );
 		delete_option( 'hlt_bootstrapcss_hotlink' );
+		
+		delete_option( 'hlt_bootstrapcss_alerts_js' );
+		delete_option( 'hlt_bootstrapcss_dropdown_js' );
+		delete_option( 'hlt_bootstrapcss_modal_js' );
+		delete_option( 'hlt_bootstrapcss_popover_js' );
+		delete_option( 'hlt_bootstrapcss_scrollspy_js' );
+		delete_option( 'hlt_bootstrapcss_tabs_js' );
+		delete_option( 'hlt_bootstrapcss_twipsy_js' );
 		delete_option( 'hlt_bootstrapcss_js_head' );
 	}
 }
