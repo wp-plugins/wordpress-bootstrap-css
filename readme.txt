@@ -4,10 +4,10 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.2
+Stable tag: 0.3
 
-Wordpress Bootstrap CSS allows you to add either reset.css (YUI2), normalize.css or twitter bootstrap.css to the
-absolute beginning of your webpages.
+Wordpress Bootstrap CSS lets you to include Twitter Bootstrap CSS and Javascript libraries to your Wordpress site.
+We also provided the option to alternatively add reset.css (YUI2) or normalize.css.
 
 == Description ==
 
@@ -116,6 +116,11 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.3 =
+* Added support for 'Bootstrap, from Twitter' Javascript libraries. You can now select which of the invididual JS libraries to include.
+* Inclusion of Javascript libraries is dependent upon selection of Twitter Bootstrap CSS. If this is not selected, no Javascript is added.
+* Option to load Javascript files in <head> (using wp_head). The default, and recommended, is just before the closing </BODY> (using wp_footer).
+
 = 0.2 =
 * Updated Twitter Bootstrap CSS link to version 1.3.0.
 
@@ -134,6 +139,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.3 =
+* Added support for 'Bootstrap, from Twitter' Javascript libraries. You can now select which of the invididual JS libraries to include.
 
 = 0.2 =
 * Updated Twitter Bootstrap CSS link to version 1.3.0.

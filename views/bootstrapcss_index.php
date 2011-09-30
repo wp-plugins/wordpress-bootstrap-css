@@ -14,7 +14,7 @@
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 				<form method="post" action="<?php echo $hlt_form_action; ?>">
-					<div class="postbox" width>
+					<div class="postbox">
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Select Bootstrap CSS Option</span></h3>
 						<div class="inside">
@@ -39,22 +39,14 @@
 							<label for="hlt-twitter">Twitter Bootstrap CSS</label>
 							<br class="clear">
 							<p class="desc" style="display: block;">Bootstrap, from Twitter. [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p>
-							
-							<p><strong>Extra</strong></p>
-							<input type="checkbox" name="hlt_bootstrap_hotlink" value="Y" id="hlt-hotlink" <?php if ( $hlt_hotlink == 'Y' ): ?>checked="checked"<?php endif; ?> />
-							<label for="hlt-hotlink">Enable CSS and JS Hotlinking.</label>
-							<br class="clear">
-							<p class="desc" style="display: block;">If you choose to hotlink, your site will be relying on external servers to deliver both the CSS and JS files. If that server goes down
-							or the file becomes	unavailable for any reason, your site will be affected visually. This option is not recommended.</p>
 						</div>
 					</div>
-					<!-- <div class="submit"><input type="submit" value="Save Settings" name="submit" class="button-primary"></div> -->
 
 					<div class="postbox" id="BootstrapJavascript">
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Select Bootstrap Javascript Include Options</span></h3>
 						<div class="inside">
-							<p><strong>Choose which of the following Twitter Bootstrap Javascript libraries you would like included on your site. Note: they are all (currently) hotlinked to the Github repository.</strong></p>
+							<p><strong>Choose which of the following Twitter Bootstrap Javascript libraries you would like included on your site.</strong></p>
 							
 							<input type="checkbox" name="hlt_bootstrap_option_alerts_js" value="Y" id="hlt-alerts-js" <?php if ( $hlt_option_alerts_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 							<label for="hlt-alerts-js">alerts.js</label>
@@ -99,6 +91,21 @@
 							If you have a need to put them in the &lt;HEAD&gt; check this box.  Not recommended.</p>
 						</div>
 					</div>
+					
+					<div class="postbox" id="HotlinkOptionBox">
+						<div title="Click to toggle" class="handlediv"><br></div>
+						<h3 class="hndle"><span>Select Resource Linking Option</span></h3>
+						<div class="inside">
+							<p><strong>Choose the method of linking to the CSS and Javascript. Note: Javascript is only applicable when you have selected Twitter Bootstrap.</strong></p>
+
+							<input type="checkbox" name="hlt_bootstrap_hotlink" value="Y" id="hlt-hotlink" <?php if ( $hlt_hotlink == 'Y' ): ?>checked="checked"<?php endif; ?> />
+							<label for="hlt-hotlink">Enable CSS and JS Hotlinking.</label>
+							<br class="clear">
+							<p class="desc" style="display: block;">If you choose to hotlink, your site will be relying on external servers to deliver both the CSS and JS files.
+							If that server goes down or the file becomes unavailable for any reason, your site will be affected visually. This option is not recommended.</p>
+						</div>
+					</div>
+
 					<div class="submit"><input type="submit" value="Save Settings" name="submit" class="button-primary"></div>
 				</form>
 			</div>
@@ -116,10 +123,22 @@
 				} else {
 					$("#BootstrapJavascript").slideUp(150);
 				}
+
+				if(radio_value=='none') {
+					$("#HotlinkOptionBox").slideUp(150);
+				} else {
+					$("#HotlinkOptionBox").slideDown(150);
+				}
 			});
 
 			if ( $("#hlt-twitter").is(':checked') === false ) {
 				$("#BootstrapJavascript").hide();
+			}
+
+			if ( $("#hlt-none").is(':checked') === false ) {
+				$("#HotlinkOptionBox").show();
+			} else {
+				$("#HotlinkOptionBox").hide();
 			}
 			 
 		});
