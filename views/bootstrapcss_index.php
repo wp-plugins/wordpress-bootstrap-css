@@ -42,9 +42,9 @@
 							
 							<p><strong>Extra</strong></p>
 							<input type="checkbox" name="hlt_bootstrap_hotlink" value="Y" id="hlt-hotlink" <?php if ( $hlt_hotlink == 'Y' ): ?>checked="checked"<?php endif; ?> />
-							<label for="hlt-hotlink">Enable CSS Hotlinking.</label>
+							<label for="hlt-hotlink">Enable CSS and JS Hotlinking.</label>
 							<br class="clear">
-							<p class="desc" style="display: block;">If you choose to hotlink, your site will be relying on external servers to deliver the files. If that server goes down
+							<p class="desc" style="display: block;">If you choose to hotlink, your site will be relying on external servers to deliver both the CSS and JS files. If that server goes down
 							or the file becomes	unavailable for any reason, your site will be affected visually. This option is not recommended.</p>
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 						<div class="inside">
 							<p><strong>Choose which of the following Twitter Bootstrap Javascript libraries you would like included on your site. Note: they are all (currently) hotlinked to the Github repository.</strong></p>
 							
-							<input type="checkbox" name="hlt_bootstrap_option_alerts_js" value="Y" id="hlt-alerts-js" <?php if ( $hlt_option_alerts_js == 'Y' ): ?>checked="checked"<?php endif;?> />
+							<input type="checkbox" name="hlt_bootstrap_option_alerts_js" value="Y" id="hlt-alerts-js" <?php if ( $hlt_option_alerts_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 							<label for="hlt-alerts-js">alerts.js</label>
 							<br class="clear">
 							<p class="desc" style="display: block;">Include the 'Bootstrap Alerts' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#alerts" target="_blank">more info</a>]</p>
