@@ -92,6 +92,25 @@
 						</div>
 					</div>
 					
+					<div class="postbox" id="CustomCssOptionBox">
+						<div title="Click to toggle" class="handlediv"><br></div>
+						<h3 class="hndle"><span>Add your own custom CSS</span></h3>
+						<div class="inside">
+							<p><strong>Enter the URL to a CSS file you would like included before all others (and immediately after the Bootstrap CSS above if selected).</strong></p>
+
+							<input type="checkbox" name="hlt_bootstrap_option_customcss" value="Y" id="hlt-option-customcss" <?php if ( $hlt_option_customcss == 'Y' ): ?>checked="checked"<?php endif; ?> />
+							<label for="hlt-option-customcss">Enable custom CSS link</label>
+							<br class="clear">
+							<p class="desc" style="display: block;">If you choose to link to your own custom CSS be sure to put the full URL path to the CSS file.
+							If you're hotlinking to another site, ensure you have permission to do so.
+							<br />This CSS link will be inserted immediately after the reset, normalize or Twitter Bootstrap CSS if any of these are selected.</p>
+			
+							<label for="hlt-text-customcss-url">Custom CSS URL:</label><input type="text" name="hlt_bootstrap_text_customcss_url" id="hlt-text-customcss-url" size="100" value="<?php echo $hlt_text_customcss_url; ?>" style="margin-left:20px;"/>
+							<p>&nbsp;</p>
+							<br class="clear">
+						</div>
+					</div>
+					
 					<div class="postbox" id="HotlinkOptionBox">
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Select Resource Linking Option</span></h3>

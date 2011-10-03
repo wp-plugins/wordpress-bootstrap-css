@@ -170,6 +170,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_twipsy_js'		=> self::getOption( 'twipsy_js' ),
 			'option_js_head'		=> self::getOption( 'js_head' ),
 
+			'option_customcss'		=> self::getOption( 'customcss' ),
+			'text_customcss_url'	=> self::getOption( 'customcss_url' ),
+		
 			'form_action'			=> 'admin.php?page=hlt-directory-bootstrap-css'
 		);
 		$this->display( 'bootstrapcss_index', $aData );
@@ -186,15 +189,18 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			self::updateOption( 'hotlink', $this->getAnswerFromPost( 'hotlink' ) );
 		
-			self::updateOption( 'alerts_js',	$this->getAnswerFromPost( 'option_alerts_js' ) );
-			self::updateOption( 'dropdown_js',	$this->getAnswerFromPost( 'option_dropdown_js' ) );
-			self::updateOption( 'modal_js',		$this->getAnswerFromPost( 'option_modal_js' ) );
-			self::updateOption( 'popover_js',	$this->getAnswerFromPost( 'option_popover_js' ) );
-			self::updateOption( 'scrollspy_js',	$this->getAnswerFromPost( 'option_scrollspy_js' ) );
-			self::updateOption( 'tabs_js',		$this->getAnswerFromPost( 'option_tabs_js' ) );
-			self::updateOption( 'twipsy_js',	$this->getAnswerFromPost( 'option_twipsy_js' ) );
-				
-			self::updateOption( 'js_head',		$this->getAnswerFromPost( 'option_js_head' ) );
+			self::updateOption( 'alerts_js',		$this->getAnswerFromPost( 'option_alerts_js' ) );
+			self::updateOption( 'dropdown_js',		$this->getAnswerFromPost( 'option_dropdown_js' ) );
+			self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
+			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
+			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
+			self::updateOption( 'tabs_js',			$this->getAnswerFromPost( 'option_tabs_js' ) );
+			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
+
+			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
+
+			self::updateOption( 'customcss',		$this->getAnswerFromPost( 'option_customcss' ) );
+			self::updateOption( 'customcss_url',	$this->getAnswerFromPost( 'text_customcss_url' ) );
 
 			/*
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
@@ -247,6 +253,9 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'tabs_js',			'N' );
 		HLT_BootstrapCss::addOption( 'twipsy_js',		'N' );
 		HLT_BootstrapCss::addOption( 'js_head',			'N' );
+
+		HLT_BootstrapCss::addOption( 'customcss',		'N' );
+		HLT_BootstrapCss::addOption( 'customcss_url',	'http://' );
 	}
 }
 
@@ -270,6 +279,9 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'tabs_js' );
 		HLT_BootstrapCss::deleteOption( 'twipsy_js' );
 		HLT_BootstrapCss::deleteOption( 'js_head' );
+
+		HLT_BootstrapCss::deleteOption( 'customcss'  );
+		HLT_BootstrapCss::deleteOption( 'customcss_url' );
 	}
 }
 
