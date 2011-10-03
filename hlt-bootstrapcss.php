@@ -221,12 +221,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				}
 			}
 			
-			/*
-			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
-				$oW3TotalCache =& W3_Plugin_TotalCache::instance();
+			if ( class_exists( 'W3_Plugin_TotalCacheAdmin' ) ) {
+				$oW3TotalCache =& new W3_Plugin_TotalCacheAdmin;
 				$oW3TotalCache->flush_all();
 			}
-			*/
 		}
 	}
 	
