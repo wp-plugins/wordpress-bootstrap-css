@@ -105,9 +105,8 @@
 							If you're hotlinking to another site, ensure you have permission to do so.
 							<br />This CSS link will be inserted immediately after the reset, normalize or Twitter Bootstrap CSS if any of these are selected.</p>
 			
-							<label for="hlt-text-customcss-url">Custom CSS URL:</label><input type="text" name="hlt_bootstrap_text_customcss_url" id="hlt-text-customcss-url" size="100" value="<?php echo $hlt_text_customcss_url; ?>" style="margin-left:20px;"/>
-							<p>&nbsp;</p>
-							<br class="clear">
+							<label for="hlt-text-customcss-url">Custom CSS URL:</label><input id="customcss-url-input" type="text" name="hlt_bootstrap_text_customcss_url" id="hlt-text-customcss-url" size="100" value="<?php echo $hlt_text_customcss_url; ?>" style="margin-left:20px;"/>
+							<br /><br class="clear">
 						</div>
 					</div>
 					
@@ -134,6 +133,7 @@
 	<script>
 	( function($) {
 		$(document).ready(function(){
+			
 			$("input:radio[name='hlt_bootstrap_option']").click(function(){
 				var radio_value = $(this).val();
 
@@ -158,6 +158,14 @@
 				$("#HotlinkOptionBox").show();
 			} else {
 				$("#HotlinkOptionBox").hide();
+			}
+			
+			$("input[type=checkbox][name='hlt_bootstrap_option_customcss']").click(function(){
+				$("#customcss-url-input").attr('disabled', !$(this).attr('checked'));
+			});
+
+			if ( $("#hlt_bootstrap_option_customcss").is(':checked') === false ) {
+				$("#customcss-url-input").attr('disabled', false);
 			}
 			 
 		});

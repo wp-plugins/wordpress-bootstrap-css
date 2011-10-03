@@ -69,6 +69,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sOption = self::getOption( 'option' );
 		$fHotlink = ( self::getOption( 'hotlink' ) == 'Y' );
 		
+		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
+		$sCustomCssUrl = self::getOption( 'customcss_url' );
+		
 		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter' ) ) ) {
 			return $insContents;
 		}
@@ -91,6 +94,12 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 		else {
 			$sCssLink = $aLocalCss[$sOption];
+		}
+		
+		// TODO
+		if ( $fCustomCss ) {
+			//Verify $sCustomCssUrl is in-fact a real URL and exists.
+			//Include it in the reg. expression below
 		}
 		
 		$sRegExp = "/(<head([^>]*)>)/i";
@@ -200,7 +209,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
 
 			self::updateOption( 'customcss',		$this->getAnswerFromPost( 'option_customcss' ) );
-			self::updateOption( 'customcss_url',	$this->getAnswerFromPost( 'text_customcss_url' ) );
+			self::updateOption( 'customcss_url',	$_POST['hlt_bootstrap_text_customcss_url'] );
 
 			/*
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
