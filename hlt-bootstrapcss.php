@@ -70,7 +70,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$fHotlink = ( self::getOption( 'hotlink' ) == 'Y' );
 		
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
-		$sCustomCssUrl = self::getOption( 'customcss_url' );
 		
 		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter' ) ) ) {
 			return $insContents;
@@ -96,14 +95,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$sCssLink = $aLocalCss[$sOption];
 		}
 		
-		// TODO
-		if ( $fCustomCss ) {
-			//Verify $sCustomCssUrl is in-fact a real URL and exists.
-			//Include it in the reg. expression below
-		}
-		
 		$sRegExp = "/(<head([^>]*)>)/i";
 		$sReplace = '${1}'."\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
+
+		if ( $fCustomCss ) {
+			$sCustomCssUrl = self::getOption( 'customcss_url' );
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
+		}
+		
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
 	
@@ -196,7 +195,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			if ( self::updateOption( 'option', $_POST['hlt_bootstrap_option'] ) === false ) {
 				// TODO: need to say it hasn't worked
 			}
-			self::updateOption( 'hotlink', $this->getAnswerFromPost( 'hotlink' ) );
+			$sCustomUrl = $_POST[self::InputPrefix.'text_customcss_url'];
+			$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
+			
+			self::updateOption( 'hotlink',			$this->getAnswerFromPost( 'hotlink' ) );
 		
 			self::updateOption( 'alerts_js',		$this->getAnswerFromPost( 'option_alerts_js' ) );
 			self::updateOption( 'dropdown_js',		$this->getAnswerFromPost( 'option_dropdown_js' ) );
@@ -209,8 +211,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
 
 			self::updateOption( 'customcss',		$this->getAnswerFromPost( 'option_customcss' ) );
-			self::updateOption( 'customcss_url',	$_POST['hlt_bootstrap_text_customcss_url'] );
 
+			if ( $fCustomCss && !empty( $sCustomUrl ) ) {
+				if ( $this->checkUrlValid( $sCustomUrl ) ) {
+					self::updateOption( 'customcss_url', $_POST[self::InputPrefix.'text_customcss_url'] );
+				}
+				else {
+					self::updateOption( 'customcss_url', '' );
+				}
+			}
+			
 			/*
 			if ( class_exists( 'W3_Plugin_TotalCache' ) ) {
 				$oW3TotalCache =& W3_Plugin_TotalCache::instance();
@@ -218,6 +228,19 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			*/
 		}
+	}
+	
+	protected function checkUrlValid( $insUrl ) {
+		$oCurl = curl_init();
+		curl_setopt( $oCurl, CURLOPT_URL, $insUrl );
+		curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt( $oCurl, CURLOPT_CONNECTTIMEOUT, 10 );
+		
+		$sContent = curl_exec( $oCurl );		
+		$sHttpCode = curl_getinfo( $oCurl, CURLINFO_HTTP_CODE );
+		curl_close( $oCurl );
+		
+		return ( intval( $sHttpCode ) === 200 );
 	}
 	
 	protected function getAnswerFromPost( $insKey, $insPrefix = null ) {
