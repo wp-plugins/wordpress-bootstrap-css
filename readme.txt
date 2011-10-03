@@ -4,10 +4,9 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.3
+Stable tag: 0.4
 
-Wordpress Bootstrap CSS lets you to include Twitter Bootstrap CSS and Javascript libraries to your Wordpress site.
-We also provided the option to alternatively add reset.css (YUI2) or normalize.css.
+Wordpress Bootstrap CSS lets you include Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
@@ -17,6 +16,18 @@ It's good practice to have a core, underlying CSS definition so that your websit
 browsers as far as possible.
 
 Twitter Bootstrap does this extremely well.
+
+From Twitter Bootstrap:
+*Bootstrap is a toolkit from Twitter designed to kickstart development of webapps and sites.
+It includes base CSS and HTML for typography, forms, buttons, tables, grids, navigation, and more*
+
+Many themes do not allow you to add custom CSS files easily. Even Thesis! So we take another approach
+and inject the CSS as one of the FIRST items in the HTML HEAD section. This way, no other CSS
+interferes and these may be used as a foundation/reset CSS.
+
+The Twitter Bootstrap CSS is only part of the solution. They have now released Javascript libraries
+to complement their Bootstrap solution. These may also be added to your site with the option to
+add them to the HEAD (by default they are added to the footer).
 
 We also wanted the option to alternatively include "reset.css" and "normalize.css".  These both form related roles
 as bootstrap, but are lighter.
@@ -29,10 +40,6 @@ will not be any use alone. It is to be treated as a starting point for your styl
 expectations of certain elements. E.g. H1-6 will all appear bold.
 *	bootstrap.css - is a level above normalize where it adds much more styling but retains consistency across modern
 browsers. It makes site and web application development much faster.
-
-From Twitter Bootstrap:
-*Bootstrap is a toolkit from Twitter designed to kickstart development of webapps and sites.
-It includes base CSS and HTML for typography, forms, buttons, tables, grids, navigation, and more*
 
 **Some References**:
 
@@ -116,10 +123,14 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.4 =
+* Added the ability to include your own custom CSS file using a URL for the source. This custom CSS
+file will be linked immediately after the bootstrap CSS (if you add it).
+
 = 0.3 =
 * Added support for 'Bootstrap, from Twitter' Javascript libraries. You can now select which of the invididual JS libraries to include.
 * Inclusion of Javascript libraries is dependent upon selection of Twitter Bootstrap CSS. If this is not selected, no Javascript is added.
-* Option to load Javascript files in <head> (using wp_head). The default, and recommended, is just before the closing </BODY> (using wp_footer).
+* Option to load Javascript files in the "HEAD" (using wp_head). The default, and recommended, is just before the closing html "BODY" (using wp_footer).
 
 = 0.2 =
 * Updated Twitter Bootstrap CSS link to version 1.3.0.
@@ -139,6 +150,10 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.4 =
+* Added the ability to include your own custom CSS file using a URL for the source. This custom CSS
+file will be linked immediately after the bootstrap CSS (if you add one).
 
 = 0.3 =
 * Added support for 'Bootstrap, from Twitter' Javascript libraries. You can now select which of the invididual JS libraries to include.
