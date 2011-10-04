@@ -127,11 +127,11 @@ settings page each time (as is the case with most plugins out there).
 
 1. Here you select which CSS to use and then save settings
 
-2. Assuming you select Twitter Bootstrap CSS, you may now select which Twitter Bootstrap libraries to include.
+2. Assuming you select Twitter Bootstrap CSS, you may now select which Twitter Bootstrap libraries to include
 
-3. You may input an URL of a CSS file that you would like to have included immediately following the reset/Bootstrap CSS.
+3. You may input an URL of a CSS file that you would like to have included immediately following the reset/Bootstrap CSS
 
-4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download).
+4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download)
 
 == Changelog ==
 
