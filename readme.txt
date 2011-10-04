@@ -4,13 +4,17 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.4
+Stable tag: 0.5
 
 Wordpress Bootstrap CSS lets you include Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
-Since Twitter Bootstrap was released we, at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"), needed a way to consistenly add the bootstrap CSS to the very beginning of the *head* section on all web pages, regardless of the Wordpress Theme.
+Since Twitter Bootstrap was released we, at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
+wanted a way to consistenly link the bootstrap CSS to the very beginning of the *head* section on all web pages, regardless of the Wordpress Theme.
+
+With this Twitter Bootstrap CSS Wordpress plugin, you can now achieve this with ANY Wordpress Theme without
+touching your Wordpress Theme files and NO programming ability needed.
 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
 browsers as far as possible.
@@ -72,13 +76,15 @@ Select the CSS file as desired.
 
 == Frequently Asked Questions ==
 
-= Can I add more than one CSS? =
+= Can I link more than one CSS? =
 
 No. There's absolutely no point in doing that and serves only to add a performance penalty to your page loads.
 
+With version 0.4+, you can now add your own custom reset CSS that will follow the standard reset/Twittter Bootstrap CSS. 
+
 = What happens if uninstall this plugin after I design a site with it installed? =
 
-In all likelihood your site design/layout will change. How much depends on which CSS you used and how much of
+In all likelihood your site design/layout will change. How much so depends on which CSS you used and how much of
 your own customizations you have done.
 
 = Why does my site not look any different? =
@@ -91,7 +97,7 @@ styles applied to it will take precedence over any previous styles.
 
 = Is Wordpress Bootstrap CSS compatible with caching plugins? =
 
-Good question. The only caching plugin that Host Like Toast recommends, and has decent experience with, is W3
+The only caching plugin that Host Like Toast recommends, and has decent experience with, is W3
 Total Cache.
 
 This plugin will automatically flush your W3TC cache when you save changes on this plugin (assuming you have
@@ -119,9 +125,19 @@ settings page each time (as is the case with most plugins out there).
 
 == Screenshots ==
 
-1. The complete plugin window. Here you select which CSS to use, whether to hotlink it, and then save settings
+1. Here you select which CSS to use and then save settings
+
+2. Assuming you select Twitter Bootstrap CSS, you may now select which Twitter Bootstrap libraries to include.
+
+3. You may input an URL of a CSS file that you would like to have included immediately following the reset/Bootstrap CSS.
+
+4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download).
 
 == Changelog ==
+
+= 0.5 =
+* Re-added the attempt utilize W3 Total Cache "flush all" if the plugin is active (compatible with W3 Total Cache v0.9.2.4)
+* Added some more screenshots to the docs
 
 = 0.4 =
 * Added the ability to include your own custom CSS file using a URL for the source. This custom CSS
@@ -150,6 +166,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.5 =
+* Re-added the attempt utilize W3 Total Cache "flush all" if the plugin is active (compatible with W3 Total Cache v0.9.2.4)
 
 = 0.4 =
 * Added the ability to include your own custom CSS file using a URL for the source. This custom CSS

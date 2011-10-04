@@ -4,6 +4,10 @@
 		font-style: italic;
 		margin-top: 4px;
 	}
+	.submit span {
+		font-size: smaller;
+		font-style: italic;
+	}
 </style>
 
 <div class="wrap">
@@ -124,7 +128,7 @@
 						</div>
 					</div>
 
-					<div class="submit"><input type="submit" value="Save Settings" name="submit" class="button-primary"></div>
+					<div class="submit"><input type="submit" value="Save Settings" name="submit" class="button-primary"><?php echo ( class_exists( 'W3_Plugin_TotalCacheAdmin' )? '<span> and flush W3 Total Cache</span>' : '' ); ?></div>
 				</form>
 			</div>
 		</div>

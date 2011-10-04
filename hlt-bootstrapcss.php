@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wp-plugins/bootstrapcss/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 0.4
+Version: 0.5
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com 
 */
@@ -52,7 +52,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 		
-		self::$VERSION		= '0.4';
+		self::$VERSION		= '0.5';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -221,8 +221,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				}
 			}
 			
+			// Flush W3 Total Cache (compatible up to version 0.9.2.4)
 			if ( class_exists( 'W3_Plugin_TotalCacheAdmin' ) ) {
-				$oW3TotalCache =& new W3_Plugin_TotalCacheAdmin;
+				$oW3TotalCache =& w3_instance('W3_Plugin_TotalCacheAdmin');
 				$oW3TotalCache->flush_all();
 			}
 		}
