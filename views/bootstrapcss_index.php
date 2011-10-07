@@ -14,6 +14,9 @@
 		margin-bottom: 8px;
 		padding: 12px 10px 0px;
 	}
+	.option_section:hover {
+	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	}
 	.selected_item {
 	    background-color: rgba(128, 255, 128, 0.2);
 	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -33,7 +36,7 @@
 	<a href="http://hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br /></div></a>
 	<h2>Host Like Toast: Wordpress/Twitter Bootstrap CSS Options</h2>
 	
-	<div style="width:70%;" class="postbox-container">
+	<div style="width:60%;" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 				<form method="post" action="<?php echo $hlt_form_action; ?>">
@@ -222,25 +225,29 @@
 				$("#customcss-url-input").attr('disabled', false);
 			}
 
-			$("div#ResetCssBox input:radio").click(function(){
+			$("div#ResetCssBox .option_section").click(function(){
 
-				$("div#ResetCssBox div[id*='section']").removeClass('selected_item');
+				$("div#ResetCssBox div.option_section").removeClass('selected_item');
+				
+				$(this).addClass('selected_item');
 
-				var id_value = $(this).attr('id');
-				$("div[id='section-" + id_value + "']").addClass('selected_item');
-			});
-
-			$("input:checkbox").click(function(){
-				var id_value = $(this).attr('id');
-				if ( $(this).is(':checked') ) {
-					$("div[id='section-" + id_value + "']").addClass('selected_item');
-					$("div[id='section-" + id_value + "']").removeClass('nonselected_item');
-				} else {
-					$("div[id='section-" + id_value + "']").removeClass('selected_item');
-					$("div[id='section-" + id_value + "']").addClass('nonselected_item');
-				}
+			    var checkbox = $(this).find('input');
+			    checkbox.attr('checked', !checkbox.attr('checked'));				
 			});
 			
+			$("div#BootstrapJavascript .option_section").click(function(){
+
+			    var checkbox = $(this).find('input');
+			    checkbox.attr('checked', !checkbox.attr('checked'));
+				if ( $(this).find('input').is(':checked') ) {
+					$(this).addClass('selected_item');
+					$(this).removeClass('nonselected_item');
+				} else {
+					$(this).removeClass('selected_item');
+					$(this).addClass('nonselected_item');
+				}
+			});
+
 		});
 	} ) ( jQuery );
 	</script>
