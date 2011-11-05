@@ -16,6 +16,7 @@
 		</div>
 	</div>
 </div>
+<!--
 <div style="width:35%;" class="postbox-container">
 	<div class="metabox-holder">	
 		<div class="meta-box-sortables ui-sortable">
@@ -43,3 +44,4 @@
 		</div>
 	</div>
 </div>
+  -->

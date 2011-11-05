@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wp-plugins/bootstrapcss/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 0.5
+Version: 0.6
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com 
 */
@@ -47,12 +47,12 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const OptionPrefix = 'hlt_bootstrapcss_';
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
-	const TwitterVersion = '1.3.0';
+	const TwitterVersion = '1.4.0';
 	
 	public function __construct() {
 		parent::__construct();
 		
-		self::$VERSION		= '0.5';
+		self::$VERSION		= '0.6';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -78,7 +78,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$aLocalCss = array(
 			'yahoo-reset'	=> self::$PLUGIN_URL.'css/yahoo-2.9.0.min.css',
 			'normalize'		=> self::$PLUGIN_URL.'css/normalize.css',
-			'twitter'		=> self::$PLUGIN_URL.'css/bootstrap-1.3.0.min.css'
+			'twitter'		=> self::$PLUGIN_URL.'css/bootstrap-'.self::TwitterVersion.'.min.css'
 		);
 		
 		$aHotlinkCss = array(

@@ -14,6 +14,7 @@
 		margin-bottom: 8px;
 		padding: 12px 10px 0px;
 	}
+/*
 	.option_section:hover {
 	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	}
@@ -21,6 +22,7 @@
 	    background-color: rgba(128, 255, 128, 0.2);
 	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	}
+*/
 	.selected_item label {
 		font-weight: bold;
 	}
@@ -225,6 +227,7 @@
 				$("#customcss-url-input").attr('disabled', false);
 			}
 
+			/*
 			$("div#ResetCssBox .option_section").click(function(){
 
 				$("div#ResetCssBox div.option_section").removeClass('selected_item');
@@ -234,7 +237,6 @@
 			    var checkbox = $(this).find('input');
 			    checkbox.attr('checked', !checkbox.attr('checked'));				
 			});
-			
 			$("div#BootstrapJavascript .option_section").click(function(){
 
 			    var checkbox = $(this).find('input');
@@ -247,7 +249,7 @@
 					$(this).addClass('nonselected_item');
 				}
 			});
-
+*/
 		});
 	} ) ( jQuery );
 	</script>

@@ -4,18 +4,21 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.5
+Stable tag: 0.6
 
-Wordpress Bootstrap CSS lets you include Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
-Since Twitter Bootstrap was released we, at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
-wanted a way to consistenly link the bootstrap CSS to the very beginning of the *head* section on all web pages, regardless of the Wordpress Theme.
+We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
+we wanted a way to consistenly link the latest bootstrap CSS to the beginning of the *head* section on all web pages,
+regardless of the Wordpress Theme.
 
-With this Twitter Bootstrap CSS Wordpress plugin, you can now achieve this with ANY Wordpress Theme without
-touching your Wordpress Theme files and NO programming ability needed.
+Now you can! It works with *any* Wordpress Theme without editing Theme files and NO programming ability needed.
 
+You can add Twitter Bootstrap CSS and any/all of the Javascript libraries.
+
+** Why use Twitter Bootstrap? ** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
 browsers as far as possible.
 
@@ -29,7 +32,7 @@ Many themes do not allow you to add custom CSS files easily. Even Thesis! So we 
 and inject the CSS as one of the FIRST items in the HTML HEAD section. This way, no other CSS
 interferes and these may be used as a foundation/reset CSS.
 
-The Twitter Bootstrap CSS is only part of the solution. They have now released Javascript libraries
+The CSS is only part of the solution. They have now released Javascript libraries
 to complement their Bootstrap solution. These may also be added to your site with the option to
 add them to the HEAD (by default they are added to the footer).
 
@@ -135,6 +138,9 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.6 =
+* Updated to account for the latest version of Twitter Bootsrap version 1.4.0
+
 = 0.5 =
 * Re-added the attempt utilize W3 Total Cache "flush all" if the plugin is active (compatible with W3 Total Cache v0.9.2.4)
 * Added some more screenshots to the docs
@@ -166,6 +172,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.6 =
+* Updated to account for the latest version of Twitter Bootsrap version 1.4.0
 
 = 0.5 =
 * Re-added the attempt utilize W3 Total Cache "flush all" if the plugin is active (compatible with W3 Total Cache v0.9.2.4)
