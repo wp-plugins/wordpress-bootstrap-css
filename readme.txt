@@ -4,21 +4,23 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.6
+Stable tag: 0.7
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
 We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
-we wanted a way to consistenly link the latest bootstrap CSS to the beginning of the *head* section on all web pages,
+we wanted a way to link the latest bootstrap CSS to the beginning of the *head* section on all web pages,
 regardless of the Wordpress Theme.
 
-Now you can! It works with *any* Wordpress Theme without editing Theme files and NO programming ability needed.
+Now you can!
 
-You can add Twitter Bootstrap CSS and any/all of the Javascript libraries.
+It works with *any* Wordpress Theme without editing Theme files and NO programming needed.
 
-** Why use Twitter Bootstrap? ** 
+You can add Twitter Bootstrap CSS and any/all of the Twitter Bootstrap Javascript libraries.
+
+**Why use Twitter Bootstrap?** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
 browsers as far as possible.
 
@@ -138,6 +140,9 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.7 =
+* Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
+
 = 0.6 =
 * Updated to account for the latest version of Twitter Bootsrap version 1.4.0
 
@@ -172,6 +177,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.7 =
+* Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
 
 = 0.6 =
 * Updated to account for the latest version of Twitter Bootsrap version 1.4.0
