@@ -140,6 +140,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				add_action( 'wp_'.(self::getOption( 'js_head' ) == 'Y'? 'head': 'footer'), array( &$this, 'linkBootstrapJavascript' ) );
 			}
 		}
+		
+		// if shortcodes are enabled!
+		$oShortCodes = new HLT_BootstrapShortcodes();
 	}
 	
 	public function onWpAdminInit() {
@@ -346,6 +349,11 @@ class HLT_Plugin {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param $insUrl
+	 * @param $innTimeout
+	 */
 	protected function redirect( $insUrl, $innTimeout = 1 ) {
 		echo '
 			<script type="text/javascript">

@@ -23,6 +23,16 @@
 
 class HLT_BootstrapShortcodes {
 
+	public function __construct() {
+		$aMethods = get_class_methods( $this );
+		$aExclude = array( 'idHtml', 'def' );
+		foreach ( $aMethods as $sMethod ) {
+			if ( !in_array( $sMethod, $aExclude ) ) {
+				add_shortcode( 'twitter_'.strtolower( $sMethod ), array( &$this, $sMethod ) );
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param $atts
@@ -74,7 +84,7 @@ class HLT_BootstrapShortcodes {
 	 * @param $atts
 	 * @param $content
 	 */
-	function blockmessage( $inaAtts = array(), $insContent = '' ) {
+	public function blockmessage( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
