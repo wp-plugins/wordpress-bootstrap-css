@@ -28,153 +28,125 @@ class HLT_BootstrapShortcodes {
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_button( $atts=array(), $content = '' ) {
+	public function button( $inaAtts = array(), $insContent = '' ) {
 		
-		$sElementType = 'a';
-	
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		if ( !isset( $atts['class'] ) ) {
-			$atts['class'] = 'default';
-		}
+		$sElementType = 'a';  
 		if ( !isset( $atts['link'] ) ) {
 			$sElementType = 'button';
 		}
-		if ( !isset( $atts['link_title'] ) ) {
-			$atts['link_title'] = '';
-		}
-		if ( !isset( $atts['value'] ) ) {
-			$atts['value'] = '0';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
 		
-		$sReturn ='<div class="hlt_bs_button"><' .$sElementType. ' class="btn ' .$atts['class']. '"'. $atts['id'];
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class', 'default' );
+		$this->def( &$inaAtts, 'link_title' );
+		$this->def( &$inaAtts, 'value', '0' );
 		
-		if ($sElementType == 'a') {
-			$sReturn.= ' href="' .$atts['link']. '" title="' .$atts['link_title']. '>' .$content. '</a>';
-		} else {
-			$sReturn.= ' type="button" value="' .$atts['value']. '>' .$content. '</a>';
+		$sReturn = '<div class="hlt_bs_button"><'.$sElementType.' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
+		
+		if ( $sElementType == 'a' ) {
+			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '>'.$insContent.'</a>';
+		}
+		else {
+			$sReturn .= ' type="button" value="'.$inaAtts['value']. '>'.$insContent.'</a>';
 		}
 		
 		$sReturn .= '</div>';
 		
 		return $sReturn;
-	}//print_bootstrap_button
+	}//button
 	
 	/**
 	 * 
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_label( $atts=array(), $content = '' ) {
+	public function label( $inaAtts = array(), $insContent = '' ) {
 	
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		if ( !isset( $atts['class'] ) ) {
-			$atts['class'] = '';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
 	
-		$sReturn = '<span class="label ' .$atts['class']. '"'. $atts['id'] .'>' .$content. '</span>';
+		$sReturn = '<span class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</span>';
 		
 		return $sReturn;
-	}//print_bootstrap_label
+	}//label
 	
 	/**
 	 * 
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_blockmessage( $atts=array(), $content = '' ) {
+	function blockmessage( $inaAtts = array(), $insContent = '' ) {
 
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		if ( !isset( $atts['class'] ) ) {
-			$atts['class'] = '';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
 	
-		$sReturn = '<div class="alert-message block-message ' .$atts['class']. '"'.
-					$atts['id'] .'>' .$content. '</div>';
+		$sReturn = '<div class="alert-message block-message '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</div>';
 		
 		return $sReturn;
-	}//print_bootstrap_blockmessage
+	}//blockmessage
 	
 	/**
 	 * 
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_code( $atts=array(), $content = '' ) {
-	
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
+	public function code( $inaAtts = array(), $insContent = '' ) {
+		
+		$this->def( &$inaAtts, 'id' );
 
-		$sReturn = '<pre class="prettyprint linenums"'. $atts['id'] .'>' .$content. '</pre>';
+		$sReturn = '<pre class="prettyprint linenums"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</pre>';
 
 		return $sReturn;
-	}//print_bootstrap_code
+	}//code
 	
 	/**
 	 * 
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_tooltips( $atts=array(), $content = '' ) {
+	public function tooltips( $atts = array(), $insContent = '' ) {
 
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		if ( !isset( $atts['class'] ) ) {
-			$atts['class'] = '';
-		}
-		if ( !isset( $atts['placement'] ) ) {
-			$atts['placement'] = 'top';
-		}
-		if ( !isset( $atts['title'] ) ) {
-			$atts['title'] = '';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'placement', 'top' );
+		$this->def( &$inaAtts, 'title' );
 	
-		$sReturn = '<a href="#" rel="twipsy" placement="' .$atts['placement']. '" title="' .$atts['title']. '"'.
-					 $atts['id'] .'>' .$content. '</a>';
+		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</a>';
 		
 		return $sReturn;
-	}//print_bootstrap_tooltips
+	}//tooltips
 	
 	/**
 	 * 
 	 * @param $atts
 	 * @param $content
 	 */
-	function print_bootstrap_popover( $atts=array(), $content = '' ) {
+	public function popover( $inaAtts = array(), $insContent = '' ) {
 
-		if ( !isset( $atts['id'] ) ) {
-			$atts['id'] = '';
-		}
-		if ( !isset( $atts['class'] ) ) {
-			$atts['class'] = '';
-		}
-		if ( !isset( $atts['placement'] ) ) {
-			$atts['placement'] = 'above';
-		}
-		if ( !isset( $atts['title'] ) ) {
-			$atts['title'] = '';
-		}
-		if ( !isset( $atts['content'] ) ) {
-			$atts['content'] = '';
-		}
-		$atts['id'] = (($atts['id'] != '')? ' id="' .$atts['id']. '"' : '' );
-	
-		$sReturn = '<a href="#" rel="popover" class="' .$atts['class']. '"'. $atts['id'] .
-					' placement="' .$atts['placement']. '" title="' .$atts['title']. '" content="' .$atts['content']. '">' .$content. '</a>';
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'placement', 'above' );
+		$this->def( &$inaAtts, 'title' );
+		$this->def( &$inaAtts, 'content' );
+		
+		$sReturn = trim( '
+			<a href="#" rel="popover" class="'.$inaAtts['class']. '" '.$this->idHtml( $inaAtts['id'] )
+				.'placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'" content="'.$inAtts['content'].'">'.$insContent.'</a>'
+		);
 	
 		return $sReturn;
-	}//print_bootstrap_popover
+	}//popover
 
+	/**
+	 * name collision on "default"
+	 */
+	protected function def( &$aSrc, $insKey, $insValue = '' ) {
+		if ( !isset( $aSrc[$insKey] ) ) {
+			$aSrc[$insKey] = $insValue;
+		}
+	}
+	
+	protected function idHtml( $insId ) {
+		return (($insId != '')? ' id="'.$insId.'" ' : '' );	
+	}
+	
 }//class
