@@ -111,10 +111,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'alerts'	=> self::getOption( 'alerts_js' ),
 			'dropdown'	=> self::getOption( 'dropdown_js' ),
 			'modal'		=> self::getOption( 'modal_js' ),
+			'twipsy'	=> self::getOption( 'twipsy_js' ),
 			'popover'	=> self::getOption( 'popover_js' ),
 			'scrollspy'	=> self::getOption( 'scrollspy_js' ),
 			'tabs'		=> self::getOption( 'tabs_js' ),
-			'twipsy'	=> self::getOption( 'twipsy_js' ),
 		);
 		
 		$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.self::TwitterVersion.'/bootstrap-';
@@ -172,10 +172,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_alerts_js'		=> self::getOption( 'alerts_js' ),
 			'option_dropdown_js'	=> self::getOption( 'dropdown_js' ),
 			'option_modal_js'		=> self::getOption( 'modal_js' ),
+			'option_twipsy_js'		=> self::getOption( 'twipsy_js' ),
 			'option_popover_js'		=> self::getOption( 'popover_js' ),
 			'option_scrollspy_js'	=> self::getOption( 'scrollspy_js' ),
 			'option_tabs_js'		=> self::getOption( 'tabs_js' ),
-			'option_twipsy_js'		=> self::getOption( 'twipsy_js' ),
 			'option_js_head'		=> self::getOption( 'js_head' ),
 
 			'option_customcss'		=> self::getOption( 'customcss' ),
@@ -203,10 +203,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'alerts_js',		$this->getAnswerFromPost( 'option_alerts_js' ) );
 			self::updateOption( 'dropdown_js',		$this->getAnswerFromPost( 'option_dropdown_js' ) );
 			self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
+			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
 			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
 			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
 			self::updateOption( 'tabs_js',			$this->getAnswerFromPost( 'option_tabs_js' ) );
-			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
 
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
 
@@ -279,10 +279,10 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'alerts_js',		'N' );
 		HLT_BootstrapCss::addOption( 'dropdown_js',		'N' );
 		HLT_BootstrapCss::addOption( 'modal_js',		'N' );
+		HLT_BootstrapCss::addOption( 'twipsy_js',		'N' );
 		HLT_BootstrapCss::addOption( 'popover_js',		'N' );
 		HLT_BootstrapCss::addOption( 'scrollspy_js',	'N' );
 		HLT_BootstrapCss::addOption( 'tabs_js',			'N' );
-		HLT_BootstrapCss::addOption( 'twipsy_js',		'N' );
 		HLT_BootstrapCss::addOption( 'js_head',			'N' );
 
 		HLT_BootstrapCss::addOption( 'customcss',		'N' );
@@ -305,10 +305,10 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'alerts_js' );
 		HLT_BootstrapCss::deleteOption( 'dropdown_js' );
 		HLT_BootstrapCss::deleteOption( 'modal_js' );
+		HLT_BootstrapCss::deleteOption( 'twipsy_js' );
 		HLT_BootstrapCss::deleteOption( 'popover_js' );
 		HLT_BootstrapCss::deleteOption( 'scrollspy_js' );
 		HLT_BootstrapCss::deleteOption( 'tabs_js' );
-		HLT_BootstrapCss::deleteOption( 'twipsy_js' );
 		HLT_BootstrapCss::deleteOption( 'js_head' );
 
 		HLT_BootstrapCss::deleteOption( 'customcss'  );
