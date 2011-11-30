@@ -1,4 +1,9 @@
 <style type="text/css">
+
+	#desc_block {
+		float: right;
+		width: 60%;
+	}
 	.inside p.desc {
 		font-size: smaller;
 		font-style: italic;
@@ -67,18 +72,20 @@
 						<div class="inside">
 							<p><strong>Choose which type of bootstrap CSS you would like installed.</strong></p>
 
-							<select>
-								<option <?php if ( $hlt_option == 'none' ): ?>selected<?php endif;?> >None</option>
-								<option <?php if ( $hlt_option == 'twitter' ): ?>selected_item<?php endif;?>>Twitter Bootstrap CSS</option>
-								<option <?php if ( $hlt_option == 'yahoo-reset' ): ?>selected<?php endif;?>>Yahoo UI Reset CSS</option>
-								<option <?php if ( $hlt_option == 'normalize' ): ?>selected_item<?php endif;?>>Normalize CSS</option>
+							<select name="hlt_bootstrap_option">
+								<option value="none" id="hlt-none" <?php if ( $hlt_option == 'none' ): ?>selected<?php endif;?> >None</option>
+								<option value="twitter" id="hlt-twitter" <?php if ( $hlt_option == 'twitter' ): ?>selected<?php endif;?>>Twitter Bootstrap CSS</option>
+								<option value="yahoo-reset" id="hlt-yahoo-reset" <?php if ( $hlt_option == 'yahoo-reset' ): ?>selected<?php endif;?>>Yahoo UI Reset CSS</option>
+								<option value="normalize" id="hlt-normalize" <?php if ( $hlt_option == 'normalize' ): ?>selected<?php endif;?>>Normalize CSS</option>
 							</select>
 							
-							<div id="desc_none" class="desc"><p style="display: block;">No reset CSS will be applied.</p></div>
-							<div id="desc_tbs" class="desc"><p style="display: block;">Bootstrap, from Twitter. [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p></div>
-							<div id="desc_yahoo" class="desc"><p style="display: block;">YahooUI Reset CSS is a basic reset for all browsers.</p></div>
-							<div id="desc_normalise" class="desc"><p style="display: block;">Normalize CSS.</p></div>
-
+							<div id="desc_block">
+								<div id="desc_none" class="desc"><p style="display: block;">No reset CSS will be applied.</p></div>
+								<div id="desc_tbs" class="desc"><p style="display: block;">Bootstrap, from Twitter. [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p></div>
+								<div id="desc_yahoo" class="desc"><p style="display: block;">YahooUI Reset CSS is a basic reset for all browsers.</p></div>
+								<div id="desc_normalise" class="desc"><p style="display: block;">Normalize CSS.</p></div>
+							</div>
+							<div style="clear:both"></div>
 <!--
 							<div class="option_section  <?php if ( $hlt_option == 'none' ): ?>selected_item<?php endif;?>" id="section-hlt-none">
 								<input type="radio" name="hlt_bootstrap_option" value="none" id="hlt-none" <?php if ( $hlt_option == 'none' ): ?>checked="checked"<?php endif;?> />
@@ -125,7 +132,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_modal_js" value="Y" id="hlt-modal-js" <?php if ( $hlt_option_modal_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-modal-js">modal.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Modal' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#modal" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Modal' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#modal" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 								<td>
@@ -133,7 +140,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_alerts_js" value="Y" id="hlt-alerts-js" <?php if ( $hlt_option_alerts_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-alerts-js">alerts.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Alerts' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#alerts" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Alerts' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#alerts" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 							</tr>
@@ -143,7 +150,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_dropdown_js" value="Y" id="hlt-dropdown-js" <?php if ( $hlt_option_dropdown_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-dropdown-js">dropdown.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Dropdown' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#dropdown" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Dropdown' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#dropdown" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 								<td>
@@ -151,7 +158,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_scrollspy_js" value="Y" id="hlt-scrollspy-js" <?php if ( $hlt_option_scrollspy_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-scrollspy-js">scrollspy.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Scrollspy' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#scrollspy" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Scrollspy' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#scrollspy" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 							</tr>
@@ -161,10 +168,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_popover_js" value="Y" id="hlt-popover-js" <?php if ( $hlt_option_popover_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-popover-js">popover.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">
-										Include the 'Bootstrap Popover' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#popover" target="_blank">more info</a>]
-										<br /><em>Note: This requires twipsy.js, selecting this file will automatically include twipsy.js</em>
-									</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Popover' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#popover" target="_blank">more info</a>] (<em>Note: requires Twipsy library</em>)</p>
 								</div>
 								</td>
 								<td>
@@ -172,7 +176,7 @@
 									<input type="checkbox" name="hlt_bootstrap_option_twipsy_js" value="Y" id="hlt-twipsy-js" <?php if ( $hlt_option_twipsy_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-twipsy-js">twipsy.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Twipsy' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#twipsy" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Twipsy' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#twipsy" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 							</tr>
@@ -182,26 +186,35 @@
 									<input type="checkbox" name="hlt_bootstrap_option_tabs_js" value="Y" id="hlt-tabs-js" <?php if ( $hlt_option_tabs_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-tabs-js">tabs.js</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">Include the 'Bootstrap Tabs' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#tabs" target="_blank">more info</a>]</p>
+									<p class="desc" style="display: block;">Include 'Bootstrap Tabs' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#tabs" target="_blank">more info</a>]</p>
 								</div>
 								</td>
 								<td></td>
 							</tr>
-
-
-
-
-
-			</table>
-							
-							<h4><strong>Extra</strong></h4>
-							<div class="option_section <?php if ( $hlt_option_js_head == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-js-head">
-								<input type="checkbox" name="hlt_bootstrap_option_js_head" value="Y" id="hlt-js-head" <?php if ( $hlt_option_js_head == 'Y' ): ?>checked="checked"<?php endif; ?> />
-								<label for="hlt-js-head">Place Javascript in the &lt;HEAD&gt; section.</label>
-								<br class="clear">
-								<p class="desc" style="display: block;">By default, Javascript libraries should be placed at the end of the &lt;BODY&gt; section.
-								If you have a need to put them in the &lt;HEAD&gt; check this box.  Not recommended.</p>
-							</div>
+						</table>
+						<table id="tbl_tbs_options_javascript" class="tbl_tbs_options">
+							<tr>
+								<td>
+								<div class="option_section <?php if ( $hlt_option_js_head == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-js-head">
+									<input type="checkbox" name="hlt_bootstrap_option_js_head" value="Y" id="hlt-js-head" <?php if ( $hlt_option_js_head == 'Y' ): ?>checked="checked"<?php endif; ?> />
+									<label for="hlt-js-head">Place Javascript in the &lt;HEAD&gt; section.</label>
+									<br class="clear">
+									<p class="desc" style="display: block;">By default, Javascript libraries should be placed at the end of the &lt;BODY&gt; section.
+									If you have a need to put them in the &lt;HEAD&gt; check this box.  Not recommended.</p>
+								</div>
+								</td>
+								<td>
+								<div class="option_section <?php if ( $hlt_option_useshortcodes == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-useshortcodes">
+									<input type="checkbox" name="hlt_bootstrap_option_useshortcodes" value="Y" id="hlt-option-useshortcodes" <?php if ( $hlt_option_useshortcodes == 'Y' ): ?>checked="checked"<?php endif; ?> />
+									<label for="hlt-option-useshortcodes">Enable Twitter Bootstrap Shortcodes</label>
+									<br class="clear">
+									<p class="desc" style="display: block;">We have created a number of WordPress shortcodes for fast application of the Twitter Bootstrap
+									library. There is no need to enable this unless you wish to use the shortcodes.
+									<br />Click here for a complete guide on our current WordPress shortcode implementation for Twitter Bootstrap.</p>
+								</div>
+								</td>
+							</tr>
+						</table>
 						</div>
 					</div>
 
@@ -255,14 +268,6 @@
 								Google Prettify Javascript library for use with these code blocks.
 							</div>
 
-							<div class="option_section <?php if ( $hlt_option_useshortcodes == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-useshortcodes">
-								<input type="checkbox" name="hlt_bootstrap_option_useshortcodes" value="Y" id="hlt-option-useshortcodes" <?php if ( $hlt_option_useshortcodes == 'Y' ): ?>checked="checked"<?php endif; ?> />
-								<label for="hlt-option-useshortcodes">Enable Twitter Bootstrap Shortcodes</label>
-								<br class="clear">
-								<p class="desc" style="display: block;">We have created a number of WordPress shortcodes for fast application of the Twitter Bootstrap
-								library. There is no need to enable this unless you wish to use the shortcodes.
-								<br />Click here for a complete guide on our current WordPress shortcode implementation for Twitter Bootstrap.</p>
-							</div>
 						</div>
 					</div>
 
@@ -276,7 +281,7 @@
 	( function($) {
 		$( document ).ready( function() {
 			
-			$( "input:radio[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
+			$( "select[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
 
 			if ( $( "#hlt-twitter" ).is( ':checked' ) === false ) {
 				$( "#BootstrapJavascript" ).hide();
@@ -324,7 +329,7 @@
 			onChangePopoverJs.call( oEl.get( 0 ) );
 		}
 		
-		var oEl = oDiv.find( "input:radio[name='hlt_bootstrap_option']" );
+		var oEl = oDiv.find( "select[name='hlt_bootstrap_option']" );
 		if ( oEl.length > 0 ) {
 			onChangeCssBootstrapOption.call( oEl.get( 0 ) );
 		}
