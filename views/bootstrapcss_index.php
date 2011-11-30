@@ -10,7 +10,7 @@
 	}
 	.option_section {
 		border: 1px solid transparent;
-		border-radius: 5px 5px 5px 5px;
+		border-radius: 8px 8px 8px 8px;
 		margin-bottom: 8px;
 		padding: 12px 10px 0px;
 	}
@@ -32,7 +32,97 @@
 	.nonselected_item label {
 		font-weight: normal;
 	}
+	
+	.option_section:hover {
+		background-color: #ffffff;
+		cursor: pointer;
+	}
+	
+	.option_section.active {
+		background-color: #DDDDDD;
+	}
 </style>
+
+<script>
+
+	jQuery( document ).ready(
+		function () {
+
+			jQuery( 'input:checked' ).parents( 'div.option_section' ).addClass( 'active' );
+			
+			jQuery( '.option_section' ).bind( 'click', onSectionClick );
+
+			jQuery( 'input[name=hlt_bootstrap_option_popover_js]' ).bind( 'click', onChangePopoverJs() );
+			
+		}
+	);
+
+	function onSectionClick( inoEvent ) {
+		var oDiv = jQuery( inoEvent.currentTarget );
+		if ( inoEvent.target.tagName && inoEvent.target.tagName.match( /input/i ) ) {
+			return true;
+		}
+
+		var oEl = oDiv.find( 'input[name=hlt_bootstrap_option_popover_js]' );
+		if ( oEl.length > 0 ) {
+			onChangePopoverJs.call( oEl.get( 0 ) );
+		}
+		
+		var oEl = oDiv.find( "input:radio[name='hlt_bootstrap_option']" );
+		if ( oEl.length > 0 ) {
+			onChangeCssBootstrapOption.call( oEl.get( 0 ) );
+		}
+		
+		var oEl = oDiv.find( 'input[type=checkbox]' );
+		if ( oEl.length > 0 ) {
+			if ( oEl.is( ':checked' ) ) {
+				oEl.removeAttr( 'checked' );
+				oDiv.removeClass( 'active' );
+			}
+			else {
+				oEl.attr( 'checked', 'checked' );
+				oDiv.addClass( 'active' );
+			}
+		}
+
+		var oEl = oDiv.find( 'input[type=radio]' );
+		if ( oEl.length > 0 && !oEl.is( ':checked' ) ) {
+			oEl.attr( 'checked', 'checked' );
+			oDiv.addClass( 'active' ).siblings().removeClass( 'active' );
+		}
+	}
+
+	function onChangeCssBootstrapOption() {
+		var sValue = jQuery( this ).val();
+
+		/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
+		if ( sValue == 'twitter' ) {
+			jQuery( "#BootstrapJavascript" ).slideDown( 150 );
+		}
+		else {
+			jQuery( "#BootstrapJavascript" ).slideUp( 150 );
+		}
+
+		/* Show/Hide Hotlink section on none/CSS selection */
+		if ( sValue == 'none' ) {
+			jQuery( "#HotlinkOptionBox" ).slideUp( 150 );
+		}
+		else {
+			jQuery( "#HotlinkOptionBox" ).slideDown( 150 );
+		}
+	}
+
+	function onClickCustomCss() {
+		jQuery( '#customcss-url-input' ).attr( 'disabled', !jQuery( this ).attr( 'checked' ) );
+	}
+
+	function onChangePopoverJs() {
+		if ( !jQuery( this ).is( ':checked' ) ) {
+			jQuery( 'input[name=hlt_bootstrap_option_twipsy_js]' ).attr( 'checked', 'checked' ).parents( 'div.option_section' ).addClass( 'active' );
+		}
+	}
+
+</script>
 
 <div class="wrap">
 	<a href="http://hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br /></div></a>
@@ -109,7 +199,10 @@
 								<input type="checkbox" name="hlt_bootstrap_option_popover_js" value="Y" id="hlt-popover-js" <?php if ( $hlt_option_popover_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
 								<label for="hlt-popover-js">popover.js</label>
 								<br class="clear">
-								<p class="desc" style="display: block;">Include the 'Bootstrap Popover' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#popover" target="_blank">more info</a>]</p>
+								<p class="desc" style="display: block;">
+									Include the 'Bootstrap Popover' Javascript library. [<a href="http://twitter.github.com/bootstrap/javascript.html#popover" target="_blank">more info</a>]
+									<br /><em>Note: This requires twipsy.js, selecting this file will automatically include twipsy.js</em>
+								</p>
 							</div>
 
 							<div class="option_section <?php if ( $hlt_option_scrollspy_js == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-scrollspy-js">
@@ -188,68 +281,27 @@
 	
 	<script>
 	( function($) {
-		$(document).ready(function(){
+		$( document ).ready( function() {
 			
-			$("input:radio[name='hlt_bootstrap_option']").click(function(){
-				var radio_value = $(this).val();
+			$( "input:radio[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
 
-				/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
-				if(radio_value=='twitter') {
-					$("#BootstrapJavascript").slideDown(150);
-				} else {
-					$("#BootstrapJavascript").slideUp(150);
-				}
-
-				/* Show/Hide Hotlink section on none/CSS selection */
-				if(radio_value=='none') {
-					$("#HotlinkOptionBox").slideUp(150);
-				} else {
-					$("#HotlinkOptionBox").slideDown(150);
-				}
-			});
-
-			if ( $("#hlt-twitter").is(':checked') === false ) {
-				$("#BootstrapJavascript").hide();
+			if ( $( "#hlt-twitter" ).is( ':checked' ) === false ) {
+				$( "#BootstrapJavascript" ).hide();
 			}
 
-			if ( $("#hlt-none").is(':checked') === false ) {
-				$("#HotlinkOptionBox").show();
-			} else {
-				$("#HotlinkOptionBox").hide();
+			if ( $( "#hlt-none" ).is( ':checked' ) === false ) {
+				$( "#HotlinkOptionBox" ).show();
+			}
+			else {
+				$( "#HotlinkOptionBox" ).hide();
 			}
 
 			/* Enables/Disables the custom CSS text field depending on checkbox*/
-			$("input[type=checkbox][name='hlt_bootstrap_option_customcss']").click(function(){
-				$("#customcss-url-input").attr('disabled', !$(this).attr('checked'));
-			});
+			$( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" ).click(	onClickCustomCss );
 
-			if ( $("#hlt_bootstrap_option_customcss").is(':checked') === false ) {
-				$("#customcss-url-input").attr('disabled', false);
+			if ( $( "#hlt_bootstrap_option_customcss" ).is( ':checked' ) === false ) {
+				$( "#customcss-url-input" ).attr( 'disabled', false );
 			}
-
-			/*
-			$("div#ResetCssBox .option_section").click(function(){
-
-				$("div#ResetCssBox div.option_section").removeClass('selected_item');
-				
-				$(this).addClass('selected_item');
-
-			    var checkbox = $(this).find('input');
-			    checkbox.attr('checked', !checkbox.attr('checked'));				
-			});
-			$("div#BootstrapJavascript .option_section").click(function(){
-
-			    var checkbox = $(this).find('input');
-			    checkbox.attr('checked', !checkbox.attr('checked'));
-				if ( $(this).find('input').is(':checked') ) {
-					$(this).addClass('selected_item');
-					$(this).removeClass('nonselected_item');
-				} else {
-					$(this).removeClass('selected_item');
-					$(this).addClass('nonselected_item');
-				}
-			});
-*/
 		});
 	} ) ( jQuery );
 	</script>
