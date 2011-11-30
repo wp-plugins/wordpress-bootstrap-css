@@ -29,7 +29,7 @@ Author URI: http://www.hostliketoast.com
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
+include_once (dirname(__FILE__).'/hlt-bootstrap-shortcodes.php');
 define( 'DS', DIRECTORY_SEPARATOR );
 
 //global $wp_version;
@@ -114,7 +114,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'twipsy'	=> self::getOption( 'twipsy_js' ),
 			'popover'	=> self::getOption( 'popover_js' ),
 			'scrollspy'	=> self::getOption( 'scrollspy_js' ),
-			'tabs'		=> self::getOption( 'tabs_js' ),
+			'tabs'		=> self::getOption( 'tabs_js' )
 		);
 		
 		$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.self::TwitterVersion.'/bootstrap-';

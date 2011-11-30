@@ -28,7 +28,7 @@ class HLT_BootstrapShortcodes {
 		$aExclude = array( 'idHtml', 'def' );
 		foreach ( $aMethods as $sMethod ) {
 			if ( !in_array( $sMethod, $aExclude ) ) {
-				add_shortcode( 'twitter_'.strtolower( $sMethod ), array( &$this, $sMethod ) );
+				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
 			}
 		}
 	}
@@ -41,7 +41,7 @@ class HLT_BootstrapShortcodes {
 	public function button( $inaAtts = array(), $insContent = '' ) {
 		
 		$sElementType = 'a';  
-		if ( !isset( $atts['link'] ) ) {
+		if ( !isset( $inaAtts['link'] ) ) {
 			$sElementType = 'button';
 		}
 		
@@ -53,10 +53,10 @@ class HLT_BootstrapShortcodes {
 		$sReturn = '<div class="hlt_bs_button"><'.$sElementType.' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
 		
 		if ( $sElementType == 'a' ) {
-			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '>'.$insContent.'</a>';
+			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '">'.$insContent.'</a>';
 		}
 		else {
-			$sReturn .= ' type="button" value="'.$inaAtts['value']. '>'.$insContent.'</a>';
+			$sReturn .= ' type="button" value="'.$inaAtts['value']. '">'.$insContent.'</a>';
 		}
 		
 		$sReturn .= '</div>';
@@ -84,7 +84,7 @@ class HLT_BootstrapShortcodes {
 	 * @param $atts
 	 * @param $content
 	 */
-	public function blockmessage( $inaAtts = array(), $insContent = '' ) {
+	public function block( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
@@ -113,7 +113,7 @@ class HLT_BootstrapShortcodes {
 	 * @param $atts
 	 * @param $content
 	 */
-	public function tooltips( $atts = array(), $insContent = '' ) {
+	public function twipsy( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
@@ -123,7 +123,7 @@ class HLT_BootstrapShortcodes {
 		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</a>';
 		
 		return $sReturn;
-	}//tooltips
+	}//twipsy
 	
 	/**
 	 * 
