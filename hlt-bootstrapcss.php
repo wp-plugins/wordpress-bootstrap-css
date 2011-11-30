@@ -360,7 +360,7 @@ class HLT_Plugin {
 				function redirect() {
 					window.location = "'.$insUrl.'";
 				}
-				var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
+				//var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
 			</script>'; 
 	}
 	
