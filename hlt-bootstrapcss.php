@@ -211,7 +211,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
 			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
 			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
-			if (self::getOption( 'popover_js' == 'Y' )) {
+			if ( self::getOption( 'popover_js' ) == 'Y' ) {
 				self::updateOption( 'twipsy_js', 'Y' );
 			}
 			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );

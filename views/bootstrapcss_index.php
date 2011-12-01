@@ -276,44 +276,40 @@
 			</div>
 		</div>
 	</div>
-	
-	<script>
-	( function($) {
-		$( document ).ready( function() {
-			
-			$( "select[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
 
-			if ( $( "#hlt-twitter" ).is( ':checked' ) === false ) {
-				$( "#BootstrapJavascript" ).hide();
-			}
-
-			if ( $( "#hlt-none" ).is( ':checked' ) === false ) {
-				$( "#HotlinkOptionBox" ).show();
-			}
-			else {
-				$( "#HotlinkOptionBox" ).hide();
-			}
-
-			/* Enables/Disables the custom CSS text field depending on checkbox*/
-			$( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" ).click(	onClickCustomCss );
-
-			if ( $( "#hlt_bootstrap_option_customcss" ).is( ':checked' ) === false ) {
-				$( "#customcss-url-input" ).attr( 'disabled', false );
-			}
-		});
-	} ) ( jQuery );
-	</script>
 
 <script>
 
 	jQuery( document ).ready(
 		function () {
 
+			jQuery( "select[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
+
+			if ( jQuery( "#hlt-twitter" ).is( ':checked' ) === false ) {
+				jQuery( "#BootstrapJavascript" ).hide();
+			}
+
+			if ( jQuery( "#hlt-none" ).is( ':checked' ) === false ) {
+				jQuery( "#HotlinkOptionBox" ).show();
+			}
+			else {
+				jQuery( "#HotlinkOptionBox" ).hide();
+			}
+
+			/* Enables/Disables the custom CSS text field depending on checkbox*/
+			jQuery( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" ).click( onClickCustomCss );
+
+			if ( jQuery( "#hlt_bootstrap_option_customcss" ).is( ':checked' ) === false ) {
+				jQuery( "#customcss-url-input" ).attr( 'disabled', false );
+			}
+
 			jQuery( 'input:checked' ).parents( 'div.option_section' ).addClass( 'active' );
 			
 			jQuery( '.option_section' ).bind( 'click', onSectionClick );
 
 			jQuery( 'input[name=hlt_bootstrap_option_popover_js]' ).bind( 'click', onChangePopoverJs() );
+			
+			jQuery( "select[name='hlt_bootstrap_option']" ).trigger('click');
 			
 		}
 	);
