@@ -179,7 +179,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_popover_js'		=> self::getOption( 'popover_js' ),
 			'option_scrollspy_js'	=> self::getOption( 'scrollspy_js' ),
 			'option_tabs_js'		=> self::getOption( 'tabs_js' ),
+
 			'option_js_head'		=> self::getOption( 'js_head' ),
+			'option_useshortcodes'	=> self::getOption( 'useshortcodes' ),
+			'option_prettify'		=> self::getOption( 'prettify' ),
 
 			'option_customcss'		=> self::getOption( 'customcss' ),
 			'text_customcss_url'	=> self::getOption( 'customcss_url' ),
@@ -208,10 +211,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
 			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
 			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
+			if (self::getOption( 'popover_js' == 'Y' )) {
+				self::updateOption( 'twipsy_js', 'Y' );
+			}
 			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
 			self::updateOption( 'tabs_js',			$this->getAnswerFromPost( 'option_tabs_js' ) );
 
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
+			self::updateOption( 'useshortcodes',	$this->getAnswerFromPost( 'option_useshortcodes' ) );
+			self::updateOption( 'prettify',			$this->getAnswerFromPost( 'option_prettify' ) );
 
 			self::updateOption( 'customcss',		$this->getAnswerFromPost( 'option_customcss' ) );
 
@@ -286,8 +294,11 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'popover_js',		'N' );
 		HLT_BootstrapCss::addOption( 'scrollspy_js',	'N' );
 		HLT_BootstrapCss::addOption( 'tabs_js',			'N' );
+		
 		HLT_BootstrapCss::addOption( 'js_head',			'N' );
-
+		HLT_BootstrapCss::addOption( 'useshortcodes',	'N' );
+		HLT_BootstrapCss::addOption( 'prettify',		'N' );
+		
 		HLT_BootstrapCss::addOption( 'customcss',		'N' );
 		HLT_BootstrapCss::addOption( 'customcss_url',	'http://' );
 	}
@@ -312,7 +323,10 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'popover_js' );
 		HLT_BootstrapCss::deleteOption( 'scrollspy_js' );
 		HLT_BootstrapCss::deleteOption( 'tabs_js' );
+		
 		HLT_BootstrapCss::deleteOption( 'js_head' );
+		HLT_BootstrapCss::deleteOption( 'useshortcodes' );
+		HLT_BootstrapCss::deleteOption( 'prettify' );
 
 		HLT_BootstrapCss::deleteOption( 'customcss'  );
 		HLT_BootstrapCss::deleteOption( 'customcss_url' );

@@ -121,7 +121,7 @@
 
 					<div class="postbox" id="BootstrapJavascript">
 						<div title="Click to toggle" class="handlediv"><br></div>
-						<h3 class="hndle"><span>Select Bootstrap Javascript Include Options</span></h3>
+						<h3 class="hndle"><span>Select Extra Twitter Bootstrap Options</span></h3>
 						<div class="inside">
 							<p><strong>Choose which of the following Twitter Bootstrap Javascript libraries you would like included on your site.</strong></p>
 
@@ -192,12 +192,13 @@
 								<td></td>
 							</tr>
 						</table>
+						<p><strong>Some Further Bootstrap Options:</strong></p>
 						<table id="tbl_tbs_options_javascript" class="tbl_tbs_options">
 							<tr>
 								<td>
 								<div class="option_section <?php if ( $hlt_option_js_head == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-js-head">
 									<input type="checkbox" name="hlt_bootstrap_option_js_head" value="Y" id="hlt-js-head" <?php if ( $hlt_option_js_head == 'Y' ): ?>checked="checked"<?php endif; ?> />
-									<label for="hlt-js-head">Place Javascript in the &lt;HEAD&gt; section.</label>
+									<label for="hlt-js-head">Place Javascript libraries in the &lt;HEAD&gt; section.</label>
 									<br class="clear">
 									<p class="desc" style="display: block;">By default, Javascript libraries should be placed at the end of the &lt;BODY&gt; section.
 									If you have a need to put them in the &lt;HEAD&gt; check this box.  Not recommended.</p>
@@ -208,9 +209,8 @@
 									<input type="checkbox" name="hlt_bootstrap_option_useshortcodes" value="Y" id="hlt-option-useshortcodes" <?php if ( $hlt_option_useshortcodes == 'Y' ): ?>checked="checked"<?php endif; ?> />
 									<label for="hlt-option-useshortcodes">Enable Twitter Bootstrap Shortcodes</label>
 									<br class="clear">
-									<p class="desc" style="display: block;">We have created a number of WordPress shortcodes for fast application of the Twitter Bootstrap
-									library. There is no need to enable this unless you wish to use the shortcodes.
-									<br />Click here for a complete guide on our current WordPress shortcode implementation for Twitter Bootstrap.</p>
+									<p class="desc" style="display: block;">WordPress shortcodes for fast application of the Twitter Bootstrap library.
+									<br />Click here for a complete guide on WordPress shortcode for Twitter Bootstrap.</p>
 								</div>
 								</td>
 							</tr>
@@ -260,9 +260,9 @@
 						<div class="inside">
 							<p><strong>Enter the URL of a CSS file you would like included before all others (and immediately after the Bootstrap CSS if selected).</strong></p>
 
-							<div class="option_section <?php if ( $hlt_option_googleprettify == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-googleprettify">
-								<input type="checkbox" name="hlt_bootstrap_option_googleprettify" value="Y" id="hlt-option-googleprettify" <?php if ( $hlt_option_googleprettify == 'Y' ): ?>checked="checked"<?php endif; ?> />
-								<label for="hlt-option-googleprettify">Include Google Prettify/Pretty Links Javascript</label>
+							<div class="option_section <?php if ( $hlt_option_prettify == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-prettify">
+								<input type="checkbox" name="hlt_bootstrap_option_prettify" value="Y" id="hlt-option-prettify" <?php if ( $hlt_option_prettify == 'Y' ): ?>checked="checked"<?php endif; ?> />
+								<label for="hlt-option-prettify">Include Google Prettify/Pretty Links Javascript</label>
 								<br class="clear">
 								<p class="desc" style="display: block;">If you display code snippets or similar on your site, enabling this option will include the
 								Google Prettify Javascript library for use with these code blocks.
