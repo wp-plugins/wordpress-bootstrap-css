@@ -140,9 +140,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				add_action( 'wp_'.(self::getOption( 'js_head' ) == 'Y'? 'head': 'footer'), array( &$this, 'linkBootstrapJavascript' ) );
 			}
 		}
+	
+		if ( self::getOption( 'prettify' ) == 'Y' ) {
+			add_action('wp_print_styles', 'HLT_BootstrapCss::enqueue_stylesheets');
+			add_action('wp_enqueue_scripts', 'HLT_BootstrapCss::enqueue_scripts');
+		}
 		
 		// if shortcodes are enabled!
-		$oShortCodes = new HLT_BootstrapShortcodes();
+		if ( self::getOption( 'useshortcodes' ) == 'Y' ) {
+			$oShortCodes = new HLT_BootstrapShortcodes();
+		}
 	}
 	
 	public function onWpAdminInit() {
@@ -238,6 +245,24 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				$oW3TotalCache->flush_all();
 			}
 		}
+	}
+
+    public function enqueue_stylesheets() {
+    
+		$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
+        $sStyleUrl = $sUrlPrefix.'prettify.css';
+        wp_register_style( 'prettify_style', $sStyleUrl );
+		wp_enqueue_style( 'prettify_style' );
+
+	}
+
+    public function enqueue_scripts() {
+    
+		$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
+        $sScriptUrl = $sUrlPrefix.'prettify.js';
+        wp_register_script( 'prettify_script', $sScriptUrl, '', '', (self::getOption( 'js_head' ) == 'Y'? false : true) );
+		wp_enqueue_script( 'prettify_script' );
+
 	}
 	
 	protected function checkUrlValid( $insUrl ) {
