@@ -96,13 +96,13 @@
 								<div id="desc_none" class="desc <?php if ( $hlt_option != 'none' ): ?>hidden<?php endif; ?>">
 									<p>No reset CSS will be applied.</p>
 								</div>
-								<div id="desc_tbs" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
+								<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
 									<p>Bootstrap, from Twitter. [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p>
 								</div>
-								<div id="desc_yahoo" class="desc <?php if ( $hlt_option != 'yahoo-reset' ): ?>hidden<?php endif; ?>">
+								<div id="desc_yahoo-reset" class="desc <?php if ( $hlt_option != 'yahoo-reset' ): ?>hidden<?php endif; ?>">
 									<p>YahooUI Reset CSS is a basic reset for all browsers.</p>
 								</div>
-								<div id="desc_normalise" class="desc <?php if ( $hlt_option != 'normalize' ): ?>hidden<?php endif; ?>">
+								<div id="desc_normalize" class="desc <?php if ( $hlt_option != 'normalize' ): ?>hidden<?php endif; ?>">
 									<p>Normalize CSS.</p>
 								</div>
 							</div>
@@ -315,7 +315,6 @@
 				else {
 					jQuery( "#HotlinkOptionBox" ).hide();
 				}
-	
 				/* Enables/Disables the custom CSS text field depending on checkbox*/
 				jQuery( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" ).click( onClickCustomCss );
 	
@@ -326,16 +325,30 @@
 				jQuery( 'input:checked' ).parents( 'div.option_section' ).addClass( 'active' );
 				
 				jQuery( '.option_section' ).bind( 'click', onSectionClick );
+				jQuery( '.option_section input[type=checkbox],.option_section label' ).bind( 'click',
+					function ( inoEvent ) {
+						var $this = jQuery( this );
+						var oParent = $this.parents( 'div.option_section' );
+
+						var oInput = jQuery( 'input[type=checkbox]', oParent );
+						if ( oInput.is( ':checked' ) ) {
+							oParent.addClass( 'active' );
+						}
+						else {
+							oParent.removeClass( 'active' );
+						}
+					}
+				);
 	
-				jQuery( 'input[name=hlt_bootstrap_option_popover_js]' ).bind( 'click', onChangePopoverJs() );
+				jQuery( 'input[name=hlt_bootstrap_option_popover_js]' ).bind( 'click', onChangePopoverJs );
 				
-				jQuery( "select[name='hlt_bootstrap_option']" ).trigger('click');
+				jQuery( "select[name='hlt_bootstrap_option']" ).trigger( 'click' );
 			}
 		);
 	
 		function onSectionClick( inoEvent ) {
 			var oDiv = jQuery( inoEvent.currentTarget );
-			if ( inoEvent.target.tagName && inoEvent.target.tagName.match( /input/i ) ) {
+			if ( inoEvent.target.tagName && inoEvent.target.tagName.match( /input|label/i ) ) {
 				return true;
 			}
 	
@@ -386,6 +399,9 @@
 			else {
 				jQuery( "#HotlinkOptionBox" ).slideDown( 150 );
 			}
+
+			jQuery( '#desc_block .desc' ).addClass( 'hidden' );
+			jQuery( '#desc_'+sValue ).removeClass( 'hidden' );
 		}
 	
 		function onClickCustomCss() {
