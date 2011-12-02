@@ -72,7 +72,7 @@ class HLT_BootstrapShortcodes {
 		
 		$sReturn .= '</div>';
 		
-		return $sReturn;
+		return $this->doShortcode( $sReturn );
 	}
 	
 	public function label( $inaAtts = array(), $insContent = '' ) {
@@ -82,7 +82,7 @@ class HLT_BootstrapShortcodes {
 	
 		$sReturn = '<span class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</span>';
 		
-		return $sReturn;
+		return $this->doShortcode( $sReturn );
 	}
 	
 	public function block( $inaAtts = array(), $insContent = '' ) {
@@ -92,7 +92,7 @@ class HLT_BootstrapShortcodes {
 	
 		$sReturn = '<div class="alert-message block-message '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</div>';
 		
-		return $sReturn;
+		return $this->doShortcode( $sReturn );
 	}
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {
@@ -113,7 +113,7 @@ class HLT_BootstrapShortcodes {
 	
 		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</a>';
 		
-		return $sReturn;
+		return $this->doShortcode( $sReturn );
 	}
 	
 	public function popover( $inaAtts = array(), $insContent = '' ) {
@@ -129,7 +129,7 @@ class HLT_BootstrapShortcodes {
 				.'placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'" content="'.$inAtts['content'].'">'.$insContent.'</a>'
 		);
 	
-		return $sReturn;
+		return $this->doShortcode( $sReturn );
 	}
 	
 	public function dropdown( $inaAtts = array(), $insContent = '' ) {
@@ -198,7 +198,7 @@ class HLT_BootstrapShortcodes {
 				}
 				else {
 					/**
-					 * Need to handle the dropdowns as the tab() shortcode handles the tab contents only
+					 * Handle the dropdowns as the tab() shortcode handles the tab contents only
 					 */
 					$nOffsetTemp = $aMatch[0][1] + $nOffsetAdjustment;
 					
@@ -213,9 +213,16 @@ class HLT_BootstrapShortcodes {
 					
 					$aOptions = array();
 					foreach ( $aSubMatches as $aSubMatch ) {
-						// look for link and name
 						$sLink = '#';
+						if ( preg_match( '/link\s*=\s*("|\')(.*)\g{-2}+/i', $aSubMatch[1][0], $aSubMatches ) ) {
+							$sLink = $aSubMatches[2];
+						}
+						
 						$sName = 'Undefined';
+						if ( preg_match( '/name\s*=\s*("|\')(.*)\g{-2}+/i', $aSubMatch[1][0], $aSubMatches ) ) {
+							$sName = $aSubMatches[2];
+						}
+						
 						$aOptions[] = '<li><a href="'.$sLink.'">'.$sName.'</a></li>';
 					}
 					
