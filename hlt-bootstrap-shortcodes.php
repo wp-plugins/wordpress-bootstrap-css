@@ -31,7 +31,7 @@ class HLT_BootstrapShortcodes {
 				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
 			}
 		}
-		
+
 		add_filter( 'the_content', array( &$this, 'filterTheContent' ), 10 );		
 		add_filter( 'the_content', array( &$this, 'filterTheContentToFixNamedAnchors' ), 99 );
 		
@@ -55,22 +55,23 @@ class HLT_BootstrapShortcodes {
 		if ( !isset( $inaAtts['link'] ) ) {
 			$sElementType = 'button';
 		}
-		
+
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class', 'default' );
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'link_title' );
 		$this->def( &$inaAtts, 'value', '0' );
-		
-		$sReturn = '<div class="hlt_bs_button"><'.$sElementType.' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
-		
+
+		$sReturn = '<'.$sElementType.' style="'.$inaAtts['style']. '" class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
+
 		if ( $sElementType == 'a' ) {
-			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '">'.$insContent.'</a>';
+			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '"';
 		}
 		else {
-			$sReturn .= ' type="button" value="'.$inaAtts['value']. '">'.$insContent.'</a>';
+			$sReturn .= ' type="button" value="'.$inaAtts['value']. '"';
 		}
 		
-		$sReturn .= '</div>';
+		$sReturn .= '>'.$insContent.'</'.$sElementType.'>';
 		
 		return $this->doShortcode( $sReturn );
 	}

@@ -37,16 +37,15 @@
 	.nonselected_item label {
 		font-weight: normal;
 	}
-	
 	.option_section:hover {
 		background-color: #ffffff;
 		cursor: pointer;
 	}
-	
+
 	.option_section.active {
 		background-color: #DDDDDD;
 	}
-	
+
 	table.tbl_tbs_options {
 		width: 100%;
 		border: 1px solid transparent;

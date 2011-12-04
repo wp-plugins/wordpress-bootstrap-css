@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.8.1
+Stable tag: 0.8.2
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -138,6 +138,10 @@ settings page each time (as is the case with most plugins out there).
 4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download)
 
 == Changelog ==
+
+= 0.8.2 =
+* Added option to "style" buttons inline.
+* Some bug fixes with shortcodes.
 
 = 0.8 =
 * This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
