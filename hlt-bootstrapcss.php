@@ -29,7 +29,8 @@ Author URI: http://www.hostliketoast.com
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-include_once (dirname(__FILE__).'/hlt-bootstrap-shortcodes.php');
+include_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
+
 define( 'DS', DIRECTORY_SEPARATOR );
 
 //global $wp_version;
@@ -142,8 +143,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 	
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
-			add_action('wp_print_styles', 'HLT_BootstrapCss::enqueue_stylesheets');
-			add_action('wp_enqueue_scripts', 'HLT_BootstrapCss::enqueue_scripts');
+			add_action( 'wp_print_styles', array( &$this, 'onWpPrintStyles' ) );
+			add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
 		}
 		
 		// if shortcodes are enabled!
@@ -210,17 +211,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			$sCustomUrl = $_POST[self::InputPrefix.'text_customcss_url'];
 			$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
+			$fIncludeTwipsy = ($this->getAnswerFromPost( 'option_popover_js' ) === 'Y' || $this->getAnswerFromPost( 'option_twipsy_js' ) === 'Y' );
 			
 			self::updateOption( 'hotlink',			$this->getAnswerFromPost( 'hotlink' ) );
 		
 			self::updateOption( 'alerts_js',		$this->getAnswerFromPost( 'option_alerts_js' ) );
 			self::updateOption( 'dropdown_js',		$this->getAnswerFromPost( 'option_dropdown_js' ) );
 			self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
-			self::updateOption( 'twipsy_js',		$this->getAnswerFromPost( 'option_twipsy_js' ) );
+			self::updateOption( 'twipsy_js',		$fIncludeTwipsy? 'Y': 'N' );
 			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
-			if ( self::getOption( 'popover_js' ) == 'Y' ) {
-				self::updateOption( 'twipsy_js', 'Y' );
-			}
 			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
 			self::updateOption( 'tabs_js',			$this->getAnswerFromPost( 'option_tabs_js' ) );
 
@@ -247,22 +246,18 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 	}
 
-    public function enqueue_stylesheets() {
-    
+	public function onWpPrintStyles() {
 		$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
-        $sStyleUrl = $sUrlPrefix.'prettify.css';
-        wp_register_style( 'prettify_style', $sStyleUrl );
+		
+		wp_register_style( 'prettify_style', $sUrlPrefix.'prettify.css' );
 		wp_enqueue_style( 'prettify_style' );
-
 	}
 
-    public function enqueue_scripts() {
-    
+	public function onWpEnqueueScripts() {
 		$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
-        $sScriptUrl = $sUrlPrefix.'prettify.js';
-        wp_register_script( 'prettify_script', $sScriptUrl, '', '', (self::getOption( 'js_head' ) == 'Y'? false : true) );
+		
+		wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', '', (self::getOption( 'js_head' ) == 'Y'? false : true) );
 		wp_enqueue_script( 'prettify_script' );
-
 	}
 	
 	protected function checkUrlValid( $insUrl ) {
@@ -271,7 +266,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt( $oCurl, CURLOPT_CONNECTTIMEOUT, 10 );
 		
-		$sContent = curl_exec( $oCurl );		
+		$sContent = curl_exec( $oCurl );
 		$sHttpCode = curl_getinfo( $oCurl, CURLINFO_HTTP_CODE );
 		curl_close( $oCurl );
 		
@@ -283,6 +278,19 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$insKey = self::InputPrefix.$insKey;
 		}
 		return ( isset( $_POST[$insKey] )? 'Y': 'N' );
+	}
+	
+	/**
+	 * Not currently used, but could be useful once we work out what way the JS should be included.
+	 * @param $insHandle	For example: 'prettify/prettify.css'
+	 */
+	protected function isRegistered( $insHandle ) {
+		return (
+			wp_script_is( $insHandle, 'registered' ) ||
+			wp_script_is( $insHandle, 'queue' ) ||
+			wp_script_is( $insHandle, 'done' ) ||
+			wp_script_is( $insHandle, 'to_do' )
+		);	
 	}
 	
 	static public function getOption( $insKey ) {
@@ -438,7 +446,7 @@ class HLT_Plugin {
 	
 	public function onWpInit() {
 		add_action( 'admin_menu', array( &$this, 'onWpAdminMenu' ) );
-		add_action( 'plugin_action_links', array( &$this, 'onWpPluginActionLinks' ), 10, 4 );		
+		add_action( 'plugin_action_links', array( &$this, 'onWpPluginActionLinks' ), 10, 4 );
 	}
 	
 	public function onWpAdminInit() {
