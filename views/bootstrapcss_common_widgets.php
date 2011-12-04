@@ -38,7 +38,7 @@
 		<div class="meta-box-sortables ui-sortable">
 			<div class="postbox" id="common-widget">
 				<div title="Click to toggle" class="handlediv"><br></div>
-				<h3 class="hndle"><span>Like this plugin?</span></h3>
+				<h3 class="hndle"><span>Feeling Generous?</span></h3>
 				<div class="inside">
 					<p>If you like this plugin, please help us out with a small donation - whatever you're comfortable with.</p>
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">

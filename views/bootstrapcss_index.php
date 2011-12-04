@@ -275,7 +275,7 @@
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Enable or Disable any of the following options as desired</span></h3>
 						<div class="inside">
-							<p><strong>Enter the URL of a CSS file you would like included before all others (and immediately after the Bootstrap CSS if selected).</strong></p>
+							<p><strong>If you need to display code snippets on your site, this is useful in conjunction with some Twitter Bootstrap elements.</strong></p>
 
 							<div class="option_section <?php if ( $hlt_option_prettify == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-prettify">
 								<input type="checkbox" name="hlt_bootstrap_option_prettify" value="Y" id="hlt-option-prettify" <?php if ( $hlt_option_prettify == 'Y' ): ?>checked="checked"<?php endif; ?> />
