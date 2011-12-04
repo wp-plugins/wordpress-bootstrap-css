@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: dlgoodchild, paultgoodchild
 Donate link: http://www.hostliketoast.com/
-Tags: CSS, Twitter Bootstrap, normalize, reset, YUI
+Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
 Stable tag: 0.7

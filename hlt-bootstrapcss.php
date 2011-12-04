@@ -136,12 +136,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		if ( !is_admin() && !in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php')) ) {
 			ob_start( array( &$this, 'onOutputBufferFlush' ) );
-			
-			if ( self::getOption( 'option' ) == 'twitter' ) {
-				add_action( 'wp_'.(self::getOption( 'js_head' ) == 'Y'? 'head': 'footer'), array( &$this, 'linkBootstrapJavascript' ) );
-			}
 		}
-	
+
+		//prett
 		add_action( 'wp_print_styles', array( &$this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
 		
@@ -253,17 +250,45 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 
 	public function onWpEnqueueScripts() {
+		
+		$bInFooter = (self::getOption( 'js_head' ) == 'Y'? false : true);
+		
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
 			$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
-			wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', '', (self::getOption( 'js_head' ) == 'Y'? false : true) );
+			wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', '', $bInFooter );
 			wp_enqueue_script( 'prettify_script' );
 		}
 		
 		if ( self::getOption( 'twipsy_js' ) == 'Y' || self::getOption( 'popover_js' ) == 'Y' ) {
-			wp_register_script( 'plugin_auto_twipsy_popover', self::$PLUGIN_URL.'/js/plugin/auto_twipsy_popover.js', '', '', (self::getOption( 'js_head' ) == 'Y'? false : true) );
+			wp_register_script( 'plugin_auto_twipsy_popover', self::$PLUGIN_URL.'/js/plugin/auto_twipsy_popover.js', '', '', $bInFooter );
 			wp_enqueue_script( 'plugin_auto_twipsy_popover' );
 		}
-	}
+
+		if ( self::getOption( 'option' ) == 'twitter' ) {
+			$aBootstrapJsOptions = array (
+				'alerts'	=> self::getOption( 'alerts_js' ),
+				'dropdown'	=> self::getOption( 'dropdown_js' ),
+				'modal'		=> self::getOption( 'modal_js' ),
+				'twipsy'	=> self::getOption( 'twipsy_js' ),
+				'popover'	=> self::getOption( 'popover_js' ),
+				'scrollspy'	=> self::getOption( 'scrollspy_js' ),
+				'tabs'		=> self::getOption( 'tabs_js' )
+			);
+		
+			$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.self::TwitterVersion.'/bootstrap-';
+			if ( self::getOption( 'hotlink' ) == 'Y' ) {
+				$sUrlPrefix = 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap-';
+			}
+		
+			foreach ( $aBootstrapJsOptions as $sJsLib => $sDisplay ) {
+				if ( $sDisplay == 'Y' ) {
+					$sUrl = $sUrlPrefix.$sJsLib.'.js';
+					wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', '', $bInFooter );
+					wp_enqueue_script( 'bootstrap'.$sJsLib );
+				}
+			}
+		}
+	}//onWpEnqueueScripts
 	
 	protected function checkUrlValid( $insUrl ) {
 		$oCurl = curl_init();
