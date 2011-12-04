@@ -4,15 +4,14 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.7
+Stable tag: 0.8
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
 We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
-we wanted a way to link the latest bootstrap CSS to the beginning of the *head* section on all web pages,
-regardless of the Wordpress Theme.
+we wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
 Now you can!
 
@@ -139,6 +138,18 @@ settings page each time (as is the case with most plugins out there).
 4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download)
 
 == Changelog ==
+
+= 0.8 =
+* This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
+* Shortcode [TBS_BUTTON] : produces a Twitter Bootstrap styled BUTTON
+* Shortcode [TBS_LABEL] : produces a Twitter Bootstrap styled LABEL
+* Shortcode [TBS_BLOCK] : produces a Twitter Bootstrap styled BLOCKQUOTE
+* Shortcode [TBS_CODE] : produces a Twitter Bootstrap styled CODE BLOCK
+* Shortcode [TBS_TWIPSY] : produces a Twitter Bootstrap TWIPSY mouse over effect
+* Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap Popover window
+* Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
+* Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TABS! Now you can create TAB'd content in your posts!
+* More documentation will be forthcoming in the [Host Like Toast WordPress Plugins Page](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "Host Like Toast WordPress Plugins").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
