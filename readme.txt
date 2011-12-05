@@ -141,7 +141,7 @@ settings page each time (as is the case with most plugins out there).
 
 = 0.8.3 =
 * Added option to inline "style" labels, blocks, and code inline.
-* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source.
+* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source
 
 = 0.8.2 =
 * Added option to "style" buttons inline.
