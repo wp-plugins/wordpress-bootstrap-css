@@ -25,7 +25,7 @@ class HLT_BootstrapShortcodes {
 
 	public function __construct() {
 		$aMethods = get_class_methods( $this );
-		$aExclude = array( 'idHtml', 'def' );
+		$aExclude = array( 'idHtml', 'def', 'noEmptyHtml' );
 		foreach ( $aMethods as $sMethod ) {
 			if ( !in_array( $sMethod, $aExclude ) ) {
 				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
@@ -49,6 +49,14 @@ class HLT_BootstrapShortcodes {
 		 */
 	}
 	
+	/**
+	 * Prints the necessary HTML for Twitter Bootstrap Labels
+	 * 
+	 * Class may be one of: Primary Default Info Success Danger
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
 	public function button( $inaAtts = array(), $insContent = '' ) {
 		
 		$sElementType = 'a';  
@@ -62,7 +70,7 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'link_title' );
 		$this->def( &$inaAtts, 'value', '0' );
 
-		$sReturn = '<'.$sElementType.' style="'.$inaAtts['style']. '" class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
+		$sReturn = '<'.$sElementType.' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
 
 		if ( $sElementType == 'a' ) {
 			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '"';
@@ -76,43 +84,71 @@ class HLT_BootstrapShortcodes {
 		return $this->doShortcode( $sReturn );
 	}
 	
+	/**
+	 * Prints the necessary HTML for Twitter Bootstrap Labels
+	 * 
+	 * Class may be one of: default, success, warning, important, notice
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
-	
+
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+
+		$sReturn = '<span '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</span>';
+
+		return $this->doShortcode( $sReturn );
+	}
+
+	public function blockquote( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'source' );
+		
+		if ($inaAtts['source'] != '') {
+			$inaAtts['source'] = '<small>'.$inaAtts['source'].'</small>';
+		}
 	
-		$sReturn = '<span class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</span>';
+		$sReturn = '<blockquote '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' '.$this->noEmptyHtml( $inaAtts['class'], 'class' ).' '.$this->idHtml( $inaAtts['id'] ).'><p>'.$insContent.'</p>'.$inaAtts['source'].'</blockquote>';
 		
 		return $this->doShortcode( $sReturn );
 	}
-	
+
 	public function block( $inaAtts = array(), $insContent = '' ) {
 
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 	
-		$sReturn = '<div class="alert-message block-message '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</div>';
+		$sReturn = '<div style="'.$inaAtts['style'].' class="alert-message block-message '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</div>';
 		
 		return $this->doShortcode( $sReturn );
 	}
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {
 		
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 
-		$sReturn = '<pre class="prettyprint linenums"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</pre>';
+		$sReturn = '<pre class="prettyprint linenums" '.$this->idHtml( $inaAtts['id'] ).' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</pre>';
 
 		return $sReturn;
 	}
 	
 	public function twipsy( $inaAtts = array(), $insContent = '' ) {
 
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
 	
-		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</a>';
+		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>';
 		
 		return $this->doShortcode( $sReturn );
 	}
@@ -313,9 +349,12 @@ class HLT_BootstrapShortcodes {
 			$aSrc[$insKey] = $insValue;
 		}
 	}
-	
+
 	protected function idHtml( $insId ) {
 		return (($insId != '')? ' id="'.$insId.'" ' : '' );	
+	}
+	protected function noEmptyHtml( $insContent, $insAttr ) {
+		return (($insContent != '')? ' '.$insAttr.'="'.$insContent.'" ' : '' );	
 	}
 	
 	/**

@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.8.2
+Stable tag: 0.8.3
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -139,6 +139,10 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.8.3 =
+* Added option to inline "style" labels, blocks, and code inline.
+* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source.
+
 = 0.8.2 =
 * Added option to "style" buttons inline.
 * Some bug fixes with shortcodes.
@@ -192,6 +196,10 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.8.3 =
+* Added option to inline "style" labels, blocks, and code inline.
+* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source.
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
