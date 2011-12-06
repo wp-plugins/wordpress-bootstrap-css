@@ -175,25 +175,39 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
-	
-		$sReturn = '<a href="#" rel="twipsy" placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'.$this->idHtml( $inaAtts['id'] ).' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>';
+		$this->def( &$inaAtts, 'link' );
+
+		$sReturn = $insContent;
+		if ( $inaAtts['title'] != '' ) {
+			$sReturn = '<a'.$this->noEmptyHtml( $inaAtts['link'], 'href' )
+					.' rel="twipsy" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
+					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>';
+		}
 		
 		return $this->doShortcode( $sReturn );
 	}
 	
 	public function popover( $inaAtts = array(), $insContent = '' ) {
 
+		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'placement', 'above' );
+		$this->def( &$inaAtts, 'placement', 'right' );
 		$this->def( &$inaAtts, 'title' );
 		$this->def( &$inaAtts, 'content' );
-		
+		$this->def( &$inaAtts, 'link' );
+
 		$sReturn = trim( '
-			<a href="#" rel="popover" class="'.$inaAtts['class']. '" '.$this->idHtml( $inaAtts['id'] )
-				.'placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'" content="'.$inAtts['content'].'">'.$insContent.'</a>'
+				<a'.$this->noEmptyHtml( $inaAtts['link'], 'href' )
+					.' rel="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+					.' data-content="'.$inaAtts['content'].'"'
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
+					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>'
 		);
-	
+
 		return $this->doShortcode( $sReturn );
 	}
 	
