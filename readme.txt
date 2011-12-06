@@ -142,6 +142,9 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.8.6 =
+* [TBS_TWIPSY] and [TBS_POPOVER] are by default <SPAN> tags (There may be an option at a later date to specify the element)
+
 = 0.8.5 =
 * Made some functional improvements to [TBS_TWIPSY]
 * Fixed [TBS_POPOVER].
@@ -208,6 +211,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.8.6 =
+* [TBS_TWIPSY] and [TBS_POPOVER] are by default <SPAN> tags (There may be an option at a later date to specify the element)
 
 = 0.8.5 =
 * Made some functional improvements to [TBS_TWIPSY]

@@ -175,15 +175,14 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
-		$this->def( &$inaAtts, 'link' );
 
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
-			$sReturn = '<a'.$this->noEmptyHtml( $inaAtts['link'], 'href' )
-					.' rel="twipsy" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+			$sReturn = '<span'
+					.' data-twipsy="twipsy" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>';
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</span>';
 		}
 		
 		return $this->doShortcode( $sReturn );
@@ -197,18 +196,16 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'placement', 'right' );
 		$this->def( &$inaAtts, 'title' );
 		$this->def( &$inaAtts, 'content' );
-		$this->def( &$inaAtts, 'link' );
 
-		$sReturn = trim( '
-				<a'.$this->noEmptyHtml( $inaAtts['link'], 'href' )
-					.' rel="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+		$sReturn = trim( '<span'
+					.' data-popover="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.' data-content="'.$inaAtts['content'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</a>'
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>'
 		);
 
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
 	
 	public function dropdown( $inaAtts = array(), $insContent = '' ) {
