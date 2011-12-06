@@ -147,7 +147,7 @@ settings page each time (as is the case with most plugins out there).
 
 = 0.8.5 =
 * Made some functional improvements to [TBS_TWIPSY]
-* Fixed [TBS_POPOVER].
+* Fixed [TBS_POPOVER]
 
 = 0.8.4 =
 * Fixed a quoting bug in [TBS_BLOCK]
