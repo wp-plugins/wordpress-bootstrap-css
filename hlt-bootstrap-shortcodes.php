@@ -87,7 +87,7 @@ class HLT_BootstrapShortcodes {
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels
 	 * 
-	 * Class may be one of: default, success, warning, important, notice
+	 * class may be one of: default, success, warning, important, notice
 	 * 
 	 * @param $inaAtts
 	 * @param $insContent
@@ -119,15 +119,43 @@ class HLT_BootstrapShortcodes {
 		return $this->doShortcode( $sReturn );
 	}
 
-	public function block( $inaAtts = array(), $insContent = '' ) {
+	/**
+	 * class may be one of: error, warning, success, info
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function alert( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 	
-		$sReturn = '<div style="'.$inaAtts['style'].' class="alert-message block-message '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</div>';
+		$sReturn = '<div '.$this->noEmptyHtml( $inaAtts['style'], 'style' )
+					.' class="alert-message '.$inaAtts['class'].'" '
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' ).'>'.$insContent.'</div>';
 		
 		return $this->doShortcode( $sReturn );
+	}
+
+	/**
+	 * Uses alert() function but just adds the class "block-message"
+	 * 
+	 * class may be one of: error, warning, success, info
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function block( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		
+		return $this->doShortcode( '[TBS_ALERT '.'class="block-message '
+									.$inaAtts['class'].'" '
+									.$this->noEmptyHtml( $inaAtts['id'], 'id' ).' '
+									.$this->noEmptyHtml( $inaAtts['style'], 'style' ).']'.$insContent.'[/TBS_ALERT]' );
 	}
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {

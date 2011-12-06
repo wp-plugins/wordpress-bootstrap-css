@@ -4,20 +4,23 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.8.3
+Stable tag: 0.8.4
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
-We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting"),
-we wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
+We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
+
+We wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
 Now you can!
 
-It works with *any* Wordpress Theme without editing Theme files and NO programming needed.
+This plugin works with *any* Wordpress Theme without editing Theme files and NO programming needed.
 
 You can add Twitter Bootstrap CSS and any/all of the Twitter Bootstrap Javascript libraries.
+
+The home for documentation of this plugin is: [Documentation for this WordPress Plugin](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "WordPress Bootstrap CSS Plugin Documentation Home")
 
 **Why use Twitter Bootstrap?** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
@@ -139,9 +142,14 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.8.4 =
+* Fixed a quoting bug in [TBS_BLOCK]
+* Added [TBS_ALERT] shortcode
+
 = 0.8.3 =
-* Added option to inline "style" labels, blocks, and code inline.
-* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source
+* Added option to inline "style" labels, blocks, and code.
+* Added Shortcode [TBS_BLOCKQUOTE] : produces a Twitter Bootstrap styled BLOCKQUOTE with parameter "source" for citing source 
+[Guide on Blockquote shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-3-blockquotes/ "Master Twitter Bootstrap Blockquotes using WordPress Shortcodes")
 
 = 0.8.2 =
 * Added option to "style" buttons inline.
@@ -149,9 +157,9 @@ settings page each time (as is the case with most plugins out there).
 
 = 0.8 =
 * This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
-* Shortcode [TBS_BUTTON] : produces a Twitter Bootstrap styled BUTTON
-* Shortcode [TBS_LABEL] : produces a Twitter Bootstrap styled LABEL
-* Shortcode [TBS_BLOCK] : produces a Twitter Bootstrap styled BLOCKQUOTE
+* Shortcode [TBS_BUTTON] : produces a Twitter Bootstrap styled BUTTON [Guide on Button shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-1-buttons/ "Master Twitter Bootstrap Buttons using WordPress Shortcodes")
+* Shortcode [TBS_LABEL] : produces a Twitter Bootstrap styled LABEL [Guide on Label shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-2-labels/ "Master Twitter Bootstrap Labels using WordPress Shortcodes")
+* Shortcode [TBS_BLOCK] : produces a Twitter Bootstrap styled BLOCK Messages
 * Shortcode [TBS_CODE] : produces a Twitter Bootstrap styled CODE BLOCK
 * Shortcode [TBS_TWIPSY] : produces a Twitter Bootstrap TWIPSY mouse over effect
 * Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap Popover window
@@ -197,9 +205,20 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
+= 0.8.4 =
+* Fixed a quoting bug in [TBS_BLOCK]
+* Added [TBS_ALERT] shortcode
+
 = 0.8.3 =
-* Added option to inline "style" labels, blocks, and code inline.
+* Added option to inline "style" labels, blocks, and code.
 * Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source.
+
+= 0.8.2 =
+* Added option to "style" buttons inline.
+* Some bug fixes with shortcodes.
+
+= 0.8 =
+* This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
