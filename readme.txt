@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.2.1
-Stable tag: 0.8.5
+Stable tag: 0.8.6
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -143,7 +143,7 @@ settings page each time (as is the case with most plugins out there).
 == Changelog ==
 
 = 0.8.6 =
-* [TBS_TWIPSY] and [TBS_POPOVER] are by default <SPAN> tags (There may be an option at a later date to specify the element)
+* [TBS_TWIPSY] and [TBS_POPOVER] are now by default <SPAN> tags (There may be an option at a later date to specify the element)
 
 = 0.8.5 =
 * Made some functional improvements to [TBS_TWIPSY]
@@ -151,7 +151,7 @@ settings page each time (as is the case with most plugins out there).
 
 = 0.8.4 =
 * Fixed a quoting bug in [TBS_BLOCK]
-* Added [TBS_ALERT] shortcode
+* Added [TBS_ALERT] shortcode (see guide below for TBS_BLOCK)
 
 = 0.8.3 =
 * Added option to inline "style" labels, blocks, and code.
@@ -166,12 +166,12 @@ settings page each time (as is the case with most plugins out there).
 * This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
 * Shortcode [TBS_BUTTON] : produces a Twitter Bootstrap styled BUTTON [Guide on Button shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-1-buttons/ "Master Twitter Bootstrap Buttons using WordPress Shortcodes")
 * Shortcode [TBS_LABEL] : produces a Twitter Bootstrap styled LABEL [Guide on Label shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-2-labels/ "Master Twitter Bootstrap Labels using WordPress Shortcodes")
-* Shortcode [TBS_BLOCK] : produces a Twitter Bootstrap styled BLOCK Messages
+* Shortcode [TBS_BLOCK] : produces a Twitter Bootstrap styled BLOCK Messages [Guide on Blockquote shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-4-alerts-and-block-messages/ "Master Twitter Bootstrap Labels using WordPress Shortcodes")
 * Shortcode [TBS_CODE] : produces a Twitter Bootstrap styled CODE BLOCK
-* Shortcode [TBS_TWIPSY] : produces a Twitter Bootstrap TWIPSY mouse over effect
-* Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap Popover window
+* Shortcode [TBS_TWIPSY] : produces a Twitter Bootstrap TWIPSY mouse over effect [Guide on Twipsy shortcode here](http://www.hostliketoast.com/2011/12/master-twitter-bootstrap-using-wordpress-shortcodes-part-5-twipsy-rollovers/ "Master Twitter Bootstrap Labels using WordPress Shortcodes")
+* Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap POPOVER window
 * Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
-* Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TABS! Now you can create TAB'd content in your posts!
+* Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TAB! Now you can create TAB'd content in your posts!
 * More documentation will be forthcoming in the [Host Like Toast WordPress Plugins Page](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "Host Like Toast WordPress Plugins").
 
 = 0.7 =
