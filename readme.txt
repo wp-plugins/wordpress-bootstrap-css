@@ -10,15 +10,16 @@ With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstra
 
 == Description ==
 
-We love Twitter Bootstrap and at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
+We love Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
 
 We wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
 Now you can!
 
-This plugin works with *any* Wordpress Theme without editing Theme files and NO programming needed.
-
-You can add Twitter Bootstrap CSS and any/all of the Twitter Bootstrap Javascript libraries.
+*	Works with *any* Wordpress Theme without ever editing Theme files and NO programming needed.
+*	Handy WordPress [SHORTCODES] to add Twitter Bootstrap elements to your site quickly
+*	Add your own custom CSS reset file
+*	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as it should)
 
 The home for documentation of this plugin is: [Documentation for this WordPress Plugin](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "WordPress Bootstrap CSS Plugin Documentation Home")
 
@@ -143,7 +144,7 @@ settings page each time (as is the case with most plugins out there).
 == Changelog ==
 
 = 0.8.6 =
-* [TBS_TWIPSY] and [TBS_POPOVER] are now by default <SPAN> tags (There may be an option at a later date to specify the element)
+* [TBS_TWIPSY] and [TBS_POPOVER] are now by default SPAN elements (There may be an option at a later date to specify the element)
 
 = 0.8.5 =
 * Made some functional improvements to [TBS_TWIPSY]
