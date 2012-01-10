@@ -3,8 +3,8 @@ Contributors: dlgoodchild, paultgoodchild
 Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
-Tested up to: 3.2.1
-Stable tag: 0.8.6
+Tested up to: 3.3.1
+Stable tag: 0.9
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -143,6 +143,10 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.9 =
+* Fixed bug where styles were being reapplied when HTML [HEADER] element was defined (thanks to Matt Sims!) 
+* Improved compatibility with WordPress 3.3 with more correct enqueue of scripts/stylesheets.
+
 = 0.8.6 =
 * [TBS_TWIPSY] and [TBS_POPOVER] are now by default SPAN elements (There may be an option at a later date to specify the element)
 
@@ -212,6 +216,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.9 =
+* Improved compatibility with WordPress 3.3 and some bug fixes.
 
 = 0.8.6 =
 * [TBS_TWIPSY] and [TBS_POPOVER] are by default <SPAN> tags (There may be an option at a later date to specify the element)

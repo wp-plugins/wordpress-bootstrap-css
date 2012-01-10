@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 0.8.6
+Version: 0.9
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -53,7 +53,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 		
-		self::$VERSION		= '0.8.6';
+		self::$VERSION		= '0.9';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -96,7 +96,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$sCssLink = $aLocalCss[$sOption];
 		}
 		
-		$sRegExp = "/(<head([^>]*)>)/i";
+		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		$sReplace = '${1}'."\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 
 		if ( $fCustomCss ) {
@@ -138,7 +138,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			ob_start( array( &$this, 'onOutputBufferFlush' ) );
 		}
 
-		add_action( 'wp_print_styles', array( &$this, 'onWpPrintStyles' ) );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
 		
 		// if shortcodes are enabled!

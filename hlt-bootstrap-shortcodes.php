@@ -197,13 +197,12 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'title' );
 		$this->def( &$inaAtts, 'content' );
 
-		$sReturn = trim( '<span'
+		$sReturn = '<span'
 					.' data-popover="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.' data-content="'.$inaAtts['content'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>'
-		);
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>';
 
 		return $sReturn;
 	}
