@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 0.9
+Stable tag: 0.9.1
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -143,6 +143,10 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 0.9.1 =
+* Restructured and centralized CSS on admin side.
+* Revamped the Host Like Toast Developer Channel subscription box - the previous one wasn't working so well.
+
 = 0.9 =
 * Fixed bug where styles were being reapplied when HTML [HEADER] element was defined (thanks to Matt Sims!) 
 * Improved compatibility with WordPress 3.3 with more correct enqueue of scripts/stylesheets.
@@ -216,6 +220,9 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 0.9.1 =
+* Restructured and centralized CSS on admin side.
 
 = 0.9 =
 * Improved compatibility with WordPress 3.3 and some bug fixes.
