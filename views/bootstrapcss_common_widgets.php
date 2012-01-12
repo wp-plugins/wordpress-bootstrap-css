@@ -1,19 +1,5 @@
 
-				<style>
-					.shortcode-usage {
-						border-bottom: 1px solid #bbbbbb;
-						margin-bottom: 10px;
-					}
-					p.code-description {
-						font-style: italic;
-					}
-					.postbox-container .meta-box-sortables {
-						min-height: 100px;
-					}
-					.postbox#common-widget {
-						height: 150px;
-					}
-				</style>
+<link rel='stylesheet' href='<?php echo HLT_BootstrapCss::$PLUGIN_URL.'css/bootstrap-admin.css'; ?>' type='text/css' media='all' />
 
 <div style="width:500px;" class="postbox-container">
 	<div class="metabox-holder">	

@@ -1,18 +1,5 @@
 <?php
 ?>
-	<link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-	<style type="text/css">
-			#mc_embed_signup {clear:left; font:14px Helvetica,Arial,sans-serif;background-color: transparent;}
-			#mc_embed_signup form { width: 400px; padding-left: 0px; background-color: transparent;}
-			#mc_embed_signup input#mce-FNAME, #mc_embed_signup input#mce-EMAIL {
-			border-radius: 3px;
-			padding: 8px;
-			text-indent: 0;
-			width:300px !important;
-		}
-		#mc_embed_signup input.button {color:#444444; width:200px}
-	</style>
-
 <div class="wrap">
 	<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br></div></a>
 	<h3>Host Like Toast: Plugins Dashboard</h3>
@@ -21,32 +8,122 @@
 	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
 	<div style="clear:both"></div>
 
-	<div style="width:500px;" class="postbox-container">
+	<div style="width: 500px;" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 			<div class="postbox">
 				<h3>Subscribe to the Host Like Toast Developer Channel</h3>
 				<!-- Begin MailChimp Signup Form -->
-				<div class="inside">
-					<div id="mc_embed_signup">
-					<form action="http://hostliketoast.us2.list-manage.com/subscribe/post?u=e736870223389e44fb8915c9a&amp;id=85b59ab8a6" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
-	
-						<input type="text" onblur="clickrecall(this,'Your Name')" onclick="clickclear(this, 'Your Name')" value="Your Name" name="FNAME" class="required" id="mce-FNAME">
-						<input type="email" onblur="clickrecall(this,'Your Email Address')" onclick="clickclear(this, 'Your Email Address')" value="Your Email Address" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="email address" required>
-						<div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
-					</form>
-					</div>
-					<!--End mc_embed_signup-->
+				<div class="dap_signup_box" id="dap_signup_box_widget" style=none >
 					<div>
-						<p>Sign up to the Host Like Toast Developer Channel to get access to lots of free downloads to help with your Wordpress
-						and Web Hosting experience.</p>
-						<p>Some of the things you can get access to are:</p>
-						<ol>
-							<li>A free script to do a complete backup of your CPanel web hosting account.</li>
-							<li>A free script to do a complete backup of all MySQL Databases in your CPanel web hosting account.</li>
-							<li>Tools to assist with certain Wordpress Membership software tools.</li>
-							<li>...and more...</li>
-						</ol>
+						<form name="dap_direct_signup" method="post" action="http://www.hostliketoast.com/dap/signup_submit.php">
+							<div class="input-container">
+								<div class="signup_line">
+									<div class="signup_field">Name:</div><div class="signup_input"><input id="dap_first_name" type="text" name="first_name" value="Your Name" onclick="clickclear(this, 'Your Name')" onblur="clickrecall(this,'Your Name')" onchange="processDapNameField(this)" /></div>
+								</div>
+								<div class="signup_line">
+									<div class="signup_field">Email:</div><div class="signup_input"><input id="dap_email" type="text" name="email" value="Your Email Address"  onclick="clickclear(this, 'Your Email Address')" onblur="clickrecall(this,'Your Email Address')" /></div>
+								</div>
+							</div>
+					<p id='tac_p_836840886' style='clear:both;margin-top:20px;'></p>
+					<script type='text/javascript'>
+			
+						var tac_p=document.getElementById('tac_p_836840886');
+					
+						var tac_cb_836840886			= document.createElement('input');
+						tac_cb_836840886.type			= 'checkbox';
+						tac_cb_836840886.id			= 'tac_checkbox_836840886';
+						tac_cb_836840886.name			= 'tac_checkbox_836840886';
+						tac_cb_836840886.style.width	= '25px';
+						tac_cb_836840886.onclick		= cb_click_836840886;
+					
+						var tac_label				= document.createElement('label');
+						tac_label.htmlFor			= 'tac_checkbox_836840886';
+						tac_label.style.cssFloat	= 'none';
+						tac_label.style.styleFloat	= 'none';
+						tac_label.innerHTML			= ' Agree to the <a href="http://www.hostliketoast.com/developer-channel/developer-channel-terms-and-conditions/" target="_blank">Developer Channel Terms and Conditions</a>';
+					
+						var tac_cb_name_836840886	= document.createElement('input');
+						tac_cb_name_836840886.type	= 'hidden';
+						tac_cb_name_836840886.name	= 'cb_field_name';
+			
+						tac_p.appendChild( tac_cb_836840886 );
+						tac_p.appendChild( tac_label );
+						tac_p.appendChild( tac_cb_name_836840886 );
+			
+						var frm_836840886		= tac_cb_836840886.form;
+						frm_836840886.onsubmit	= tac_check_836840886;
+						
+						function cb_click_836840886() {
+							tac_cb_name_836840886.value=tac_cb_836840886.name;
+							frm_836840886.elements['dapass_use'].value='true';
+						}
+			
+						function tac_check_836840886() {
+							if(tac_cb_836840886.checked!=true){
+								alert('You must agree to the Terms & Conditions');
+								return false;
+							}
+							return true;
+						}
+					</script>
+					<input type='hidden' id='dapass_use' name='dapass_use' value='false' />
+					<input type='hidden' id='dapass_email' name='dapass_email' value='' />
+						<div class="submit_button"><input id="dap_submit" class="btn" type="submit" name="Submit" value="Sign Up" /></div>
+						<input type="hidden" name="last_name" value="">
+						<input type="hidden" name="productId" value="3">
+						<input type="hidden" name="redirect" value="http://www.hostliketoast.com/developer-channel/thank-you-developer-channel/">
+						<input type="hidden" name="custom_signup_form_location" value="WBC plugin">		</form>
+					<div class="clear"></div>
+			
+						<script type="text/javascript">
+							function clickclear(thisfield, defaulttext) {
+								if (thisfield.value == defaulttext) {
+									thisfield.value = "";
+								}
+							}
+							function clickrecall(thisfield, defaulttext) {
+								if (thisfield.value == "") {
+								thisfield.value = defaulttext;
+								}
+							}
+			
+							function processDapNameField(thisfield) {
+								var sName = thisfield.value;
+								var iSpaceIndex = sName.indexOf(' ');
+								var vLastNameField = thisfield.form.elements["last_name"]; //assuming the input field is thus called.
+								if ( iSpaceIndex != -1 ) {
+									vLastNameField.value = sName.substr(iSpaceIndex+1);
+									thisfield.value = sName.substr(0, iSpaceIndex);
+								}
+			
+								thisfield.value=capitaliseAllFirstLetters(thisfield.value);
+								vLastNameField.value=capitaliseAllFirstLetters(vLastNameField.value);
+							}//processDapNameField
+			
+							/**
+							 * Will capitalise the first letter of a string
+							 * @return String with first Character capitalised
+							 */
+							function capitaliseFirstLetter( someText ) {
+								return someText.charAt(0).toUpperCase() + someText.slice(1);
+							}
+			
+							/**
+							 * Will (recursively) capitalise all the first letters of a string
+							 * @return String with all the first Characters capitalised
+							 */
+							function capitaliseAllFirstLetters( someText ) {
+				
+								someText = capitaliseFirstLetter( someText );
+								var iSpaceIndex = someText.indexOf(' ');
+			
+								if ( iSpaceIndex != -1 ) {
+									someText = someText.substring(0,iSpaceIndex) + " " + capitaliseAllFirstLetters(someText.substr(iSpaceIndex+1));
+								}
+								return someText;
+							}
+						</script>
 					</div>
 				</div>
 			</div>
@@ -54,7 +131,7 @@
 		</div>
 	</div>
 	
-	<div style="width:500px;" class="postbox-container">
+	<div style="width: 500px;" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 			<div class="postbox">
@@ -81,7 +158,7 @@
 	</div>
 	<div style="clear:both"></div>
 	
-	<div style="width:500px;" class="postbox-container">
+	<div style="width: 500px;" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 			<div class="postbox">
@@ -114,18 +191,6 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		function clickclear(thisfield, defaulttext) {
-			if (thisfield.value == defaulttext) {
-				thisfield.value = "";
-			}
-		}
-			function clickrecall(thisfield, defaulttext) {
-			if (thisfield.value == "") {
-			thisfield.value = defaulttext;
-			}
-		}
-	</script>
 	<div style="clear:both"></div>
 	
 	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
