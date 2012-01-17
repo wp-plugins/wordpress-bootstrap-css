@@ -49,10 +49,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
 	const TwitterVersion = '1.4.0';
+	const TwitterVersionLegacy = '1.4.0';
 	
 	public function __construct() {
 		parent::__construct();
-		
+
 		self::$VERSION		= '0.9.1';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
@@ -65,29 +66,31 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$oUninstall = new HLT_BootstrapCss_Uninstall();
 		}
 	}
-	
+
 	public function rewriteHead( $insContents ) {
 		$sOption = self::getOption( 'option' );
 		$fHotlink = ( self::getOption( 'hotlink' ) == 'Y' );
-		
+
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
-		
-		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter' ) ) ) {
+
+		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter', 'twitter-legacy' ) ) ) {
 			return $insContents;
 		}
-		
+
 		$aLocalCss = array(
-			'yahoo-reset'	=> self::$PLUGIN_URL.'css/yahoo-2.9.0.min.css',
-			'normalize'		=> self::$PLUGIN_URL.'css/normalize.css',
-			'twitter'		=> self::$PLUGIN_URL.'css/bootstrap-'.self::TwitterVersion.'.min.css'
+			'twitter'			=> self::$PLUGIN_URL.'css/bootstrap-'.self::TwitterVersion.'.min.css',
+			'twitter-legacy'	=> self::$PLUGIN_URL.'css/bootstrap-'.self::TwitterVersionLegacy.'.min.css',
+			'yahoo-reset'		=> self::$PLUGIN_URL.'css/yahoo-2.9.0.min.css',
+			'normalize'			=> self::$PLUGIN_URL.'css/normalize.css'
 		);
-		
+
 		$aHotlinkCss = array(
-			'yahoo-reset'	=> 'http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css',
-			'normalize'		=> 'https://raw.github.com/necolas/normalize.css/master/normalize.css',
-			'twitter'		=> 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap.min.css'
+			'twitter'			=> 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap.min.css',
+			'twitter-legacy'	=> 'http://twitter.github.com/bootstrap/'.self::TwitterVersionLegacy.'/bootstrap.min.css',
+			'yahoo-reset'		=> 'http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css',
+			'normalize'			=> 'https://raw.github.com/necolas/normalize.css/master/normalize.css'
 		);
-		
+
 		$sCssLink = '';
 		if ( $fHotlink ) {
 			$sCssLink = $aHotlinkCss[$sOption];
@@ -99,36 +102,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		$sReplace = '${1}'."\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 
+		echo $fCustomCss .' '. $sCustomCssUrl;
 		if ( $fCustomCss ) {
 			$sCustomCssUrl = self::getOption( 'customcss_url' );
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
 		}
 		
 		return preg_replace( $sRegExp, $sReplace, $insContents );
-	}
-	
-	public function linkBootstrapJavascript() {
-		$aBootstrapJsOptions = array (
-			'alerts'	=> self::getOption( 'alerts_js' ),
-			'dropdown'	=> self::getOption( 'dropdown_js' ),
-			'modal'		=> self::getOption( 'modal_js' ),
-			'twipsy'	=> self::getOption( 'twipsy_js' ),
-			'popover'	=> self::getOption( 'popover_js' ),
-			'scrollspy'	=> self::getOption( 'scrollspy_js' ),
-			'tabs'		=> self::getOption( 'tabs_js' )
-		);
-		
-		$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.self::TwitterVersion.'/bootstrap-';
-		if ( self::getOption( 'hotlink' ) == 'Y' ) {
-			$sUrlPrefix = 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap-';
-		}
-		
-		foreach ( $aBootstrapJsOptions as $sJsLib => $sDisplay ) {
-			if ( $sDisplay == 'Y' ) {
-				$sUrl = $sUrlPrefix.$sJsLib.'.js';
-				echo "\n".'<script type="text/javascript" src="'.$sUrl.'" /></script>';
-			}
-		}
 	}
 	
 	public function onWpInit() {
@@ -140,7 +120,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
-		
 		// if shortcodes are enabled!
 		if ( self::getOption( 'useshortcodes' ) == 'Y' ) {
 			$oShortCodes = new HLT_BootstrapShortcodes();
@@ -181,6 +160,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_popover_js'		=> self::getOption( 'popover_js' ),
 			'option_scrollspy_js'	=> self::getOption( 'scrollspy_js' ),
 			'option_tabs_js'		=> self::getOption( 'tabs_js' ),
+			'option_transition_js'	=> self::getOption( 'transition_js' ),	// Bootstrap v2.0+
+			'option_collapse_js'	=> self::getOption( 'collapse_js' ),	// Bootstrap v2.0+
+			'option_carousel_js'	=> self::getOption( 'carousel_js' ),	// Bootstrap v2.0+
 
 			'option_js_head'		=> self::getOption( 'js_head' ),
 			'option_useshortcodes'	=> self::getOption( 'useshortcodes' ),
@@ -216,6 +198,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
 			self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
 			self::updateOption( 'tabs_js',			$this->getAnswerFromPost( 'option_tabs_js' ) );
+			self::updateOption( 'transition_js',	$this->getAnswerFromPost( 'option_transition_js' ) );	// Bootstrap v2.0+
+			self::updateOption( 'collapse_js',		$this->getAnswerFromPost( 'option_collapse_js' ) );		// Bootstrap v2.0+
+			self::updateOption( 'carousel_js',		$this->getAnswerFromPost( 'option_carousel_js' ) );		// Bootstrap v2.0+
+			// self::updateOption( '_js',			$this->getAnswerFromPost( 'option_' ) );
 
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
 			self::updateOption( 'useshortcodes',	$this->getAnswerFromPost( 'option_useshortcodes' ) );
@@ -254,35 +240,48 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
 			$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
-			wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', '', $bInFooter );
+			wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', self::$VERSION, $bInFooter );
 			wp_enqueue_script( 'prettify_script' );
 		}
 		
 		if ( self::getOption( 'twipsy_js' ) == 'Y' || self::getOption( 'popover_js' ) == 'Y' ) {
-			wp_register_script( 'plugin_auto_twipsy_popover', self::$PLUGIN_URL.'/js/plugin/auto_twipsy_popover.js', '', '', $bInFooter );
+			wp_register_script( 'plugin_auto_twipsy_popover', self::$PLUGIN_URL.'/js/plugin/auto_twipsy_popover.js', '', self::$VERSION, $bInFooter );
 			wp_enqueue_script( 'plugin_auto_twipsy_popover' );
 		}
 
-		if ( self::getOption( 'option' ) == 'twitter' ) {
+		$sBootstrapOption = self::getOption( 'option' );
+		if ( preg_match ( "/^twitter/", $sBootstrapOption ) ) {
+			
+			$sTwitterVersion = self::TwitterVersionLegacy;
+			
 			$aBootstrapJsOptions = array (
-				'alerts'	=> self::getOption( 'alerts_js' ),
-				'dropdown'	=> self::getOption( 'dropdown_js' ),
-				'modal'		=> self::getOption( 'modal_js' ),
-				'twipsy'	=> self::getOption( 'twipsy_js' ),
-				'popover'	=> self::getOption( 'popover_js' ),
-				'scrollspy'	=> self::getOption( 'scrollspy_js' ),
-				'tabs'		=> self::getOption( 'tabs_js' )
+				'alerts'		=> self::getOption( 'alerts_js' ),
+				'dropdown'		=> self::getOption( 'dropdown_js' ),
+				'modal'			=> self::getOption( 'modal_js' ),
+				'twipsy'		=> self::getOption( 'twipsy_js' ),
+				'popover'		=> self::getOption( 'popover_js' ),
+				'scrollspy'		=> self::getOption( 'scrollspy_js' ),
+				'tabs'			=> self::getOption( 'tabs_js' )
+				//'name of BS lib with .js'		=> self::getOption( 'carousel_js' )
 			);
-		
-			$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.self::TwitterVersion.'/bootstrap-';
-			if ( self::getOption( 'hotlink' ) == 'Y' ) {
-				$sUrlPrefix = 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap-';
+
+			if ( $sBootstrapOption == 'twitter' ) {
+				$aBootstrapJsOptions[ 'transition']	= self::getOption( 'transition_js' );	// Bootstrap v2.0+
+				$aBootstrapJsOptions[ 'collapse' ]	= self::getOption( 'collapse_js' );		// Bootstrap v2.0+
+				$aBootstrapJsOptions[ 'carousel' ]	= self::getOption( 'carousel_js' );		// Bootstrap v2.0+
+				
+				$sTwitterVersion = self::TwitterVersion;
 			}
 		
+			$sUrlPrefix = self::$PLUGIN_URL.'js/twitter-'.$sTwitterVersion.'/bootstrap-';
+			if ( self::getOption( 'hotlink' ) == 'Y' ) {
+				$sUrlPrefix = 'http://twitter.github.com/bootstrap/'.$sTwitterVersion.'/bootstrap-';
+			}
+
 			foreach ( $aBootstrapJsOptions as $sJsLib => $sDisplay ) {
 				if ( $sDisplay == 'Y' ) {
 					$sUrl = $sUrlPrefix.$sJsLib.'.js';
-					wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', '', $bInFooter );
+					wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', $sTwitterVersion, $bInFooter );
 					wp_enqueue_script( 'bootstrap'.$sJsLib );
 				}
 			}
@@ -356,6 +355,9 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'popover_js',		'N' );
 		HLT_BootstrapCss::addOption( 'scrollspy_js',	'N' );
 		HLT_BootstrapCss::addOption( 'tabs_js',			'N' );
+		HLT_BootstrapCss::addOption( 'transition_js',	'N' );	// Bootstrap v2.0+
+		HLT_BootstrapCss::addOption( 'collapse_js',		'N' );	// Bootstrap v2.0+
+		HLT_BootstrapCss::addOption( 'carousel_js',		'N' );	// Bootstrap v2.0+
 		
 		HLT_BootstrapCss::addOption( 'js_head',			'N' );
 		HLT_BootstrapCss::addOption( 'useshortcodes',	'N' );
@@ -385,6 +387,9 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'popover_js' );
 		HLT_BootstrapCss::deleteOption( 'scrollspy_js' );
 		HLT_BootstrapCss::deleteOption( 'tabs_js' );
+		HLT_BootstrapCss::deleteOption( 'transition_js' );	// Bootstrap v2.0+
+		HLT_BootstrapCss::deleteOption( 'collapse_js' );	// Bootstrap v2.0+
+		HLT_BootstrapCss::deleteOption( 'carousel_js' );	// Bootstrap v2.0+
 		
 		HLT_BootstrapCss::deleteOption( 'js_head' );
 		HLT_BootstrapCss::deleteOption( 'useshortcodes' );
