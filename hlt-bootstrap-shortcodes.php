@@ -361,6 +361,31 @@ class HLT_BootstrapShortcodes {
 		return $this->doShortcode( $insContent );
 	}
 	
+	public function row( $inaAtts = array(), $insContent = '' ) {
+	
+		$sReturn = '<div class="container">	<div class="row">';
+		$sReturn .= $this->doShortcode( $insContent );
+		$sReturn .= '</div></div>';
+		
+		return $sReturn;
+	}//row
+	
+	public function column( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'size', 1 );
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		
+		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['class']. '"'
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>';
+		$sReturn .= $this->doShortcode( $insContent );
+		$sReturn .= '</div>';
+		
+		return $sReturn;
+	}//row
+
 	/**
 	 * Public, but should never be directly accessed other than by the WP add_filter method. 
 	 * @param $insContent
