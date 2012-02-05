@@ -1,14 +1,14 @@
 <?php
-	function js_option_block( $hlt_option_value, $sOptionName, $sExplanation = '' ) {
+	function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanation = '' ) {
 ?>
 			<td>
 				<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-<?php echo $sOptionName; ?>-js">
 					<input type="checkbox" name="hlt_bootstrap_option_<?php echo $sOptionName; ?>_js" value="Y" id="hlt-<?php echo $sOptionName; ?>-js" <?php if ( $hlt_option_value == 'Y' ): ?>checked="checked"<?php endif; ?> />
-					<label for="hlt-<?php echo $sOptionName; ?>-js"><?php echo $sOptionName; ?>.js</label>
+					<label for="hlt-<?php echo $sOptionName; ?>-js"><?php echo $sLabel; ?></label>
 					<br class="clear" />
 <?php
 		echo '					<p class="desc" style="display: block;">';
-		echo 'Include Bootstrap '. ucfirst($sOptionName).' library. [<a href="http://twitter.github.com/bootstrap/javascript.html#'.$sOptionName.'" target="_blank">more info</a>]';
+		echo 'Include '.$sLabel.'. [<a href="http://twitter.github.com/bootstrap/javascript.html#'.$sOptionName.'" target="_blank">more info</a>]';
 		echo $sExplanation;
 		echo '</p></div></td>';
 
@@ -42,10 +42,10 @@
 									<p>No reset CSS will be applied.</p>
 								</div>
 								<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
-									<p>Bootstrap, from Twitter (latest release). [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p>
+									<p>Bootstrap, from Twitter (latest release- v2.0.0). [<a href="http://twitter.github.com/bootstrap/index.html" target="_blank">more info</a>]</p>
 								</div>
 								<div id="desc_twitter-legacy" class="desc <?php if ( $hlt_option != 'twitter-legacy' ): ?>hidden<?php endif; ?>">
-									<p>Bootstrap version 1.4.0, from Twitter (provided for sites that need the previous major release). [<a href="http://twitter.github.com/bootstrap/" target="_blank">more info</a>]</p>
+									<p>Bootstrap version 1.4.0, from Twitter (provided for sites that need the previous major release). [<a href="http://twitter.github.com/bootstrap/upgrading.html" target="_blank">more info</a>]</p>
 								</div>
 								<div id="desc_yahoo-reset" class="desc <?php if ( $hlt_option != 'yahoo-reset' ): ?>hidden<?php endif; ?>">
 									<p>YahooUI Reset CSS is a basic reset for all browsers.</p>
@@ -67,39 +67,50 @@
 							<table id="tbl_tbs_options_javascript" class="tbl_tbs_options">
 								<tr>
 									<?php
-										js_option_block( $hlt_option_modal_js, "modal" );
-										js_option_block( $hlt_option_alerts_js, "alerts" ); 
+										js_option_block( $hlt_option_all_js, "all", "All Bootstrap JS Libraries.", ' (<em>Note: not available for Twitter v1.x</em>)' );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_dropdown_js, "dropdown" );
-										js_option_block( $hlt_option_scrollspy_js, "scrollspy" ); 
+										js_option_block( $hlt_option_alert_js, "alert", "Alert JS Lib." ); 
+										js_option_block( $hlt_option_button_js, "button", "Button JS Lib." );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_popover_js, "popover",
-										' (<em>Note: requires Twipsy library</em>)' );
+										js_option_block( $hlt_option_modal_js, "modal", "Modal JS Lib." );
+										js_option_block( $hlt_option_dropdown_js, "dropdown", "Dropdown JS Lib." ); 
+									?>
+								</tr>
+								<tr>
+									<?php
+										js_option_block( $hlt_option_popover_js, "popover", "Popover JS Lib.",
+										' (<em>Note: requires Tooltip (Twipsy) library</em>)' );
 									
-										js_option_block( $hlt_option_twipsy_js, "twipsy");
+										js_option_block( $hlt_option_tooltip_js, "tooltip", "Tooltip JS Lib.");
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_tabs_js, "tabs" );
-										js_option_block( $hlt_option_transition_js, "transition", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy JS Lib." ); 
+										js_option_block( $hlt_option_tab_js, "tab", "Tab JS Lib." );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_collapse_js, "collapse", ' (<em>Note: not available in Twitter v1.x</em>)' );
-										js_option_block( $hlt_option_carousel_js, "carousel", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_collapse_js, "collapse", "Collapse JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_carousel_js, "carousel", "Carousel JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+									?>
+								</tr>
+								<tr>
+									<?php
+										js_option_block( $hlt_option_typeahead_js, "typeahead", "Typeahead JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_transition_js, "transition", "Transition JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
 									?>
 								</tr>
 							</table>
 
-							<p><strong>Some Further Bootstrap Options:</strong></p>
+							<p><strong>Further Bootstrap Options:</strong></p>
 						
 							<table id="tbl_tbs_options_javascript" class="tbl_tbs_options">
 								<tr>
@@ -154,22 +165,12 @@
 							<br class="clear" />
 						</div>
 					</div>
-					
+
 					<div class="postbox" id="HotlinkOptionBox">
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Select Resource Linking Option</span></h3>
 						<div class="inside">
-							<p><strong>Choose the method of linking to the CSS and Javascript. Note: Javascript is only applicable when you have selected Twitter Bootstrap.</strong></p>
-
-							<div class="option_section <?php if ( $hlt_hotlink == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-hotlink">
-								<input type="checkbox" name="hlt_bootstrap_hotlink" value="Y" id="hlt-hotlink" <?php if ( $hlt_hotlink == 'Y' ): ?>checked="checked"<?php endif; ?> />
-								<label for="hlt-hotlink">Enable CSS and JS Hotlinking.</label>
-								<br class="clear" />
-								<p class="desc" style="display: block;">
-									If you choose to hotlink, your site will be relying on external servers to deliver both the CSS and JS files.
-									If that server goes down or the file becomes unavailable for any reason, your site will be affected visually. This option is not recommended.
-								</p>
-							</div>
+							<p><strong>Notice: From version 2.0.0, we have decided to remove HotLinking as a option on this plugin going forward.</strong></p>
 						</div>
 					</div>
 
@@ -312,7 +313,7 @@
 	
 		function onChangePopoverJs() {
 			if ( !jQuery( this ).is( ':checked' ) ) {
-				jQuery( 'input[name=hlt_bootstrap_option_twipsy_js]' ).attr( 'checked', 'checked' ).parents( 'div.option_section' ).addClass( 'active' );
+				jQuery( 'input[name=hlt_bootstrap_option_tooltip_js]' ).attr( 'checked', 'checked' ).parents( 'div.option_section' ).addClass( 'active' );
 			}
 		}
 	</script>
