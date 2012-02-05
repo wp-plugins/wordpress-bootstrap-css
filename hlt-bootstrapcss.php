@@ -80,18 +80,18 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$aLocalCss = array(
 			'twitter'			=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.min.css',
 			'twitter-legacy'	=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersionLegacy.'/css/bootstrap.min.css',
-			'yahoo-reset'		=> self::$PLUGIN_URL.'css/yahoo-2.9.0.min.css',
-			'normalize'			=> self::$PLUGIN_URL.'css/normalize.css'
+			'yahoo-reset'		=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
+			'normalize'			=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
 		);
 
+		/*
 		$aHotlinkCss = array(
 			'twitter'			=> 'http://twitter.github.com/bootstrap/'.self::TwitterVersion.'/bootstrap.min.css',
 			'twitter-legacy'	=> 'http://twitter.github.com/bootstrap/'.self::TwitterVersionLegacy.'/bootstrap.min.css',
 			'yahoo-reset'		=> 'http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css',
 			'normalize'			=> 'https://raw.github.com/necolas/normalize.css/master/normalize.css'
 		);
-
-		/* removed
+ removed
 		if ( $fHotlink ) {
 			$sCssLink = $aHotlinkCss[$sOption];
 		}
@@ -113,7 +113,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
-	
+
 	public function onWpInit() {
 		parent::onWpInit();
 		
