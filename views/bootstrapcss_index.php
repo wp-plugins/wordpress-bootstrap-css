@@ -1,18 +1,19 @@
 <?php
-	function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanation = '' ) {
-?>
-			<td>
-				<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-<?php echo $sOptionName; ?>-js">
-					<input type="checkbox" name="hlt_bootstrap_option_<?php echo $sOptionName; ?>_js" value="Y" id="hlt-<?php echo $sOptionName; ?>-js" <?php if ( $hlt_option_value == 'Y' ): ?>checked="checked"<?php endif; ?> />
-					<label for="hlt-<?php echo $sOptionName; ?>-js"><?php echo $sLabel; ?></label>
-					<br class="clear" />
-<?php
-		echo '					<p class="desc" style="display: block;">';
-		echo 'Include '.$sLabel.'. [<a href="http://twitter.github.com/bootstrap/javascript.html#'.$sOptionName.'" target="_blank">more info</a>]';
-		echo $sExplanation;
-		echo '</p></div></td>';
-
-	}//js_option_block
+function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanation = '' ) {
+	?>
+	<td>
+		<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-<?php echo $sOptionName; ?>-js">
+			<input type="checkbox" name="hlt_bootstrap_option_<?php echo $sOptionName; ?>_js" value="Y" id="hlt-<?php echo $sOptionName; ?>-js" <?php if ( $hlt_option_value == 'Y' ): ?>checked="checked"<?php endif; ?> />
+			<label for="hlt-<?php echo $sOptionName; ?>-js"><?php echo $sLabel; ?></label>
+			<br class="clear" />
+			<p class="desc" style="display: block;">
+				Include <?php echo $sLabel; ?> [<a href="http://twitter.github.com/bootstrap/javascript.html#<?php echo $sOptionName; ?>" target="_blank">more info</a>]
+				<?php echo $sExplanation; ?>
+			</p>
+		</div>
+	</td>
+	<?php
+}//js_option_block
 ?>
 
 <div class="wrap">
@@ -64,7 +65,7 @@
 						<div class="inside">
 							<p><strong>Choose which of the following Twitter Bootstrap Javascript libraries you would like included on your site.</strong></p>
 
-							<table id="tbl_tbs_options_javascript" class="tbl_tbs_options">
+							<table id="tbl_tbs_options_javascript" class="tbl_tbs_options twitter_extra">
 								<tr>
 									<?php
 										js_option_block( $hlt_option_all_js, "all", "All Bootstrap JS Libraries.", ' (<em>Note: not available for Twitter v1.x</em>)' );
@@ -72,14 +73,14 @@
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_alert_js, "alert", "Alert JS Lib." ); 
+										js_option_block( $hlt_option_alert_js, "alert", "Alert JS Lib." );
 										js_option_block( $hlt_option_button_js, "button", "Button JS Lib." );
 									?>
 								</tr>
 								<tr>
 									<?php
 										js_option_block( $hlt_option_modal_js, "modal", "Modal JS Lib." );
-										js_option_block( $hlt_option_dropdown_js, "dropdown", "Dropdown JS Lib." ); 
+										js_option_block( $hlt_option_dropdown_js, "dropdown", "Dropdown JS Lib." );
 									?>
 								</tr>
 								<tr>
@@ -92,7 +93,7 @@
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy JS Lib." ); 
+										js_option_block( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy JS Lib." );
 										js_option_block( $hlt_option_tab_js, "tab", "Tab JS Lib." );
 									?>
 								</tr>
@@ -248,7 +249,7 @@
 				jQuery( "select[name='hlt_bootstrap_option']" ).trigger( 'click' );
 			}
 		);
-	
+
 		function onSectionClick( inoEvent ) {
 			var oDiv = jQuery( inoEvent.currentTarget );
 			if ( inoEvent.target.tagName && inoEvent.target.tagName.match( /input|label/i ) ) {
@@ -290,6 +291,38 @@
 			/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
 			if ( sValue == 'twitter' || sValue == 'twitter-legacy' ) {
 				jQuery( "#BootstrapJavascript" ).slideDown( 150 );
+				
+				// override view config
+				if ( sValue == 'twitter-legacy' ) {
+					jQuery( '.twitter_extra .option_section' ).removeClass( 'hidden' );
+					
+					jQuery( '#section-hlt-all-js' ).addClass( 'hidden' );
+					jQuery( '#section-hlt-collapse-js' ).addClass( 'hidden' );
+					jQuery( '#section-hlt-transition-js' ).addClass( 'hidden' );
+					jQuery( '#section-hlt-typeahead-js' ).addClass( 'hidden' );
+					jQuery( '#section-hlt-carousel-js' ).addClass( 'hidden' );
+				}
+				else {
+					var fIsIncludeAll = jQuery( '#section-hlt-all-js' ).find( 'input[type=checkbox]' ).is( ':checked' );
+					if ( fIsIncludeAll ) {
+						jQuery( '.twitter_extra .option_section' ).addClass( 'hidden' );
+					}
+					jQuery( '#section-hlt-all-js' ).removeClass( 'hidden' );
+					
+					jQuery( '#section-hlt-all-js' ).unbind( 'click.special' ).bind( 'click.special',
+						function () {
+							var oDiv = jQuery( this );
+							var oEl = oDiv.find( 'input[type=checkbox]' );
+							if ( oEl.is( ':checked' ) ) {
+								jQuery( '.twitter_extra .option_section' ).addClass( 'hidden' );
+							}
+							else {
+								jQuery( '.twitter_extra .option_section' ).removeClass( 'hidden' );
+							}
+							jQuery( '#section-hlt-all-js' ).removeClass( 'hidden' );
+						}
+					);
+				}
 			}
 			else {
 				jQuery( "#BootstrapJavascript" ).slideUp( 150 );
