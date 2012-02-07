@@ -124,8 +124,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
 		// if shortcodes are enabled!
-		if ( self::getOption( 'useshortcodes' ) == 'Y' ) {
-			$oShortCodes = new HLT_BootstrapShortcodes();
+		
+		$sBootstrapOption = self::getOption( 'option' );
+		if ( preg_match( "/^twitter/", $sBootstrapOption ) && self::getOption( 'useshortcodes' ) == 'Y' ) {
+			$sVersion = ($sBootstrapOption == 'twitter') ? '2' : '1';
+			$oShortCodes = new HLT_BootstrapShortcodes( $sVersion );
 		}
 	}
 	

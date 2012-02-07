@@ -22,8 +22,10 @@
  */
 
 class HLT_BootstrapShortcodes {
+	
+	protected $sTwitterBootstrapVersion;
 
-	public function __construct() {
+	public function __construct( $sVersion = '2' ) {
 		$aMethods = get_class_methods( $this );
 		$aExclude = array( 'idHtml', 'def', 'noEmptyHtml' );
 		foreach ( $aMethods as $sMethod ) {
@@ -31,6 +33,8 @@ class HLT_BootstrapShortcodes {
 				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
 			}
 		}
+		
+		$this->sTwitterBootstrapVersion = $sVersion;
 
 		add_filter( 'the_content', array( &$this, 'filterTheContent' ), 10 );		
 		add_filter( 'the_content', array( &$this, 'filterTheContentToFixNamedAnchors' ), 99 );
@@ -65,10 +69,14 @@ class HLT_BootstrapShortcodes {
 		}
 
 		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class', 'default' );
+		$this->def( &$inaAtts, 'class', '' );
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'link_title' );
 		$this->def( &$inaAtts, 'value', '0' );
+		
+		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'btn-'.$inaAtts['class'];
+		}
 
 		$sReturn = '<'.$sElementType.' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
 
@@ -79,9 +87,9 @@ class HLT_BootstrapShortcodes {
 			$sReturn .= ' type="button" value="'.$inaAtts['value']. '"';
 		}
 		
-		$sReturn .= '>'.$insContent.'</'.$sElementType.'>';
+		$sReturn .= '>'.$this->doShortcode( $insContent ).'</'.$sElementType.'>';
 		
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
 	
 	/**
@@ -97,10 +105,14 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+		
+		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^label-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'label-'.$inaAtts['class'];
+		}
 
-		$sReturn = '<span '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$insContent.'</span>';
+		$sReturn = '<span '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$this->doShortcode( $insContent ).'</span>';
 
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
 
 	public function blockquote( $inaAtts = array(), $insContent = '' ) {
@@ -114,9 +126,9 @@ class HLT_BootstrapShortcodes {
 			$inaAtts['source'] = '<small>'.$inaAtts['source'].'</small>';
 		}
 	
-		$sReturn = '<blockquote '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' '.$this->noEmptyHtml( $inaAtts['class'], 'class' ).' '.$this->idHtml( $inaAtts['id'] ).'><p>'.$insContent.'</p>'.$inaAtts['source'].'</blockquote>';
+		$sReturn = '<blockquote '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' '.$this->noEmptyHtml( $inaAtts['class'], 'class' ).' '.$this->idHtml( $inaAtts['id'] ).'><p>'.$this->doShortcode( $insContent ).'</p>'.$inaAtts['source'].'</blockquote>';
 		
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
 
 	/**
@@ -130,15 +142,27 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'type', 'alert' );
+		
+		//Twitter 1.4.0 only supports this one variation
+		if ( $this->sTwitterBootstrapVersion == '1' ) {
+			$inaAtts['type'] ='alert-message';
+		}
+	
+		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'alert-'.$inaAtts['class'];
+		}
 	
 		$sReturn = '<div '.$this->noEmptyHtml( $inaAtts['style'], 'style' )
-					.' class="alert-message '.$inaAtts['class'].'" '
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' ).'>'.$insContent.'</div>';
+					.' class="'.$inaAtts['type'].' '.$inaAtts['class'].'" '
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' ).'>'.$this->doShortcode($insContent).'</div>';
 		
-		return $this->doShortcode( $sReturn );
+		return  $sReturn ;
 	}
 
 	/**
+	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
+	 * 
 	 * Uses alert() function but just adds the class "block-message"
 	 * 
 	 * class may be one of: error, warning, success, info
@@ -167,7 +191,15 @@ class HLT_BootstrapShortcodes {
 
 		return $sReturn;
 	}
-	
+
+	/**
+	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
+	 * 
+	 * Options for 'placement' are above | below | left | right
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
 	public function twipsy( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'style' );
@@ -182,12 +214,15 @@ class HLT_BootstrapShortcodes {
 					.' rel="twipsy" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</span>';
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>';
 		}
 		
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
-	
+
+	/**
+	 * Options for 'placement' are top | bottom | left | right
+	 */
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'style' );
@@ -199,15 +234,18 @@ class HLT_BootstrapShortcodes {
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
-					.' rel="tooltip" data-animation="true" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
+					.' rel="tooltip" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</span>';
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode($insContent).'</span>';
 		}
 		
-		return $this->doShortcode( $sReturn );
+		return $sReturn;
 	}
-	
+
+	/**
+	 * Options for 'placement' are top | bottom | left | right
+	 */
 	public function popover( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'style' );
@@ -218,7 +256,7 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'content' );
 
 		$sReturn = '<span'
-					.' data-popover="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+					.' rel="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.' data-content="'.$inaAtts['content'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
