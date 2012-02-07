@@ -17,6 +17,7 @@ With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstra
 **Beta2**
 *	Shortcodes TBS_BUTTON, TBS_LABEL, TBS_ALERT have been adapted for Twitter Bootstrap v2.0. Notes to follow.
 *	Discovered Javascript incompatibility with DIGG DIGG plugin + Twitter Bootstrap Javascript libraries. Nothing I can fix with this plugin.
+
 **Beta1**
 *	"Twitter Legacy" = Twitter Bootstrap Library version 1.4.0
 *	"Twitter" = Twitter Bootstrap Library version 2.0.0
