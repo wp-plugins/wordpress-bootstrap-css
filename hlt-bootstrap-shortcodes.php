@@ -173,13 +173,33 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'placement', 'above' );
+		$this->def( &$inaAtts, 'title' );
+
+		$sReturn = $insContent;
+		if ( $inaAtts['title'] != '' ) {
+			$sReturn = '<span'
+					.' rel="twipsy" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
+					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
+					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
+					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</span>';
+		}
+		
+		return $this->doShortcode( $sReturn );
+	}
+	
+	public function tooltip( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
 
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
-					.' data-twipsy="twipsy" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
+					.' rel="tooltip" data-animation="true" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
 					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</span>';

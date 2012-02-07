@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 0.9.1
+Version: 2.0.0-beta1
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -54,7 +54,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 
-		self::$VERSION		= '0.9.1';
+		self::$VERSION		= '2.0.0-beta1';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -137,7 +137,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::onWpPluginsLoaded();
 		
 		if ( is_admin() ) {
-			$this->handleSubmit();			
+			$this->handlePluginUpgrade();
+			$this->handleSubmit();
 		}
 	}
 	
@@ -147,6 +148,33 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap CSS' ), 'Bootstrap CSS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-css' ), array( &$this, 'onDisplayPlugin' ) );
 
 		$this->fixSubmenu();
+	}
+	
+	public function handlePluginUpgrade() {
+
+		if ( self::getOption( 'upgraded1to2' ) != 'Y' ) {
+			
+			if ( self::getOption( 'option' ) == 'twitter' ) {
+				self::updateOption( 'option', 'twitter-legacy' );
+			}
+			if ( self::getOption( 'alerts_js' ) == 'Y' ) {
+				self::addOption( 'alert_js', 'Y' );
+			}
+			self::deleteOption( 'alerts_js'  );
+
+			if ( self::getOption( 'tabs_js' ) == 'Y' ) {
+				self::addOption( 'tab_js', 'Y' );
+			}
+			self::deleteOption( 'tabs_js' );
+
+			if ( self::getOption( 'twipsy_js' ) == 'Y' ) {
+				self::addOption( 'tooltip_js', 'Y' );
+			}
+			self::deleteOption( 'twipsy_js' );
+
+			self::addOption( 'upgraded1to2', 'Y' );
+			self::updateOption( 'upgraded1to2', 'Y' );
+		}
 	}
 	
 	public function onDisplayPlugin() {
@@ -246,6 +274,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function onWpEnqueueScripts() {
 		
 		$bInFooter = (self::getOption( 'js_head' ) == 'Y'? false : true);
+		$sBootstrapOption = self::getOption( 'option' );
 		
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
 			$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
@@ -253,12 +282,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			wp_enqueue_script( 'prettify_script' );
 		}
 		
-		if ( self::getOption( 'tooltip_js' ) == 'Y' || self::getOption( 'popover_js' ) == 'Y' ) {
-			wp_register_script( 'plugin_auto_tooltip_popover', self::$PLUGIN_URL.'resources/misc/js/plugin/auto_tooltip_popover.js', '', self::$VERSION, $bInFooter );
-			wp_enqueue_script( 'plugin_auto_tooltip_popover' );
-		}
 
-		$sBootstrapOption = self::getOption( 'option' );
 		if ( preg_match ( "/^twitter/", $sBootstrapOption ) ) {
 			
 			$sTwitterVersion = self::TwitterVersionLegacy;
@@ -272,7 +296,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				'popover'		=> self::getOption( 'popover_js' ),
 				'scrollspy'		=> self::getOption( 'scrollspy_js' ),
 				'tab'			=> self::getOption( 'tab_js' )
-				//'name of BS lib with .js'		=> self::getOption( 'carousel_js' )
+				//'name of TBS lib with .js'		=> self::getOption( 'carousel_js' )
 			);
 
 			if ( $sBootstrapOption == 'twitter' ) {
@@ -292,16 +316,29 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			*/
 
 			if ( self::getOption( 'all_js' ) == 'Y' && $sTwitterVersion == self::TwitterVersion ) {
-				wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', '', $sTwitterVersion, $bInFooter );
+				wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', '', self::$VERSION, $bInFooter );
 				wp_enqueue_script( 'bootstrap-all-min' );
 			} else {
 				foreach ( $aBootstrapJsOptions as $sJsLib => $sDisplay ) {
 					if ( $sDisplay == 'Y' ) {
 						$sUrl = $sUrlPrefix.'-'.$sJsLib.'.js';
-						wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', $sTwitterVersion, $bInFooter );
+						wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', self::$VERSION, $bInFooter );
 						wp_enqueue_script( 'bootstrap'.$sJsLib );
 					}
 				}
+			}
+			
+			//Include the JS to "activate" all the tooltips & popovers.
+			if ( self::getOption( 'tooltip_js' ) == 'Y'
+					|| self::getOption( 'popover_js' ) == 'Y'
+					|| (self::getOption( 'all_js' ) == 'Y' && $sTwitterVersion == self::TwitterVersion) ) {
+
+				$sScriptVersion = self::$PLUGIN_URL.'resources/misc/js/plugin/auto_tooltip_popover.js';
+				if ($sBootstrapOption == 'twitter-legacy') {
+					$sScriptVersion = self::$PLUGIN_URL.'resources/misc/js/plugin/auto_tooltip_popover-tbs140.js';
+				}
+				wp_register_script( 'plugin_auto_tooltip_popover', $sScriptVersion, '', self::$VERSION, $bInFooter );
+				wp_enqueue_script( 'plugin_auto_tooltip_popover' );
 			}
 		}
 	}//onWpEnqueueScripts
@@ -352,7 +389,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	static public function deleteOption( $insKey ) {
-		return delete_option( $insKey );
+		return delete_option( self::OptionPrefix.$insKey );
 	}
 }
 
@@ -413,7 +450,7 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'collapse_js' );	// Bootstrap v2.0+
 		HLT_BootstrapCss::deleteOption( 'carousel_js' );	// Bootstrap v2.0+
 		HLT_BootstrapCss::deleteOption( 'typeahead_js' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'all_js' );	// Bootstrap v2.0+
+		HLT_BootstrapCss::deleteOption( 'all_js' );			// Bootstrap v2.0+
 		
 		HLT_BootstrapCss::deleteOption( 'js_head' );
 		HLT_BootstrapCss::deleteOption( 'useshortcodes' );
@@ -421,6 +458,14 @@ class HLT_BootstrapCss_Uninstall {
 
 		HLT_BootstrapCss::deleteOption( 'customcss'  );
 		HLT_BootstrapCss::deleteOption( 'customcss_url' );
+		
+		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );
+		
+		/* Clean-up from previous versions */
+		HLT_BootstrapCss::deleteOption( 'alerts_js'  );
+		HLT_BootstrapCss::deleteOption( 'tabs_js'  );
+		HLT_BootstrapCss::deleteOption( 'twipsy_js'  );
+		
 	}
 }
 

@@ -4,13 +4,25 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 0.9.1
+Stable tag: 2.0.0-beta1
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
+* Currently in Beta - upgrade at your own risk or to help us find bugs.
+
+Beta Notes and Issues:
+
+*	"Twitter Legacy" = Twitter Bootstrap Library version 1.4.0
+*	"Twitter" = Twitter Bootstrap Library version 2.0.0
+*	When you upgrade, you will be set to "Twitter Legacy". To use version 2.0.0, you must select "Twitter"
+*	Existing Shortcodes MAY NOT WORK with, and have not been tested against, version 2.0.0. If you need your shortcodes, stick with "Twitter Legacy".
+*	New Shortcode added for version 2.0: [TBS_TOOLTIP]. This replaces [TBS_TWIPSY] in version 1.4.0. You cannot use one shortcode with the other version.
+
 We love Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
+
+**End Beta Notes**
 
 We wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
@@ -143,6 +155,15 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 2.0.0-beta1 =
+* Added the options for Twitter Bootstrap Library 2.0.0
+* Maintained compatibility with Twitter Bootstrap Library 1.4.0
+* Removed option to HotLink to resources
+* Added more Javascript libraries for 1.4.0 and 2.0.0
+* Fixed several bugs.
+* Keeping plugin version numbering in-line with Twitter Bootstrap versioning.
+* References to "Twipsy" renamed to "Tooltips" to be inline with version 2.0.0
+
 = 0.9.1 =
 * Restructured and centralized CSS on admin side.
 * Revamped the Host Like Toast Developer Channel subscription box - the previous one wasn't working so well.
@@ -220,6 +241,15 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.0-beta1 =
+* Added the options for Twitter Bootstrap Library 2.0.0
+* Maintained compatibility with Twitter Bootstrap Library 1.4.0
+* Removed option to HotLink to resources
+* Added more Javascript libraries for 1.4.0 and 2.0.0
+* Fixed several bugs.
+* Keeping plugin version numbering in-line with Twitter Bootstrap versioning.
+* References to "Twipsy" renamed to "Tooltips" to be inline with version 2.0.0
 
 = 0.9.1 =
 * Restructured and centralized CSS on admin side.

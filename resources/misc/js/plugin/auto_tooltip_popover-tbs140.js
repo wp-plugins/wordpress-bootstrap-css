@@ -1,6 +1,6 @@
 jQuery( document ).ready(
 	function () {
-		jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();
+		jQuery( '*[rel=twipsy],*[data-twipsy=twipsy]' ).twipsy( { live: true } );
 		jQuery( '*[rel=popover]')
 			.popover( { offset: 10 } )
 			.click( function(e) { e.preventDefault() } ); 

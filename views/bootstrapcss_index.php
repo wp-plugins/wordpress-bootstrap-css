@@ -68,45 +68,45 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 							<table id="tbl_tbs_options_javascript" class="tbl_tbs_options twitter_extra">
 								<tr>
 									<?php
-										js_option_block( $hlt_option_all_js, "all", "All Bootstrap JS Libraries.", ' (<em>Note: not available for Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_all_js, "all", "All Bootstrap Javascript Libraries.", ' (<em>Note: not available for Twitter v1.x</em>)' );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_alert_js, "alert", "Alert JS Lib." );
-										js_option_block( $hlt_option_button_js, "button", "Button JS Lib." );
+										js_option_block( $hlt_option_alert_js, "alert", "Alert Javascript Library." );
+										js_option_block( $hlt_option_button_js, "button", "Button Javascript Library." );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_modal_js, "modal", "Modal JS Lib." );
-										js_option_block( $hlt_option_dropdown_js, "dropdown", "Dropdown JS Lib." );
+										js_option_block( $hlt_option_modal_js, "modal", "Modal Javascript Library." );
+										js_option_block( $hlt_option_dropdown_js, "dropdown", "Dropdown Javascript Library." );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_popover_js, "popover", "Popover JS Lib.",
+										js_option_block( $hlt_option_popover_js, "popover", "Popover Javascript Library.",
 										' (<em>Note: requires Tooltip (Twipsy) library</em>)' );
 									
-										js_option_block( $hlt_option_tooltip_js, "tooltip", "Tooltip JS Lib.");
+										js_option_block( $hlt_option_tooltip_js, "tooltip", "Tooltip Javascript Library.");
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy JS Lib." );
-										js_option_block( $hlt_option_tab_js, "tab", "Tab JS Lib." );
+										js_option_block( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy Javascript Library." );
+										js_option_block( $hlt_option_tab_js, "tab", "Tab Javascript Library." );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_collapse_js, "collapse", "Collapse JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
-										js_option_block( $hlt_option_carousel_js, "carousel", "Carousel JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_collapse_js, "collapse", "Collapse Javascript Library.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_carousel_js, "carousel", "Carousel Javascript Library.", ' (<em>Note: not available in Twitter v1.x</em>)' );
 									?>
 								</tr>
 								<tr>
 									<?php
-										js_option_block( $hlt_option_typeahead_js, "typeahead", "Typeahead JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
-										js_option_block( $hlt_option_transition_js, "transition", "Transition JS Lib.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_typeahead_js, "typeahead", "Typeahead Javascript Library.", ' (<em>Note: not available in Twitter v1.x</em>)' );
+										js_option_block( $hlt_option_transition_js, "transition", "Transition Javascript Library.", ' (<em>Note: not available in Twitter v1.x</em>)' );
 									?>
 								</tr>
 							</table>
