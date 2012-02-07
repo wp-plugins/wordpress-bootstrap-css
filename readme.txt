@@ -20,9 +20,9 @@ Beta Notes and Issues:
 *	Existing Shortcodes MAY NOT WORK with, and have not been tested against, version 2.0.0. If you need your shortcodes, stick with "Twitter Legacy".
 *	New Shortcode added for version 2.0: [TBS_TOOLTIP]. This replaces [TBS_TWIPSY] in version 1.4.0. You cannot use one shortcode with the other version.
 
-We love Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
-
 **End Beta Notes**
+
+We love Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
 
 We wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
