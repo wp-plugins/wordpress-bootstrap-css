@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.0-beta1
+Stable tag: 2.0.0-beta2
 
 With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -12,19 +12,23 @@ With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstra
 
 * Currently in Beta - upgrade at your own risk or to help us find bugs.
 
-Beta Notes and Issues:
+**Beta Notes and Issues:**
 
+**Beta2**
+*	Shortcodes TBS_BUTTON, TBS_LABEL, TBS_ALERT have been adapted for Twitter Bootstrap v2.0. Notes to follow.
+*	Discovered Javascript incompatibility with DIGG DIGG plugin + Twitter Bootstrap Javascript libraries. Nothing I can fix with this plugin.
+**Beta1**
 *	"Twitter Legacy" = Twitter Bootstrap Library version 1.4.0
 *	"Twitter" = Twitter Bootstrap Library version 2.0.0
-*	When you upgrade, you will be set to "Twitter Legacy". To use version 2.0.0, you must select "Twitter"
+*	When you upgrade, you will be set to "Twitter Legacy" if you were on Twitter 1.4.0. To use version 2.0.0, you must manually select "Twitter"
 *	Existing Shortcodes MAY NOT WORK with, and have not been tested against, version 2.0.0. If you need your shortcodes, stick with "Twitter Legacy".
-*	New Shortcode added for version 2.0: [TBS_TOOLTIP]. This replaces [TBS_TWIPSY] in version 1.4.0. You cannot use one shortcode with the other version.
+*	New Shortcode added for version 2.0: [TBS_TOOLTIP]. This replaces [TBS_TWIPSY] in version 1.4.0. You can still use [TBS_TWIPSY] for now and the software will attempt to correct
 
 **End Beta Notes**
 
-We love Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
+We love to use Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
 
-We wanted a way to link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
+We wanted a way to quickly link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
 Now you can!
 

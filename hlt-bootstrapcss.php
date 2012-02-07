@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/
 Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 2.0.0-beta1
+Version: 2.0.0-beta2
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -54,7 +54,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 
-		self::$VERSION		= '2.0.0-beta1';
+		self::$VERSION		= '2.0.0-beta2';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );

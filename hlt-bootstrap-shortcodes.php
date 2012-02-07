@@ -202,22 +202,7 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function twipsy( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'placement', 'above' );
-		$this->def( &$inaAtts, 'title' );
-
-		$sReturn = $insContent;
-		if ( $inaAtts['title'] != '' ) {
-			$sReturn = '<span'
-					.' rel="twipsy" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
-					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>';
-		}
-		
-		return $sReturn;
+		return $this->tooltip($inaAtts, $insContent);
 	}
 
 	/**
@@ -230,11 +215,30 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
+		$this->def( &$inaAtts, 'rel', 'tooltip' );
+	
+		//backward comnpatibility with Twitter Bootstrap v1.0
+		if ( $this->sTwitterBootstrapVersion == '1' ) {
+			$inaAtts['rel'] = 'twipsy';
+			if ( $inaAtts['placement'] == 'top' ) {
+				$inaAtts['placement'] = 'above';
+			}
+			if ( $inaAtts['placement'] == 'bottom' ) {
+				$inaAtts['placement'] = 'below';
+			}
+		} else { //Twitter Bootstrap v2.0 changed position names
+			if ( $inaAtts['placement'] == 'above' ) {
+				$inaAtts['placement'] = 'top';
+			}
+			if ( $inaAtts['placement'] == 'below' ) {
+				$inaAtts['placement'] = 'bottom';
+			}
+		}
 
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
-					.' rel="tooltip" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
+					.' rel="'.$inaAtts['rel'].'" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
 					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
 					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode($insContent).'</span>';
