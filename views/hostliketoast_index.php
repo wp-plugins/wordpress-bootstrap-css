@@ -141,12 +141,15 @@
 						<p>To learn more about what shortcodes are, <a href="http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/">check this link</a></p>
 						<p>The following shortcodes are available:</p>
 						<ol>
-							<li>[TBS_BUTTON]</li>
-							<li>[TBS_LABEL]</li>
-							<li>[TBS_BLOCK]</li>
+							<li>[<a href="http://bit.ly/v02ZhL" title="Twitter Bootstrap Button WordPress Shortcode">TBS_BUTTON</a>]</li>
+							<li>[<a href="http://bit.ly/wJqEhk" title="Twitter Bootstrap Label WordPress Shortcode">TBS_LABEL</a>]</li>
+							<li>[<a href="http://bit.ly/zGgnOl" title="Twitter Bootstrap Blockquotes WordPress Shortcode">TBS_BLOCKQUOTE</a>] * Not fully supported in v2.0+</li>
+							<li>[<a href="http://bit.ly/uiipiY" title="Twitter Bootstrap Block Alerts WordPress Shortcode">TBS_BLOCK</a>] * Not fully supported in v2.0+</li>
+							<li>[<a href="http://bit.ly/uiipiY" title="Twitter Bootstrap Block Alerts WordPress Shortcode">TBS_ALERT</a>]</li>
 							<li>[TBS_CODE]</li>
-							<li>[TBS_TWIPSY]</li>
-							<li>[TBS_POPOVER]</li>
+							<li>[<a href="http://bit.ly/xMn0AZ" title="Twitter Bootstrap Button WordPress Shortcode">TBS_TWIPSY</a>] * Not fully supported in v2.0+</li>
+							<li>[<a href="http://bit.ly/xMn0AZ" title="Twitter Bootstrap Button WordPress Shortcode">TBS_TOOLTIP</a>]</li>
+							<li>[<a href=http://bit.ly/AC5JW5 title="Twitter Bootstrap Button WordPress Shortcode">TBS_POPOVER</a>]</li>
 							<li>[TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION].</li>
 							<li>[TBS_TABGROUP] + [TBS_TAB].</li>
 						</ol>

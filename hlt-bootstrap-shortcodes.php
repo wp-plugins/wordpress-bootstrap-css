@@ -56,7 +56,7 @@ class HLT_BootstrapShortcodes {
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels
 	 * 
-	 * Class may be one of: Primary Default Info Success Danger
+	 * Class may be one of: Default Primary Info Success Danger
 	 * 
 	 * @param $inaAtts
 	 * @param $insContent
@@ -215,7 +215,7 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
-		$this->def( &$inaAtts, 'rel', 'tooltip' );
+		$this->def( &$inaAtts, 'rel', 'tooltip' ); //could set to 'twipsy' for bootstrap 1.4.0
 	
 		//backward comnpatibility with Twitter Bootstrap v1.0
 		if ( $this->sTwitterBootstrapVersion == '1' ) {

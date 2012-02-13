@@ -4,27 +4,14 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.0-beta2
+Stable tag: 2.0.0
 
-With Wordpress Bootstrap CSS you can quickly include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+With Wordpress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
-* Currently in Beta - upgrade at your own risk or to help us find bugs.
-
-**Beta Notes and Issues:**
-
-**Beta2**
-*	Shortcodes TBS_BUTTON, TBS_LABEL, TBS_ALERT have been adapted for Twitter Bootstrap v2.0. Notes to follow.
-*	Discovered Javascript incompatibility with DIGG DIGG plugin + Twitter Bootstrap Javascript libraries. Nothing I can fix with this plugin.
-**Beta1**
-*	"Twitter Legacy" = Twitter Bootstrap Library version 1.4.0
-*	"Twitter" = Twitter Bootstrap Library version 2.0.0
-*	When you upgrade, you will be set to "Twitter Legacy" if you were on Twitter 1.4.0. To use version 2.0.0, you must manually select "Twitter"
-*	Existing Shortcodes MAY NOT WORK with, and have not been tested against, version 2.0.0. If you need your shortcodes, stick with "Twitter Legacy".
-*	New Shortcode added for version 2.0: [TBS_TOOLTIP]. This replaces [TBS_TWIPSY] in version 1.4.0. You can still use [TBS_TWIPSY] for now and the software will attempt to correct
-
-**End Beta Notes**
+To see the latest release notes for the new version 2.0.0 for the [WordPress Twitter Bootstrap CSS plugin](http://www.hostliketoast.com/2012/02/wordpress-twitter-bootstrap-css-plugin-v2-0-final/ "WordPress Twitter Bootstrap CSS plugin v2.0 (Final) - Notes on important changes") see the release article
+on our site.
 
 We love to use Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
 
@@ -35,7 +22,7 @@ Now you can!
 *	Works with *any* Wordpress Theme without ever editing Theme files and NO programming needed.
 *	Handy WordPress [SHORTCODES] to add Twitter Bootstrap elements to your site quickly
 *	Add your own custom CSS reset file
-*	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as it should)
+*	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as is good practice)
 
 The home for documentation of this plugin is: [Documentation for this WordPress Plugin](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "WordPress Bootstrap CSS Plugin Documentation Home")
 
@@ -159,7 +146,7 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
-= 2.0.0-beta1 =
+= 2.0.0 =
 * Added the options for Twitter Bootstrap Library 2.0.0
 * Maintained compatibility with Twitter Bootstrap Library 1.4.0
 * Removed option to HotLink to resources
@@ -167,6 +154,7 @@ settings page each time (as is the case with most plugins out there).
 * Fixed several bugs.
 * Keeping plugin version numbering in-line with Twitter Bootstrap versioning.
 * References to "Twipsy" renamed to "Tooltips" to be inline with version 2.0.0
+* Most SHORTCODES work between both versions. [Latest Notes](http://bit.ly/wLkYjf "Host Like Toast WordPress Twitter Bootstrap plugin release notes v2.0")
 
 = 0.9.1 =
 * Restructured and centralized CSS on admin side.
@@ -246,7 +234,7 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.0.0-beta1 =
+= 2.0.0 =
 * Added the options for Twitter Bootstrap Library 2.0.0
 * Maintained compatibility with Twitter Bootstrap Library 1.4.0
 * Removed option to HotLink to resources
@@ -254,6 +242,7 @@ is temporary until we fix.
 * Fixed several bugs.
 * Keeping plugin version numbering in-line with Twitter Bootstrap versioning.
 * References to "Twipsy" renamed to "Tooltips" to be inline with version 2.0.0
+* Most SHORTCODES work between both versions. [Latest Notes](http://bit.ly/wLkYjf "Host Like Toast WordPress Twitter Bootstrap plugin release notes v2.0")
 
 = 0.9.1 =
 * Restructured and centralized CSS on admin side.

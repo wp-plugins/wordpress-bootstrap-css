@@ -10,9 +10,9 @@
 				<div class="inside">
 					<p>Why not do any or all of the following:</p>
 					<ul>
-						<li><a href="http://www.hostliketoast.com/">Get Quality Wordpress Web Hosting</a>!</li>
+						<li><a href="http://bit.ly/owxOjJ">Get Quality Wordpress Web Hosting</a>!&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://bit.ly/wLkYjf"><b>Read the latest Release Notes</b></a>.</li>
 						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/">Give this plugin a 5 star rating on WordPress.org.</a></li>
-						<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" data-text="Why not tweet about it?" data-count="horizontal" data-via="PaulGoodchild">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script></li>
+						<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://bit.ly/qRVL1i" data-text="Get Twitter Bootstrap for your #WordPress website today!" data-via="PaulGoodchild" data-size="large" data-hashtags="bootstrap">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></li>
 					</ul>
 				</div>
 			</div>

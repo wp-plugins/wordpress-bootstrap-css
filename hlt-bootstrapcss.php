@@ -1,10 +1,10 @@
 <?php
 
 /* 
-Plugin Name: Wordpress Bootstrap CSS
-Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/
-Description: Allows you to install a base CSS file for your site, which is included before all others. 
-Version: 2.0.0-beta2
+Plugin Name: Wordpress Twitter Bootstrap CSS
+Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
+Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others. 
+Version: 2.0.0
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -13,7 +13,8 @@ Author URI: http://www.hostliketoast.com/
  * Copyright (c) 2011 Host Like Toast <helpdesk@hostliketoast.com>
  * All rights reserved.
  * 
- * "Wordpress Bootstrap CSS" is distributed under the GNU General Public License, Version 2,
+ * "Wordpress Twitter Bootstrap CSS" (formerly "Wordpress Bootstrap CSS") is
+ * distributed under the GNU General Public License, Version 2,
  * June 1991. Copyright (C) 1989, 1991 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  * 
@@ -54,7 +55,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 
-		self::$VERSION		= '2.0.0-beta2';
+		self::$VERSION		= '2.0.0';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
