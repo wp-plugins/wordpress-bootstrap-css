@@ -33,7 +33,7 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 							<select id="hlt_bootstrap_option" name="hlt_bootstrap_option" style="">
 								<option value="none" id="hlt-none" <?php if ( $hlt_option == 'none' ): ?>selected="selected"<?php endif; ?> >None</option>
 								<option value="twitter" id="hlt-twitter" <?php if ( $hlt_option == 'twitter' ): ?>selected="selected"<?php endif; ?>>Twitter Bootstrap CSS</option>
-								<option value="twitter-legacy" id="hlt-twitter-legacy" <?php if ( $hlt_option == 'twitter-legacy' ): ?>selected="selected"<?php endif; ?>>Twitter Bootstrap CSS (v1.4.0)</option>
+								<option value="twitter-legacy" id="hlt-twitter-legacy" <?php if ( $hlt_option == 'twitter-legacy' ): ?>selected="selected"<?php endif; ?>>Twitter Bootstrap CSS Legacy v1.4.0</option>
 								<option value="yahoo-reset" id="hlt-yahoo-reset" <?php if ( $hlt_option == 'yahoo-reset' ): ?>selected="selected"<?php endif;?>>Yahoo UI Reset CSS</option>
 								<option value="normalize" id="hlt-normalize" <?php if ( $hlt_option == 'normalize' ): ?>selected="selected"<?php endif; ?>>Normalize CSS</option>
 							</select>
@@ -43,7 +43,7 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 									<p>No reset CSS will be applied.</p>
 								</div>
 								<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
-									<p>Bootstrap, from Twitter (latest release- v2.0.0). [<a href="http://twitter.github.com/bootstrap/index.html" target="_blank">more info</a>]</p>
+									<p>Bootstrap, from Twitter (latest release- v2.0.1). [<a href="http://twitter.github.com/bootstrap/index.html" target="_blank">more info</a>]</p>
 								</div>
 								<div id="desc_twitter-legacy" class="desc <?php if ( $hlt_option != 'twitter-legacy' ): ?>hidden<?php endif; ?>">
 									<p>Bootstrap version 1.4.0, from Twitter (provided for sites that need the previous major release). [<a href="http://twitter.github.com/bootstrap/upgrading.html" target="_blank">more info</a>]</p>
