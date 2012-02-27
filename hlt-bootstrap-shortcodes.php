@@ -52,45 +52,111 @@ class HLT_BootstrapShortcodes {
 		 * remove_filter( 'comment_text', 'wpautop' );
 		 */
 	}
+	/**
+	 * Prints the necessary HTML for Twitter Bootstrap Icons.
+	 * 
+	 * Defaults to: "icon-star-empty" icon
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function icon( $inaAtts = array(), $insContent = '' ) {
+		$this->def( &$inaAtts, 'class', 'icon-star-empty' );
+		
+		$sReturn = '<i class="'.$inaAtts['class'].'"></i>';
+		
+		return $sReturn;
+	}//icon
 	
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels
 	 * 
-	 * Class may be one of: Default Primary Info Success Danger
+	 * Class may be one of: Primary Info Success Danger Warning Inverse
 	 * 
 	 * @param $inaAtts
 	 * @param $insContent
 	 */
 	public function button( $inaAtts = array(), $insContent = '' ) {
 		
-		$sElementType = 'a';  
-		if ( !isset( $inaAtts['link'] ) ) {
-			$sElementType = 'button';
+		$sElementType = 'a';
+		if ( isset( $inaAtts['element'] ) ) {
+			$sElementType = $inaAtts['element'];
+		} else {
+			if ( !isset( $inaAtts['link'] ) ) { //i.e. there's no link defined, set as button
+				$sElementType = 'button';
+			}
 		}
 
 		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class', '' );
+		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'link_title' );
 		$this->def( &$inaAtts, 'value', '0' );
+		$this->def( &$inaAtts, 'text', 'button' );
+		$this->def( &$inaAtts, 'toggle', 'N' );
+		$this->def( &$inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
+		
+		//strip empty parameters
+		$inaAtts['style'] = $this->noEmptyHtml( $inaAtts['style'], 'style' );
+		$inaAtts['id'] = $this->noEmptyHtml( $inaAtts['id'], 'id' );
+		$inaAtts['link_title'] = $this->noEmptyHtml( $inaAtts['link_title'], 'link_title' );
+		$inaAtts['type'] = $this->noEmptyHtml( $inaAtts['type'], 'type' );
 		
 		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = 'btn-'.$inaAtts['class'];
+			$inaAtts['class'] = ($inaAtts['class'] == '') ? '' : 'btn-'.$inaAtts['class'];
 		}
 
-		$sReturn = '<'.$sElementType.' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="btn '.$inaAtts['class']. '"'.$this->idHtml( $inaAtts['id'] );
+		$sReturn = '<'.$sElementType
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.' class="btn '.$inaAtts['class']. '"'
+		;
 
 		if ( $sElementType == 'a' ) {
-			$sReturn .= ' href="'.$inaAtts['link'].'" title="' .$inaAtts['link_title']. '"';
+			$sReturn .= ' href="'.$inaAtts['link'].'"'.$inaAtts['link_title'];
 		}
 		else {
-			$sReturn .= ' type="button" value="'.$inaAtts['value']. '"';
+			$sReturn .= ' value="'.$inaAtts['value']. '"';
 		}
 		
-		$sReturn .= '>'.$this->doShortcode( $insContent ).'</'.$sElementType.'>';
+		//Creates a toggle button
+		if ( strtolower($inaAtts['toggle']) == 'y' )
+			$sReturn .= ' data-toggle="button"';
+		
+		//Priority for button text is given to shortcodes using closing shortcode tag [][/]
+		if ($insContent != '') {
+			$insContent = $this->doShortcode( $insContent );
+		} else {
+			$insContent = $inaAtts['text'];
+		}
+		
+		$sReturn .= $inaAtts['type'].'>'.$insContent.'</'.$sElementType.'>';
 		
 		return $sReturn;
-	}
+	}//button
+	
+	public function buttonGroup( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'toggle', 'checkbox' );
+		
+		//filters out empty elements
+		$inaAtts['id'] = $this->noEmptyHtml( $inaAtts['id'], 'id' );
+		$inaAtts['style'] = $this->noEmptyHtml( $inaAtts['style'], 'style' );
+		
+		$sReturn = '<div class="btn-group '.$inaAtts['class']. '"'
+					.$inaAtts['id']
+					.$inaAtts['style']
+					.' data-toggle="buttons-'.$inaAtts['toggle']. '">'
+					.$this->doShortcode( $insContent )
+					.'</div>'
+		;
+		
+		return $sReturn;
+		
+	}//buttonGroup
 	
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels

@@ -104,13 +104,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sCssLink = $aLocalCss[$sOption];
 		
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
-		$sReplace = '${1}'."\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
+		$sReplace = '${1}';
+		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
+		$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 
 		echo $fCustomCss .' '. $sCustomCssUrl;
 		if ( $fCustomCss ) {
 			$sCustomCssUrl = self::getOption( 'customcss_url' );
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
 		}
+		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Host Like Toast. -->";
 		
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
