@@ -6,5 +6,7 @@ jQuery( document ).ready(
 		
 		jQuery( '*[data-popover=popover]')
 			.popover();
+		
+		jQuery('.btn').button();
 	}
 ); 

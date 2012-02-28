@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others. 
-Version: 2.0.1
+Version: 2.0.1a
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -55,7 +55,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function __construct() {
 		parent::__construct();
 
-		self::$VERSION		= '2.0.1';
+		self::$VERSION		= '2.0.1a';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -336,6 +336,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			
 			//Include the JS to "activate" all the tooltips & popovers.
+			//From Version 2.0.1a this was moved "inline" using hooks to wp_footer
+			/*
 			if ( self::getOption( 'tooltip_js' ) == 'Y'
 					|| self::getOption( 'popover_js' ) == 'Y'
 					|| (self::getOption( 'all_js' ) == 'Y' && $sTwitterVersion == self::TwitterVersion) ) {
@@ -344,9 +346,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				if ($sBootstrapOption == 'twitter-legacy') {
 					$sScriptVersion = self::$PLUGIN_URL.'resources/misc/js/plugin/auto_tooltip_popover-tbs140.js';
 				}
-				wp_register_script( 'plugin_auto_tooltip_popover', $sScriptVersion, '', self::$VERSION, $bInFooter );
-				wp_enqueue_script( 'plugin_auto_tooltip_popover' );
+				//wp_register_script( 'plugin_auto_tooltip_popover', $sScriptVersion, '', self::$VERSION, $bInFooter );
+				//wp_enqueue_script( 'plugin_auto_tooltip_popover' );
 			}
+			*/
 		}
 	}//onWpEnqueueScripts
 	

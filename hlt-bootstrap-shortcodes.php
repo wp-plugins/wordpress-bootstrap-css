@@ -27,7 +27,15 @@ class HLT_BootstrapShortcodes {
 
 	public function __construct( $sVersion = '2' ) {
 		$aMethods = get_class_methods( $this );
-		$aExclude = array( 'idHtml', 'def', 'noEmptyHtml' );
+		$aExclude = array( 'idHtml',
+							'def',
+							'filterTheContent',
+							'filterTheContentToFixNamedAnchors',
+							'noEmptyHtml',
+							'noEmptyElement',
+							'printJavascriptForTooltips',
+							'printJavascriptForPopovers' );
+		
 		foreach ( $aMethods as $sMethod ) {
 			if ( !in_array( $sMethod, $aExclude ) ) {
 				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
@@ -91,47 +99,58 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'link_title' );
+		$this->def( &$inaAtts, 'title' );
+		if (empty($inaAtts['title'])) {
+			$inaAtts['title'] = $inaAtts['link_title']; // backwards compatibility - originally only "link_title"
+		}
 		$this->def( &$inaAtts, 'value', '0' );
 		$this->def( &$inaAtts, 'text', 'button' );
 		$this->def( &$inaAtts, 'toggle', 'N' );
 		$this->def( &$inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
 		
 		//strip empty parameters
-		$inaAtts['style'] = $this->noEmptyHtml( $inaAtts['style'], 'style' );
-		$inaAtts['id'] = $this->noEmptyHtml( $inaAtts['id'], 'id' );
-		$inaAtts['link_title'] = $this->noEmptyHtml( $inaAtts['link_title'], 'link_title' );
-		$inaAtts['type'] = $this->noEmptyHtml( $inaAtts['type'], 'type' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'title' );
+		$this->noEmptyElement( $inaAtts, 'type' );
 		
 		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = ($inaAtts['class'] == '') ? '' : 'btn-'.$inaAtts['class'];
+			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : ' btn-'.$inaAtts['class'];
 		}
 
 		$sReturn = '<'.$sElementType
 					.$inaAtts['style']
 					.$inaAtts['id']
-					.' class="btn '.$inaAtts['class']. '"'
+					.$inaAtts['type']
+					.' class="btn'.$inaAtts['class']. '"'
 		;
 
 		if ( $sElementType == 'a' ) {
-			$sReturn .= ' href="'.$inaAtts['link'].'"'.$inaAtts['link_title'];
+			$sReturn .= ' href="'.$inaAtts['link'].'"'.$inaAtts['title'];
 		}
 		else {
-			$sReturn .= ' value="'.$inaAtts['value']. '"';
+			$sReturn .= ' value="'.$inaAtts['value'].'"';
 		}
 		
 		//Creates a toggle button
 		if ( strtolower($inaAtts['toggle']) == 'y' )
 			$sReturn .= ' data-toggle="button"';
 		
-		//Priority for button text is given to shortcodes using closing shortcode tag [][/]
-		if ($insContent != '') {
-			$insContent = $this->doShortcode( $insContent );
+		if ( strtolower($sElementType) == 'input') {
+		//special case for INPUT elements
+
+			$sReturn .= ' />';
+
 		} else {
-			$insContent = $inaAtts['text'];
+			//Priority for button text is given to shortcodes using closing shortcode tag [][/]
+			if ($insContent != '') {
+				$insContent = $this->doShortcode( $insContent );
+			} else {
+				$insContent = $inaAtts['text'];
+			}
+			$sReturn .= '>'.$insContent.'</'.$sElementType.'>';
 		}
-		
-		$sReturn .= $inaAtts['type'].'>'.$insContent.'</'.$sElementType.'>';
-		
+	
 		return $sReturn;
 	}//button
 	
@@ -140,18 +159,18 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'toggle', 'checkbox' );
+		$this->def( &$inaAtts, 'toggle' );
 		
 		//filters out empty elements
-		$inaAtts['id'] = $this->noEmptyHtml( $inaAtts['id'], 'id' );
-		$inaAtts['style'] = $this->noEmptyHtml( $inaAtts['style'], 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$inaAtts['toggle'] = $this->noEmptyHtml( $inaAtts['toggle'], 'data-toggle' );
 		
 		$sReturn = '<div class="btn-group '.$inaAtts['class']. '"'
 					.$inaAtts['id']
 					.$inaAtts['style']
-					.' data-toggle="buttons-'.$inaAtts['toggle']. '">'
-					.$this->doShortcode( $insContent )
-					.'</div>'
+					.$inaAtts['toggle']
+					.'>'.$this->doShortcode( $insContent ).'</div>'
 		;
 		
 		return $sReturn;
@@ -161,10 +180,11 @@ class HLT_BootstrapShortcodes {
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels
 	 * 
-	 * class may be one of: default, success, warning, important, notice
+	 * class may be one of: success, warning, important, notice
 	 * 
 	 * @param $inaAtts
 	 * @param $insContent
+	 * @return string
 	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
 
@@ -172,15 +192,29 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
 		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^label-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = 'label-'.$inaAtts['class'];
+			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'label-'.$inaAtts['class'];
 		}
 
-		$sReturn = '<span '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' class="label '.$inaAtts['class'].'"'.$this->idHtml( $inaAtts['id'] ).'>'.$this->doShortcode( $insContent ).'</span>';
+		$sReturn = '<span class="label '.$inaAtts['class'].'"'
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.'>'.$this->doShortcode( $insContent ).'</span>'
+		;
 
 		return $sReturn;
-	}
+	}//label
 
+	/**
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 * @return string
+	 */
 	public function blockquote( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'style' );
@@ -188,14 +222,19 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'source' );
 		
-		if ($inaAtts['source'] != '') {
-			$inaAtts['source'] = '<small>'.$inaAtts['source'].'</small>';
-		}
-	
-		$sReturn = '<blockquote '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).' '.$this->noEmptyHtml( $inaAtts['class'], 'class' ).' '.$this->idHtml( $inaAtts['id'] ).'><p>'.$this->doShortcode( $insContent ).'</p>'.$inaAtts['source'].'</blockquote>';
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'class' );
+
+		$sReturn = '<blockquote '.$inaAtts['style']
+					.$inaAtts['id']
+					.$inaAtts['class']
+					.'><p>'.$this->doShortcode( $insContent ).'</p><small>'.$inaAtts['source'].'</small></blockquote>'
+		;
 		
 		return $sReturn;
-	}
+	}//blockquote
 
 	/**
 	 * class may be one of: error, warning, success, info
@@ -209,20 +248,39 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'type', 'alert' );
+		$this->def( &$inaAtts, 'heading' );
 		
 		//Twitter 1.4.0 only supports this one variation
 		if ( $this->sTwitterBootstrapVersion == '1' ) {
-			$inaAtts['type'] ='alert-message';
+			//Twitter 1.4 only supports alert-message or block-message. So if one doesn't exist, set the other 
+			if ( !preg_match( '/alert-message/', $inaAtts['class'] ) ) {
+				$inaAtts['class'] = 'alert-message '.$inaAtts['class'];
+			}
 		}
 	
 		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = 'alert-'.$inaAtts['class'];
+			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'alert-'.$inaAtts['class'];
 		}
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		$sReturn = '<div class="alert '.$inaAtts['class'].'"'
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.'>';
+		
+		if ( !empty($inaAtts['heading']) ) {
+			$sReturn .= '<h4 class="alert-heading">'.$inaAtts['heading'].'</h4>';
+		}
+		
+		$sReturn .= $this->doShortcode($insContent).'</div>';
 	
-		$sReturn = '<div '.$this->noEmptyHtml( $inaAtts['style'], 'style' )
+		/*$sReturn = '<div '.$this->noEmptyHtml( $inaAtts['style'], 'style' )
 					.' class="'.$inaAtts['type'].' '.$inaAtts['class'].'" '
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' ).'>'.$this->doShortcode($insContent).'</div>';
-		
+		*/
 		return  $sReturn ;
 	}
 
@@ -242,10 +300,9 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		
-		return $this->doShortcode( '[TBS_ALERT '.'class="block-message '
-									.$inaAtts['class'].'" '
-									.$this->noEmptyHtml( $inaAtts['id'], 'id' ).' '
-									.$this->noEmptyHtml( $inaAtts['style'], 'style' ).']'.$insContent.'[/TBS_ALERT]' );
+		$inaAtts['class'] = 'block-message '.$inaAtts['class'];
+		
+		return $this->alert( $inaAtts, $insContent );
 	}
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {
@@ -300,15 +357,24 @@ class HLT_BootstrapShortcodes {
 				$inaAtts['placement'] = 'bottom';
 			}
 		}
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'class' );
 
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
 					.' rel="'.$inaAtts['rel'].'" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
-					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode($insContent).'</span>';
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.$inaAtts['class']
+					.'>'.$this->doShortcode($insContent).'</span>';
 		}
+		
+		remove_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
+		add_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
 		
 		return $sReturn;
 	}
@@ -324,14 +390,21 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'placement', 'right' );
 		$this->def( &$inaAtts, 'title' );
 		$this->def( &$inaAtts, 'content' );
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'class' );
 
 		$sReturn = '<span'
 					.' rel="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.' data-content="'.$inaAtts['content'].'"'
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
-					.$this->noEmptyHtml( $inaAtts['class'], 'class' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$this->doShortcode( $insContent ).'</span>';
-
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.$inaAtts['class'].'>'.$this->doShortcode( $insContent ).'</span>';
+		
+		remove_action( 'wp_footer', array(&$this, 'printJavascriptForPopovers' ) );
+		add_action( 'wp_footer', array(&$this, 'printJavascriptForPopovers' ) );
 		return $sReturn;
 	}
 	
@@ -513,6 +586,69 @@ class HLT_BootstrapShortcodes {
 		
 		return $sReturn;
 	}//row
+	
+	public function printJavascriptForPopovers() {
+		
+		$sJavascript = "
+		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
+		<script type='text/javascript'>
+			jQuery( document ).ready(
+				function () {";
+		
+		if ( $this->sTwitterBootstrapVersion == '2' ) {
+			$sJavascript .= "
+					jQuery( '*[rel=popover]')
+						.popover(); 
+					
+					jQuery( '*[data-popover=popover]')
+						.popover();";
+		} else {
+			$sJavascript .= "
+					jQuery( '*[rel=popover]')
+						.popover( { offset: 10 } )
+						.click( function(e) { e.preventDefault() } ); 
+					
+					jQuery( '*[data-popover=popover]')
+						.popover( { offset: 10 } );";
+		}
+		
+		$sJavascript .= "
+				}
+			);
+		</script>
+		<!-- END: Popovers-enabling Javascript -->
+		";
+		
+		echo $sJavascript;
+		
+	}//printJavascriptForPopovers
+	
+	public function printJavascriptForTooltips() {
+		
+		$sJavascript = "
+		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
+		<script type='text/javascript'>
+			jQuery( document ).ready(
+				function () {";
+		
+		if ( $this->sTwitterBootstrapVersion == '2' ) {
+			$sJavascript .= "
+					jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();";
+		} else {
+			$sJavascript .= "
+					jQuery( '*[rel=twipsy],*[data-twipsy=twipsy]' ).twipsy( { live: true } );";
+		}
+		
+		$sJavascript .= "
+				}
+			);
+		</script>
+		<!-- END: Tooltip(Twipsy)-enabling Javascript -->
+		";
+		
+		echo $sJavascript;
+		
+	}//printJavascriptForPopovers
 
 	/**
 	 * Public, but should never be directly accessed other than by the WP add_filter method. 
@@ -546,6 +682,10 @@ class HLT_BootstrapShortcodes {
 	}
 	protected function noEmptyHtml( $insContent, $insAttr ) {
 		return (($insContent != '')? ' '.$insAttr.'="'.$insContent.'" ' : '' );	
+	}
+	protected function noEmptyElement( &$inaArgs, $insAttrKey ) {
+		$sAttrValue = $inaArgs[$insAttrKey];
+		$inaArgs[$insAttrKey] = ( empty($sAttrValue) ) ? '' : ' '.$insAttrKey.'="'.$sAttrValue.'"';
 	}
 	
 	/**
