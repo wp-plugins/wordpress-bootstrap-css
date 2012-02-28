@@ -147,13 +147,17 @@ settings page each time (as is the case with most plugins out there).
 == Changelog ==
 
 = 2.0.1b =
-* ADDED: New shortcode [TBS_ICON] to allow you to easily make use of [Twitter Bootstrap Glyphicons](http://bit.ly/AxCdQj)
+* ADDED: New shortcode [TBS_ICON](http://bit.ly/zmGUeD "Twitter Bootstrap Glyph Icon WordPress Shortcode") to allow you to easily make use of [Twitter Bootstrap Glyphicons](http://bit.ly/AxCdQj)
 * ADDED: New shortcode [TBS_BUTTONGROUP] to allow you to easily make use of [Twitter Bootstrap Button Groups](http://bit.ly/z13ICu)
 * CHANGED: Rewrote [TBS_BUTTON]. Now you can add "toggle" option, and specify the exact html element type, eg [a], [button], [input]
 * CHANGED: Rewrote [TBS_ALERT]. Now you can add the Alert Heading using the parameter: heading="my lovely heading"
 * With [TBS_ALERT], parameter "type" is no longer supported - use parameter "class" instead
+* CHANGED: Added inline Javascript for activating Popover and Tooltips - nice page-loading optimization and also only execute JS code necessary
 * Throughout, attempted to retain support for Twitter Bootstrap 1.4.0. But no guarantees - you should upgrade and convert asap.
 * TODO: necessary javascript snippet to enable button toggling - couldn't get it working.
+
+= 2.0.1a =
+* Skipped due to missing elements in [TBS_ICON] shortcode.
 
 = 2.0.1 =
 * Twitter Bootstrap library upgraded to v2.0.1
@@ -247,11 +251,12 @@ is temporary until we fix.
 == Upgrade Notice ==
 
 = 2.0.1b =
-* ADDED: New shortcode [TBS_ICON] to allow you to easily make use of [Twitter Bootstrap Glyphicons](http://bit.ly/AxCdQj)
+* ADDED: New shortcode [TBS_ICON](http://bit.ly/zmGUeD "Twitter Bootstrap Glyph Icon WordPress Shortcode") to allow you to easily make use of [Twitter Bootstrap Glyphicons](http://bit.ly/AxCdQj)
 * ADDED: New shortcode [TBS_BUTTONGROUP] to allow you to easily make use of [Twitter Bootstrap Button Groups](http://bit.ly/z13ICu)
-* ADDED: Rewrote [TBS_BUTTON]. Now you can add "toggle" option, specify the exact html element type, eg [a], [button], [input]
+* CHANGED: Rewrote [TBS_BUTTON]. Now you can add "toggle" option, and specify the exact html element type, eg [a], [button], [input]
 * CHANGED: Rewrote [TBS_ALERT]. Now you can add the Alert Heading using the parameter: heading="my lovely heading"
-* With [TBS_ALERT], parameter "type" is no longer supported - use parameter "class"
+* With [TBS_ALERT], parameter "type" is no longer supported - use parameter "class" instead
+* CHANGED: Added inline Javascript for activating Popover and Tooltips - nice page-loading optimization and also only execute JS code necessary
 * Throughout, attempted to retain support for Twitter Bootstrap 1.4.0. But no guarantees - you should upgrade and convert asap.
 * TODO: necessary javascript snippet to enable button toggling - couldn't get it working.
 
