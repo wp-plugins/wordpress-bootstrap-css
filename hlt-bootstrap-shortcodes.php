@@ -69,9 +69,16 @@ class HLT_BootstrapShortcodes {
 	 * @param $insContent
 	 */
 	public function icon( $inaAtts = array(), $insContent = '' ) {
+		
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class', 'icon-star-empty' );
 		
-		$sReturn = '<i class="'.$inaAtts['class'].'"></i>';
+		//strip empty parameters
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		$sReturn = '<i class="'.$inaAtts['class'].'"'.$inaAtts['style'].$inaAtts['id'].'></i>';
 		
 		return $sReturn;
 	}//icon
