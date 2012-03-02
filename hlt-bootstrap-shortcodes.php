@@ -111,7 +111,8 @@ class HLT_BootstrapShortcodes {
 			$inaAtts['title'] = $inaAtts['link_title']; // backwards compatibility - originally only "link_title"
 		}
 		$this->def( &$inaAtts, 'value', '0' );
-		$this->def( &$inaAtts, 'text', 'button' );
+		$this->def( &$inaAtts, 'text' );
+		$this->def( &$inaAtts, 'disabled', 'N' );
 		$this->def( &$inaAtts, 'toggle', 'N' );
 		$this->def( &$inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
 		
@@ -121,15 +122,22 @@ class HLT_BootstrapShortcodes {
 		$this->noEmptyElement( $inaAtts, 'title' );
 		$this->noEmptyElement( $inaAtts, 'type' );
 		
+		$sClassString = 'btn';
+		
 		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : ' btn-'.$inaAtts['class'];
+			$sClassString .= ( empty($inaAtts['class']) ) ? '' : ' btn-'.$inaAtts['class'];
+		} else if ( !empty($inaAtts['class']) ) {
+			$sClassString .= ' '.$inaAtts['class'];
 		}
+		
+		//Add disabled class
+		$sClassString .= ( strtolower($inaAtts['disabled']) == 'y' ) ? ' disabled' : '';
 
 		$sReturn = '<'.$sElementType
 					.$inaAtts['style']
 					.$inaAtts['id']
 					.$inaAtts['type']
-					.' class="btn'.$inaAtts['class']. '"'
+					.' class="'.$sClassString.'"'
 		;
 
 		if ( $sElementType == 'a' ) {
@@ -143,19 +151,25 @@ class HLT_BootstrapShortcodes {
 		if ( strtolower($inaAtts['toggle']) == 'y' )
 			$sReturn .= ' data-toggle="button"';
 		
+		//Add disabled field in the case of buttons
+		if ( $sElementType == 'button' AND strtolower($inaAtts['disabled']) == 'y' ) {
+			$sReturn .= ' disabled="disabled"';
+		}
+		
+		//Final close and insert content
 		if ( strtolower($sElementType) == 'input') {
 		//special case for INPUT elements
 
 			$sReturn .= ' />';
 
 		} else {
-			//Priority for button text is given to shortcodes using closing shortcode tag [][/]
-			if ($insContent != '') {
-				$insContent = $this->doShortcode( $insContent );
-			} else {
+			//Priority for button text is given to the text parameter
+			if ( !empty($inaAtts['text']) ) {
 				$insContent = $inaAtts['text'];
+			} else if ( empty($insContent) ) {
+				$insContent = 'button';
 			}
-			$sReturn .= '>'.$insContent.'</'.$sElementType.'>';
+			$sReturn .= '>'.$this->doShortcode( $insContent ).'</'.$sElementType.'>';
 		}
 	
 		return $sReturn;
