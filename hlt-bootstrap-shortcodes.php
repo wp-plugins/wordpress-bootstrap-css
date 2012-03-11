@@ -175,6 +175,12 @@ class HLT_BootstrapShortcodes {
 		return $sReturn;
 	}//button
 	
+	/**
+	 * Toggle button options are "buttons-checkbox" and "buttons-radio"
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
 	public function buttonGroup( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'id' );

@@ -2,7 +2,7 @@
 ?>
 <div class="wrap">
 	<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br></div></a>
-	<h3>Host Like Toast: Plugins Dashboard</h3>
+	<h2>Host Like Toast: Plugins Dashboard</h2>
 	
 	<div style="clear:both"></div>
 	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
@@ -143,7 +143,7 @@
 						<ol>
 							<li>[<a href="http://bit.ly/zmGUeD" title="Twitter Bootstrap Glyph Icon WordPress Shortcode">TBS_ICON</a>]</li>
 							<li>[<a href="http://bit.ly/AlETMx" title="Twitter Bootstrap Button WordPress Shortcode">TBS_BUTTON</a>]</li>
-							<li>[TBS_BUTTONGROUP]</li>
+							<li>[<a href="http://bit.ly/wIUa7U" title="Twitter Bootstrap Button WordPress Shortcode">TBS_BUTTONGROUP</a>]</li>
 							<li>[<a href="http://bit.ly/wJqEhk" title="Twitter Bootstrap Label WordPress Shortcode">TBS_LABEL</a>]</li>
 							<li>[<a href="http://bit.ly/zGgnOl" title="Twitter Bootstrap Blockquotes WordPress Shortcode">TBS_BLOCKQUOTE</a>]</li>
 							<li>[<a href="http://bit.ly/uiipiY" title="Twitter Bootstrap Block Alerts WordPress Shortcode">TBS_BLOCK</a>] * Not fully supported in v2.0+</li>

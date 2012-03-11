@@ -146,6 +146,10 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
+= 2.0.1d =
+* ADDED: Ability to include Responsive CSS stylesheet that comes with Twitter Bootstrap version 2.0+
+* ADDED: Reorg'd some of the interface to be more logical
+
 = 2.0.1c =
 * ADDED: Ability to add the "disabled" option to Twitter Bootstrap button components.
 * FIXED: a couple of bugs in the shortcodes
@@ -253,6 +257,10 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.1d =
+* ADDED: Ability to include Responsive CSS stylesheet that comes with Twitter Bootstrap version 2.0+
+* ADDED: Reorg'd some of the interface to be more logical
 
 = 2.0.1c =
 * ADDED: Ability to add the "disabled" option to Twitter Bootstrap button components.

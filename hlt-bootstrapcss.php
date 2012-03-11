@@ -71,6 +71,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function rewriteHead( $insContents ) {
 		$sOption = self::getOption( 'option' );
 		$fHotlink = ( self::getOption( 'hotlink' ) == 'Y' );
+		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
 
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
 
@@ -79,10 +80,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 
 		$aLocalCss = array(
-			'twitter'			=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.min.css',
-			'twitter-legacy'	=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersionLegacy.'/css/bootstrap.min.css',
-			'yahoo-reset'		=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
-			'normalize'			=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
+			'twitter'				=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.min.css',
+			'twitter_responsive'	=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap-responsive.min.css',
+			'twitter-legacy'		=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersionLegacy.'/css/bootstrap.min.css',
+			'yahoo-reset'			=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
+			'normalize'				=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
 		);
 
 		/*
@@ -103,10 +105,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		$sCssLink = $aLocalCss[$sOption];
 		
+		//Add the CSS link
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		$sReplace = '${1}';
 		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
 		$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
+		
+		//Add the CSS link
+		if ( $fResponsive AND $sOption == 'twitter' ) {
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$aLocalCss['twitter_responsive'].'">';
+		}
 
 		echo $fCustomCss .' '. $sCustomCssUrl;
 		if ( $fCustomCss ) {
@@ -204,6 +212,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_carousel_js'	=> self::getOption( 'carousel_js' ),	// Bootstrap v2.0+
 			'option_typeahead_js'	=> self::getOption( 'typeahead_js' ),	// Bootstrap v2.0+
 			'option_all_js'			=> self::getOption( 'all_js' ),			// Bootstrap v2.0+
+			
+			'option_inc_responsive_css'	=> self::getOption( 'inc_responsive_css' ),	// Bootstrap v2.0+
 
 			'option_js_head'		=> self::getOption( 'js_head' ),
 			'option_useshortcodes'	=> self::getOption( 'useshortcodes' ),
@@ -246,6 +256,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'typeahead_js',		$this->getAnswerFromPost( 'option_typeahead_js' ) );	// Bootstrap v2.0+
 			self::updateOption( 'all_js',			$this->getAnswerFromPost( 'option_all_js' ) );	// Bootstrap v2.0+
 			// self::updateOption( '_js',			$this->getAnswerFromPost( 'option_' ) );
+			
+			self::updateOption( 'inc_responsive_css',	$this->getAnswerFromPost( 'option_inc_responsive_css' ) );	// Bootstrap v2.0+
 
 			self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
 			self::updateOption( 'useshortcodes',	$this->getAnswerFromPost( 'option_useshortcodes' ) );
@@ -427,6 +439,8 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'typeahead_js',	'N' );	// Bootstrap v2.0+
 		HLT_BootstrapCss::addOption( 'all_js',			'N' );	// Bootstrap v2.0+
 		
+		HLT_BootstrapCss::addOption( 'inc_responsive_css',	'N' );	// Bootstrap v2.0+
+		
 		HLT_BootstrapCss::addOption( 'js_head',			'N' );
 		HLT_BootstrapCss::addOption( 'useshortcodes',	'N' );
 		HLT_BootstrapCss::addOption( 'prettify',		'N' );
@@ -461,6 +475,8 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'carousel_js' );	// Bootstrap v2.0+
 		HLT_BootstrapCss::deleteOption( 'typeahead_js' );	// Bootstrap v2.0+
 		HLT_BootstrapCss::deleteOption( 'all_js' );			// Bootstrap v2.0+
+		
+		HLT_BootstrapCss::deleteOption( 'inc_responsive_css' );	// Bootstrap v2.0+
 		
 		HLT_BootstrapCss::deleteOption( 'js_head' );
 		HLT_BootstrapCss::deleteOption( 'useshortcodes' );

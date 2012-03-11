@@ -1,7 +1,7 @@
 <?php
 function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanation = '' ) {
 	?>
-	<td>
+	<td <?php if( $sOptionName == 'all') echo 'colspan=2'; ?>>
 		<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-<?php echo $sOptionName; ?>-js">
 			<input type="checkbox" name="hlt_bootstrap_option_<?php echo $sOptionName; ?>_js" value="Y" id="hlt-<?php echo $sOptionName; ?>-js" <?php if ( $hlt_option_value == 'Y' ): ?>checked="checked"<?php endif; ?> />
 			<label for="hlt-<?php echo $sOptionName; ?>-js"><?php echo $sLabel; ?></label>
@@ -55,7 +55,41 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 									<p>Normalize CSS.</p>
 								</div>
 							</div>
-							<div style="clear:both"></div>
+							<div style="clear:both; border-bottom: 1px solid #cccccc;"></div>
+							<div id="IncludeResponsiveCss">
+								<p><strong>Also include Twitter Bootstrap Responsive CSS?</strong> (note: only for Twitter Bootstrap v2+)</p>
+	
+								<div class="option_section <?php if ( $hlt_option_inc_responsive_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-incresponsivecss">
+									<input type="checkbox" name="hlt_bootstrap_option_inc_responsive_css" value="Y" id="hlt-option-incresponsivecss" <?php if ( $hlt_option_inc_responsive_css == 'Y' ): ?>checked="checked"<?php endif; ?> />
+									<label for="hlt-option-incresponsivecss">Include Responsive CSS stylesheet link</label>
+									<br class="clear" />
+									<p class="desc" style="display: block;">
+										This doesn't necessarily make your WordPress site "responsive", but just includes the extra CSS stylesheet.
+										<br />
+										This CSS link will be inserted immediately after the Twitter Bootstrap CSS.
+									</p>
+								</div>
+							</div>
+							<div style="clear:both; border-bottom: 1px solid #cccccc;"></div>
+							<p><strong>Optionally add your own custom or reset CSS. Enter the full URL of a CSS file to be included before all others.</strong><br/>(note: this file will be included
+							after any bootstrap/reset CSS selected above)</p>
+
+							<div class="option_section <?php if ( $hlt_option_customcss == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-customcss">
+								<input type="checkbox" name="hlt_bootstrap_option_customcss" value="Y" id="hlt-option-customcss" <?php if ( $hlt_option_customcss == 'Y' ): ?>checked="checked"<?php endif; ?> />
+								<label for="hlt-option-customcss">Enable custom CSS link</label>
+								<br class="clear" />
+								<p class="desc" style="display: block;">
+									If you choose to link to your own custom CSS be sure to put the full URL path to the CSS file.
+									If you're hotlinking to another site, ensure you have permission to do so.
+									<br />
+									This CSS link will be inserted immediately after the reset, normalize or Twitter Bootstrap CSS if any of these are selected.
+								</p>
+							</div>
+
+							<label for="hlt-text-customcss-url">Custom CSS URL:</label>
+							<input id="customcss-url-input" type="text" name="hlt_bootstrap_text_customcss_url" id="hlt-text-customcss-url" size="100" value="<?php echo $hlt_text_customcss_url; ?>" style="margin-left:20px;" />
+							<br class="clear" />
+							
 						</div>
 					</div>
 
@@ -134,7 +168,7 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 											<p class="desc" style="display: block;">
 												WordPress shortcodes for fast application of the Twitter Bootstrap library.
 												<br />
-												Click here for a complete guide on WordPress shortcode for Twitter Bootstrap.
+												See the Dashboard page for links to guides on WordPress shortcodes for Twitter Bootstrap.
 											</p>
 										</div>
 									</td>
@@ -143,35 +177,11 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 						</div>
 					</div>
 
-					<div class="postbox" id="CustomCssOptionBox">
-						<div title="Click to toggle" class="handlediv"><br></div>
-						<h3 class="hndle"><span>Add your own custom CSS</span></h3>
-						<div class="inside">
-							<p><strong>Enter the URL of a CSS file you would like included before all others (and immediately after the Bootstrap CSS if selected).</strong></p>
-
-							<div class="option_section <?php if ( $hlt_option_customcss == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-customcss">
-								<input type="checkbox" name="hlt_bootstrap_option_customcss" value="Y" id="hlt-option-customcss" <?php if ( $hlt_option_customcss == 'Y' ): ?>checked="checked"<?php endif; ?> />
-								<label for="hlt-option-customcss">Enable custom CSS link</label>
-								<br class="clear" />
-								<p class="desc" style="display: block;">
-									If you choose to link to your own custom CSS be sure to put the full URL path to the CSS file.
-									If you're hotlinking to another site, ensure you have permission to do so.
-									<br />
-									This CSS link will be inserted immediately after the reset, normalize or Twitter Bootstrap CSS if any of these are selected.
-								</p>
-							</div>
-
-							<label for="hlt-text-customcss-url">Custom CSS URL:</label>
-							<input id="customcss-url-input" type="text" name="hlt_bootstrap_text_customcss_url" id="hlt-text-customcss-url" size="100" value="<?php echo $hlt_text_customcss_url; ?>" style="margin-left:20px;" />
-							<br class="clear" />
-						</div>
-					</div>
-
 					<div class="postbox" id="HotlinkOptionBox">
 						<div title="Click to toggle" class="handlediv"><br></div>
 						<h3 class="hndle"><span>Select Resource Linking Option</span></h3>
 						<div class="inside">
-							<p><strong>Notice: From version 2.0.0, we have decided to remove HotLinking as a option on this plugin going forward.</strong></p>
+							<p><strong>Notice: From version 2.0.0 onward, we have removed HotLinking as a option on this plugin.</strong></p>
 						</div>
 					</div>
 
@@ -208,9 +218,10 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 			function () {
 	
 				jQuery( "select[name='hlt_bootstrap_option']" ).click( onChangeCssBootstrapOption );
-	
+
 				if ( jQuery( "#hlt-twitter" ).is( ':checked' ) === false ) {
 					jQuery( "#BootstrapJavascript" ).hide();
+					jQuery( "#IncludeResponsiveCss" ).hide();
 				}
 	
 				if ( jQuery( "#hlt-none" ).is( ':checked' ) === false ) {
@@ -294,6 +305,9 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 				
 				// override view config
 				if ( sValue == 'twitter-legacy' ) {
+
+					jQuery( "#IncludeResponsiveCss" ).slideUp( 150 );
+
 					jQuery( '.twitter_extra .option_section' ).removeClass( 'hidden' );
 					
 					jQuery( '#section-hlt-all-js' ).addClass( 'hidden' );
@@ -303,6 +317,9 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 					jQuery( '#section-hlt-carousel-js' ).addClass( 'hidden' );
 				}
 				else {
+					
+					jQuery( "#IncludeResponsiveCss" ).slideDown( 150 );
+				
 					var fIsIncludeAll = jQuery( '#section-hlt-all-js' ).find( 'input[type=checkbox]' ).is( ':checked' );
 					if ( fIsIncludeAll ) {
 						jQuery( '.twitter_extra .option_section' ).addClass( 'hidden' );
@@ -326,6 +343,7 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 			}
 			else {
 				jQuery( "#BootstrapJavascript" ).slideUp( 150 );
+				jQuery( "#IncludeResponsiveCss" ).slideUp( 150 );
 			}
 	
 			/* Show/Hide Hotlink section on none/CSS selection */
