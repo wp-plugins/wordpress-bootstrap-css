@@ -43,7 +43,7 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 									<p>No reset CSS will be applied.</p>
 								</div>
 								<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
-									<p>Bootstrap, from Twitter (latest release- v2.0.1). [<a href="http://twitter.github.com/bootstrap/index.html" target="_blank">more info</a>]</p>
+									<p>Bootstrap, from Twitter (latest release- v2.0.2). [<a href="http://twitter.github.com/bootstrap/index.html" target="_blank">more info</a>]</p>
 								</div>
 								<div id="desc_twitter-legacy" class="desc <?php if ( $hlt_option != 'twitter-legacy' ): ?>hidden<?php endif; ?>">
 									<p>Bootstrap version 1.4.0, from Twitter (provided for sites that need the previous major release). [<a href="http://twitter.github.com/bootstrap/upgrading.html" target="_blank">more info</a>]</p>

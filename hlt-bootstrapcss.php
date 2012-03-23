@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others. 
-Version: 2.0.1c
+Version: 2.0.2
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -49,13 +49,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const OptionPrefix = 'hlt_bootstrapcss_';
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
-	const TwitterVersion = '2.0.1';
+	const TwitterVersion = '2.0.2';
 	const TwitterVersionLegacy = '1.4.0';
 	
 	public function __construct() {
 		parent::__construct();
 
-		self::$VERSION		= '2.0.1c';
+		self::$VERSION		= '2.0.2';
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );

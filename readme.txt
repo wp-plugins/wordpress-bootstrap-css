@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.1c
+Stable tag: 2.0.2
 
 With Wordpress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -146,9 +146,11 @@ settings page each time (as is the case with most plugins out there).
 
 == Changelog ==
 
-= 2.0.1d =
+= 2.0.2 =
+* UPDATED: Updated Twitter Bootstrap library to v2.0.2
 * ADDED: Ability to include Responsive CSS stylesheet that comes with Twitter Bootstrap version 2.0+
-* ADDED: Reorg'd some of the interface to be more logical
+* ADDED: Reorg'd some of the interface to be a little more logical
+* FIXED: serious oversight with including individual Javascript libraries.
 
 = 2.0.1c =
 * ADDED: Ability to add the "disabled" option to Twitter Bootstrap button components.
