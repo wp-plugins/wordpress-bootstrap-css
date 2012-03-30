@@ -1,5 +1,5 @@
 
-	<div class="row" id="worpit_promo">
+	<div class="row">
 	  <div class="span12">
 	  <div class="well">
 	  	<div class="row">

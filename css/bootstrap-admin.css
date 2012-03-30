@@ -37,10 +37,6 @@
 		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
 		border: 1px solid transparent;
 	}
-	.row#developer_channel_promo,
-	.row#tbs_docs {
-		margin-top: 20px;
-	}
 	.row#developer_channel_promo #developer_channel_description .well {
 		height: 275px;
 	}
