@@ -196,6 +196,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 						($_GET['page']=='hlt-directory-bootstrap-css' OR $_GET['page']=='hlt-directory') )
 				) {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'includeTwitterCssWpAdmin' ), 99 );
+			
+			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'css/bootstrap-admin.css', false, self::$VERSION );
+			wp_enqueue_style( 'wtb_css' );
 		} 
 	}
 	

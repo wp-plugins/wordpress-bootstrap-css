@@ -290,7 +290,7 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 
 	</form>
 
-</div>
+</div><!-- / bootstrap-wpadmin -->
 
 	<script type="text/javascript">
 		jQuery( document ).ready(
