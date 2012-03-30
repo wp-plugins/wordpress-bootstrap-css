@@ -205,6 +205,40 @@ class HLT_BootstrapShortcodes {
 	}//buttonGroup
 	
 	/**
+	 * Prints the necessary HTML for Twitter Bootstrap Badges
+	 * 
+	 * class may be one of: success, warning, error, info, inverse
+	 * 
+	 * only supported in Twitter Bootstrap version 2.0+
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 * @return string
+	 */
+	public function badge( $inaAtts = array(), $insContent = '' ) {
+
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		if ( !preg_match( '/^badge-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'badge-'.$inaAtts['class'];
+		}
+
+		$sReturn = '<span class="badge '.$inaAtts['class'].'"'
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.'>'.$this->doShortcode( $insContent ).'</span>'
+		;
+
+		return $sReturn;
+	}
+	
+	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Labels
 	 * 
 	 * class may be one of: success, warning, important, notice

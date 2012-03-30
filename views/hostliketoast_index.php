@@ -3,16 +3,22 @@
 <div class="wrap">
 	<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br></div></a>
 	<h2>Host Like Toast: Plugins Dashboard</h2>
-	
-	<div style="clear:both"></div>
-	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
-	<div style="clear:both"></div>
 
-	<div style="width: 500px;" class="postbox-container">
+	<div id="postbox-container-worpit" class="postbox-container">
+		<div class="metabox-holder">
+			<div class="meta-box-sortables ui-sortable">
+				<div id="worpit-button"><img src="<?php echo $inaData['plugin_url']; ?>images/worpit_wordpress_plugin.jpg" /></div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div style="width: 500px;" id="postbox-container-developerchannel" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
 			<div class="postbox">
-				<h3>Subscribe to the Host Like Toast Developer Channel</h3>
+				<h3>Get more Free Stuff from the Host Like Toast Developer Channel</h3>
 				<!-- Begin MailChimp Signup Form -->
 				<div class="dap_signup_box" id="dap_signup_box_widget" style=none >
 					<div>
@@ -131,6 +137,8 @@
 		</div>
 	</div>
 	
+	<div style="clear:both"></div>
+	
 	<div style="width: 500px;" class="postbox-container">
 		<div class="metabox-holder">
 			<div class="meta-box-sortables ui-sortable">
@@ -161,7 +169,6 @@
 			</div>
 		</div>
 	</div>
-	<div style="clear:both"></div>
 	
 	<div style="width: 500px;" class="postbox-container">
 		<div class="metabox-holder">
@@ -198,5 +205,8 @@
 	</div>
 	<div style="clear:both"></div>
 	
+	<div style="clear:both"></div>
 	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
+	<div style="clear:both"></div>
+	
 </div>

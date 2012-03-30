@@ -1,0 +1,6 @@
+
+.bootstrap-wpadmin input[type="text"],
+.bootstrap-wpadmin input[type="password"],
+.bootstrap-wpadmin textarea {
+	box-sizing: content-box;
+}
