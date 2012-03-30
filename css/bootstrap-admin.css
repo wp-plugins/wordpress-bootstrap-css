@@ -42,11 +42,12 @@
 		margin-top: 20px;
 	}
 	.row#developer_channel_promo #developer_channel_description .well {
-		height: 270px;
+		height: 275px;
 	}
 	.row#developer_channel_promo #developer_channel_form {
 		border: 1px solid #EEE;
 		border-radius: 6px;
+		height: 315px; /* 275px + 20px-padding-x2 */
 	}
 	.row#developer_channel_promo #developer_channel_form h3 {
 		padding: 10px 20px;
@@ -89,7 +90,7 @@
 		color: #FFFFFF;
 		display: inline-block;
 		font: bold 18px/50px Helvetica,Arial,sans-serif;
-		height: 50px;
+		height: 53px !important;
 		outline: medium none;
 		overflow: visible;
 		padding: 0 20px;
