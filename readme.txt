@@ -147,11 +147,12 @@ settings page each time (as is the case with most plugins out there).
 == Changelog ==
 
 = 2.0.2a =
-* ADDED: Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)
+* ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
 * ADDED: WordPress Admin notices for upgrades and success settings operations.
 * ADDED: New Shortcode: TBS_BADGE
 * ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
 * UPDATED: Setting page to now use Twitter Bootstrap layout/design
+* UPDATED: The screenshots for the docs
 
 = 2.0.2 =
 * UPDATED: Updated Twitter Bootstrap library to v2.0.2

@@ -17,8 +17,8 @@ function js_option_block( $hlt_option_value, $sOptionName, $sLabel, $sExplanatio
 
 function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $sInfo, $sExplanation = '' ) {
 	?>
-		<div class="span5 option_jscript">
-			<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-<?php echo $sOptionName; ?>-js">
+		<div class="span5" id="section-hlt-<?php echo $sOptionName; ?>-js">
+			<div class="option_section  <?php if ( $hlt_option_value == 'Y' ): ?>selected_item<?php endif; ?>">
 				<label class="checkbox" for="hlt-<?php echo $sOptionName; ?>-js">
 					<input type="checkbox" name="hlt_bootstrap_option_<?php echo $sOptionName; ?>_js" value="Y" id="hlt-<?php echo $sOptionName; ?>-js" <?php if ( $hlt_option_value == 'Y' ): ?>checked="checked"<?php endif; ?> />
 					<?php echo $sLabel; ?>
@@ -122,73 +122,73 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 		<div class="row" id="BootstrapJavascript">
 			<div class="span12">
 				<fieldset>
-					<legend>Select Twitter Bootstrap Javascript Libraries</legend>
-					<div class="row" style="height:20px"></div>
+				  <legend>Select Twitter Bootstrap Javascript Libraries</legend>
+				  <div class="row" style="height:20px"></div>
 		
-					<div class="control-group">
-						<label class="control-label" for="hlt-all-js">All Javascript Libraries</label>
-						<div class="controls">
-							<div class="option_section <?php if ( $hlt_option_all_js == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-all-js">
-								<label class="checkbox" for="hlt-all-js">
-									<input type="checkbox" name="hlt_bootstrap_option_all_js" value="Y" id="hlt-all-js" <?php if ( $hlt_option_all_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
-									Include ALL Bootstrap Javascript libraries.
-								</label>
-								<p class="help-block">
-									Selecting this negates the need for selecting individual libraries below.
-									<br />(Note: not available in Twitter Legacy)
-								</p>
+					<div class="twitter_extra">
+						<div class="control-group">
+							<label class="control-label" for="hlt-all-js">All Javascript Libraries</label>
+							<div class="controls">
+								<div class="option_section <?php if ( $hlt_option_all_js == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-all-js">
+									<label class="checkbox" for="hlt-all-js">
+										<input type="checkbox" name="hlt_bootstrap_option_all_js" value="Y" id="hlt-all-js" <?php if ( $hlt_option_all_js == 'Y' ): ?>checked="checked"<?php endif; ?> />
+										Include ALL Bootstrap Javascript libraries.
+									</label>
+									<p class="help-block">
+										Selecting this negates the need for selecting individual libraries below.
+										<br />(Note: not available in Twitter Legacy)
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-					
-					<div class="row">
-					<div class="span2">
-						<label class="control-label">Individual Libraries</label></div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_alert_js, "alert", "Alert Javascript Library", "alerts" );
-							js_option_block_bootstrap( $hlt_option_button_js, "button", "Button Javascript Library", "buttons" );
-						?>
-					</div>
-					<div class="row">
-					<div class="span2">&nbsp;</div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_modal_js, "modal", "Modal Javascript Library", "modals" );
-							js_option_block_bootstrap( $hlt_option_dropdown_js, "dropdown", "Dropdown Javascript Library", "dropdowns" );
-						?>
-					</div>
-					<div class="row">
-					<div class="span2">&nbsp;</div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_popover_js, "popover", "Popover Javascript Library", "popovers",
-							' (<em>Note: requires Tooltip (Twipsy) library</em>)' );
 						
-							js_option_block_bootstrap( $hlt_option_tooltip_js, "tooltip", "Tooltip Javascript Library", "tooltips");
-						?>
-					</div>
-					<div class="row">
-					<div class="span2">&nbsp;</div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy Javascript Library", "scrollspy" );
-							js_option_block_bootstrap( $hlt_option_tab_js, "tab", "Tab Javascript Library", "tabs" );
-						?>
-					</div>
-					<div class="row">
-					<div class="span2">&nbsp;</div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_collapse_js, "collapse", "Collapse Javascript Library", "collapse", ' (<em>Note: not available in Twitter v1.x</em>)' );
-							js_option_block_bootstrap( $hlt_option_carousel_js, "carousel", "Carousel Javascript Library", "carousel", ' (<em>Note: not available in Twitter v1.x</em>)' );
-						?>
-					</div>
-					<div class="row">
-					<div class="span2">&nbsp;</div>
-						<?php
-							js_option_block_bootstrap( $hlt_option_typeahead_js, "typeahead", "Typeahead Javascript Library", "typeahead", ' (<em>Note: not available in Twitter v1.x</em>)' );
-							js_option_block_bootstrap( $hlt_option_transition_js, "transition", "Transition Javascript Library", "transition", ' (<em>Note: not available in Twitter v1.x</em>)' );
-						?>
-					</div>
+						<div class="row">
+						<div class="span2"><label class="control-label">Individual Libraries</label></div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_alert_js, "alert", "Alert Javascript Library", "alerts" );
+								js_option_block_bootstrap( $hlt_option_button_js, "button", "Button Javascript Library", "buttons" );
+							?>
+						</div>
+						<div class="row">
+						<div class="span2">&nbsp;</div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_modal_js, "modal", "Modal Javascript Library", "modals" );
+								js_option_block_bootstrap( $hlt_option_dropdown_js, "dropdown", "Dropdown Javascript Library", "dropdowns" );
+							?>
+						</div>
+						<div class="row">
+						<div class="span2">&nbsp;</div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_popover_js, "popover", "Popover Javascript Library", "popovers",
+								' (<em>Note: requires Tooltip (Twipsy) library</em>)' );
+							
+								js_option_block_bootstrap( $hlt_option_tooltip_js, "tooltip", "Tooltip Javascript Library", "tooltips");
+							?>
+						</div>
+						<div class="row">
+						<div class="span2">&nbsp;</div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_scrollspy_js, "scrollspy", "Scrollspy Javascript Library", "scrollspy" );
+								js_option_block_bootstrap( $hlt_option_tab_js, "tab", "Tab Javascript Library", "tabs" );
+							?>
+						</div>
+						<div class="row">
+						<div class="span2">&nbsp;</div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_collapse_js, "collapse", "Collapse Javascript Library", "collapse", ' (<em>Note: not available in Twitter v1.x</em>)' );
+								js_option_block_bootstrap( $hlt_option_carousel_js, "carousel", "Carousel Javascript Library", "carousel", ' (<em>Note: not available in Twitter v1.x</em>)' );
+							?>
+						</div>
+						<div class="row">
+						<div class="span2">&nbsp;</div>
+							<?php
+								js_option_block_bootstrap( $hlt_option_typeahead_js, "typeahead", "Typeahead Javascript Library", "typeahead", ' (<em>Note: not available in Twitter v1.x</em>)' );
+								js_option_block_bootstrap( $hlt_option_transition_js, "transition", "Transition Javascript Library", "transition", ' (<em>Note: not available in Twitter v1.x</em>)' );
+							?>
+						</div>
 					
+					</div>
 				</fieldset>
-				
 				<fieldset>
 					<legend>Select Other Twitter Bootstrap Options</legend>
 		
