@@ -6,7 +6,10 @@
 		margin-left: 30px;
 	}
 	.bootstrap-wpadmin form fieldset {
-		margin-top: 30px;
+		margin-top: 10px;
+	}
+	.bootstrap-wpadmin .label {
+		vertical-align: baseline !important;
 	}
 	.shortcode-usage {
 		border-bottom: 1px solid #bbbbbb;
@@ -34,7 +37,7 @@
 		height: 190px;
 	}
 	#worpit_button:hover {
-		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+		box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
 		border: 1px solid transparent;
 	}
 	.row#developer_channel_promo #developer_channel_description .well {
@@ -116,14 +119,12 @@
 	}
 	
 /* BOOSTRAP SETTINGS PAGE STYLES */
-	.inside {
-		margin-bottom: 15px;
+	.wrap .icon32 {
+		width: 32px;
 	}
-	
-	.inside p.desc {
-		font-size: smaller;
-		font-style: italic;
-		margin-top: 4px 0 4px 20px;
+	.wrap h2 {
+		border-bottom: 1px solid #AAA;
+		margin-bottom: 10px;
 	}
 	.submit span {
 		font-size: smaller;
@@ -138,15 +139,6 @@
 	.option_section label {
 		background-color: transparent;
 	}
-/*
-	.option_section:hover {
-	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-	}
-	.selected_item {
-	    background-color: rgba(128, 255, 128, 0.2);
-	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-	}
-*/
 	.selected_item label {
 		font-weight: bold;
 	}
@@ -166,7 +158,6 @@
 		background-color: #f6f6f6;
 		border-color: #dddddd;
 	}
-
 	table.tbl_tbs_options {
 		width: 100%;
 		border: 1px solid transparent;
@@ -188,5 +179,3 @@
 		vertical-align: top;
 		width: 50%;
 	}
-
-/* MAILCHIMP SIGNUP FORM STYLES */

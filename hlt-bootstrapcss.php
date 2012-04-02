@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others. 
-Version: 2.0.2
+Version: 2.0.2a
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -60,13 +60,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::__construct();
 		
 		/**
-		 * We make the assumption that all updates are successful until told otherwise
+		 * We make the assumption that all settings updates are successful until told otherwise
 		 * by an actual failing update_option call.
 		 */
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.2a'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -81,7 +81,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	public function printAdminNotices() {
 
-		// First check for plugin upgrade
+		// (1) check for plugin upgrade
 		global $current_user;
 		$user_id = $current_user->ID;
 
@@ -100,7 +100,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	        </div>';
 		}
 
-		// Second check for plugin settings upgrade
+		// (2) check for plugin settings upgrade
 		$sAdminFeedbackNotice = self::getOption('feedback_admin_notice');
 		if ( !empty($sAdminFeedbackNotice) AND $sAdminFeedbackNotice != '' ) {
 	        echo '
@@ -109,20 +109,35 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	        </div>';
 	        self::updateOption('feedback_admin_notice', '');
 		}
+
+		// (3) Notice to say that Twitter Legacy is going to be removed from version 2.0.3
+		$sSubPageNow = $_GET['page'];
+		if ( $sSubPageNow == 'hlt-directory') {
+	        echo '
+	        	';
+		}
 		
 	}//printAdminNotice
 
+	/**
+	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
+	 * 
+	 * @param $insContents
+	 */
 	public function rewriteHead( $insContents ) {
+		
+		$aPossibleOptions = array( 'twitter', 'twitter-legacy', 'yahoo-reset', 'normalize' );
+		
 		$sOption = self::getOption( 'option' );
 		$fHotlink = ( self::getOption( 'hotlink' ) == 'Y' );
 		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
 
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
-
-		if ( !in_array( $sOption, array( 'yahoo-reset', 'normalize', 'twitter', 'twitter-legacy' ) ) ) {
+		
+		if ( !in_array( $sOption, $aPossibleOptions ) AND !$fCustomCss ) {
 			return $insContents;
 		}
-
+		
 		$aLocalCss = array(
 			'twitter'				=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.min.css',
 			'twitter_responsive'	=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap-responsive.min.css',
@@ -137,14 +152,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		$sReplace = '${1}';
 		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
-		$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 		
-		//Add the CSS link
+		if ( in_array( $sOption, $aPossibleOptions ) ) {
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
+		}
+		
+		//Add the Responsive CSS link
 		if ( $fResponsive AND $sOption == 'twitter' ) {
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$aLocalCss['twitter_responsive'].'">';
 		}
 
-		echo $fCustomCss .' '. $sCustomCssUrl;
 		if ( $fCustomCss ) {
 			$sCustomCssUrl = self::getOption( 'customcss_url' );
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
@@ -154,12 +171,17 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
 	
+	/**
+	 * Links up the Twitter Bootstrap CSS into the WordPress Admin.
+	 * 
+	 * Also includes a separate CSS fixes file.
+	 */
 	public function includeTwitterCssWpAdmin() {
 		wp_register_style( 'bootstrap_wpadmin_css', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-2.0.2.css', false, self::$VERSION );
 		wp_enqueue_style( 'bootstrap_wpadmin_css' );
-		wp_register_style( 'bootstrap_wpadmin_css_fixes', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-fixes.css', false, self::$VERSION );
+		wp_register_style( 'bootstrap_wpadmin_css_fixes', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-fixes.css', array('bootstrap_wpadmin_css'), self::$VERSION );
 		wp_enqueue_style( 'bootstrap_wpadmin_css_fixes' );
-	}
+	}//includeTwitterCssWpAdmin
 
 	public function onWpInit() {
 		parent::onWpInit();
@@ -190,16 +212,25 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
-		$sPageNow = $_GET['page'];
-		if ( self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y'
-				OR ($pagenow == 'admin.php' AND 
-						($_GET['page']=='hlt-directory-bootstrap-css' OR $_GET['page']=='hlt-directory') )
-				) {
-			add_action( 'admin_enqueue_scripts', array( &$this, 'includeTwitterCssWpAdmin' ), 99 );
-			
-			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'css/bootstrap-admin.css', false, self::$VERSION );
+		$sSubPageNow = $_GET['page'];
+		$fAddAdminBootstrap = false;
+		if ($pagenow == 'admin.php' AND 
+				($sSubPageNow=='hlt-directory-bootstrap-css' OR $sSubPageNow=='hlt-directory') ) {
+	
+			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
+			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'css/bootstrap-admin.css', array('bootstrap_wpadmin_css_fixes'), self::$VERSION );
 			wp_enqueue_style( 'wtb_css' );
-		} 
+			
+			$fAddAdminBootstrap = true;
+			
+		}
+		
+		if ( $fAddAdminBootstrap OR self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
+			add_action( 'admin_enqueue_scripts', array( &$this, 'includeTwitterCssWpAdmin' ), 99 );
+		}
+
+		//Multilingual support.
+		load_plugin_textdomain('hlt-wordpress-bootstrap-css', false, basename( dirname( __FILE__ ) ) . '/languages');
 	}
 	
 	public function onWpPluginsLoaded() {
@@ -218,10 +249,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::onWpAdminMenu();
 		
 		add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap CSS' ), 'Bootstrap CSS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-css' ), array( &$this, 'onDisplayPlugin' ) );
-
+	//	add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap LESS' ), 'Bootstrap LESS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-less' ), array( &$this, 'onDisplayPlugin' ) );
+		
 		$this->fixSubmenu();
 	}
 	
+	/**
+	 * Handles the upgrade from version 1 to version 2 of Twitter Bootstrap.
+	 */
 	public function handlePluginUpgrade() {
 
 		if ( self::getOption( 'upgraded1to2' ) != 'Y' ) {
@@ -247,7 +282,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::addOption( 'upgraded1to2', 'Y' );
 			self::updateOption( 'upgraded1to2', 'Y' );
 		}
-	}
+	}//handlePluginUpgrade
 	
 	public function onDisplayPlugin() {
 	
@@ -294,6 +329,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	protected function handleSubmit() {		
 		if ( isset( $_POST['hlt_bootstrap_option'] ) ) {
+	
+			self::updateOption( 'option',			$_POST['hlt_bootstrap_option'] );
+			
 			$sCustomUrl = $_POST[self::InputPrefix.'text_customcss_url'];
 			$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
 			$fIncludeTooltip = ($this->getAnswerFromPost( 'option_popover_js' ) === 'Y' || $this->getAnswerFromPost( 'option_tooltip_js' ) === 'Y' );
@@ -625,7 +663,7 @@ class HLT_Plugin {
 				function redirect() {
 					window.location = "'.$insUrl.'";
 				}
-				//var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
+				var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
 			</script>'; 
 	}
 	
@@ -679,7 +717,7 @@ class HLT_Plugin {
 	}
 	
 	public function onDisplayMainMenu() {
-		$this->redirect( 'admin.php?page=hlt-directory-bootstrap-css' );
+		//$this->redirect( 'admin.php?page=hlt-directory-bootstrap-css' );
 
 		$aData = array(
 			'plugin_url'	=> self::$PLUGIN_URL

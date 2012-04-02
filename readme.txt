@@ -4,9 +4,9 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.2
+Stable tag: 2.0.2a
 
-With Wordpress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
@@ -36,13 +36,13 @@ From Twitter Bootstrap:
 *Bootstrap is a toolkit from Twitter designed to kickstart development of webapps and sites.
 It includes base CSS and HTML for typography, forms, buttons, tables, grids, navigation, and more*
 
-Many themes do not allow you to add custom CSS files easily. Even Thesis! So we take another approach
-and inject the CSS as one of the FIRST items in the HTML HEAD section. This way, no other CSS
-interferes and these may be used as a foundation/reset CSS.
+Many themes do not allow you to add custom CSS files easily. Even the Thesis Framework! So we take
+another approach and inject the CSS as one of the FIRST items in the HTML HEAD section. This way, no
+other CSS interferes and these may be used as a foundation/reset CSS.
 
-The CSS is only part of the solution. They have now released Javascript libraries
+The CSS is only part of the solution. Twitter Bootstrap also have Javascript libraries
 to complement their Bootstrap solution. These may also be added to your site with the option to
-add them to the HEAD (by default they are added to the footer).
+add them to the HEAD (by default they are added to the end of the BODY).
 
 We also wanted the option to alternatively include "reset.css" and "normalize.css".  These both form related roles
 as bootstrap, but are lighter.
@@ -89,7 +89,7 @@ Select the CSS file as desired.
 
 = Can I link more than one CSS? =
 
-No. There's absolutely no point in doing that and serves only to add a performance penalty to your page loads.
+No. There's no point in doing that and serves only to add a performance penalty to your page loads.
 
 With version 0.4+, you can now add your own custom reset CSS that will follow the standard reset/Twittter Bootstrap CSS. 
 
@@ -106,7 +106,7 @@ already in such a manner that the CSS applied with this plugin is overwritten.
 CSS is hierarchical. This means that any styles defined that apply to an element that *already* has
 styles applied to it will take precedence over any previous styles.
 
-= Is Wordpress Bootstrap CSS compatible with caching plugins? =
+= Is WordPress Bootstrap CSS compatible with caching plugins? =
 
 The only caching plugin that Host Like Toast recommends, and has decent experience with, is W3
 Total Cache.
@@ -120,11 +120,6 @@ Otherwise, consult your caching program's documentation.
 
 Yes, but only in the case of Yahoo! YUI 2, and Twitter Bootstrap CSS.
 
-= Where is the CSS served from - my server or the source of the CSS? =
-
-It's up to you. We provide the option for you to choose whether it's direct from the source, or served from
-your server.
-
 = What's the reason for the Host Like Toast menu? =
 
 We're planning on releasing more plugins in the future and they'll use much of the same code base. In this way
@@ -136,13 +131,20 @@ settings page each time (as is the case with most plugins out there).
 
 == Screenshots ==
 
-1. Here you select which CSS to use and then save settings
+1. Here you select which CSS to use.
 
-2. Assuming you select Twitter Bootstrap CSS, you may now select which Twitter Bootstrap libraries to include
+2. If you prefer you can specifiy your own custom reset CSS file. You could use this if you wanted to use a Twitter Bootstrap
+CSS library that you have created yourself (useful until we implement a LESS compiler into the plugin).
 
-3. You may input an URL of a CSS file that you would like to have included immediately following the reset/Bootstrap CSS
+3. Assuming you select Twitter Bootstrap CSS, you may now select which Twitter Bootstrap Javascript libraries to include
 
-4. You may choose to hotlink the CSS and Javascript files, or serve them from your web server. (All files are included with the plugin download)
+4. You have the option of including any selected Javascript libraries in the HEAD of your WordPress document. This is not recommended
+for various performance reason.  You can also selected to enable our WordPress Shortcode library.
+
+5. A new feature as of version 2.0.2a. Plugin/Theme Developers can now include Twitter Bootstrap CSS in the WordPress Admin screen.
+Don't select this unless you know you need it - no harm if you do, but no point otherwise.
+
+6. As of version 2.0.2a, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it. 
 
 == Changelog ==
 
@@ -151,8 +153,9 @@ settings page each time (as is the case with most plugins out there).
 * ADDED: WordPress Admin notices for upgrades and success settings operations.
 * ADDED: New Shortcode: TBS_BADGE
 * ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
-* UPDATED: Setting page to now use Twitter Bootstrap layout/design
+* UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
 * UPDATED: The screenshots for the docs
+* STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
 
 = 2.0.2 =
 * UPDATED: Updated Twitter Bootstrap library to v2.0.2
@@ -268,9 +271,20 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.0.1d =
+= 2.0.2a =
+* ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
+* ADDED: WordPress Admin notices for upgrades and success settings operations.
+* ADDED: New Shortcode: TBS_BADGE
+* ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
+* UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
+* UPDATED: The screenshots for the docs
+* STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
+
+= 2.0.2 =
+* UPDATED: Updated Twitter Bootstrap library to v2.0.2
 * ADDED: Ability to include Responsive CSS stylesheet that comes with Twitter Bootstrap version 2.0+
-* ADDED: Reorg'd some of the interface to be more logical
+* ADDED: Reorg'd some of the interface to be a little more logical
+* FIXED: serious oversight with including individual Javascript libraries.
 
 = 2.0.1c =
 * ADDED: Ability to add the "disabled" option to Twitter Bootstrap button components.
