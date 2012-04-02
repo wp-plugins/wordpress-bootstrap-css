@@ -57,7 +57,7 @@
 
 			jQuery( 'input[name=hlt_bootstrap_option_popover_js]' ).on( 'click', onChangePopoverJs );
 			
-			jQuery( 'select[name=hlt_bootstrap_option]' ).trigger( 'click' );
+			jQuery( 'select[name=hlt_bootstrap_option]' ).trigger( 'change' );
 		}
 	);
 
@@ -143,7 +143,6 @@
 				}
 				jQuery( '#controlIndividualLibrariesList div[id^=section-hlt-]' ).removeClass( 'hidden' );
 
-				
 				jQuery( '#controlAllJavascriptLibraries' ).unbind( 'click.special' ).bind( 'click.special',
 					function () {
 						var $oDiv = jQuery( this );
@@ -156,7 +155,6 @@
 						}
 					}
 				);
-				jQuery( '#section-hlt-all-js' ).trigger( 'click' );
 			}
 		}
 		else {
