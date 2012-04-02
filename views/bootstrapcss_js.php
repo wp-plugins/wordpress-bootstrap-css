@@ -19,14 +19,13 @@
 			/**
 			 * Enables/Disables the custom CSS text field depending on checkbox
 			 */
-			jQuery( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" ).on( 'click', onClickCustomCss );
-
+			var $oCustomCss = jQuery( "input[type=checkbox][name='hlt_bootstrap_option_customcss']" );
+			$oCustomCss.on( 'click', onClickCustomCss );
+			onClickCustomCss.call( $oCustomCss.get( 0 ) );
+			
 			/**
 			 * Initialise the default states of sections and inputs.
 			 */
-			if ( jQuery( "#hlt_bootstrap_option_customcss" ).is( ':checked' ) === false ) {
-				jQuery( "#hlt-text-customcss-url" ).attr( 'disabled', 'disabled' );
-			}
 			jQuery( 'input:checked' ).parents( 'div.option_section' ).addClass( 'active' );
 
 			/**
