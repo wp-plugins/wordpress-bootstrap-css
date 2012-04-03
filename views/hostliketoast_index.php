@@ -1,5 +1,3 @@
-<?php
-?>
 <div class="wrap">
 	<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br></div></a>
 	<h2>Host Like Toast: Plugins Dashboard</h2>
