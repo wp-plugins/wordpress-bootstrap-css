@@ -4,7 +4,7 @@
 Plugin Name: Wordpress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others. 
-Version: 2.0.2b
+Version: 2.0.2.1
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -56,6 +56,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	protected $m_fUpdateSuccessTracker;
 	protected $m_aFailedUpdateOptions;
 	
+	protected $m_aAllPluginOptions;
+	
 	public function __construct() {
 		parent::__construct();
 		
@@ -66,18 +68,63 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.2b'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.2.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.DS.self::$PLUGIN_PATH.DS;
 		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
 		
+		$this->defineAllPluginOptions();
+
 		if ( is_admin() ) {
-			$oInstall = new HLT_BootstrapCss_Install();
-			$oUninstall = new HLT_BootstrapCss_Uninstall();
+			
+			$oInstall = new HLT_BootstrapCss_Install( &$this->m_aAllPluginOptions );
+			$oUninstall = new HLT_BootstrapCss_Uninstall( &$this->m_aAllPluginOptions );
 		}
 	}
+	
+	private function defineAllPluginOptions() {
+		
+		$this->m_aAllPluginOptions = array(
+				array( 'option',				'none',	'select' ), //the main option of the plugin - which reset CSS to use
+				array( 'inc_responsive_css',	'N',	'checkbox' ),	// Bootstrap v2.0+
+				
+				array( 'customcss',		'N',		'checkbox' ),
+				array( 'customcss_url',	'http://',	'text' ),
+				
+				//Twitter Javascript preferences
+				array( 'all_js',		'N', 'checkbox' ),	// Bootstrap v2.0+
+				array( 'alert_js',		'N', 'checkbox' ),
+				array( 'button_js',		'N', 'checkbox' ),
+				array( 'dropdown_js',	'N', 'checkbox' ),
+				array( 'modal_js',		'N', 'checkbox' ),
+				array( 'tooltip_js',	'N', 'checkbox' ),
+				array( 'popover_js',	'N', 'checkbox' ),
+				array( 'scrollspy_js',	'N', 'checkbox' ),
+				array( 'tab_js',		'N', 'checkbox' ),
+				array( 'transition_js',	'N', 'checkbox' ),	// Bootstrap v2.0+
+				array( 'collapse_js',	'N', 'checkbox' ),	// Bootstrap v2.0+
+				array( 'carousel_js',	'N', 'checkbox' ),	// Bootstrap v2.0+
+				array( 'typeahead_js',	'N', 'checkbox' ),	// Bootstrap v2.0+
+				
+				array( 'js_head',		'N', 'checkbox' ),
+				
+				//Miscellaneous
+				array( 'prettify',					'N', 'checkbox' ),
+				array( 'hide_dashboard_rss_feed',	'N', 'checkbox' ),
+				array( 'inc_bootstrap_css_wpadmin',	'N', 'checkbox' ),
+				array( 'useshortcodes',				'N', 'checkbox' ),
+				
+				//Plugin admin flags
+				array( 'feedback_admin_notice', '', '' ), //set to empty to not display anything
+			);
+		
+	}//defineAllPluginOptions
+	
+	public function getAllPluginOptions() {
+		return $this->m_aAllPluginOptions;
+	}//getAllPluginOptions
 	
 	public function printAdminNotices() {
 
@@ -193,18 +240,19 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpEnqueueScripts' ) );
 		
-		// if shortcodes are enabled!
+		//if shortcodes are enabled, instantiate
 		$sBootstrapOption = self::getOption( 'option' );
 		if ( preg_match( "/^twitter/", $sBootstrapOption ) && self::getOption( 'useshortcodes' ) == 'Y' ) {
 			$sVersion = ($sBootstrapOption == 'twitter') ? '2' : '1';
 			$oShortCodes = new HLT_BootstrapShortcodes( $sVersion );
 		}
-	}
+	}//onWpInit
 	
 	public function onWpAdminInit() {
 		parent::onWpAdminInit();
 		
 		global $pagenow;
+		//Loads the news widget on the Dashboard (if it hasn't been disabled)
 		if ( $pagenow == 'index.php' ) {
 			$sDashboardRssOption = self::getOption( 'hide_dashboard_rss_feed' );
 			if ( empty( $sDashboardRssOption ) OR self::getOption( 'hide_dashboard_rss_feed' ) == 'N' ) {
@@ -221,10 +269,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'css/bootstrap-admin.css', array('bootstrap_wpadmin_css_fixes'), self::$VERSION );
 			wp_enqueue_style( 'wtb_css' );
 			
-			$fAddAdminBootstrap = true;
-			
+			$fAddAdminBootstrap = true; //for use in the next step
 		}
 		
+		//Adds the WP Admin Twitter Bootstrap files if the option is set
 		if ( $fAddAdminBootstrap OR self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'includeTwitterCssWpAdmin' ), 99 );
 		}
@@ -287,9 +335,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function onDisplayPlugin() {
 	
 		$aData = array(
-			'plugin_url'			=> self::$PLUGIN_URL,
-			'option'				=> self::getOption( 'option' ),
-			'hotlink'				=> self::getOption( 'hotlink' ),
+			'plugin_url'				=> self::$PLUGIN_URL,
+			'option'					=> self::getOption( 'option' ),
+			'option_inc_responsive_css'	=> self::getOption( 'inc_responsive_css' ),	// Bootstrap v2.0+
+
+			'option_customcss'		=> self::getOption( 'customcss' ),
+			'text_customcss_url'	=> self::getOption( 'customcss_url' ),
+		//	'hotlink'				=> self::getOption( 'hotlink' ),
 
 			'option_alert_js'		=> self::getOption( 'alert_js' ),
 			'option_button_js'		=> self::getOption( 'button_js' ),
@@ -304,19 +356,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_carousel_js'	=> self::getOption( 'carousel_js' ),	// Bootstrap v2.0+
 			'option_typeahead_js'	=> self::getOption( 'typeahead_js' ),	// Bootstrap v2.0+
 			'option_all_js'			=> self::getOption( 'all_js' ),			// Bootstrap v2.0+
-
-			'option_inc_responsive_css'	=> self::getOption( 'inc_responsive_css' ),	// Bootstrap v2.0+
-			'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
-
+			
 			'option_js_head'		=> self::getOption( 'js_head' ),
 			'option_useshortcodes'	=> self::getOption( 'useshortcodes' ),
-			'option_prettify'		=> self::getOption( 'prettify' ),
-
-			'option_customcss'		=> self::getOption( 'customcss' ),
-			'text_customcss_url'	=> self::getOption( 'customcss_url' ),
 			
-			//Show Dashboard RSS Feed?
+			'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
 			'option_hide_dashboard_rss_feed'	=> self::getOption( 'hide_dashboard_rss_feed' ),
+			'option_prettify'					=> self::getOption( 'prettify' ),
 		
 			'form_action'			=> 'admin.php?page=hlt-directory-bootstrap-css'
 		);
@@ -336,7 +382,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
 			$fIncludeTooltip = ($this->getAnswerFromPost( 'option_popover_js' ) === 'Y' || $this->getAnswerFromPost( 'option_tooltip_js' ) === 'Y' );
 			
-			self::updateOption( 'hotlink',			$this->getAnswerFromPost( 'hotlink' ) );
+		//	self::updateOption( 'hotlink',			$this->getAnswerFromPost( 'hotlink' ) );
 		
 			self::updateOption( 'alert_js',			$this->getAnswerFromPost( 'option_alert_js' ) );
 			self::updateOption( 'button_js',		$this->getAnswerFromPost( 'option_button_js' ) );
@@ -351,7 +397,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::updateOption( 'carousel_js',		$this->getAnswerFromPost( 'option_carousel_js' ) );		// Bootstrap v2.0+
 			self::updateOption( 'typeahead_js',		$this->getAnswerFromPost( 'option_typeahead_js' ) );	// Bootstrap v2.0+
 			self::updateOption( 'all_js',			$this->getAnswerFromPost( 'option_all_js' ) );	// Bootstrap v2.0+
-			// self::updateOption( '_js',			$this->getAnswerFromPost( 'option_' ) );
 			
 			self::updateOption( 'inc_responsive_css',			$this->getAnswerFromPost( 'option_inc_responsive_css' ) );	// Bootstrap v2.0+
 			self::updateOption( 'inc_bootstrap_css_wpadmin',	$this->getAnswerFromPost( 'option_inc_bootstrap_css_wpadmin' ) );	// Bootstrap v2.0+
@@ -535,12 +580,20 @@ class HLT_BootstrapCss extends HLT_Plugin {
 }//HLT_BootstrapCss
 
 class HLT_BootstrapCss_Install {
-	
-	public function __construct() {
+
+	private $m_aAllPluginOptions;
+
+	public function __construct($inaAllPluginOptions) {
+		$this->m_aAllPluginOptions = $inaAllPluginOptions;
 		register_activation_hook( __FILE__, array( &$this, 'onWpActivatePlugin' ) );
 	}
 	
 	public function onWpActivatePlugin() {
+		
+		foreach ($this->m_aAllPluginOptions as $aPluginOption) {
+			HLT_BootstrapCss::addOption( $aPluginOption[0], $aPluginOption[1] ); 
+		}
+		/*
 		HLT_BootstrapCss::addOption( 'option',			'none' );
 		HLT_BootstrapCss::addOption( 'hotlink',			'N' );
 		
@@ -568,49 +621,29 @@ class HLT_BootstrapCss_Install {
 		HLT_BootstrapCss::addOption( 'customcss',		'N' );
 		HLT_BootstrapCss::addOption( 'customcss_url',	'http://' );
 		
-		HLT_BootstrapCss::addOption( 'inc_bootstrap_css_wpadmin',	'N' );
-		
 		HLT_BootstrapCss::addOption( 'hide_dashboard_rss_feed',	'N' );
 		
-		HLT_BootstrapCss::addOption( 'feedback_admin_notice',	'' );
+		HLT_BootstrapCss::addOption( 'feedback_admin_notice',	'' ); //set to empty to not display anything
+		*/
 	}
 }
 
 class HLT_BootstrapCss_Uninstall {
 	
 	// TODO: when uninstalling, maybe have a WPversion save settings offsite-like setting
+
+	private $m_aAllPluginOptions;
 	
-	public function __construct() {
+	public function __construct($inaAllPluginOptions) {
+		$this->m_aAllPluginOptions = $inaAllPluginOptions;
 		register_deactivation_hook( __FILE__, array( &$this, 'onWpDeactivatePlugin' ) );
 	}
 	
 	public function onWpDeactivatePlugin() {
-		HLT_BootstrapCss::deleteOption( 'option' );
-		HLT_BootstrapCss::deleteOption( 'hotlink' );
 		
-		HLT_BootstrapCss::deleteOption( 'alert_js' );
-		HLT_BootstrapCss::deleteOption( 'button_js' );
-		HLT_BootstrapCss::deleteOption( 'dropdown_js' );
-		HLT_BootstrapCss::deleteOption( 'modal_js' );
-		HLT_BootstrapCss::deleteOption( 'tooltip_js' );
-		HLT_BootstrapCss::deleteOption( 'popover_js' );
-		HLT_BootstrapCss::deleteOption( 'scrollspy_js' );
-		HLT_BootstrapCss::deleteOption( 'tab_js' );
-		HLT_BootstrapCss::deleteOption( 'transition_js' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'collapse_js' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'carousel_js' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'typeahead_js' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'all_js' );			// Bootstrap v2.0+
-		
-		HLT_BootstrapCss::deleteOption( 'inc_responsive_css' );	// Bootstrap v2.0+
-		HLT_BootstrapCss::deleteOption( 'inc_bootstrap_css_wpadmin' );
-		
-		HLT_BootstrapCss::deleteOption( 'js_head' );
-		HLT_BootstrapCss::deleteOption( 'useshortcodes' );
-		HLT_BootstrapCss::deleteOption( 'prettify' );
-
-		HLT_BootstrapCss::deleteOption( 'customcss'  );
-		HLT_BootstrapCss::deleteOption( 'customcss_url' );
+		foreach ($this->m_aAllPluginOptions as $aPluginOption) {
+			HLT_BootstrapCss::deleteOption( $aPluginOption[0] ); 
+		}
 		
 		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );
 		
@@ -618,6 +651,7 @@ class HLT_BootstrapCss_Uninstall {
 		HLT_BootstrapCss::deleteOption( 'alerts_js'  );
 		HLT_BootstrapCss::deleteOption( 'tabs_js'  );
 		HLT_BootstrapCss::deleteOption( 'twipsy_js'  );
+		HLT_BootstrapCss::deleteOption( 'hotlink' );
 		
 	}
 }

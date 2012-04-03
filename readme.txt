@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.2b
+Stable tag: 2.0.2.1
 
 With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -148,7 +148,7 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-= 2.0.2b =
+= 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
 * ADDED: WordPress Admin notices for upgrades and success settings operations.
 * ADDED: New Shortcode: TBS_BADGE
@@ -157,7 +157,7 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * UPDATED: The screenshots for the docs
 * STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
 
-= 2.0.2a =
+= 2.0.2a & 2.0.2b =
 * skipped due to WordPress.org repository problem.
 
 = 2.0.2 =
@@ -274,7 +274,16 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.0.2b =
+= 2.0.2.1 =
+* ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
+* ADDED: WordPress Admin notices for upgrades and success settings operations.
+* ADDED: New Shortcode: TBS_BADGE
+* ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
+* UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
+* UPDATED: The screenshots for the docs
+* STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
+
+= 2.0.2a & 2.0.2b =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
 * ADDED: WordPress Admin notices for upgrades and success settings operations.
 * ADDED: New Shortcode: TBS_BADGE
