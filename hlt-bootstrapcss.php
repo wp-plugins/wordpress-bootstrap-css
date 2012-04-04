@@ -73,7 +73,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.2.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -99,18 +99,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				
 				//Twitter Javascript preferences
 				array( 'all_js',					'N', 'checkbox' ),	// Bootstrap v2.0+
-				array( 'alert_js',					'N', 'checkbox' ),
-				array( 'button_js',					'N', 'checkbox' ),
-				array( 'dropdown_js',				'N', 'checkbox' ),
-				array( 'modal_js',					'N', 'checkbox' ),
-				array( 'tooltip_js',				'N', 'checkbox' ),
-				array( 'popover_js',				'N', 'checkbox' ),
-				array( 'scrollspy_js',				'N', 'checkbox' ),
-				array( 'tab_js',					'N', 'checkbox' ),
-				array( 'transition_js',				'N', 'checkbox' ),	// Bootstrap v2.0+
-				array( 'collapse_js',				'N', 'checkbox' ),	// Bootstrap v2.0+
-				array( 'carousel_js',				'N', 'checkbox' ),	// Bootstrap v2.0+
-				array( 'typeahead_js',				'N', 'checkbox' ),	// Bootstrap v2.0+
 				
 				array( 'js_head',					'N', 'checkbox' ),
 				
@@ -122,6 +110,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				
 				//Plugin admin flags
 				array( 'feedback_admin_notice',		'', '' ), //set to empty to not display anything
+				array( 'current_plugin_version',	'', '' ), //for managing upgrades and calling the upgrade handler
 			);
 		
 		$this->m_aAllBootstrapLessOptions = array (
@@ -140,7 +129,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				array( 'less_purple',					'', '#7a43b6',					'color',		'Purple' ),
 				array( 'less_baseFontSize',				'', '13px',						'size',			'Font Size' ),
 				array( 'less_baseLineHeight',			'', '18px',						'size',			'Base Line Height' ),
-				array( 'less_baseFontFamily',			'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'',		'Font Family' )
+				array( 'less_baseFontFamily',			'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'font',		'Font Family' )
 			);
 		
 		$this->m_aAllPluginOptions = array_merge($this->m_aAllPluginOptions, $this->m_aAllBootstrapLessOptions );
@@ -170,7 +159,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		// (2) check for plugin settings upgrade
 		$sAdminFeedbackNotice = self::getOption( 'feedback_admin_notice' );
-		if ( !empty( $sAdminFeedbackNotice ) && $sAdminFeedbackNotice != '' ) {
+		if ( !empty( $sAdminFeedbackNotice ) ) {
 	        echo '
 	        <div id="message" class="updated">
 	        		<p>'.$sAdminFeedbackNotice.'</p>
@@ -191,7 +180,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		$sBoostrapOption = self::getOption( 'option' );
 		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
-
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
 		
 		if ( !in_array( $sBoostrapOption, $aPossibleOptions ) && !$fCustomCss ) {
@@ -322,28 +310,68 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 * Handles the upgrade from version 1 to version 2 of Twitter Bootstrap.
 	 */
 	public function handlePluginUpgrade() {
+		
+		if ( self::getOption( 'current_plugin_version' ) !== self::$VERSION ) {
 
-		//Manages those users who are coming from a version pre-Twitter 2.0+
-		if ( self::getOption( 'upgraded1to2' ) != 'Y' ) {
+			//Manages those users who are coming from a version pre-Twitter 2.0+
+			if ( self::getOption( 'upgraded1to2' ) !== 'Y' ) {
+				if ( self::getOption( 'alerts_js' ) === 'Y' ) {
+					self::addOption( 'alert_js', 'Y' );
+				}
+				if ( self::getOption( 'tabs_js' ) === 'Y' ) {
+					self::addOption( 'tab_js', 'Y' );
+				}
+				if ( self::getOption( 'twipsy_js' ) === 'Y' ) {
+					self::addOption( 'tooltip_js', 'Y' );
+				}
+				self::addOption( 'upgraded1to2', 'Y' );
+			}
 			
-			if ( self::getOption( 'alerts_js' ) == 'Y' ) {
-				self::addOption( 'alert_js', 'Y' );
+			//Manages migration to version 2.0.3 where legacy twitter and individual Javascript libraries are removed
+			if ( self::getOption( 'alert_js' ) == 'Y'
+					|| self::getOption( 'button_js' ) == 'Y'
+					|| self::getOption( 'dropdown_js' ) == 'Y'
+					|| self::getOption( 'modal_js' ) == 'Y'
+					|| self::getOption( 'tooltip_js' ) == 'Y'
+					|| self::getOption( 'popover_js' ) == 'Y'
+					|| self::getOption( 'scrollspy_js' ) == 'Y'
+					|| self::getOption( 'tab_js' ) == 'Y'
+					|| self::getOption( 'transition_js' ) == 'Y'
+					|| self::getOption( 'collapse_js' ) == 'Y'
+					|| self::getOption( 'carousel_js' ) == 'Y'
+					|| self::getOption( 'typeahead_js' ) == 'Y'
+					) {
+				self::updateOption( 'all_js', 'Y' );
 			}
-			self::deleteOption( 'alerts_js'  );
-
-			if ( self::getOption( 'tabs_js' ) == 'Y' ) {
-				self::addOption( 'tab_js', 'Y' );
+			
+			//Delete all old plugin options from all previous versions if they exist.
+			$m_aAllOldPluginOptions = array(
+					'hotlink',
+					
+					'button_js',
+					'dropdown_js',
+					'modal_js',
+					'tooltip_js',
+					'popover_js',
+					'scrollspy_js',
+					'tab_js',
+					'transition_js',
+					'collapse_js',
+					'carousel_js',
+					'typeahead_js',
+					'alerts_js',	//upgrade from 1~2
+					'tabs_js',		//upgrade from 1~2
+					'twipsy_js'		//upgrade from 1~2
+			);
+			foreach ($m_aAllOldPluginOptions as $sOldOptions) {
+				self::deleteOption( $sOldOptions );
 			}
-			self::deleteOption( 'tabs_js' );
-
-			if ( self::getOption( 'twipsy_js' ) == 'Y' ) {
-				self::addOption( 'tooltip_js', 'Y' );
-			}
-			self::deleteOption( 'twipsy_js' );
-
-			self::addOption( 'upgraded1to2', 'Y' );
-			self::updateOption( 'upgraded1to2', 'Y' );
-		}
+		
+			//Set the flag so that this update handler isn't run again for this version.
+			self::updateOption( 'current_plugin_version', self::$VERSION );
+			
+			echo "updated.";
+		}//if
 			
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
@@ -356,43 +384,30 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function onDisplayIndex() {
 	
 		$aData = array(
-			'plugin_url'						=> self::$PLUGIN_URL,
-			'option'							=> self::getOption( 'option' ),
-			'option_inc_responsive_css'			=> self::getOption( 'inc_responsive_css' ),	// Bootstrap v2.0+
+				'plugin_url'						=> self::$PLUGIN_URL,
+				'option'							=> self::getOption( 'option' ),
+				'option_inc_responsive_css'			=> self::getOption( 'inc_responsive_css' ),	// Bootstrap v2.0+
+	
+				'option_customcss'					=> self::getOption( 'customcss' ),
+				'text_customcss_url'				=> self::getOption( 'customcss_url' ),
+	
+				'option_all_js'						=> self::getOption( 'all_js' ),			// Bootstrap v2.0+
+				'option_js_head'					=> self::getOption( 'js_head' ),
+				'option_useshortcodes'				=> self::getOption( 'useshortcodes' ),
 
-			'option_customcss'					=> self::getOption( 'customcss' ),
-			'text_customcss_url'				=> self::getOption( 'customcss_url' ),
+				'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
+				'option_hide_dashboard_rss_feed'	=> self::getOption( 'hide_dashboard_rss_feed' ),
+				'option_prettify'					=> self::getOption( 'prettify' ),
 
-			'option_alert_js'					=> self::getOption( 'alert_js' ),
-			'option_button_js'					=> self::getOption( 'button_js' ),
-			'option_dropdown_js'				=> self::getOption( 'dropdown_js' ),
-			'option_modal_js'					=> self::getOption( 'modal_js' ),
-			'option_tooltip_js'					=> self::getOption( 'tooltip_js' ),
-			'option_popover_js'					=> self::getOption( 'popover_js' ),
-			'option_scrollspy_js'				=> self::getOption( 'scrollspy_js' ),
-			'option_tab_js'						=> self::getOption( 'tab_js' ),
-			'option_transition_js'				=> self::getOption( 'transition_js' ),	// Bootstrap v2.0+
-			'option_collapse_js'				=> self::getOption( 'collapse_js' ),	// Bootstrap v2.0+
-			'option_carousel_js'				=> self::getOption( 'carousel_js' ),	// Bootstrap v2.0+
-			'option_typeahead_js'				=> self::getOption( 'typeahead_js' ),	// Bootstrap v2.0+
-			'option_all_js'						=> self::getOption( 'all_js' ),			// Bootstrap v2.0+
-			
-			'option_js_head'					=> self::getOption( 'js_head' ),
-			'option_useshortcodes'				=> self::getOption( 'useshortcodes' ),
-			
-			'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
-			'option_hide_dashboard_rss_feed'	=> self::getOption( 'hide_dashboard_rss_feed' ),
-			'option_prettify'					=> self::getOption( 'prettify' ),
-		
-			'form_action'						=> 'admin.php?page=hlt-directory-bootstrap-css'
+				'form_action'						=> 'admin.php?page=hlt-directory-bootstrap-css'
 		);
 		$this->display( 'bootstrapcss_index', $aData );
-	}
+	}//onDisplayIndex
 	
 	public function onDisplayLess() {
 		
+		//Populate existing option values
 		foreach ($this->m_aAllBootstrapLessOptions as &$aOption) {
-		
 			$sOptionValue = self::getOption( $aOption[0] );
 			$aOption[1] = ($sOptionValue == '') ? $aOption[2] : $sOptionValue;
 		}
@@ -402,14 +417,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'less_options'		=> $this->m_aAllBootstrapLessOptions
 		);
 		
-		//enqueue JS color
-		$fJsInFooter = true;
-		wp_register_script( 'jscolor-picker', self::$PLUGIN_URL.'inc/jscolor/jscolor.js', '', self::$VERSION, $fJsInFooter );
+		//enqueue JS color scripts
+		wp_register_script( 'jscolor-picker', self::$PLUGIN_URL.'inc/jscolor/jscolor.js', '', self::$VERSION, true );
 		wp_enqueue_script( 'jscolor-picker' );
 		
 		$this->display( 'bootstrapcss_less', $aData );
 		
-	}
+	}//onDisplayLess
 	
 	public function onOutputBufferFlush( $insContent ) {
 		return $this->rewriteHead( $insContent );
@@ -426,8 +440,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sCustomUrl = $_POST[self::InputPrefix.'text_customcss_url'];
 		$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
 		$fIncludeTooltip = ($this->getAnswerFromPost( 'option_popover_js' ) === 'Y' || $this->getAnswerFromPost( 'option_tooltip_js' ) === 'Y' );
-	
-		//	self::updateOption( 'hotlink',			$this->getAnswerFromPost( 'hotlink' ) );
 	
 		self::updateOption( 'alert_js',			$this->getAnswerFromPost( 'option_alert_js' ) );
 		self::updateOption( 'button_js',		$this->getAnswerFromPost( 'option_button_js' ) );
@@ -706,16 +718,9 @@ class HLT_BootstrapCss_Uninstall {
 	public function onWpDeactivatePlugin() {
 		
 		foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
-			//HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
+			HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
 		}
-		
-		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );
-		
-		/* Clean-up from previous versions -pre-version 2.0 */
-		HLT_BootstrapCss::deleteOption( 'alerts_js'  );
-		HLT_BootstrapCss::deleteOption( 'tabs_js'  );
-		HLT_BootstrapCss::deleteOption( 'twipsy_js'  );
-		HLT_BootstrapCss::deleteOption( 'hotlink' );
+
 	}
 }
 
