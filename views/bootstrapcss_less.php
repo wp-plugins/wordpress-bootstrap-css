@@ -6,22 +6,38 @@
 	</div>
 	
 	<div class="bootstrap-wpadmin">
+	
 		<form class="form-horizontal" method="post" action="<?php echo $hlt_form_action; ?>">
 			<div class="row">
 				<div class="span10">
 					<fieldset>
-						<legend><?php _hlt_e( 'Choose LESS options' ); ?></legend>
+						<legend><?php _hlt_e( 'Configure LESS options' ); ?></legend>
+						<div class="row">
+							<div class="span10">
 <?php 
+	
+	if (!$hlt_compiler_enabled) {
+		echo '
+			<div class="alert alert-error" style="margin-top: 18px;">You need to <a href="admin.php?page=hlt-directory-bootstrap-css">enable the LESS compiler option</a> before using this section.</div>
+		';
+	} else {
+		echo '
+			<div class="alert alert-info" style="margin-top: 18px;">Customize the options below to tweak the appearance of your website.</div>
+		';
+	}
 
-	$sOptionName;
+?>
+							</div>
+						</div>
+<?php
+
 	$sOptionValue;
-	$sOptionDefaultValue;
 	$iFieldCount = 0;
 	foreach ($hlt_less_options as $aLessOption) {
-		$sOptionName = $aLessOption[0];
-		$sOptionDefaultValue = $aLessOption[2];
-		$sOptionValue = (empty($aLessOption[1]))? $sOptionDefaultValue : $aLessOption[1];
 		
+		list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aLessOption;
+		$sOptionValue = empty($sLessSaved)? $sLessDefault : $sLessSaved;
+
 		if ( $iFieldCount == 0 ) {
 			echo '<div class="row">';
 		}
@@ -29,13 +45,13 @@
 		echo '
 				<div class="span5">
 					<div class="control-group">
-						<label class="control-label" for="hlt_'.$sOptionName.'">'.$aLessOption[4].'</label>
+						<label class="control-label" for="hlt_'.$sLessKey.'">'.$sLessHumanName.'</label>
 						<div class="controls">
 							<div>
 								<label class="checkbox">
 									<input class="span2'.
-									($aLessOption[3] == 'color'? ' color' : '')
-									.'" type="text" name="hlt_'.$sOptionName.'" value="'.esc_attr($sOptionValue).'" id="hlt_'.$sOptionName.'" />
+									($sLessOptionType == 'color'? ' color' : '')
+									.'" type="text" name="hlt_'.$sLessKey.'" value="'.esc_attr($sOptionValue).'" id="hlt_'.$sLessKey.'"'.($hlt_compiler_enabled ? '':' disabled').' />
 								</label>
 								<p class="help-block">
 									Some help
@@ -58,7 +74,7 @@
 
 						<div class="form-actions">
 							<input type="hidden" name="hlt_less_option" value="Y" />
-							<button type="submit" class="btn btn-primary" name="submit"><?php _hlt_e( 'Save all changes' ); ?></button>
+							<button type="submit" class="btn btn-primary" name="submit" <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Save all changes' ); ?></button>
 							<button type="submit" class="btn btn-danger" name="submit_reset"><?php _hlt_e( 'Reset all values to original defaults' ); ?></button>
 						</div>
 					</fieldset>

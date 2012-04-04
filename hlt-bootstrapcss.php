@@ -57,6 +57,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const TwitterVersion = '2.0.2';
 	const TwitterVersionLegacy = '1.4.0';
 	
+	static public $BOOSTRAP_DIR;
+	static public $BOOSTRAP_URL;
+	
 	protected $m_fUpdateSuccessTracker;
 	protected $m_aFailedUpdateOptions;
 	
@@ -79,6 +82,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.DS.self::$PLUGIN_PATH.DS;
 		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
+		
+		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS;
+		self::$BOOSTRAP_URL = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/';
 		
 		$this->defineAllPluginOptions();
 
@@ -118,26 +124,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				array( 'current_plugin_version',	'', '' ), //for managing upgrades and calling the upgrade handler
 			);
 		
-		$this->m_aAllBootstrapLessOptions = array (
-				
-				array( 'less_textColor',				'', '#333',						'color',		'Text Colour' ), //@grayDark
-				array( 'less_primaryButtonBackground',	'', '#08c',						'color',		'Primary Button Colour' ), //@linkColor
-				array( 'less_linkColor',				'', '#08c',						'color',		'Link Colour' ),
-				array( 'less_linkColorHover',			'', '#08c',						'color',		'Link Hover Colour' ), //darken(@linkColor, 15%)
-				array( 'less_blue',						'', '#049cdb',					'color',		'Blue' ),
-				array( 'less_blueDark',					'', '#0064cd',					'color',		'Dark Blue' ),
-				array( 'less_green',					'', '#46a546',					'color',		'Green' ),
-				array( 'less_red',						'', '#9d261d',					'color',		'Red' ),
-				array( 'less_yellow',					'', '#ffc40d',					'color',		'Yellow' ),
-				array( 'less_orange',					'', '#f89406',					'color',		'Orange' ),
-				array( 'less_pink',						'', '#c3325f',					'color',		'Pink' ),
-				array( 'less_purple',					'', '#7a43b6',					'color',		'Purple' ),
-				array( 'less_baseFontSize',				'', '13px',						'size',			'Font Size' ),
-				array( 'less_baseLineHeight',			'', '18px',						'size',			'Base Line Height' ),
-				array( 'less_baseFontFamily',			'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'font',		'Font Family' )
-			);
-		
-		$this->m_aAllPluginOptions = array_merge($this->m_aAllPluginOptions, $this->m_aAllBootstrapLessOptions );
+		//$this->m_aAllPluginOptions = array_merge($this->m_aAllPluginOptions, $this->m_aAllBootstrapLessOptions );
 		
 	}//defineAllPluginOptions
 	
@@ -194,9 +181,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 		
 		$aLocalCss = array(
-			'twitter'					=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap'.$sMinifiedCssOption,
-			'twitter_less'				=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.less'.$sMinifiedCssOption,
-			'twitter_responsive'		=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap-responsive'.$sMinifiedCssOption,
+			'twitter'					=> self::$BOOSTRAP_URL.'css/bootstrap'.$sMinifiedCssOption,
+			'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
+			'twitter_responsive'		=> self::$BOOSTRAP_URL.'css/bootstrap-responsive'.$sMinifiedCssOption,
 			'yahoo-reset'				=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
 			'normalize'					=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
 		);
@@ -212,7 +199,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			//link to the Twitter LESS-compiled CSS (only if the file exists)
 			if ( $sBoostrapOption == 'twitter'
 					&& self::getOption( 'use_compiled_css' )
-					&& file_exists( self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'css'.DS.'bootstrap.less'.$sMinifiedCssOption )
+					&& file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less'.$sMinifiedCssOption )
 					) {
 				$sCssLink = $aLocalCss['twitter_less'];
 			}
@@ -424,16 +411,21 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}//onDisplayIndex
 	
 	public function onDisplayLess() {
-		
+
+		include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+		$oBoostrapLess = new HLT_BootstrapLess();
+		$aAllOptions = $oBoostrapLess->getAllBootstrapLessOptions();
+
 		//Populate existing option values
-		foreach ($this->m_aAllBootstrapLessOptions as &$aOption) {
+		foreach ($aAllOptions as &$aOption) {
 			$sOptionValue = self::getOption( $aOption[0] );
 			$aOption[1] = ($sOptionValue == '') ? $aOption[2] : $sOptionValue;
 		}
 		$aData = array(
-			'plugin_url'		=> self::$PLUGIN_URL,
-			'form_action'		=> 'admin.php?page=hlt-directory-bootstrap-less',
-			'less_options'		=> $this->m_aAllBootstrapLessOptions
+			'plugin_url'				=> self::$PLUGIN_URL,
+			'compiler_enabled'			=> self::getOption('use_compiled_css') === 'Y',
+			'form_action'				=> 'admin.php?page=hlt-directory-bootstrap-less',
+			'less_options'				=> $aAllOptions
 		);
 		
 		//enqueue JS color scripts
@@ -504,28 +496,29 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( !isset( $_POST['hlt_less_option'] ) ) {
 			return;
 		}
+		include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+		$oBoostrapLess = new HLT_BootstrapLess();
+		$aAllOptions = $oBoostrapLess->getAllBootstrapLessOptions();
+
 		if ( isset( $_POST['submit_reset'] ) ) {
 			
 			//Set DEFAULTS
-			foreach ( $this->m_aAllBootstrapLessOptions as $aOption ) {
+			foreach ( $aAllOptions as $aOption ) {
 				list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
 				self::updateOption( $sLessKey, $sLessDefault );
 			}
 			return;
 		}
 		
-		$sBootstrapImportLine = "@import \"bootstrap-2.0.1/less/bootstrap.less\";";
-		$sCustomLessContents = $sBootstrapImportLine;
-		
 		// TODO: Make as const
 		$sLessPrefix = 'less_';
 		
 		// Read in variables.less contents
-		$sFilePathVariablesLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'less'.DS.'variables.less';
+		$sFilePathVariablesLess = self::$BOOSTRAP_DIR.'less'.DS.'variables.less';
 		$sFilePathVariablesLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
 		$sContents = file_get_contents( $sFilePathVariablesLess );
 		
-		foreach ( $this->m_aAllBootstrapLessOptions as $aOption ) {
+		foreach ( $aAllOptions as $aOption ) {
 			list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
 			
 			$sPostValue = $_POST['hlt_'.$sLessKey];
@@ -550,10 +543,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 			$sContents = preg_replace( '/^\s*(@'.$sBootstrapLessVar.':\s*)([^;]+)(;)\s*$/im', '${1}'.$sPostValue.'${3}', $sContents );
 		}
-		
 		file_put_contents( $sFilePathVariablesLess, $sContents );		
 		
-		$sFilePathBootstrapLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'less'.DS.'bootstrap.less';
+		$sFilePathBootstrapLess = self::$BOOSTRAP_DIR.'less'.DS.'bootstrap.less';
 		$sFilePathBootstrapLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
 		
 		//parse LESS
@@ -566,9 +558,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		catch ( Exception $oE ) {
 			echo "lessphp fatal error: ".$oE->getMessage();
 		}
-		$sMinFile = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'css'.DS.'bootstrap.css';
-		file_put_contents( $sMinFile, $sCompiledCss );
-	}
+		$sMinFile = self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less';
+		file_put_contents( $sMinFile.'.css', $sCompiledCss );
+		
+		//Basic Minify
+		$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
+		file_put_contents( $sMinFile.'.min.css', $sCompiledCss );
+		
+	}//handleSubmit_BootstrapLess
 	
 	protected function handleSubmit() {
 		
