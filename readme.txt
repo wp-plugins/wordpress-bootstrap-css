@@ -150,6 +150,8 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 = 2.0.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options.
+* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
+* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*

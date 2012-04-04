@@ -98,7 +98,7 @@
 			<div class="row" id="BootstrapJavascript">
 				<div class="span10">
 					<fieldset>
-					  <legend><?php _hlt_e( 'Select Twitter Bootstrap Javascript Libraries' ); ?></legend>
+					  <legend><?php _hlt_e( 'Twitter Bootstrap Javascript Library Options' ); ?></legend>
 					  <div class="row" style="height:20px"></div>
 
 						<div class="twitter_extra">
@@ -119,10 +119,6 @@
 
 							<div id="controlIndividualLibrariesList" class="hidden"></div>
 						</div>
-					</fieldset>
-					<fieldset>
-						<legend><?php _hlt_e( 'Select Other Twitter Bootstrap Options' ); ?></legend>
-
 						<div class="control-group">
 							<label class="control-label" for="hlt-js-head"><?php _hlt_e('Javascript Placement'); ?></label>
 							<div class="controls">
@@ -138,6 +134,9 @@
 								</div>
 							</div>
 						</div>
+					</fieldset>
+					<fieldset>
+						<legend><?php _hlt_e( 'Extra Twitter Bootstrap Options' ); ?></legend>
 
 						<div class="control-group">
 							<label class="control-label" for="hlt-option-useshortcodes"><?php _hlt_e( 'Bootstrap Shortcodes' ); ?></label>
@@ -149,6 +148,36 @@
 									</label>
 									<p class="help-block">
 										<?php _hlt_e('WordPress shortcodes for fast application of the Twitter Bootstrap library.' ); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="hlt_bootstrap_option_use_minified_css"><?php _hlt_e( 'Use Minified CSS' ); ?></label>
+							<div class="controls">
+								<div class="option_section <?php if ( $hlt_option_use_minified_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_use_minified_css">
+									<label class="checkbox" for="hlt_bootstrap_option_use_minified_css">
+										<input type="checkbox" name="hlt_bootstrap_option_use_minified_css" value="Y" id="hlt_bootstrap_option_use_minified_css" <?php if ( $hlt_option_use_minified_css == 'Y' ): ?>checked="checked"<?php endif; ?> />
+										<?php _hlt_e('Use Minified CSS' ); ?>
+									</label>
+									<p class="help-block">
+										<?php _hlt_e('Will use minified CSS libraries where available.' ); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="hlt_bootstrap_option_use_compiled_css"><?php _hlt_e( 'Enable LESS-Compiled CSS' ); ?></label>
+							<div class="controls">
+								<div class="option_section <?php if ( $hlt_option_use_compiled_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_use_compiled_css">
+									<label class="checkbox" for="hlt_bootstrap_option_use_compiled_css">
+										<input type="checkbox" name="hlt_bootstrap_option_use_compiled_css" value="Y" id="hlt_bootstrap_option_use_compiled_css" <?php if ( $hlt_option_use_compiled_css == 'Y' ): ?>checked="checked"<?php endif; ?> />
+										<?php _hlt_e('Enable LESS-Compiled CSS' ); ?>
+									</label>
+									<p class="help-block">
+										<?php _hlt_e('Enables the LESS Compiler and uses CSS generated from this tool instead of the standard Bootstrap libraries.' ); ?>
 									</p>
 								</div>
 							</div>
@@ -189,6 +218,22 @@
 									</label>
 									<p class="help-block">
 										<?php _hlt_e( 'We added this feature so you could easily see the latest news and updates from our site that includes Web Hosting, WordPress and Twitter Bootstrap news and guides.' ); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="control-group">
+							<label class="control-label" for="hlt_bootstrap_option_delete_on_deactivate"><?php _hlt_e( 'Delete Plugin Settings' ); ?></label>
+							<div class="controls">
+								<div class="option_section <?php if ( $hlt_option_delete_on_deactivate == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_delete_on_deactivate">
+									<label class="checkbox" for="hlt_bootstrap_option_delete_on_deactivate">
+										<input type="checkbox" name="hlt_bootstrap_option_delete_on_deactivate" value="Y" id="hlt_bootstrap_option_delete_on_deactivate" <?php if ( $hlt_option_delete_on_deactivate == 'Y' ): ?>checked="checked"<?php endif; ?> />
+										<?php _hlt_e('Delete All Plugin Setting Upon Deactivite' ); ?>
+									</label>
+									<p class="help-block">
+										<?php _hlt_e('Careful: Checking this option will delete all WordPress Twitter Bootstrap plugin options when you deactivite the plugin.' ); ?>
 									</p>
 								</div>
 							</div>

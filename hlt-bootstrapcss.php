@@ -73,7 +73,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -102,11 +102,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				
 				array( 'js_head',					'N', 'checkbox' ),
 				
+				//Twitter Bootstrap Extra Options
+				array( 'useshortcodes',				'N', 'checkbox' ),
+				array( 'use_minified_css',			'Y', 'checkbox' ),	//Defaults to Minified
+				array( 'use_compiled_css',			'N', 'checkbox' ),
+				
 				//Miscellaneous
 				array( 'prettify',					'N', 'checkbox' ),
 				array( 'hide_dashboard_rss_feed',	'N', 'checkbox' ),
 				array( 'inc_bootstrap_css_wpadmin',	'N', 'checkbox' ),
-				array( 'useshortcodes',				'N', 'checkbox' ),
+				array( 'delete_on_deactivate',		'N', 'checkbox' ),
 				
 				//Plugin admin flags
 				array( 'feedback_admin_notice',		'', '' ), //set to empty to not display anything
@@ -182,15 +187,18 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
 		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
 		
+		$sMinifiedCssOption = ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.css' : '.css';
+		
 		if ( !in_array( $sBoostrapOption, $aPossibleOptions ) && !$fCustomCss ) {
 			return $insContents;
 		}
 		
 		$aLocalCss = array(
-			'twitter'				=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.min.css',
-			'twitter_responsive'	=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap-responsive.min.css',
-			'yahoo-reset'			=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
-			'normalize'				=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
+			'twitter'					=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap'.$sMinifiedCssOption,
+			'twitter_less'				=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap.less'.$sMinifiedCssOption,
+			'twitter_responsive'		=> self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/css/bootstrap-responsive'.$sMinifiedCssOption,
+			'yahoo-reset'				=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
+			'normalize'					=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
 		);
 		
 		$sCssLink = $aLocalCss[$sBoostrapOption];
@@ -201,6 +209,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
 		
 		if ( in_array( $sBoostrapOption, $aPossibleOptions ) ) {
+			//link to the Twitter LESS-compiled CSS (only if the file exists)
+			if ( $sBoostrapOption == 'twitter'
+					&& self::getOption( 'use_compiled_css' )
+					&& file_exists( self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'css'.DS.'bootstrap.less'.$sMinifiedCssOption )
+					) {
+				$sCssLink = $aLocalCss['twitter_less'];
+			}
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
 		}
 		
@@ -347,7 +362,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			//Delete all old plugin options from all previous versions if they exist.
 			$m_aAllOldPluginOptions = array(
 					'hotlink',
-					
+					'alert_js',
 					'button_js',
 					'dropdown_js',
 					'modal_js',
@@ -393,12 +408,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 				'option_all_js'						=> self::getOption( 'all_js' ),			// Bootstrap v2.0+
 				'option_js_head'					=> self::getOption( 'js_head' ),
+				
 				'option_useshortcodes'				=> self::getOption( 'useshortcodes' ),
+				'option_use_minified_css'			=> self::getOption( 'use_minified_css' ),
+				'option_use_compiled_css'			=> self::getOption( 'use_compiled_css' ),
 
 				'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
 				'option_hide_dashboard_rss_feed'	=> self::getOption( 'hide_dashboard_rss_feed' ),
+				'option_delete_on_deactivate'		=> self::getOption( 'delete_on_deactivate' ),
 				'option_prettify'					=> self::getOption( 'prettify' ),
-
+				
 				'form_action'						=> 'admin.php?page=hlt-directory-bootstrap-css'
 		);
 		$this->display( 'bootstrapcss_index', $aData );
@@ -439,31 +458,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 		$sCustomUrl = $_POST[self::InputPrefix.'text_customcss_url'];
 		$fCustomCss = ($this->getAnswerFromPost( 'option_customcss' ) === 'Y');
-		$fIncludeTooltip = ($this->getAnswerFromPost( 'option_popover_js' ) === 'Y' || $this->getAnswerFromPost( 'option_tooltip_js' ) === 'Y' );
-	
-		self::updateOption( 'alert_js',			$this->getAnswerFromPost( 'option_alert_js' ) );
-		self::updateOption( 'button_js',		$this->getAnswerFromPost( 'option_button_js' ) );
-		self::updateOption( 'dropdown_js',		$this->getAnswerFromPost( 'option_dropdown_js' ) );
-		self::updateOption( 'modal_js',			$this->getAnswerFromPost( 'option_modal_js' ) );
-		self::updateOption( 'tooltip_js',		$fIncludeTooltip? 'Y': 'N' );
-		self::updateOption( 'popover_js',		$this->getAnswerFromPost( 'option_popover_js' ) );
-		self::updateOption( 'scrollspy_js',		$this->getAnswerFromPost( 'option_scrollspy_js' ) );
-		self::updateOption( 'tab_js',			$this->getAnswerFromPost( 'option_tab_js' ) );
-		self::updateOption( 'transition_js',	$this->getAnswerFromPost( 'option_transition_js' ) );	// Bootstrap v2.0+
-		self::updateOption( 'collapse_js',		$this->getAnswerFromPost( 'option_collapse_js' ) );		// Bootstrap v2.0+
-		self::updateOption( 'carousel_js',		$this->getAnswerFromPost( 'option_carousel_js' ) );		// Bootstrap v2.0+
-		self::updateOption( 'typeahead_js',		$this->getAnswerFromPost( 'option_typeahead_js' ) );	// Bootstrap v2.0+
-		self::updateOption( 'all_js',			$this->getAnswerFromPost( 'option_all_js' ) );	// Bootstrap v2.0+
-	
-		self::updateOption( 'inc_responsive_css',			$this->getAnswerFromPost( 'option_inc_responsive_css' ) );	// Bootstrap v2.0+
-		self::updateOption( 'inc_bootstrap_css_wpadmin',	$this->getAnswerFromPost( 'option_inc_bootstrap_css_wpadmin' ) );	// Bootstrap v2.0+
-	
-		self::updateOption( 'js_head',			$this->getAnswerFromPost( 'option_js_head' ) );
-		self::updateOption( 'useshortcodes',	$this->getAnswerFromPost( 'option_useshortcodes' ) );
-		self::updateOption( 'prettify',			$this->getAnswerFromPost( 'option_prettify' ) );
-	
-		self::updateOption( 'customcss',		$this->getAnswerFromPost( 'option_customcss' ) );
-	
 		if ( $fCustomCss && !empty( $sCustomUrl ) ) {
 			if ( $this->checkUrlValid( $sCustomUrl ) ) {
 				self::updateOption( 'customcss_url', $_POST[self::InputPrefix.'text_customcss_url'] );
@@ -472,10 +466,22 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				self::updateOption( 'customcss_url', '' );
 			}
 		}
+		
+		self::updateOption( 'inc_responsive_css',			$this->getAnswerFromPost( 'option_inc_responsive_css' ) );	// Bootstrap v2.0+
+		self::updateOption( 'customcss',					$this->getAnswerFromPost( 'option_customcss' ) );
 	
-		// Show Dashboard RSS Feed?
-		self::updateOption( 'hide_dashboard_rss_feed',	$this->getAnswerFromPost( 'option_hide_dashboard_rss_feed' ) );
-	
+		self::updateOption( 'all_js',						$this->getAnswerFromPost( 'option_all_js' ) );	// Bootstrap v2.0+
+		self::updateOption( 'js_head',						$this->getAnswerFromPost( 'option_js_head' ) );
+		
+		self::updateOption( 'useshortcodes',				$this->getAnswerFromPost( 'option_useshortcodes' ) );
+		self::updateOption( 'use_minified_css',				$this->getAnswerFromPost( 'option_use_minified_css' ) );
+		self::updateOption( 'use_compiled_css',				$this->getAnswerFromPost( 'option_use_compiled_css' ) );
+		
+		self::updateOption( 'inc_bootstrap_css_wpadmin',	$this->getAnswerFromPost( 'option_inc_bootstrap_css_wpadmin' ) );	// Bootstrap v2.0+
+		self::updateOption( 'hide_dashboard_rss_feed',		$this->getAnswerFromPost( 'option_hide_dashboard_rss_feed' ) );
+		self::updateOption( 'delete_on_deactivate',			$this->getAnswerFromPost( 'option_delete_on_deactivate' ) );
+		self::updateOption( 'prettify',						$this->getAnswerFromPost( 'option_prettify' ) );
+		
 		if ( !$this->m_fUpdateSuccessTracker ) {
 			self::updateOption( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Failed</strong>.' );
 		}
@@ -488,6 +494,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$oW3TotalCache =& w3_instance( 'W3_Plugin_TotalCacheAdmin' );
 			$oW3TotalCache->flush_all();
 		}
+		
 		// TODO:
 		// header( "Location:admin.php?page=hlt-directory-bootstrap-css" ); //breaks admin notices
 	}
@@ -589,44 +596,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$fJsInFooter = (self::getOption( 'js_head' ) == 'Y'? false : true);
 		$sBootstrapOption = self::getOption( 'option' );
 		
+		if ( $sBootstrapOption == 'twitter' && self::getOption( 'all_js' ) == 'Y' ) {
+			$sUrlPrefix = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/js/bootstrap';
+			wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', '', self::$VERSION, $fJsInFooter );
+			wp_enqueue_script( 'bootstrap-all-min' );
+		}
+		
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
 			$sUrlPrefix = self::$PLUGIN_URL.'js/google-code-prettify/';
 			wp_register_script( 'prettify_script', $sUrlPrefix.'prettify.js', '', self::$VERSION, $fJsInFooter );
 			wp_enqueue_script( 'prettify_script' );
-		}
-		
-		if ( $sBootstrapOption == 'twitter' ) {
-			
-			$aBootstrapJsOptions = array (
-				'alert'			=> self::getOption( 'alert_js' ),
-				'button'		=> self::getOption( 'button_js' ),
-				'dropdown'		=> self::getOption( 'dropdown_js' ),
-				'modal'			=> self::getOption( 'modal_js' ),
-				'tooltip'		=> self::getOption( 'tooltip_js' ),
-				'popover'		=> self::getOption( 'popover_js' ),
-				'scrollspy'		=> self::getOption( 'scrollspy_js' ),
-				'tab'			=> self::getOption( 'tab_js' ),
-				'transition'	=> self::getOption( 'transition_js' ),
-				'collapse'		=> self::getOption( 'collapse_js' ),
-				'carousel'		=> self::getOption( 'carousel_js' ),
-				'typeahed'		=> self::getOption( 'typeahed_js' )
-			);
-		
-			$sUrlPrefix = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/js/bootstrap';
-
-			if ( self::getOption( 'all_js' ) == 'Y' ) {
-				wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', '', self::$VERSION, $fJsInFooter );
-				wp_enqueue_script( 'bootstrap-all-min' );
-			}
-			else {
-				foreach ( $aBootstrapJsOptions as $sJsLib => $sDisplay ) {
-					if ( $sDisplay == 'Y' ) {
-						$sUrl = $sUrlPrefix.'-'.$sJsLib.'.js';
-						wp_register_script( 'bootstrap'.$sJsLib, $sUrl, '', self::$VERSION, $fJsInFooter );
-						wp_enqueue_script( 'bootstrap'.$sJsLib );
-					}
-				}
-			}
 		}
 	}//onWpEnqueueScripts
 	
@@ -702,7 +681,7 @@ class HLT_BootstrapCss_Install {
 			HLT_BootstrapCss::addOption( $aPluginOption[0], $aPluginOption[1] );
 		}
 	}
-}
+}//HLT_BootstrapCss_Install
 
 class HLT_BootstrapCss_Uninstall {
 	
@@ -717,12 +696,13 @@ class HLT_BootstrapCss_Uninstall {
 	
 	public function onWpDeactivatePlugin() {
 		
-		foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
-			HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
+		if ( HLT_BootstrapCss::getOption('delete_on_deactivate') == 'Y' ) {
+			foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
+				HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
+			}
 		}
-
 	}
-}
+}//HLT_BootstrapCss_Uninstall
 
 class HLT_Plugin {
 	
