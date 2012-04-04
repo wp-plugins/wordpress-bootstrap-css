@@ -124,7 +124,8 @@ class HLT_BootstrapShortcodes {
 		
 		$sClassString = 'btn';
 		
-		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
+		//Prefix first class with "btn-" to ensure correct class name for Twitter Bootstrap
+		if ( !preg_match( '/^btn-/', $inaAtts['class'] ) ) {
 			$sClassString .= ( empty($inaAtts['class']) ) ? '' : ' btn-'.$inaAtts['class'];
 		} else if ( !empty($inaAtts['class']) ) {
 			$sClassString .= ' '.$inaAtts['class'];
@@ -225,6 +226,7 @@ class HLT_BootstrapShortcodes {
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
+		//prefix the first class with "badge-" to ensure correctly class name for Twitter
 		if ( !preg_match( '/^badge-/', $inaAtts['class'] ) ) {
 			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'badge-'.$inaAtts['class'];
 		}
@@ -257,7 +259,8 @@ class HLT_BootstrapShortcodes {
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
-		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^label-/', $inaAtts['class'] ) ) {
+		//prefix the first class with "label-" to ensure correctly class name for Twitter
+		if ( !preg_match( '/^label-/', $inaAtts['class'] ) ) {
 			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'label-'.$inaAtts['class'];
 		}
 
@@ -298,7 +301,11 @@ class HLT_BootstrapShortcodes {
 	}//blockquote
 
 	/**
-	 * class may be one of: error, warning, success, info
+	 * Returns a DIV with appropriate classes for Twitter Bootstrap Alerts.
+	 * 
+	 * Support for Twitter Bootstrap 1.4.x was removed with version 2.0.3 of the plugin.
+	 * 
+	 * Class may be one of: error, warning, success, info
 	 * 
 	 * @param $inaAtts
 	 * @param $insContent
@@ -310,16 +317,9 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'type', 'alert' );
 		$this->def( &$inaAtts, 'heading' );
-		
-		//Twitter 1.4.0 only supports this one variation
-		if ( $this->sTwitterBootstrapVersion == '1' ) {
-			//Twitter 1.4 only supports alert-message or block-message. So if one doesn't exist, set the other 
-			if ( !preg_match( '/alert-message/', $inaAtts['class'] ) ) {
-				$inaAtts['class'] = 'alert-message '.$inaAtts['class'];
-			}
-		}
-	
-		if ( $this->sTwitterBootstrapVersion == '2' && !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
+
+		//Ensures class starts with "alert-"
+		if ( !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
 			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'alert-'.$inaAtts['class'];
 		}
 		
@@ -337,33 +337,8 @@ class HLT_BootstrapShortcodes {
 		}
 		
 		$sReturn .= $this->doShortcode($insContent).'</div>';
-	
-		/*$sReturn = '<div '.$this->noEmptyHtml( $inaAtts['style'], 'style' )
-					.' class="'.$inaAtts['type'].' '.$inaAtts['class'].'" '
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' ).'>'.$this->doShortcode($insContent).'</div>';
-		*/
+
 		return  $sReturn ;
-	}
-
-	/**
-	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
-	 * 
-	 * Uses alert() function but just adds the class "block-message"
-	 * 
-	 * class may be one of: error, warning, success, info
-	 * 
-	 * @param $inaAtts
-	 * @param $insContent
-	 */
-	public function block( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		
-		$inaAtts['class'] = 'block-message '.$inaAtts['class'];
-		
-		return $this->alert( $inaAtts, $insContent );
 	}
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {
@@ -377,19 +352,6 @@ class HLT_BootstrapShortcodes {
 	}
 
 	/**
-	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
-	 * 
-	 * Options for 'placement' are above | below | left | right
-	 * 
-	 * @param $inaAtts
-	 * @param $insContent
-	 */
-	public function twipsy( $inaAtts = array(), $insContent = '' ) {
-
-		return $this->tooltip($inaAtts, $insContent);
-	}
-
-	/**
 	 * Options for 'placement' are top | bottom | left | right
 	 */
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
@@ -399,24 +361,13 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'placement', 'top' );
 		$this->def( &$inaAtts, 'title' );
-		$this->def( &$inaAtts, 'rel', 'tooltip' ); //could set to 'twipsy' for bootstrap 1.4.0
-	
-		//backward comnpatibility with Twitter Bootstrap v1.0
-		if ( $this->sTwitterBootstrapVersion == '1' ) {
-			$inaAtts['rel'] = 'twipsy';
-			if ( $inaAtts['placement'] == 'top' ) {
-				$inaAtts['placement'] = 'above';
-			}
-			if ( $inaAtts['placement'] == 'bottom' ) {
-				$inaAtts['placement'] = 'below';
-			}
-		} else { //Twitter Bootstrap v2.0 changed position names
-			if ( $inaAtts['placement'] == 'above' ) {
-				$inaAtts['placement'] = 'top';
-			}
-			if ( $inaAtts['placement'] == 'below' ) {
-				$inaAtts['placement'] = 'bottom';
-			}
+		$this->def( &$inaAtts, 'rel', 'tooltip' );
+
+		if ( $inaAtts['placement'] == 'above' ) {
+			$inaAtts['placement'] = 'top';
+		}
+		if ( $inaAtts['placement'] == 'below' ) {
+			$inaAtts['placement'] = 'bottom';
 		}
 		
 		//filters out empty elements
@@ -436,7 +387,6 @@ class HLT_BootstrapShortcodes {
 		
 		remove_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
 		add_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
-		
 		return $sReturn;
 	}
 
@@ -686,26 +636,21 @@ class HLT_BootstrapShortcodes {
 	
 	public function printJavascriptForTooltips() {
 		
-		$sJavascript = "
-		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
-		<script type='text/javascript'>
-			jQuery( document ).ready(
-				function () {";
+		$sJavascript = '
+			<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
+			<script type="text/javascript">
+				jQuery( document ).ready(
+					function () {
+		';
 		
-		if ( $this->sTwitterBootstrapVersion == '2' ) {
-			$sJavascript .= "
-					jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();";
-		} else {
-			$sJavascript .= "
-					jQuery( '*[rel=twipsy],*[data-twipsy=twipsy]' ).twipsy( { live: true } );";
-		}
+		$sJavascript .= "jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();";
 		
-		$sJavascript .= "
-				}
-			);
-		</script>
-		<!-- END: Tooltip(Twipsy)-enabling Javascript -->
-		";
+		$sJavascript .= '
+					}
+				);
+			</script>
+			<!-- END: Tooltip-enabling Javascript -->
+		';
 		
 		echo $sJavascript;
 		
@@ -756,5 +701,32 @@ class HLT_BootstrapShortcodes {
 	protected function doShortcode( $insContent ) {
 		return do_shortcode( $insContent );
 	}
+
+	/**
+	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
+	 * 
+	 * Uses alert() function but just adds the class "block-message"
+	 * 
+	 * class may be one of: error, warning, success, info
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function block( $inaAtts = array(), $insContent = '' ) {
+		return '<strong>Warning: You are using a deprecated shortcode. Please replace your [TBS_BLOCK] with [TBS_ALERT class="alert-block"]</strong>';
+	}
+
+	/**
+	 * DEPRECATED: To BE EVENTUALLY REMOVED AS UNSUPPORTED IN Twitter Bootstrap 2+
+	 * 
+	 * Options for 'placement' are above | below | left | right
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function twipsy( $inaAtts = array(), $insContent = '' ) {
+		/* return $this->tooltip($inaAtts, $insContent); */
+		return '<strong>Warning: You are using a deprecated shortcode. Please replace your [TBS_TWIPSY] with [TBS_TOOLTIP]</strong>';
+	}
 	
-}
+}//class HLT_BootstrapShortcodes

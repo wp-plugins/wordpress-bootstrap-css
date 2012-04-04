@@ -107,54 +107,39 @@
 		var sValue = jQuery( this ).val();
 
 		/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
-		if ( sValue == 'twitter' || sValue == 'twitter-legacy' ) {
+		if ( sValue == 'twitter' ) {
 			jQuery( '#BootstrapJavascript' ).slideDown( 150 );
 			
 			/**
 			 * Handle specific twitter versions.
 			 */
-			if ( sValue == 'twitter-legacy' ) {
-
-				jQuery( '#IncludeResponsiveCss' ).slideUp( 150 );
-
-				jQuery( '#controlAllJavascriptLibraries' ).addClass( 'hidden' );
-				jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
-
-				jQuery( '.twitter_extra .option_section' ).removeClass( 'hidden' );
-				jQuery( '#section-hlt-collapse-js' ).addClass( 'hidden' );
-				jQuery( '#section-hlt-transition-js' ).addClass( 'hidden' );
-				jQuery( '#section-hlt-typeahead-js' ).addClass( 'hidden' );
-				jQuery( '#section-hlt-carousel-js' ).addClass( 'hidden' );
+			jQuery( '#IncludeResponsiveCss' ).slideDown( 150 );
+			jQuery( '#controlAllJavascriptLibraries' ).removeClass( 'hidden' );
+			
+			/**
+			 * Initial the correct state!
+			 */
+			var fIsIncludeAll = jQuery( '#controlAllJavascriptLibraries' ).find( 'input[type=checkbox]' ).is( ':checked' );
+			if ( fIsIncludeAll ) {
+				jQuery( '#controlIndividualLibrariesList' ).addClass( 'hidden' );
 			}
 			else {
-				jQuery( '#IncludeResponsiveCss' ).slideDown( 150 );
-				jQuery( '#controlAllJavascriptLibraries' ).removeClass( 'hidden' );
-				
-				/**
-				 * Initial the correct state!
-				 */
-				var fIsIncludeAll = jQuery( '#controlAllJavascriptLibraries' ).find( 'input[type=checkbox]' ).is( ':checked' );
-				if ( fIsIncludeAll ) {
-					jQuery( '#controlIndividualLibrariesList' ).addClass( 'hidden' );
-				}
-				else {
-					jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
-				}
-				jQuery( '#controlIndividualLibrariesList div[id^=section-hlt-]' ).removeClass( 'hidden' );
-
-				jQuery( '#controlAllJavascriptLibraries' ).unbind( 'click.special' ).bind( 'click.special',
-					function () {
-						var $oDiv = jQuery( this );
-						var $oEl = $oDiv.find( 'input[type=checkbox]' );
-						if ( $oEl.is( ':checked' ) ) {
-							jQuery( '#controlIndividualLibrariesList' ).addClass( 'hidden' );
-						}
-						else {
-							jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
-						}
-					}
-				);
+				jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
 			}
+			jQuery( '#controlIndividualLibrariesList div[id^=section-hlt-]' ).removeClass( 'hidden' );
+
+			jQuery( '#controlAllJavascriptLibraries' ).unbind( 'click.special' ).bind( 'click.special',
+				function () {
+					var $oDiv = jQuery( this );
+					var $oEl = $oDiv.find( 'input[type=checkbox]' );
+					if ( $oEl.is( ':checked' ) ) {
+						jQuery( '#controlIndividualLibrariesList' ).addClass( 'hidden' );
+					}
+					else {
+						jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
+					}
+				}
+			);
 		}
 		else {
 			jQuery( '#BootstrapJavascript' ).slideUp( 150 );

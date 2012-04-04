@@ -28,21 +28,21 @@
 
 		echo '
 				<div class="span5">
-						<div class="control-group">
-							<label class="control-label" for="hlt_'.$sOptionName.'">'.$aLessOption[4].'</label>
-							<div class="controls">
-								<div>
-									<label class="checkbox">
-										<input class="span2'.
-										($aLessOption[3] == 'color'? ' color' : '')
-										.'" type="text" name="hlt_'.$sOptionName.'" value="'.esc_attr($sOptionValue).'" id="hlt_'.$sOptionName.'" />
-									</label>
-									<p class="help-block">
-										Some help
-									</p>
-								</div>
+					<div class="control-group">
+						<label class="control-label" for="hlt_'.$sOptionName.'">'.$aLessOption[4].'</label>
+						<div class="controls">
+							<div>
+								<label class="checkbox">
+									<input class="span2'.
+									($aLessOption[3] == 'color'? ' color' : '')
+									.'" type="text" name="hlt_'.$sOptionName.'" value="'.esc_attr($sOptionValue).'" id="hlt_'.$sOptionName.'" />
+								</label>
+								<p class="help-block">
+									Some help
+								</p>
 							</div>
 						</div>
+					</div>
 				</div>
 		';
 		if ( $iFieldCount == 1 ) {

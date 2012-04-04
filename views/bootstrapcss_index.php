@@ -39,9 +39,6 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 										<option value="twitter" id="hlt-twitter" <?php if ( $hlt_option == 'twitter' ): ?>selected="selected"<?php endif; ?>>
 											<?php _hlt_e( 'Twitter Bootstrap CSS' ); ?>
 										</option>
-										<option value="twitter-legacy" id="hlt-twitter-legacy" <?php if ( $hlt_option == 'twitter-legacy' ): ?>selected="selected"<?php endif; ?>>
-											<?php _hlt_e( 'Twitter Bootstrap CSS Legacy v1.4.0' ); ?>
-										</option>
 										<option value="yahoo-reset" id="hlt-yahoo-reset" <?php if ( $hlt_option == 'yahoo-reset' ): ?>selected="selected"<?php endif;?>>
 											<?php _hlt_e( 'Yahoo UI Reset CSS' ); ?>
 										</option>
@@ -56,9 +53,6 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 									</div>
 									<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
 										<p class="help-block"><?php _hlt_e('Bootstrap, from Twitter (latest release:'); ?>  v2.0.2) <a href="http://twitter.github.com/bootstrap/index.html" target="_blank"><span class="label label-info">more info</span></a></p>
-									</div>
-									<div id="desc_twitter-legacy" class="desc <?php if ( $hlt_option != 'twitter-legacy' ): ?>hidden<?php endif; ?>">
-										<p class="help-block">Bootstrap version 1.4.0, from Twitter (provided for sites that need the previous major release). <a href="http://twitter.github.com/bootstrap/upgrading.html" target="_blank"><span class="label label-info">more info</span></a></p>
 									</div>
 									<div id="desc_yahoo-reset" class="desc <?php if ( $hlt_option != 'yahoo-reset' ): ?>hidden<?php endif; ?>">
 										<p class="help-block"><?php _hlt_e('YahooUI Reset CSS is a basic reset for all browsers'); ?></p>
@@ -120,7 +114,7 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 					<fieldset>
 					  <legend><?php _hlt_e( 'Select Twitter Bootstrap Javascript Libraries' ); ?></legend>
 					  <div class="row" style="height:20px"></div>
-			
+
 						<div class="twitter_extra">
 							<div class="control-group" id="controlAllJavascriptLibraries">
 								<label class="control-label" for="hlt-all-js"><?php _hlt_e( 'All Javascript Libraries' ); ?></label>
@@ -132,7 +126,6 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 										</label>
 										<p class="help-block">
 											<?php _hlt_e( 'Selecting this negates the need for selecting individual libraries below.' ); ?>
-											<br /><?php _hlt_e( '(Note: not available in Twitter Legacy)' ); ?>
 										</p>
 									</div>
 								</div>
