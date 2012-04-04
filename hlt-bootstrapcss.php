@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: Wordpress Twitter Bootstrap CSS
+Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
 Version: 2.0.2.1
@@ -13,7 +13,7 @@ Author URI: http://www.hostliketoast.com/
  * Copyright (c) 2011 Host Like Toast <helpdesk@hostliketoast.com>
  * All rights reserved.
  *
- * "Wordpress Twitter Bootstrap CSS" (formerly "Wordpress Bootstrap CSS") is
+ * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
  * distributed under the GNU General Public License, Version 2,
  * June 1991. Copyright (C) 1989, 1991 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
@@ -39,7 +39,7 @@ define( 'DS', DIRECTORY_SEPARATOR );
 //global $doc_db_version;
 //global $wpdb;
 
-//$exit_msg = "The Wordpress installation must be version 3 or above.";
+//$exit_msg = "The WordPress installation must be version 3 or above.";
 //if (version_compare($wp_version, "3.0", "<")) {
  //   exit($exit_msg);
 //}
@@ -61,6 +61,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	protected $m_aFailedUpdateOptions;
 	
 	protected $m_aAllPluginOptions;
+	protected $m_aAllBootstrapLessOptions;
 	
 	public function __construct() {
 		parent::__construct();
@@ -123,11 +124,28 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				array( 'feedback_admin_notice',		'', '' ), //set to empty to not display anything
 			);
 		
+		$this->m_aAllBootstrapLessOptions = array (
+				
+				array( 'less_textColor',				'', '#333',						'color',		'Text Colour' ), //@grayDark
+				array( 'less_primaryButtonBackground',	'', '#08c',						'color',		'Primary Button Colour' ), //@linkColor
+				array( 'less_linkColor',				'', '#08c',						'color',		'Link Colour' ),
+				array( 'less_linkColorHover',			'', '#08c',						'color',		'Link Hover Colour' ), //darken(@linkColor, 15%)
+				array( 'less_blue',						'', '#049cdb',					'color',		'Blue' ),
+				array( 'less_blueDark',					'', '#0064cd',					'color',		'Dark Blue' ),
+				array( 'less_green',					'', '#46a546',					'color',		'Green' ),
+				array( 'less_red',						'', '#9d261d',					'color',		'Red' ),
+				array( 'less_yellow',					'', '#ffc40d',					'color',		'Yellow' ),
+				array( 'less_orange',					'', '#f89406',					'color',		'Orange' ),
+				array( 'less_pink',						'', '#c3325f',					'color',		'Pink' ),
+				array( 'less_purple',					'', '#7a43b6',					'color',		'Purple' ),
+				array( 'less_baseFontSize',				'', '13px',						'size',			'Font Size' ),
+				array( 'less_baseLineHeight',			'', '18px',						'size',			'Base Line Height' ),
+				array( 'less_baseFontFamily',			'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'',		'Font Family' )
+			);
+		
+		$this->m_aAllPluginOptions = array_merge($this->m_aAllPluginOptions, $this->m_aAllBootstrapLessOptions );
+		
 	}//defineAllPluginOptions
-	
-	public function getAllPluginOptions() {
-		return $this->m_aAllPluginOptions;
-	}//getAllPluginOptions
 	
 	public function printAdminNotices() {
 
@@ -158,13 +176,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	        		<p>'.$sAdminFeedbackNotice.'</p>
 	        </div>';
 	        self::updateOption( 'feedback_admin_notice', '' );
-		}
-
-		// (3) Notice to say that Twitter Legacy is going to be removed from version 2.0.3
-		$sSubPageNow = $_GET['page'];
-		if ( $sSubPageNow == 'hlt-directory' ) {
-	        echo '
-	        	';
 		}
 		
 	}//printAdminNotice
@@ -292,6 +303,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::onWpPluginsLoaded();
 		
 		if ( is_admin() ) {
+		
 			$this->handlePluginUpgrade();
 			$this->handleSubmit();
 
@@ -304,9 +316,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::onWpAdminMenu();
 		
 		add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap CSS' ), 'Bootstrap CSS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-css' ), array( &$this, 'onDisplayIndex' ) );
-		if ( self::getOption( 'option' ) == 'twitter' ) {
-			add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap LESS' ), 'Bootstrap LESS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-less' ), array( &$this, 'onDisplayLess' ) );
-		}
+	//	if ( self::getOption( 'option' ) == 'twitter' ) {
+		add_submenu_page( self::ParentMenuId, $this->getSubmenuPageTitle( 'Bootstrap LESS' ), 'Bootstrap LESS', self::ParentPermissions, $this->getSubmenuId( 'bootstrap-less' ), array( &$this, 'onDisplayLess' ) );
+	//	}
 		$this->fixSubmenu();
 	}
 	
@@ -315,6 +327,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	public function handlePluginUpgrade() {
 
+		//Manages those users who are coming from a version pre-Twitter 2.0+
 		if ( self::getOption( 'upgraded1to2' ) != 'Y' ) {
 			
 			if ( self::getOption( 'option' ) == 'twitter' ) {
@@ -338,6 +351,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			self::addOption( 'upgraded1to2', 'Y' );
 			self::updateOption( 'upgraded1to2', 'Y' );
 		}
+			
+		//Someone clicked the button to acknowledge the update
+		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
+			$result = update_user_meta( $_POST['hlt_user_id'], 'hlt_bootstrapcss_current_version', self::$VERSION );
+			header( "Location: admin.php?page=hlt-directory" );
+		}
+		
 	}//handlePluginUpgrade
 	
 	public function onDisplayIndex() {
@@ -378,11 +398,25 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	public function onDisplayLess() {
+		
+		foreach ($this->m_aAllBootstrapLessOptions as &$aOption) {
+		
+			$sOptionValue = self::getOption( $aOption[0] );
+			$aOption[1] = ($sOptionValue == '') ? $aOption[2] : $sOptionValue;
+		}
 		$aData = array(
-			'plugin_url'						=> self::$PLUGIN_URL,
-			'form_action'						=> 'admin.php?page=hlt-directory-bootstrap-less'
+			'plugin_url'		=> self::$PLUGIN_URL,
+			'form_action'		=> 'admin.php?page=hlt-directory-bootstrap-less',
+			'less_options'		=> $this->m_aAllBootstrapLessOptions
 		);
+		
+		//enqueue JS color
+		$bInFooter = true;
+		wp_register_script( 'jscolor-picker', self::$PLUGIN_URL.'inc/jscolor/jscolor.js', '', self::$VERSION, $bInFooter );
+		wp_enqueue_script( 'jscolor-picker' );
+		
 		$this->display( 'bootstrapcss_less', $aData );
+		
 	}
 	
 	public function onOutputBufferFlush( $insContent ) {
@@ -390,6 +424,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	protected function handleSubmit_BootstrapIndex() {
+		
 		if ( !isset( $_POST['hlt_bootstrap_option'] ) ) {
 			return;
 		}
@@ -455,13 +490,76 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	protected function handleSubmit_BootstrapLess() {
 		
+		if ( !isset( $_POST['hlt_less_option'] ) ) {
+			return;
+		}
+		if ( isset( $_POST['submit_reset'] ) ) {
+			
+			//Set DEFAULTS
+			foreach ( $this->m_aAllBootstrapLessOptions as $aOption ) {
+				list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
+				self::updateOption( $sLessKey, $sLessDefault );
+			}
+			return;
+		}
+		
+		$sBootstrapImportLine = "@import \"bootstrap-2.0.1/less/bootstrap.less\";";
+		$sCustomLessContents = $sBootstrapImportLine;
+		
+		// TODO: Make as const
+		$sLessPrefix = 'less_';
+		
+		// Read in variables.less contents
+		$sFilePathVariablesLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'less'.DS.'variables.less';
+		$sFilePathVariablesLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
+		$sContents = file_get_contents( $sFilePathVariablesLess );
+		
+		foreach ( $this->m_aAllBootstrapLessOptions as $aOption ) {
+			list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
+			
+			$sPostValue = $_POST['hlt_'.$sLessKey];
+			if ( $sLessOptionType == 'color' ) {
+				
+				if ( !preg_match( '/^[a-fA-F0-9]{3,6}$/', $sPostValue ) && !preg_match( '/^[a-fA-F0-9]{3}$/', $sPostValue ) ) {
+					$sPostValue = $sLessDefault;
+				}
+				if ( !preg_match( '/^#/', $sPostValue ) ) {
+					$sPostValue = '#'.$sPostValue;
+				}
+			} else if ( $sLessOptionType == 'size' ) {
+				if ( preg_match( '/^\d+$/', $sPostValue ) ) {
+					$sPostValue = $sPostValue.'px';
+				}
+				if ( !preg_match( '/^\d+(px|em|pt)$/', $sPostValue ) ) {
+					$sPostValue = $sLessDefault;
+				}
+			}
+			self::updateOption( $sLessKey, $sPostValue );
+			$sBootstrapLessVar = str_replace( $sLessPrefix, '', $sLessKey );
+		
+			$sContents = preg_replace( '/^\s*(@'.$sBootstrapLessVar.':\s*)([^;]+)(;)\s*$/im', '${1}'.$sPostValue.'${3}', $sContents );
+		}
+		
+		file_put_contents( $sFilePathVariablesLess, $sContents );		
+		
+		$sFilePathBootstrapLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS.'less'.DS.'bootstrap.less';
+		$sFilePathBootstrapLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
+		
+		//parse LESS
+		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
+		$oLessCompiler = new lessc( $sFilePathBootstrapLess );
+		$sCompiledCss = '';
+		try {
+			$sCompiledCss = $oLessCompiler->parse();
+		}
+		catch ( Exception $oE ) {
+			echo "lessphp fatal error: ".$oE->getMessage();
+		}
+		$sMinFile = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'css'.DS.'bootstrap.css';
+		file_put_contents( $sMinFile, $sCompiledCss );
 	}
 	
 	protected function handleSubmit() {
-		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
-			$result = update_user_meta( $_POST['hlt_user_id'], 'hlt_bootstrapcss_current_version', self::$VERSION );
-			header( "Location: admin.php?page=hlt-directory" );
-		}
 		
 		switch ( $_GET['page'] ) {
 			case $this->getSubmenuId( 'bootstrap-css' ):
@@ -625,7 +723,7 @@ class HLT_BootstrapCss_Uninstall {
 	public function onWpDeactivatePlugin() {
 		
 		foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
-			HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
+			//HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
 		}
 		
 		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );

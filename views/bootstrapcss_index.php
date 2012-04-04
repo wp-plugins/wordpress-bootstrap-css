@@ -190,7 +190,7 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 						<legend><?php _hlt_e( 'Select Other Twitter Bootstrap Options' ); ?></legend>
 
 						<div class="control-group">
-							<label class="control-label" for="hlt-js-head"><?php _e('Javascript Placement', 'hlt-wordpress-bootstrap-css'); ?></label>
+							<label class="control-label" for="hlt-js-head"><?php _hlt_e('Javascript Placement'); ?></label>
 							<div class="controls">
 								<div class="option_section <?php if ( $hlt_option_js_head == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-js-head">
 									<label class="checkbox" for="hlt-js-head">
@@ -246,7 +246,7 @@ function js_option_block_bootstrap( $hlt_option_value, $sOptionName, $sLabel, $s
 						</div>
 
 						<div class="control-group">
-							<label class="control-label" for="hlt-option-hide_dashboard_rss_feed"><?php _e('Hide HLT News Feed', 'hlt-wordpress-bootstrap-css'); ?></label>
+							<label class="control-label" for="hlt-option-hide_dashboard_rss_feed"><?php _hlt_e('Hide HLT News Feed'); ?></label>
 							<div class="controls">
 								<div class="option_section <?php if ( $hlt_option_hide_dashboard_rss_feed == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-dashboard_rss_feed">
 									<label class="checkbox" for="hlt-option-hide_dashboard_rss_feed">

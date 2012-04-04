@@ -35,7 +35,7 @@
 	<div class="row" id="tbs_docs">
 	  <div class="span6" id="tbs_docs_shortcodes">
 	  <div class="well">
-		<h3>Wordpress Twitter Bootstrap CSS Plugin Shortcodes</h3>
+		<h3>WordPress Twitter Bootstrap CSS Plugin Shortcodes</h3>
 		<p>To learn more about what shortcodes are, <a href="http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/">check this link</a></p>
 		<p>The following shortcodes are available:</p>
 		<ol>

@@ -9,7 +9,7 @@
 				<ul>
 					<li><a href="http://bit.ly/wLkYjf"><b>Read the latest Release Notes</b></a>.</li>
 					<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/">Give this plugin a 5 star rating on WordPress.org.</a></li>
-					<li><a href="http://bit.ly/owxOjJ">Get Quality Wordpress Web Hosting</a></li>
+					<li><a href="http://bit.ly/owxOjJ">Get Quality WordPress Web Hosting</a></li>
 				</ul>
 	  		</div>
 	  		<div class="span5">
