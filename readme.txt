@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: dlgoodchild, paultgoodchild
-Donate link: http://www.hostliketoast.com/
+Donate link: http://www.worpit.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.2.2
+Stable tag: 2.0.2.3
 
 With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -157,11 +157,14 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 
-= 2.0.2.2 =
+= 2.0.2.3 =
 * FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
 * UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
 for now (so all settings remain upon deactivation). Version 2.0.3 will have the option for the user to toggle this setting.
 * ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
+
+= 2.0.2.2 =
+Skipped yet again with WordPress.org repo problems.
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
@@ -298,11 +301,14 @@ is temporary until we fix.
 * REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 
-= 2.0.2.2 =
+= 2.0.2.3 =
 * FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
 * UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
 for now (so all settings remain upon deactivation). Version 2.0.3 will have the option for the user to toggle this setting.
 * ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
+
+= 2.0.2.2 =
+Skipped yet again with WordPress.org repo problems.
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
