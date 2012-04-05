@@ -4,7 +4,7 @@ Donate link: http://www.hostliketoast.com/
 Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
-Stable tag: 2.0.2.1
+Stable tag: 2.0.2.2
 
 With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
@@ -148,10 +148,20 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-= 2.0.3 =
+= 2.0.3 =  ** NOT YET RELEASED **
 * ADDED: LESS Compiler for some of the most common Bootstrap style options.
+* ADDED: Option - use minimized or non-minized Bootstrap CSS
+* ADDED: Option - delete all plugin settings upon deactivation
+* ADDED: Option - enable LESS compiler and including less-compiled CSS
+* UPDATED: Plugin upgrade handling is much improved.
 * REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
+
+= 2.0.2.2 =
+* FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
+* UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
+for now (so all settings remain upon deactivation). Version 2.0.3 will have the option for the user to toggle this setting.
+* ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
@@ -279,8 +289,20 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.0.3 =
+= 2.0.3 = ** NOT YET RELEASED **
 * ADDED: LESS Compiler for some of the most common Bootstrap style options.
+* ADDED: Option - use minimized or non-minized Bootstrap CSS
+* ADDED: Option - delete all plugin settings upon deactivation
+* ADDED: Option - enable LESS compiler and including less-compiled CSS
+* UPDATED: Plugin upgrade handling is much improved.
+* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
+* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
+
+= 2.0.2.2 =
+* FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
+* UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
+for now (so all settings remain upon deactivation). Version 2.0.3 will have the option for the user to toggle this setting.
+* ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
