@@ -153,8 +153,8 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * ADDED: Option - use minimized or non-minized Bootstrap CSS
 * ADDED: Option - delete all plugin settings upon deactivation
 * ADDED: Option - enable LESS compiler and including less-compiled CSS
-* UPDATED: Plugin upgrade handling is much improved.
-* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
+* UPDATED: Plugin upgrade handling is much improved
+* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 
 = 2.0.2.2 =

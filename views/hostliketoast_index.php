@@ -7,35 +7,43 @@
 	<div class="row">
 	  <div class="span12">
 		<div class="alert alert-error">
- 		 <h4 class="alert-heading">Important Notice</h4>
+ 		 <h4 class="alert-heading">Important Notice (1)</h4>
  		 Support for Twitter Bootstrap Legacy CSS will be removed from <strong>version 2.0.3</strong> onwards. Now is the time to update your plugin settings to use the latest version.</div>
+	  </div><!-- / span12 -->
+	</div><!-- / row -->
+
+	<div class="row">
+	  <div class="span12">
+		<div class="alert alert-warning">
+ 		 <h4 class="alert-heading">Important Notice (2)</h4>
+ 		 The option to select individual Twitter Bootstrap Javascript libraries will be removed from <strong>version 2.0.3</strong> onwards. "All" Javascript libraries will be the only option.</div>
 	  </div><!-- / span12 -->
 	</div><!-- / row -->
 
 	<?php include_once( dirname(__FILE__).'/bootstrapcss_common_widgets.php' ); ?>
 
 	<div class="row" id="worpit_promo">
-	  <div class="span6" id="worpit_button">
-		<a href="http://bit.ly/H3GXyK"><img src="<?php echo $inaData['plugin_url']; ?>images/worpit_wordpress_plugin.png" /></a>
-	  </div><!-- / span6 -->
 	  <div class="span6" id="worpit_description">
 	  <div class="well">
 	  	<h3>Worpit :: Faster, Centralized WordPress Admin</h3>
-			<p>Coming soon:</p>
+			<p><span class="label label-success">Coming soon</span></p>
 			<ul>
-				<li>Revolutionary <a href="http://bit.ly/H3tiAu" target="_blank">Backup and Recovery System for WordPress: WorpDrive</a></li>
+				<li>Backup: <a href="http://bit.ly/H3tiAu" target="_blank">Revolutionary Backup System for WordPress: WorpDrive</a></li>
 				<li>Bulk WordPress.org Plugin and Theme installation and updates</li>
 				<li>Integrated WordPress Web Hosting</li>
 				<li>Centralized control panel for all WordPress hosting administrators</li>
 			</ul>
 	  </div>
 	  </div><!-- / span6 -->
+	  <div class="span6" id="worpit_button">
+		<a href="http://bit.ly/H3GXyK"><img src="<?php echo $inaData['plugin_url']; ?>images/worpit_wordpress_plugin.png" /></a>
+	  </div><!-- / span6 -->
 	</div><!-- / row -->
 	
 	<div class="row" id="tbs_docs">
 	  <div class="span6" id="tbs_docs_shortcodes">
 	  <div class="well">
-		<h3>WordPress Twitter Bootstrap CSS Plugin Shortcodes</h3>
+		<h3>Wordpress Twitter Bootstrap CSS Plugin Shortcodes</h3>
 		<p>To learn more about what shortcodes are, <a href="http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/">check this link</a></p>
 		<p>The following shortcodes are available:</p>
 		<ol>
