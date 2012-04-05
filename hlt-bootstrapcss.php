@@ -157,13 +157,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	        self::updateOption('feedback_admin_notice', '');
 		}
 
-		// (3) Notice to say that Twitter Legacy is going to be removed from version 2.0.3
-		$sSubPageNow = $_GET['page'];
-		if ( $sSubPageNow == 'hlt-directory') {
-	        echo '
-	        	';
-		}
-		
 	}//printAdminNotice
 
 	/**
@@ -260,7 +253,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
-		$sSubPageNow = $_GET['page'];
+		$sSubPageNow = isset( $_GET['page'] )? $_GET['page']: '';
 		$fAddAdminBootstrap = false;
 		if ($pagenow == 'admin.php' AND 
 				($sSubPageNow=='hlt-directory-bootstrap-css' OR $sSubPageNow=='hlt-directory') ) {
@@ -642,7 +635,7 @@ class HLT_BootstrapCss_Uninstall {
 	public function onWpDeactivatePlugin() {
 		
 		foreach ($this->m_aAllPluginOptions as $aPluginOption) {
-			HLT_BootstrapCss::deleteOption( $aPluginOption[0] ); 
+			//HLT_BootstrapCss::deleteOption( $aPluginOption[0] ); 
 		}
 		
 		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );
