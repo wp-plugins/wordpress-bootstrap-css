@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: dlgoodchild, paultgoodchild
 Donate link: http://www.worpit.com/
-Tags: CSS, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
+Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.1
 Stable tag: 2.0.2.3
@@ -141,14 +141,15 @@ CSS library that you have created yourself (useful until we implement a LESS com
 4. You have the option of including any selected Javascript libraries in the HEAD of your WordPress document. This is not recommended
 for various performance reason.  You can also selected to enable our WordPress Shortcode library.
 
-5. A new feature as of version 2.0.2a. Plugin/Theme Developers can now include Twitter Bootstrap CSS in the WordPress Admin screen.
+5. A new feature as of version 2.0.2.1. Plugin/Theme Developers can now include Twitter Bootstrap CSS in the WordPress Admin screen.
 Don't select this unless you know you need it - no harm if you do, but no point otherwise.
 
-6. As of version 2.0.2a, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it. 
+6. As of version 2.0.2.1, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it. 
 
 == Changelog ==
 
-= 2.0.3 =  ** NOT YET RELEASED **
+= 2.0.3 =
+* NOT YET RELEASED
 * ADDED: LESS Compiler for some of the most common Bootstrap style options.
 * ADDED: Option - use minimized or non-minized Bootstrap CSS
 * ADDED: Option - delete all plugin settings upon deactivation
@@ -164,7 +165,7 @@ for now (so all settings remain upon deactivation). Version 2.0.3 will have the 
 * ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
 
 = 2.0.2.2 =
-Skipped yet again with WordPress.org repo problems.
+Skipped.
 
 = 2.0.2.1 =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
@@ -174,9 +175,6 @@ Skipped yet again with WordPress.org repo problems.
 * UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
 * UPDATED: The screenshots for the docs
 * STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
-
-= 2.0.2a & 2.0.2b =
-* skipped due to WordPress.org repository problem.
 
 = 2.0.2 =
 * UPDATED: Updated Twitter Bootstrap library to v2.0.2
@@ -292,15 +290,6 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.0.3 = ** NOT YET RELEASED **
-* ADDED: LESS Compiler for some of the most common Bootstrap style options.
-* ADDED: Option - use minimized or non-minized Bootstrap CSS
-* ADDED: Option - delete all plugin settings upon deactivation
-* ADDED: Option - enable LESS compiler and including less-compiled CSS
-* UPDATED: Plugin upgrade handling is much improved.
-* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy").
-* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
-
 = 2.0.2.3 =
 * FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
 * UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
@@ -308,18 +297,9 @@ for now (so all settings remain upon deactivation). Version 2.0.3 will have the 
 * ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
 
 = 2.0.2.2 =
-Skipped yet again with WordPress.org repo problems.
+Skipped.
 
 = 2.0.2.1 =
-* ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
-* ADDED: WordPress Admin notices for upgrades and success settings operations.
-* ADDED: New Shortcode: TBS_BADGE
-* ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
-* UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
-* UPDATED: The screenshots for the docs
-* STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
-
-= 2.0.2a & 2.0.2b =
 * ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
 * ADDED: WordPress Admin notices for upgrades and success settings operations.
 * ADDED: New Shortcode: TBS_BADGE

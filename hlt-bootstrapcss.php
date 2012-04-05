@@ -31,6 +31,7 @@ Author URI: http://www.hostliketoast.com/
  *
  */
 include_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
+include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
 include_once( dirname(__FILE__).'/hlt-rssfeed-widget.php' );
 
 define( 'DS', DIRECTORY_SEPARATOR );
@@ -262,7 +263,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
-		$sSubPageNow = $_GET['page'];
+		$sSubPageNow = isset( $_GET['page'] )? $_GET['page']: '';
 		$aAllowedPages = array(
 			'hlt-directory',
 			'hlt-directory-bootstrap-css',
@@ -411,21 +412,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}//onDisplayIndex
 	
 	public function onDisplayLess() {
-
-		include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+		
 		$oBoostrapLess = new HLT_BootstrapLess();
-		$aAllOptions = $oBoostrapLess->getAllBootstrapLessOptions();
 
-		//Populate existing option values
-		foreach ($aAllOptions as &$aOption) {
-			$sOptionValue = self::getOption( $aOption[0] );
-			$aOption[1] = ($sOptionValue == '') ? $aOption[2] : $sOptionValue;
-		}
 		$aData = array(
 			'plugin_url'				=> self::$PLUGIN_URL,
 			'compiler_enabled'			=> self::getOption('use_compiled_css') === 'Y',
 			'form_action'				=> 'admin.php?page=hlt-directory-bootstrap-less',
-			'less_options'				=> $aAllOptions
+			'less_options'				=> $oBoostrapLess->getAllBootstrapLessOptions(true)
 		);
 		
 		//enqueue JS color scripts
@@ -496,89 +490,37 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( !isset( $_POST['hlt_less_option'] ) ) {
 			return;
 		}
-		include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+	
 		$oBoostrapLess = new HLT_BootstrapLess();
-		$aAllOptions = $oBoostrapLess->getAllBootstrapLessOptions();
 
 		if ( isset( $_POST['submit_reset'] ) ) {
-			
-			//Set DEFAULTS
-			foreach ( $aAllOptions as $aOption ) {
-				list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
-				self::updateOption( $sLessKey, $sLessDefault );
-			}
+			$oBoostrapLess->resetToDefaultAllLessOptions(self::$BOOSTRAP_DIR);
 			return;
 		}
+		
+		$aAllLessOptions = $oBoostrapLess->getAllBootstrapLessOptions();
 		
 		// TODO: Make as const
 		$sLessPrefix = 'less_';
 		
-		// Read in variables.less contents
-		$sFilePathVariablesLess = self::$BOOSTRAP_DIR.'less'.DS.'variables.less';
-		$sFilePathVariablesLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
-		$sContents = file_get_contents( $sFilePathVariablesLess );
-		
-		foreach ( $aAllOptions as $aOption ) {
-			list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOption;
-			
-			$sPostValue = $_POST['hlt_'.$sLessKey];
-			if ( $sLessOptionType == 'color' ) {
-				
-				if ( !preg_match( '/^[a-fA-F0-9]{3,6}$/', $sPostValue ) ) {
-					$sPostValue = $sLessDefault;
-				}
-				if ( !preg_match( '/^#/', $sPostValue ) ) {
-					$sPostValue = '#'.$sPostValue;
-				}
-			} else if ( $sLessOptionType == 'size' ) {
-				if ( preg_match( '/^\d+$/', $sPostValue ) ) {
-					$sPostValue = $sPostValue.'px';
-				}
-				if ( !preg_match( '/^\d+(px|em|pt)$/', $sPostValue ) ) {
-					$sPostValue = $sLessDefault;
-				}
-			}
-			self::updateOption( $sLessKey, $sPostValue );
-			$sBootstrapLessVar = str_replace( $sLessPrefix, '', $sLessKey );
-		
-			$sContents = preg_replace( '/^\s*(@'.$sBootstrapLessVar.':\s*)([^;]+)(;)\s*$/im', '${1}'.$sPostValue.'${3}', $sContents );
-		}
-		file_put_contents( $sFilePathVariablesLess, $sContents );		
-		
-		$sFilePathBootstrapLess = self::$BOOSTRAP_DIR.'less'.DS.'bootstrap.less';
-		$sFilePathBootstrapLess = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
-		
-		//parse LESS
-		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
-		$oLessCompiler = new lessc( $sFilePathBootstrapLess );
-		$sCompiledCss = '';
-		try {
-			$sCompiledCss = $oLessCompiler->parse();
-		}
-		catch ( Exception $oE ) {
-			echo "lessphp fatal error: ".$oE->getMessage();
-		}
-		$sMinFile = self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less';
-		file_put_contents( $sMinFile.'.css', $sCompiledCss );
-		
-		//Basic Minify
-		$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
-		file_put_contents( $sMinFile.'.min.css', $sCompiledCss );
+		$oBoostrapLess->processNewLessOptions( $_POST, 'hlt_', self::$BOOSTRAP_DIR );
 		
 	}//handleSubmit_BootstrapLess
 	
 	protected function handleSubmit() {
-		
-		switch ( $_GET['page'] ) {
-			case $this->getSubmenuId( 'bootstrap-css' ):
-				$this->handleSubmit_BootstrapIndex();
-				return;
-				
-			case $this->getSubmenuId( 'bootstrap-less' ):
-				$this->handleSubmit_BootstrapLess();
-				return;
+	
+		if ( isset( $_GET['page'] ) ) {
+			switch ( $_GET['page'] ) {
+				case $this->getSubmenuId( 'bootstrap-css' ):
+					$this->handleSubmit_BootstrapIndex();
+					return;
+					
+				case $this->getSubmenuId( 'bootstrap-less' ):
+					$this->handleSubmit_BootstrapLess();
+					return;
+			}
 		}
-	}
+	}//handleSubmit
 
 	public function onWpPrintStyles() {
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
