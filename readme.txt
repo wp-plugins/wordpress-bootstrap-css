@@ -6,7 +6,7 @@ Requires at least: 3.2.0
 Tested up to: 3.3.1
 Stable tag: 2.0.2.2
 
-With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site
 
 == Description ==
 
