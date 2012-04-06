@@ -1,34 +1,67 @@
 
-<?php 
+<?php
+
+function getIsHexColour($insColour) {
+	
+	return preg_match( '/^#[a-fA-F0-9]{3,6}$/', $insColour );
+}
 
 function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 	
-	list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $inaBootstrapOption;
+	list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName, $sLessHelpText ) = $inaBootstrapOption;
 	
-	echo '
+	$sHtml = '
 		<div class="span'.$iSpanSize.'">
 			<div class="control-group">
 				<label class="control-label" for="hlt_'.$sLessKey.'">'.$sLessHumanName.'</label>
 				<div class="controls">
-					<div>
-						<label class="checkbox">
-							<input class="span2'
-							.($sLessOptionType == 'color'? ' color' : '').
-							'" type="text" name="hlt_'.$sLessKey.'" value="'.esc_attr($sLessSaved).'" id="hlt_'.$sLessKey.'"'.($fEnabled ? '':' disabled').' />
+						<label>
+		';
+	$sAdditionalClass = '';
+	$sToggleTextInput = '';
+	if ( $sLessOptionType == 'color' && getIsHexColour($sLessSaved) ) {
+		$sAdditionalClass = ' color';
+		$sToggleTextInput = ' <input type="checkbox" name="hlt_toggle_'.$sLessKey.'" id="hlt_toggle_'.$sLessKey.'" style="vertical-align: -2px;"/> Text?';
+	}
+
+	$sHtml .=
+	'						<input class="span2'.$sAdditionalClass.
+							'" type="text" name="hlt_'.$sLessKey.'" value="'.esc_attr($sLessSaved).'" id="hlt_'.$sLessKey.'"'.($fEnabled ? '':' disabled').' />'
+							.$sToggleTextInput.'
 						</label>
-						<p class="help-block">
-							Some help
-						</p>
-					</div>
+						 
+						<p class="help-block">'._hlt__( sprintf( "LESS name: @%s", str_replace( HLT_BootstrapLess::$LESS_PREFIX, '', $sLessKey ) ) ).'</p>
 				</div>
 			</div>
 		</div>
-	';	
+	';
+	
+	echo $sHtml;
 }
 
 ?>
 
 <div class="wrap">
+
+	<style>
+		.row.row_number_1 {
+			padding-top: 18px;
+		}
+		.control-group {
+			border: 1px solid #eeeeee;
+			border-radius: 8px;
+			padding: 10px;
+		}
+		.control-group:hover {
+			background-color: #f8f8f8;
+		}
+		.control-group .control-label {
+			font-weight: bold;
+		}
+		.control-group .option_section {
+			border: 1px solid transparent;
+		}
+	</style>
 
 	<div class="page-header">
 		<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br /></div></a>
@@ -39,8 +72,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 		<form class="form-horizontal" method="post" action="<?php echo $hlt_form_action; ?>">
 			<div class="row">
 				<div class="span10">
-<?php 
-	
+<?php
 	if (!$hlt_compiler_enabled) {
 		echo '
 			<div class="alert alert-error" style="margin-top: 18px;">You need to <a href="admin.php?page=hlt-directory-bootstrap-css">enable the LESS compiler option</a> before using this section.</div>
@@ -58,6 +90,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 	$sOptionValue;
 	foreach ($hlt_less_options as $sLessOptionSectionName => $aLessSectionOptions) {
 		
+		$rowCount = 1;
 		echo '
 			<div class="row">
 				<div class="span10">
@@ -70,13 +103,14 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 			
 			if ( $iFieldCount == 0 ) {
 				echo '
-				<div class="row">';
+				<div class="row row_number_'.$rowCount.'">';
 			}
 			echo getBootstrapOptionSpan( $aLessOption, 5, $hlt_compiler_enabled );
 
 			if ( $iFieldCount == 1 ) {
 				echo '
 				</div> <!-- / options row -->';
+				$rowCount++;
 			}
 			$iFieldCount = ($iFieldCount + 1) % 2;
 

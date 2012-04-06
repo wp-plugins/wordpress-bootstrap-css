@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.0.2.1
+Version: 2.0.3
 Author: Host Like Toast
 Author URI: http://www.hostliketoast.com/
 */
@@ -48,6 +48,9 @@ define( 'DS', DIRECTORY_SEPARATOR );
 function _hlt_e( $insStr ) {
 	_e( $insStr, 'hlt-wordpress-bootstrap-css' );
 }
+function _hlt__( $insStr ) {
+	return __( $insStr, 'hlt-wordpress-bootstrap-css' );
+}
 
 class HLT_BootstrapCss extends HLT_Plugin {
 	
@@ -77,7 +80,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -215,7 +218,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		//Custom/Reset CSS
 		if ( $fCustomCss ) {
 			$sCustomCssUrl = self::getOption( 'customcss_url' );
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
+			if ( !empty($sCustomCssUrl) ) {
+				$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
+			}
 		}
 		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Host Like Toast. -->";
 		
@@ -419,6 +424,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'plugin_url'				=> self::$PLUGIN_URL,
 			'compiler_enabled'			=> self::getOption('use_compiled_css') === 'Y',
 			'form_action'				=> 'admin.php?page=hlt-directory-bootstrap-less',
+			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
 			'less_options'				=> $oBoostrapLess->getAllBootstrapLessOptions(true)
 		);
 		
