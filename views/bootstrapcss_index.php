@@ -25,8 +25,11 @@
 										<option value="twitter" id="hlt-twitter" <?php if ( $hlt_option == 'twitter' ): ?>selected="selected"<?php endif; ?>>
 											<?php _hlt_e( 'Twitter Bootstrap CSS' ); ?>
 										</option>
+										<option value="yahoo-reset-3" id="hlt-yahoo-reset-3" <?php if ( $hlt_option == 'yahoo-reset-3' ): ?>selected="selected"<?php endif;?>>
+											<?php _hlt_e( 'Yahoo UI Reset CSS v3.4.1' ); ?>
+										</option>
 										<option value="yahoo-reset" id="hlt-yahoo-reset" <?php if ( $hlt_option == 'yahoo-reset' ): ?>selected="selected"<?php endif;?>>
-											<?php _hlt_e( 'Yahoo UI Reset CSS' ); ?>
+											<?php _hlt_e( 'Yahoo UI Reset CSS v2.9.0' ); ?>
 										</option>
 										<option value="normalize" id="hlt-normalize" <?php if ( $hlt_option == 'normalize' ): ?>selected="selected"<?php endif; ?>>
 											<?php _hlt_e( 'Normalize CSS' ); ?>
@@ -230,7 +233,7 @@
 								<div class="option_section <?php if ( $hlt_option_delete_on_deactivate == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_delete_on_deactivate">
 									<label class="checkbox" for="hlt_bootstrap_option_delete_on_deactivate">
 										<input type="checkbox" name="hlt_bootstrap_option_delete_on_deactivate" value="Y" id="hlt_bootstrap_option_delete_on_deactivate" <?php if ( $hlt_option_delete_on_deactivate == 'Y' ): ?>checked="checked"<?php endif; ?> />
-										<?php _hlt_e('Delete All Plugin Setting Upon Deactivite' ); ?>
+										<?php _hlt_e('Delete All Plugin Setting Upon Plugin Deactivation' ); ?>
 									</label>
 									<p class="help-block">
 										<?php _hlt_e('Careful: Checking this option will delete all WordPress Twitter Bootstrap plugin options when you deactivite the plugin.' ); ?>

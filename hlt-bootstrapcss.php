@@ -60,6 +60,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	// possibly configurable in the UI, we'll determine this as new releases occur.
 	const TwitterVersion = '2.0.2';
 	const TwitterVersionLegacy = '1.4.0';
+	const YUI3Version = '3.4.1';
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -172,7 +173,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	public function rewriteHead( $insContents ) {
 		
-		$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'normalize' );
+		$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
 		
 		$sBoostrapOption = self::getOption( 'option' );
 		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
@@ -189,6 +190,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
 			'twitter_responsive'		=> self::$BOOSTRAP_URL.'css/bootstrap-responsive'.$sMinifiedCssOption,
 			'yahoo-reset'				=> self::$PLUGIN_URL.'resources/misc/css/yahoo-2.9.0.min.css',
+			'yahoo-reset-3'				=> self::$PLUGIN_URL.'resources/misc/css/yahoo-'.self::YUI3Version.'.min.css',
 			'normalize'					=> self::$PLUGIN_URL.'resources/misc/css/normalize.css'
 		);
 		
