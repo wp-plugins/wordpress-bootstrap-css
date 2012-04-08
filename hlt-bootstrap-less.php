@@ -66,17 +66,17 @@ class HLT_BootstrapLess {
 				array( self::LessOptionsPrefix.'btnBackground', 				'', '@white',							'color',	'Background' ),						//@white
 				array( self::LessOptionsPrefix.'btnBackgroundHighlight',		'', 'darken(@white, 10%)',				'color',	'Background Highlight' ),			//darken(@white, 10%);
 				array( self::LessOptionsPrefix.'btnPrimaryBackground',			'', '@linkColor',						'color',	'Primary Btn Background' ),				//@linkColor
-				array( self::LessOptionsPrefix.'btnPrimaryBackgroundHighlight',	'', 'spin(@btnPrimaryBackground, 15%)',	'color',	'Primary Button Background Highlight' ),	//spin(@btnPrimaryBackground, 15%)
-				array( self::LessOptionsPrefix.'btnInfoBackground',				'', '#5bc0de',							'color',	'Info Button Background' ),
-				array( self::LessOptionsPrefix.'btnInfoBackgroundHighlight',	'', '#2f96b4',							'color',	'Info Button Background Highlight' ),
-				array( self::LessOptionsPrefix.'btnSuccessBackground',			'', '#62c462',							'color',	'Success Button Background' ),
-				array( self::LessOptionsPrefix.'btnSuccessBackgroundHighlight',	'', '#51a351',							'color',	'Success Button Background Highlight' ),
-				array( self::LessOptionsPrefix.'btnWarningBackground',			'', 'lighten(@orange, 15%)',			'color',	'Warning Button Background' ),				//lighten(@orange, 15%)
-				array( self::LessOptionsPrefix.'btnWarningBackgroundHighlight',	'', '@orange',							'color',	'Warning Button Background Highlight' ),	//@orange
-				array( self::LessOptionsPrefix.'btnDangerBackground',			'', '#ee5f5b',							'color',	'Danger Button Background' ),
-				array( self::LessOptionsPrefix.'btnDangerBackgroundHighlight',	'', '#bd362f',							'color',	'Danger Button Background Highlight' ),
-				array( self::LessOptionsPrefix.'btnInverseBackground',			'', '@gray',							'color',	'Inverse Button Background' ),				//@gray
-				array( self::LessOptionsPrefix.'btnInverseBackgroundHighlight',	'', '@grayDarker',						'color',	'Inverse Button Background Highlight' ),		//@grayDarker
+				array( self::LessOptionsPrefix.'btnPrimaryBackgroundHighlight',	'', 'spin(@btnPrimaryBackground, 15%)',	'color',	'Primary Btn Highlight' ),	//spin(@btnPrimaryBackground, 15%)
+				array( self::LessOptionsPrefix.'btnInfoBackground',				'', '#5bc0de',							'color',	'Info Btn Background' ),
+				array( self::LessOptionsPrefix.'btnInfoBackgroundHighlight',	'', '#2f96b4',							'color',	'Info Btn Highlight' ),
+				array( self::LessOptionsPrefix.'btnSuccessBackground',			'', '#62c462',							'color',	'Success Btn Background' ),
+				array( self::LessOptionsPrefix.'btnSuccessBackgroundHighlight',	'', '#51a351',							'color',	'Success Btn Highlight' ),
+				array( self::LessOptionsPrefix.'btnWarningBackground',			'', 'lighten(@orange, 15%)',			'color',	'Warning Btn Background' ),				//lighten(@orange, 15%)
+				array( self::LessOptionsPrefix.'btnWarningBackgroundHighlight',	'', '@orange',							'color',	'Warning Btn Highlight' ),	//@orange
+				array( self::LessOptionsPrefix.'btnDangerBackground',			'', '#ee5f5b',							'color',	'Danger Btn Background' ),
+				array( self::LessOptionsPrefix.'btnDangerBackgroundHighlight',	'', '#bd362f',							'color',	'Danger Btn Highlight' ),
+				array( self::LessOptionsPrefix.'btnInverseBackground',			'', '@gray',							'color',	'Inverse Btn Background' ),				//@gray
+				array( self::LessOptionsPrefix.'btnInverseBackgroundHighlight',	'', '@grayDarker',						'color',	'Inverse Btn Highlight' ),		//@grayDarker
 				array( self::LessOptionsPrefix.'btnBorder',						'', 'darken(@white, 20%)',				'color',	'Button Border' ),							//darken(@white, 20%)
 			),
 			'The Grid' => array(
@@ -157,9 +157,9 @@ class HLT_BootstrapLess {
 	}//processNewLessOptions
 	
 	public function reWriteVariablesLess( $insBootstrapDir ) {
-		
+
+	//	$sFilePathVariablesLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
 		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
-		$sFilePathVariablesLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
 		$sContents = file_get_contents( $sFilePathVariablesLess );
 		
 		$this->populateAllLessOptions();
@@ -180,8 +180,8 @@ class HLT_BootstrapLess {
 	
 	public function compileLess( $insBootstrapDir ) {
 		
+	//	$sFilePathBootstrapLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
 		$sFilePathBootstrapLess = $insBootstrapDir.'less'.DS.'bootstrap.less';
-		$sFilePathBootstrapLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
 		
 		//parse LESS
 		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
@@ -195,7 +195,7 @@ class HLT_BootstrapLess {
 		}
 		$sMinFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
 		file_put_contents( $sMinFile.'.css', $sCompiledCss );
-		
+	
 		//Basic Minify
 		$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
 		file_put_contents( $sMinFile.'.min.css', $sCompiledCss );

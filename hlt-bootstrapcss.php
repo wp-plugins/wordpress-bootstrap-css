@@ -139,7 +139,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		global $current_user;
 		$user_id = $current_user->ID;
 
-		$sCurrentVersion = get_user_meta( $user_id, 'hlt_bootstrapcss_current_version', true );
+		$sCurrentVersion = get_user_meta( $user_id, self::OptionPrefix.'current_version', true );
 
 		if ( empty( $sCurrentVersion ) || ( $sCurrentVersion != self::$VERSION ) ) {
 	        echo '
@@ -379,8 +379,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 			//Set the flag so that this update handler isn't run again for this version.
 			self::updateOption( 'current_plugin_version', self::$VERSION );
-			
-			echo "updated.";
 		}//if
 			
 		//Someone clicked the button to acknowledge the update
@@ -611,6 +609,17 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	static public function deleteOption( $insKey ) {
 		return delete_option( self::OptionPrefix.$insKey );
 	}
+	
+	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
+		if ( $insFile == plugin_basename( __FILE__ ) ) {
+		//	$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page=hlt-directory-bootstrap-less">' . _hlt__( 'LESS' ) . '</a>';
+		//	array_unshift( $inaLinks, $sSettingsLink );
+			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page=hlt-directory-bootstrap-css">' . _hlt__( 'Settings' ) . '</a>';
+			array_unshift( $inaLinks, $sSettingsLink );
+		}
+		return $inaLinks;
+	}
+
 }//HLT_BootstrapCss
 
 class HLT_BootstrapCss_Install {
@@ -755,11 +764,6 @@ class HLT_Plugin {
 	}
 	
 	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
-		if ( $insFile == plugin_basename( __FILE__ ) ) {
-			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page=hlt-directory-bootstrap-css">' . __( 'Settings', 'hostliketoast' ) . '</a>';
-			array_unshift( $inaLinks, $sSettingsLink );
-		}
-		return $inaLinks;
 	}
 	
 }

@@ -9,8 +9,6 @@
  * Copyright 2011, Leaf Corcoran <leafot@gmail.com>
  * Licensed under MIT or GPLv3, see LICENSE
  */
-
-
 /**
  * The less compiler and parser.
  *
@@ -280,7 +278,7 @@ class lessc {
 
 			$hidden = true;
 			if (!isset($block->args)) foreach ($block->tags as $tag) {
-				if ($tag{0} != $this->mPrefix) {
+				if (!is_string($tag) || $tag{0} != $this->mPrefix) {
 					$hidden = false;
 					break;
 				}
@@ -289,7 +287,9 @@ class lessc {
 			if (!$hidden) $this->append(array('block', $block), $s);
 
 			foreach ($block->tags as $tag) {
-				$this->env->children[$tag][] = $block;
+				if (is_string($tag)) {
+					$this->env->children[$tag][] = $block;
+				}
 			}
 
 			return true;
@@ -520,7 +520,7 @@ class lessc {
 
 		// unquote string
 		if ($this->literal("~") && $this->string($value, $d)) {
-			$value = array("keyword", $value);
+			$value = array("escape", $value);
 			return true;
 		} else {
 			$this->seek($s);
@@ -799,12 +799,27 @@ class lessc {
 		return false;
 	}
 
+	function tagExpression(&$value) {
+		$s = $this->seek();
+		if ($this->literal("(") && $this->expression($exp) && $this->literal(")")) {
+			$value = array('exp', $exp);
+			return true;
+		}
+
+		$this->seek($s);
+		return false;
+	}
+
 	// a single tag
 	function tag(&$tag, $simple = false) {
 		if ($simple)
 			$chars = '^,:;{}\][>\(\) "\'';
 		else
 			$chars = '^,;{}["\'';
+
+		if (!$simple && $this->tagExpression($tag)) {
+			return true;
+		}
 
 		$tag = '';
 		while ($this->tagBracket($first)) $tag .= $first;
@@ -1043,7 +1058,22 @@ class lessc {
 			$tags = array();
 		} else {
 			$special_block = false;
-			$tags = $this->multiplyTags($parent_tags, $block->tags);
+
+			// evaluate expression tags
+			$tags = null;
+			if (is_array($block->tags)) {
+				$tags = array();
+				foreach ($block->tags as $tag) {
+					if (is_array($tag)) {
+						list(, $value) = $tag;
+						$tags[] = $this->compileValue($this->reduce($value));
+					} else {
+						$tags[] = $tag;
+					}
+				}
+			}
+
+			$tags = $this->multiplyTags($parent_tags, $tags);
 		}
 
 		$env = $this->pushEnv();
@@ -1325,7 +1355,7 @@ class lessc {
 				}
 
 				$old_parent = $mixin->parent;
-				$mixin->parent = $block;
+				if ($mixin != $block) $mixin->parent = $block;
 
 				foreach ($mixin->props as $sub_prop) {
 					$this->compileProp($sub_prop, $mixin, $tags, $_lines, $_blocks);
@@ -1379,6 +1409,7 @@ class lessc {
 		case 'number':
 			// [1] - the number 
 			return $value[1];
+		case 'escape':
 		case 'string':
 			// [1] - contents of string (includes quotes)
 			
@@ -1472,13 +1503,18 @@ class lessc {
 	}
 
 	function lib_rgbahex($color) {
-		if ($color[0] != 'color')
+		$color = $this->coerceColor($color);
+		if (is_null($color))
 			$this->throwError("color expected for rgbahex");
 
 		return sprintf("#%02x%02x%02x%02x",
 			isset($color[4]) ? $color[4]*255 : 0,
 			$color[1],$color[2], $color[3]);
 	}
+	
+	function lib_argb($color){
+            return $this->lib_rgbahex($color);
+        }
 
 	// utility func to unquote a string
 	function lib_e($arg) {
@@ -1529,6 +1565,10 @@ class lessc {
 
 	function lib_floor($arg) {
 		return array($arg[0], floor($arg[1]));
+	}
+	
+	function lib_ceil($arg) {
+		return array($arg[0], ceil($arg[1]));
 	}
 
 	function lib_round($arg) {
@@ -1679,7 +1719,7 @@ class lessc {
 		);
 
 		if ($first_a != 1.0 || $second_a != 1.0) {
-			$new[] = $first_a * $p + $second_a * ($p - 1);
+			$new[] = $first_a * $weight + $second_a * ($weight - 1);
 		}
 
 		return $this->fixColor($new);
