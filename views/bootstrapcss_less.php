@@ -126,7 +126,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 		$rowCount = 1;
 		echo '
 			<div class="row">
-				<div class="span9">
+				<div class="span9" style="margin-left:0px">
 					<fieldset>
 						<legend>'.$sLessOptionSectionName.'</legend>
 		';
