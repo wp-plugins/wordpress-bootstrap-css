@@ -328,7 +328,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	public function handlePluginUpgrade() {
 		
-		if ( self::getOption( 'current_plugin_version' ) !== self::$VERSION ) {
+		//current_user_can( 'manage_options' ) ensure only valid users attempt this.
+		if ( self::getOption( 'current_plugin_version' ) !== self::$VERSION && current_user_can( 'manage_options' ) ) {
 
 			//Manages those users who are coming from a version pre-Twitter 2.0+
 			if ( self::getOption( 'upgraded1to2' ) !== 'Y' ) {
@@ -388,7 +389,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			//Set the flag so that this update handler isn't run again for this version.
 			self::updateOption( 'current_plugin_version', self::$VERSION );
 		}//if
-			
+
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
 			$result = update_user_meta( $_POST['hlt_user_id'], 'hlt_bootstrapcss_current_version', self::$VERSION );
@@ -556,7 +557,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$sUrlPrefix = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/js/bootstrap';
 			wp_enqueue_script( 'jquery' );
 			
-			wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', '', self::$VERSION, $fJsInFooter );
+			wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', 'jquery', self::$VERSION, $fJsInFooter );
 			wp_enqueue_script( 'bootstrap-all-min' );
 		}
 		

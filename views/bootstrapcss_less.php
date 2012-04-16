@@ -10,38 +10,45 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 	
 	list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName, $sLessHelpText ) = $inaBootstrapOption;
 	
-	$sHtml = '
-		<div class="span'.$iSpanSize.'">
-			<div class="control-group">
-				<label class="control-label" for="hlt_'.$sLessKey.'">'.$sLessHumanName.'<br /></label>
-				<div class="controls">
-					<label>
-	';
-	$sAdditionalClass = '';
-	$sToggleTextInput = '';
-	$sChecked = '';
-	if ( $sLessOptionType == 'color' ) {
-		if ( getIsHexColour( $sLessSaved ) ) {
-			$sAdditionalClass = ' color';
+	if ( $sLessKey == 'spacer' ) {
+		$sHtml = '
+			<div class="span'.$iSpanSize.'">
+			</div>
+		';
+	} else {
+	
+		$sHtml = '
+			<div class="span'.$iSpanSize.'">
+				<div class="control-group">
+					<label class="control-label" for="hlt_'.$sLessKey.'">'.$sLessHumanName.'<br /></label>
+					<div class="controls">
+						<label>
+		';
+		$sAdditionalClass = '';
+		$sToggleTextInput = '';
+		$sChecked = '';
+		if ( $sLessOptionType == 'color' ) {
+			if ( !getIsHexColour( $sLessSaved ) ) {
+				$sChecked = ' checked';
+			}
+			$sToggleTextInput = ' <span class="toggle_checkbox"><label><input type="checkbox" name="hlt_toggle_'.$sLessKey.'" id="hlt_toggle_'.$sLessKey.'"'.$sChecked.' style="vertical-align: -2px;" '.($fEnabled ? '':' disabled').'/> edit as text</label></span>';
 		}
-		else {
-			$sChecked = ' checked';
-		}
-		$sToggleTextInput = ' <span class="toggle_checkbox"><label><input type="checkbox" name="hlt_toggle_'.$sLessKey.'" id="hlt_toggle_'.$sLessKey.'"'.$sChecked.' style="vertical-align: -2px;" '.($fEnabled ? '':' disabled').'/> Text?</label></span>';
+	
+		$sHtml .= '
+							<input class="span2'.$sAdditionalClass.'" type="text" placeholder="'.esc_attr( $sLessSaved ).'" name="hlt_'.$sLessKey.'" value="'.esc_attr( $sLessSaved ).'" id="hlt_'.$sLessKey.'"'.($fEnabled ? '':' disabled').' />
+						</label>
+							 
+						<p class="help-block"></p>
+					</div><!-- controls -->
+					<div class="help_section">
+						<span class="label label-less-name">@'.str_replace( HLT_BootstrapLess::$LESS_PREFIX, '', $sLessKey ).'</span>
+						'.$sToggleTextInput.'
+						<span class="label label-less-name">'.$sLessDefault.'</span> 
+					</div>
+				</div><!-- control-group -->
+			</div>
+		';
 	}
-
-	$sHtml .= '
-						<input class="span2'.$sAdditionalClass.'" type="text" placeholder="'.esc_attr( $sLessSaved ).'" name="hlt_'.$sLessKey.'" value="'.esc_attr( $sLessSaved ).'" id="hlt_'.$sLessKey.'"'.($fEnabled ? '':' disabled').' />
-					</label>
-						 
-					<p class="help-block"></p>
-				</div><!-- controls -->
-				<div class="help_section">
-					<span class="label label-less-name">'._hlt__( sprintf( "@%s", str_replace( HLT_BootstrapLess::$LESS_PREFIX, '', $sLessKey ) ) ).'</span> '.$sToggleTextInput.'
-				</div>
-			</div><!-- control-group -->
-		</div>
-	';
 	
 	echo $sHtml;
 }
@@ -71,6 +78,10 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 		.bootstrap-wpadmin .control-group span.label-less-name {
 			font-weight: normal;
 			font-size: 11px;
+			display: block;
+			margin-bottom: 2px;
+			clear: both;
+			float: left;
 		}
 		.bootstrap-wpadmin .control-group .controls {
 		}
@@ -83,7 +94,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 			margin-top: 15px;
 		}
 		.toggle_checkbox {
-			float:right;'
+			float:right;
 		}
 	</style>
 	<script type="text/javascript">
@@ -120,7 +131,6 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 						triggerColor( this );
 					}
 				);
-					
 
 				//.miniColors().css( 'width', '100px' );
 			}
@@ -188,12 +198,23 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 								</div>
 							</div>
 						';
+					
+						//ensure the intermediate save button is not printed at the end.
+						end($hlt_less_options);
+						$skey = key($hlt_less_options);
+						if ( $sLessOptionSectionName != $skey ) {
+							echo '
+								<div class="form-actions">
+									<button type="submit" class="btn btn-primary" name="submit" '.($hlt_compiler_enabled ? '':' disabled').'>'. _hlt__( 'Save All Settings' ).'</button>
+								</div>
+							';
+						}
 				
 					}//foreach section
 					?>
 					<div class="form-actions">
 						<input type="hidden" name="hlt_less_option" value="Y" />
-						<button type="submit" class="btn btn-primary" name="submit" <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Save all changes' ); ?></button>
+						<button type="submit" class="btn btn-primary" name="submit" <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Save All Settings' ); ?></button>
 						<button type="submit" class="btn btn-danger" name="submit_reset"  <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset all values to original defaults' ); ?></button>
 					</div>
 				</form>

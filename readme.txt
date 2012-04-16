@@ -150,11 +150,14 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 = 2.0.3 =
 * NOT YET RELEASED
-* ADDED: LESS Compiler for some of the most common Bootstrap style options.
+* ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
 * ADDED: Option - use minimized or non-minized Bootstrap CSS
 * ADDED: Option - delete all plugin settings upon deactivation
-* ADDED: Option - enable LESS compiler and including less-compiled CSS
+* ADDED: Option - enable LESS compiler and include less-compiled CSS
+* ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
 * UPDATED: Plugin upgrade handling is much improved
+* UPDATED: Yahoo YUI! reset to version v3.4.1
+* UPDATED: Normalize CSS to the latest version
 * REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 

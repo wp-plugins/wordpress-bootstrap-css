@@ -36,48 +36,66 @@ class HLT_BootstrapLess {
 		
 		$this->m_aAllBootstrapLessOptions = array(
 			'The Grays' => array(
-				array( self::LessOptionsPrefix.'black', 		'', '#000',	'color',	'Black',		'May be referred to as @black' ),
-				array( self::LessOptionsPrefix.'grayDarker',	'', '#222',	'color',	'Darker Gray',	'May be referred to as @grayDarker' ),
-				array( self::LessOptionsPrefix.'grayDark',		'', '#333',	'color',	'Dark Gray',	'May be referred to as @grayDark' ),
-				array( self::LessOptionsPrefix.'gray',			'', '#555',	'color',	'Gray',			'May be referred to as @gray' ),
-				array( self::LessOptionsPrefix.'grayLight',		'', '#999',	'color',	'Light Gray',	'May be referred to as @grayLight' ),
-				array( self::LessOptionsPrefix.'grayLighter',	'', '#eee',	'color',	'Lighter Gray',	'May be referred to as @grayLighter' ),
-				array( self::LessOptionsPrefix.'white',			'', '#fff',	'color',	'White',		'May be referred to as @white' )
+				array( self::LessOptionsPrefix.'black', 		'', '#000',	'color',	'Black',		'@black' ),
+				array( self::LessOptionsPrefix.'grayDarker',	'', '#222',	'color',	'Darker Gray',	'@grayDarker' ),
+				array( self::LessOptionsPrefix.'grayDark',		'', '#333',	'color',	'Dark Gray',	'@grayDark' ),
+				array( self::LessOptionsPrefix.'gray',			'', '#555',	'color',	'Gray',			'@gray' ),
+				array( self::LessOptionsPrefix.'grayLight',		'', '#999',	'color',	'Light Gray',	'@grayLight' ),
+				array( self::LessOptionsPrefix.'grayLighter',	'', '#eee',	'color',	'Lighter Gray',	'@grayLighter' ),
+				array( self::LessOptionsPrefix.'white',			'', '#fff',	'color',	'White',		'@white' )
 			),
 			'Fonts, Colours & Links' => array(
-				array( self::LessOptionsPrefix.'bodyBackground',	'', '@white',			'color',		'Body Background Colour',			'May be referred to as @bodyBackground' ), //@white
-				array( self::LessOptionsPrefix.'textColor',			'', '@grayDark',		'color',		'Text Colour',						'May be referred to as @textColor' ),
-				array( self::LessOptionsPrefix.'linkColor',			'', '#08c',				'color',		'Link Colour',						'May be referred to as @linkColor' ),
-				array( self::LessOptionsPrefix.'linkColorHover', 	'', 'darken(@linkColor, 15%)',			'color',	'Link Hover Colour',	'May be referred to as @linkColorHover' ), //darken(@linkColor, 15%)
-				array( self::LessOptionsPrefix.'blue', 				'', '#049cdb',			'color',		'Blue',								'May be referred to as @blue' ),
-				array( self::LessOptionsPrefix.'blueDark',			'', '#0064cd',			'color',		'Dark Blue',						'May be referred to as @blueDark' ),
-				array( self::LessOptionsPrefix.'green',				'', '#46a546',			'color',		'Green',							'May be referred to as @green' ),
-				array( self::LessOptionsPrefix.'red',				'', '#9d261d',			'color',		'Red',								'May be referred to as @red' ),
-				array( self::LessOptionsPrefix.'yellow',			'', '#ffc40d',			'color',		'Yellow',							'May be referred to as @yellow' ),
-				array( self::LessOptionsPrefix.'orange',			'', '#f89406',			'color',		'Orange',							'May be referred to as @orange' ),
-				array( self::LessOptionsPrefix.'pink', 				'', '#c3325f',			'color',		'Pink',								'May be referred to as @pink' ),
-				array( self::LessOptionsPrefix.'purple', 			'', '#7a43b6',			'color',		'Purple',							'May be referred to as @purple' ),
-				array( self::LessOptionsPrefix.'baseFontSize',		'', '13px',				'size',			'Font Size',						'May be referred to as @baseFontSize' ),
-				array( self::LessOptionsPrefix.'baseLineHeight', 	'', '18px',				'size',			'Base Line Height',					'May be referred to as @baseLineHeight' ),
-				array( self::LessOptionsPrefix.'baseFontFamily',	'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'font',	'Fonts',	'May be referred to as @baseFontFamily' ),
-				array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, "Times New Roman", Times, serif',	'font',	'Alternative Fonts',	'May be referred to as @altFontFamily' ),
+				array( self::LessOptionsPrefix.'bodyBackground',	'', '@white',			'color',		'Body Background Colour',			'@bodyBackground' ), //@white
+				array( self::LessOptionsPrefix.'textColor',			'', '@grayDark',		'color',		'Text Colour',						'@textColor' ),
+				array( self::LessOptionsPrefix.'linkColor',			'', '#08c',				'color',		'Link Colour',						'@linkColor' ),
+				array( self::LessOptionsPrefix.'linkColorHover', 	'', 'darken(@linkColor, 15%)',			'color',	'Link Hover Colour',	'@linkColorHover' ), //darken(@linkColor, 15%)
+				array( self::LessOptionsPrefix.'blue', 				'', '#049cdb',			'color',		'Blue',								'@blue' ),
+				array( self::LessOptionsPrefix.'blueDark',			'', '#0064cd',			'color',		'Dark Blue',						'@blueDark' ),
+				array( self::LessOptionsPrefix.'green',				'', '#46a546',			'color',		'Green',							'@green' ),
+				array( self::LessOptionsPrefix.'red',				'', '#9d261d',			'color',		'Red',								'@red' ),
+				array( self::LessOptionsPrefix.'yellow',			'', '#ffc40d',			'color',		'Yellow',							'@yellow' ),
+				array( self::LessOptionsPrefix.'orange',			'', '#f89406',			'color',		'Orange',							'@orange' ),
+				array( self::LessOptionsPrefix.'pink', 				'', '#c3325f',			'color',		'Pink',								'@pink' ),
+				array( self::LessOptionsPrefix.'purple', 			'', '#7a43b6',			'color',		'Purple',							'@purple' ),
+				array( self::LessOptionsPrefix.'baseFontSize',		'', '13px',				'size',			'Font Size',						'@baseFontSize' ),
+				array( self::LessOptionsPrefix.'baseLineHeight', 	'', '18px',				'size',			'Base Line Height',					'@baseLineHeight' ),
+				array( self::LessOptionsPrefix.'baseFontFamily',	'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'font',	'Fonts',	'@baseFontFamily' ),
+				array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, "Times New Roman", Times, serif',	'font',	'Alternative Fonts',	'@altFontFamily' ),
 			),
 			'Button Styling' => array(
-				array( self::LessOptionsPrefix.'btnBackground', 				'', '@white',							'color',	'Background' ),						//@white
-				array( self::LessOptionsPrefix.'btnBackgroundHighlight',		'', 'darken(@white, 10%)',				'color',	'Background Highlight' ),			//darken(@white, 10%);
-				array( self::LessOptionsPrefix.'btnPrimaryBackground',			'', '@linkColor',						'color',	'Primary Btn Background' ),				//@linkColor
+				array( self::LessOptionsPrefix.'btnBackground', 				'', '@white',							'color',	'Background' ),				//@white
+				array( self::LessOptionsPrefix.'btnBackgroundHighlight',		'', 'darken(@white, 10%)',				'color',	'Background Highlight' ),	//darken(@white, 10%);
+				array( self::LessOptionsPrefix.'btnPrimaryBackground',			'', '@linkColor',						'color',	'Primary Btn Background' ),	//@linkColor
 				array( self::LessOptionsPrefix.'btnPrimaryBackgroundHighlight',	'', 'spin(@btnPrimaryBackground, 15%)',	'color',	'Primary Btn Highlight' ),	//spin(@btnPrimaryBackground, 15%)
 				array( self::LessOptionsPrefix.'btnInfoBackground',				'', '#5bc0de',							'color',	'Info Btn Background' ),
 				array( self::LessOptionsPrefix.'btnInfoBackgroundHighlight',	'', '#2f96b4',							'color',	'Info Btn Highlight' ),
 				array( self::LessOptionsPrefix.'btnSuccessBackground',			'', '#62c462',							'color',	'Success Btn Background' ),
 				array( self::LessOptionsPrefix.'btnSuccessBackgroundHighlight',	'', '#51a351',							'color',	'Success Btn Highlight' ),
-				array( self::LessOptionsPrefix.'btnWarningBackground',			'', 'lighten(@orange, 15%)',			'color',	'Warning Btn Background' ),				//lighten(@orange, 15%)
+				array( self::LessOptionsPrefix.'btnWarningBackground',			'', 'lighten(@orange, 15%)',			'color',	'Warning Btn Background' ),	//lighten(@orange, 15%)
 				array( self::LessOptionsPrefix.'btnWarningBackgroundHighlight',	'', '@orange',							'color',	'Warning Btn Highlight' ),	//@orange
 				array( self::LessOptionsPrefix.'btnDangerBackground',			'', '#ee5f5b',							'color',	'Danger Btn Background' ),
 				array( self::LessOptionsPrefix.'btnDangerBackgroundHighlight',	'', '#bd362f',							'color',	'Danger Btn Highlight' ),
-				array( self::LessOptionsPrefix.'btnInverseBackground',			'', '@gray',							'color',	'Inverse Btn Background' ),				//@gray
-				array( self::LessOptionsPrefix.'btnInverseBackgroundHighlight',	'', '@grayDarker',						'color',	'Inverse Btn Highlight' ),		//@grayDarker
-				array( self::LessOptionsPrefix.'btnBorder',						'', 'darken(@white, 20%)',				'color',	'Button Border' ),							//darken(@white, 20%)
+				array( self::LessOptionsPrefix.'btnInverseBackground',			'', '@gray',							'color',	'Inverse Btn Background' ),	//@gray
+				array( self::LessOptionsPrefix.'btnInverseBackgroundHighlight',	'', '@grayDarker',						'color',	'Inverse Btn Highlight' ),	//@grayDarker
+				array( self::LessOptionsPrefix.'btnBorder',						'', 'darken(@white, 20%)',				'color',	'Button Border' ),			//darken(@white, 20%)
+			),
+			'Alerts and Form States' => array(
+				array( self::LessOptionsPrefix.'warningText', 		'', '#c09853',			'color',	'Warning Text Colour' ),
+				array( self::LessOptionsPrefix.'warningBackground',	'', '#fcf8e3',			'color',	'Warning Background Colour' ),
+				array( self::LessOptionsPrefix.'warningBorder',		'', 'darken(spin(@warningBackground, -10), 3%)',			'color',	'Warning Border Colour' ),
+				array( 'spacer' ),
+				array( self::LessOptionsPrefix.'errorText', 		'', '#b94a48',			'color',	'Error Text Colour' ),
+				array( self::LessOptionsPrefix.'errorBackground',	'', '#f2dede',			'color',	'Error Background Colour' ),
+				array( self::LessOptionsPrefix.'errorBorder',		'', 'darken(spin(@errorBackground, -10), 3%)',			'color',	'Error Border Colour' ),
+				array( 'spacer' ),
+				array( self::LessOptionsPrefix.'successText', 		'', '#468847',			'color',	'Success Text Colour' ),
+				array( self::LessOptionsPrefix.'successBackground',	'', '#dff0d8',			'color',	'Success Background Colour' ),
+				array( self::LessOptionsPrefix.'successBorder',		'', 'darken(spin(@successBackground, -10), 5%)',			'color',	'Success Border Colour' ),
+				array( 'spacer' ),
+				array( self::LessOptionsPrefix.'infoText', 			'', '#3a87ad',			'color',	'Info Text Colour' ),
+				array( self::LessOptionsPrefix.'infoBackground',	'', '#d9edf7',			'color',	'Info Background Colour' ),
+				array( self::LessOptionsPrefix.'infoBorder',		'', 'darken(spin(@infoBackground, -10), 7%)',			'color',	'Info Border Colour' ),
+				array( 'spacer' )
 			),
 			'The Grid' => array(
 				array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'',	'Grid Columns' ),
@@ -158,7 +176,6 @@ class HLT_BootstrapLess {
 	
 	public function reWriteVariablesLess( $insBootstrapDir ) {
 
-	//	$sFilePathVariablesLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'variables.less';
 		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
 		$sContents = file_get_contents( $sFilePathVariablesLess );
 		
@@ -179,8 +196,7 @@ class HLT_BootstrapLess {
 	}//reWriteVariablesLess
 	
 	public function compileLess( $insBootstrapDir ) {
-		
-	//	$sFilePathBootstrapLess = HLT_BootstrapCss::$PLUGIN_DIR.'resources'.DS.'bootstrap-2.0.1'.DS.'less'.DS.'bootstrap.less';
+
 		$sFilePathBootstrapLess = $insBootstrapDir.'less'.DS.'bootstrap.less';
 		
 		//parse LESS
