@@ -119,6 +119,8 @@
 											</label>
 											<p class="help-block">
 												<?php _hlt_e( "Support for selecting individual libraries was removed from v2.0.3." ); ?>
+												<br />
+												<?php _hlt_e('This will also include the jQuery library if it is not already included.' ); ?>
 											</p>
 										</div>
 									</div>
