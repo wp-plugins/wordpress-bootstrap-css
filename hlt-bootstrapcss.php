@@ -58,7 +58,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const OptionPrefix			= 'hlt_bootstrapcss_';
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
-	const TwitterVersion		= '2.0.2';
+	const TwitterVersion		= '2.0.3';
 	const TwitterVersionLegacy	= '1.4.0';
 	const YUI3Version			= '3.4.1';
 	
@@ -141,7 +141,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		$sCurrentVersion = get_user_meta( $user_id, self::OptionPrefix.'current_version', true );
 
-		if ( empty( $sCurrentVersion ) || ( $sCurrentVersion != self::$VERSION ) ) {
+		if ( current_user_can( 'manage_options' ) && ( empty( $sCurrentVersion ) || ( $sCurrentVersion != self::$VERSION ) ) ) {
 			echo '
 				<div id="message" class="updated">
 					<form method="post" action="admin.php?page=hlt-directory-bootstrap-css">
