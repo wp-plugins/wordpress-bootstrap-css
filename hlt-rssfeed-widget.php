@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2011 Host Like Toast <helpdesk@hostliketoast.com>
+ * Copyright (c) 2011 Worpit <helpdesk@hostliketoast.com>
  * All rights reserved.
  * 
  * "WordPress Bootstrap CSS" is distributed under the GNU General Public License, Version 2,

@@ -5,12 +5,12 @@ Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
 Version: 2.0.3
-Author: Host Like Toast
-Author URI: http://www.hostliketoast.com/
+Author: Worpit
+Author URI: http://worpit.com/
 */
 
 /**
- * Copyright (c) 2011 Host Like Toast <helpdesk@hostliketoast.com>
+ * Copyright (c) 2011 Worpit <helpdesk@hostliketoast.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -58,7 +58,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const OptionPrefix			= 'hlt_bootstrapcss_';
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
-	const TwitterVersion		= '2.0.3';
+	const TwitterVersion		= '2.0.2';
 	const TwitterVersionLegacy	= '1.4.0';
 	const YUI3Version			= '3.4.1';
 	
@@ -206,7 +206,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( in_array( $sBoostrapOption, $aPossibleOptions ) ) {
 			//link to the Twitter LESS-compiled CSS (only if the file exists)
 			if ( $sBoostrapOption == 'twitter'
-					&& self::getOption( 'use_compiled_css' )
+					&& self::getOption( 'use_compiled_css' ) == 'Y'
 					&& file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less'.$sMinifiedCssOption )
 					) {
 				$sCssLink = $aLocalCss['twitter_less'];
@@ -226,7 +226,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
 			}
 		}
-		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Host Like Toast. -->";
+		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Worpit. -->";
 		
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
@@ -683,8 +683,8 @@ class HLT_Plugin {
 	static public $PLUGIN_DIR;
 	static public $PLUGIN_URL;
 	
-	const ParentTitle		= 'Host Like Toast Plugins';
-	const ParentName		= 'Host Like Toast';
+	const ParentTitle		= 'Worpit Plugins';
+	const ParentName		= 'Worpit';
 	const ParentPermissions	= 'manage_options';
 	const ParentMenuId		= 'hlt-directory';
 	
@@ -757,7 +757,6 @@ class HLT_Plugin {
 		add_action( 'plugin_action_links', array( &$this, 'onWpPluginActionLinks' ), 10, 4 );
 	}
 	public function onWpAdminInit() {
-		
 	}
 	
 	public function onWpPluginsLoaded() {
@@ -765,7 +764,7 @@ class HLT_Plugin {
 	}
 	
 	public function onWpAdminMenu() {
-		add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, self::ParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'toaster_16x16.png' ) );
+		add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, self::ParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'worpit_16x16.png' ) );
 	}
 	
 	public function onDisplayMainMenu() {

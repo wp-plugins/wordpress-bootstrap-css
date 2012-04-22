@@ -7,8 +7,8 @@
 <div class="bootstrap-wpadmin">
 
 	<div class="page-header">
-		<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon"><br /></div></a>
-		<h2><?php _hlt_e( 'Host Like Toast: WordPress Twitter Bootstrap CSS Options' ); ?></h2><?php _hlt_e( '' ); ?>
+		<a href="http://worpit.com/"><div class="icon32" id="hostliketoast-icon"><br /></div></a>
+		<h2><?php _hlt_e( 'Bootstrap Options :: Twitter Bootstrap Plugin from Worpit' ); ?></h2><?php _hlt_e( '' ); ?>
 	</div>
 	
 	<div class="row">
@@ -68,7 +68,7 @@
 									<div class="option_section <?php if ( $hlt_option_inc_responsive_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section-hlt-option-incresponsivecss">
 										<label class="checkbox">
 											<input type="checkbox" name="hlt_bootstrap_option_inc_responsive_css" value="Y" id="hlt-option-incresponsivecss" <?php if ( $hlt_option_inc_responsive_css == 'Y' ): ?>checked="checked"<?php endif; ?> />
-											<?php _hlt_e( 'Also nclude the Bootstrap Responsive CSS file.' ); ?>
+											<?php _hlt_e( 'Also include the Bootstrap Responsive CSS file.' ); ?>
 										</label>
 										<p class="help-block">
 											<?php _hlt_e( "Alone, this doesn't make your WordPress site 'responsive'." ); ?>

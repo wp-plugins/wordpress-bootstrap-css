@@ -7,7 +7,9 @@
 .bootstrap-wpadmin .row {
 	margin-left: 0;
 }
-
+#hostliketoast-icon {
+	 background: url("../images/worpit_32x32.png") no-repeat 0px 3px transparent;
+}
 /* Form elements */
 .bootstrap-wpadmin form fieldset {
 }

@@ -139,8 +139,8 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 	
 	<div class="bootstrap-wpadmin">
 		<div class="page-header">
-			<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/toaster_32x32.png) no-repeat;" id="hostliketoast-icon">&nbsp;</div></a>
-			<h2><?php _hlt_e( 'Host Like Toast: WordPress Twitter Bootstrap LESS Compiler' ); ?></h2>
+			<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/worpit_32x32.png) no-repeat;" id="hostliketoast-icon">&nbsp;</div></a>
+			<h2><?php _hlt_e( 'LESS Compiler :: Twitter Bootstrap Plugin from Worpit' ); ?></h2>
 		</div>
 
 		<div class="row">
@@ -150,7 +150,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 					?><div class="alert alert-error">You need to <a href="admin.php?page=hlt-directory-bootstrap-css">enable the LESS compiler option</a> before using this section.</div><?php
 				}
 				else {
-					?><div class="alert alert-info">Customize the options below to tweak the appearance of your website.</div><?php
+					?><div class="alert alert-info">Customize the twitter bootstrap options below to tweak the appearance of your website.</div><?php
 				}
 				?>
 			</div>

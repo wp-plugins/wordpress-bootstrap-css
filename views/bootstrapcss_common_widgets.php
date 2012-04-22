@@ -14,7 +14,7 @@
 			<div class="row">
 				<div class="span6">
 					<ul>
-						<li><a href="http://bit.ly/HSkocK" target="_blank"><strong>Read the plugin Help & Support page</strong></a>.</li>
+						<li><a href="http://bit.ly/Icut1J " target="_blank"><strong>Read the plugin Help & Support page</strong></a>.</li>
 						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" target="_blank">Give this plugin a 5 star rating on WordPress.org.</a></li>
 					</ul>
 				</div>

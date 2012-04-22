@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2011 Host Like Toast <helpdesk@hostliketoast.com>
+ * Copyright (c) 2011 Worpit <helpdesk@hostliketoast.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is

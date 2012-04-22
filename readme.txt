@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: dlgoodchild, paultgoodchild
-Donate link: http://www.worpit.com/
+Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.2
@@ -13,7 +13,7 @@ With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter B
 To see the latest release notes for the new version 2.0.0 for the [WordPress Twitter Bootstrap CSS plugin](http://www.hostliketoast.com/2012/02/wordpress-twitter-bootstrap-css-plugin-v2-0-final/ "WordPress Twitter Bootstrap CSS plugin v2.0 (Final) - Notes on important changes") see the release article
 on our site.
 
-We love to use Twitter Bootstrap at [Host Like Toast](http://www.hostliketoast.com/ "Host Like Toast: Managed Wordpress Hosting").
+We love to use Twitter Bootstrap at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
 
 We wanted a way to quickly link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
 
@@ -80,7 +80,7 @@ Alternatively using FTP:
 1.	Upload this whole folder to your '/wp-content/plugins/' directory
 1.	From the plugins page within Wordpress locate the plugin 'Wordpress Bootstrap CSS' and click Activate
 
-A new menu item will appear on the left-hand side called 'Host Like Toast'.  Click this menu and select
+A new menu item will appear on the left-hand side called 'Worpit'.  Click this menu and select
 Bootstrap CSS.
 
 Select the CSS file as desired.
@@ -108,7 +108,7 @@ styles applied to it will take precedence over any previous styles.
 
 = Is WordPress Bootstrap CSS compatible with caching plugins? =
 
-The only caching plugin that Host Like Toast recommends, and has decent experience with, is W3
+The only caching plugin that Worpit recommends, and has decent experience with, is W3
 Total Cache.
 
 This plugin will automatically flush your W3TC cache when you save changes on this plugin (assuming you have
@@ -120,7 +120,7 @@ Otherwise, consult your caching program's documentation.
 
 Yes, but only in the case of Yahoo! YUI 2, and Twitter Bootstrap CSS.
 
-= What's the reason for the Host Like Toast menu? =
+= What's the reason for the Worpit menu? =
 
 We're planning on releasing more plugins in the future and they'll use much of the same code base. In this way
 we hope to minimize extra and unnecessary code and give your website a far superior browsing experience without
@@ -149,14 +149,13 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 == Changelog ==
 
 = 2.0.3 =
-* NOT YET RELEASED
 * ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
 * ADDED: Option - use minimized or non-minized Bootstrap CSS
 * ADDED: Option - delete all plugin settings upon deactivation
 * ADDED: Option - enable LESS compiler and include less-compiled CSS
 * ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
+* ADDED: Yahoo YUI! reset to version v3.4.1
 * UPDATED: Plugin upgrade handling is much improved
-* UPDATED: Yahoo YUI! reset to version v3.4.1
 * UPDATED: Normalize CSS to the latest version
 * REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
 * REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
@@ -253,7 +252,7 @@ Skipped.
 * Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap POPOVER window
 * Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
 * Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TAB! Now you can create TAB'd content in your posts!
-* More documentation will be forthcoming in the [Host Like Toast WordPress Plugins Page](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "Host Like Toast WordPress Plugins").
+* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/ "Worpit WordPress Twitter Bootstrap Plugin").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
@@ -294,10 +293,16 @@ is temporary until we fix.
 == Upgrade Notice ==
 
 = 2.0.2.3 =
-* FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
-* UPDATED: By default when the plugin deactivates, all plugin settings are removed from the database. I have stopped this
-for now (so all settings remain upon deactivation). Version 2.0.3 will have the option for the user to toggle this setting.
-* ADDED: A notice in the dashboard about removal of Javascript library changes coming in version 2.0.3
+* ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
+* ADDED: Option - use minimized or non-minized Bootstrap CSS
+* ADDED: Option - delete all plugin settings upon deactivation
+* ADDED: Option - enable LESS compiler and include less-compiled CSS
+* ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
+* ADDED: Yahoo YUI! reset to version v3.4.1
+* UPDATED: Plugin upgrade handling is much improved
+* UPDATED: Normalize CSS to the latest version
+* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
+* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
 
 = 2.0.2.2 =
 Skipped.
