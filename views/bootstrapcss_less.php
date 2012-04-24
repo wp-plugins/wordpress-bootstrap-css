@@ -1,8 +1,34 @@
 <?php
+
+/**
+ * Copyright (c) 2012 Worpit <support@worpit.com>
+ * All rights reserved.
+ *
+ * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
+ * distributed under the GNU General Public License, Version 2,
+ * June 1991. Copyright (C) 1989, 1991 Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110, USA
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
 include_once( dirname(__FILE__).'/widgets/bootstrapcss_widgets.php' );
 
-function getIsHexColour($insColour) {
+function getLessDownloadLink() {
 	
+}//getLessDownloadLink
+
+function getIsHexColour($insColour) {
 	return preg_match( '/^#[a-fA-F0-9]{3,6}$/', $insColour );
 }
 
@@ -139,7 +165,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 	
 	<div class="bootstrap-wpadmin">
 		<div class="page-header">
-			<a href="http://www.hostliketoast.com/"><div class="icon32" style="background: url(<?php echo $hlt_plugin_url; ?>images/worpit_32x32.png) no-repeat;" id="hostliketoast-icon">&nbsp;</div></a>
+			<a href="http://worpit.com/"><div class="icon32" id="worpit-icon">&nbsp;</div></a>
 			<h2><?php _hlt_e( 'LESS Compiler :: Twitter Bootstrap Plugin from Worpit' ); ?></h2>
 		</div>
 
@@ -215,7 +241,8 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 					<div class="form-actions">
 						<input type="hidden" name="hlt_less_option" value="Y" />
 						<button type="submit" class="btn btn-primary" name="submit" <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Save All Settings' ); ?></button>
-						<button type="submit" class="btn btn-danger" name="submit_reset"  <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset all values to original defaults' ); ?></button>
+						<button type="submit" class="btn btn-danger" name="submit_reset"  <?php echo ($hlt_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset All To Defaults' ); ?></button>
+						<a class="btn btn-inverse" name="download_less_css" <?php echo ( file_exists( $hlt_less_file_location[0] ) ? 'href="'.$hlt_less_file_location[1].'"' :' disabled'); ?>><?php _hlt_e( 'Download Compiled CSS' ); ?></a>	
 					</div>
 				</form>
 			</div><!-- / span9 -->

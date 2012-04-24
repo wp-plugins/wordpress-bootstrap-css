@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: WordPress Twitter Bootstrap CSS
-Plugin URI: http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/
+Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
 Version: 2.0.3
 Author: Worpit
@@ -10,7 +10,7 @@ Author URI: http://worpit.com/
 */
 
 /**
- * Copyright (c) 2011 Worpit <helpdesk@hostliketoast.com>
+ * Copyright (c) 2012 Worpit <support@worpit.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -58,7 +58,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const OptionPrefix			= 'hlt_bootstrapcss_';
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
-	const TwitterVersion		= '2.0.2';
+	const TwitterVersion		= '2.0.3';
 	const TwitterVersionLegacy	= '1.4.0';
 	const YUI3Version			= '3.4.1';
 	
@@ -141,9 +141,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		$sCurrentVersion = get_user_meta( $user_id, self::OptionPrefix.'current_version', true );
 
-		if ( current_user_can( 'manage_options' ) && ( empty( $sCurrentVersion ) || ( $sCurrentVersion != self::$VERSION ) ) ) {
+		if ( current_user_can( 'manage_options' ) && $sCurrentVersion !== self::$VERSION ) {
 			echo '
 				<div id="message" class="updated">
+					<style>
+						#message form {
+							margin: 0px;
+						}
+					</style>
 					<form method="post" action="admin.php?page=hlt-directory-bootstrap-css">
 						<p><strong>WordPress Twitter Bootstrap</strong> plugin has been updated. Worth checking out the latest docs.
 						<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
@@ -237,7 +242,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 * Also includes a separate CSS fixes file.
 	 */
 	public function includeTwitterCssWpAdmin() {
-		wp_register_style( 'bootstrap_wpadmin_css', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-2.0.2.css', false, self::$VERSION );
+		wp_register_style( 'bootstrap_wpadmin_css', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-'.self::TwitterVersion.'.css', false, self::$VERSION );
 		wp_enqueue_style( 'bootstrap_wpadmin_css' );
 		wp_register_style( 'bootstrap_wpadmin_css_fixes', self::$PLUGIN_URL.'resources/misc/css/bootstrap-wpadmin-fixes.css', array('bootstrap_wpadmin_css'), self::$VERSION );
 		wp_enqueue_style( 'bootstrap_wpadmin_css_fixes' );
@@ -287,7 +292,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$fAddAdminBootstrap = false;
 		if ( ($pagenow == 'admin.php') && in_array( $sSubPageNow, $aAllowedPages ) ) {
 			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
-			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'css/bootstrap-admin.css', array( 'bootstrap_wpadmin_css_fixes' ), self::$VERSION );
+			wp_register_style( 'wtb_css', self::$PLUGIN_URL.'resources/misc/css/bootstrap-admin.css', array( 'bootstrap_wpadmin_css_fixes' ), self::$VERSION );
 			wp_enqueue_style( 'wtb_css' );
 			
 			$fAddAdminBootstrap = true; //for use in the next step
@@ -333,14 +338,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 			//Manages those users who are coming from a version pre-Twitter 2.0+
 			if ( self::getOption( 'upgraded1to2' ) !== 'Y' ) {
-				if ( self::getOption( 'alerts_js' ) === 'Y' ) {
-					self::addOption( 'alert_js', 'Y' );
-				}
-				if ( self::getOption( 'tabs_js' ) === 'Y' ) {
-					self::addOption( 'tab_js', 'Y' );
-				}
-				if ( self::getOption( 'twipsy_js' ) === 'Y' ) {
-					self::addOption( 'tooltip_js', 'Y' );
+				if ( self::getOption( 'alerts_js' ) === 'Y' || self::getOption( 'tabs_js' ) === 'Y'	|| self::getOption( 'twipsy_js' ) === 'Y' ) {
+					self::updateOption( 'all_js', 'Y' );
 				}
 				self::addOption( 'upgraded1to2', 'Y' );
 			}
@@ -434,7 +433,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'compiler_enabled'			=> self::getOption( 'use_compiled_css' ) === 'Y',
 			'form_action'				=> 'admin.php?page=hlt-directory-bootstrap-less',
 			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
-			'less_options'				=> $oBoostrapLess->getAllBootstrapLessOptions(true)
+			'less_options'				=> $oBoostrapLess->getAllBootstrapLessOptions(true),
+			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' )
 		);
 		
 		//enqueue JS color scripts
@@ -522,6 +522,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sLessPrefix = 'less_';
 		
 		$oBoostrapLess->processNewLessOptions( $_POST, 'hlt_', self::$BOOSTRAP_DIR );
+
+		
 		
 	}//handleSubmit_BootstrapLess
 	
@@ -670,7 +672,10 @@ class HLT_BootstrapCss_Uninstall {
 			foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
 				HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
 			}
+			$oBoostrapLess = new HLT_BootstrapLess();
+			$oBoostrapLess->deleteAllLessOptions();
 		}
+		HLT_BootstrapCss::deleteOption( 'upgraded1to2' );
 	}
 }//HLT_BootstrapCss_Uninstall
 
@@ -684,7 +689,7 @@ class HLT_Plugin {
 	static public $PLUGIN_URL;
 	
 	const ParentTitle		= 'Worpit Plugins';
-	const ParentName		= 'Worpit';
+	const ParentName		= 'Twitter Bootstrap';
 	const ParentPermissions	= 'manage_options';
 	const ParentMenuId		= 'hlt-directory';
 	
@@ -741,7 +746,7 @@ class HLT_Plugin {
 	}
 	
 	protected function getImageUrl( $insImage ) {
-		return self::$PLUGIN_URL.'images/'.$insImage;
+		return self::$PLUGIN_URL.'resources/misc/images/'.$insImage;
 	}
 	
 	protected function getSubmenuPageTitle( $insTitle ) {
@@ -760,7 +765,6 @@ class HLT_Plugin {
 	}
 	
 	public function onWpPluginsLoaded() {
-		
 	}
 	
 	public function onWpAdminMenu() {
@@ -773,7 +777,7 @@ class HLT_Plugin {
 		$aData = array(
 			'plugin_url'	=> self::$PLUGIN_URL
 		);
-		$this->display( 'hostliketoast_index', $aData );
+		$this->display( 'worpit_index', $aData );
 	}
 	
 	public function onWpPluginActionLinks( $inaLinks, $insFile ) {

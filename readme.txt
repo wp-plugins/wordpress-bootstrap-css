@@ -4,27 +4,28 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.3.2
-Stable tag: 2.0.2.3
+Stable tag: 2.0.3
 
-With WordPress Twitter Bootstrap CSS you can easily include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+With WordPress Twitter Bootstrap CSS you can include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
 
 == Description ==
 
-To see the latest release notes for the new version 2.0.0 for the [WordPress Twitter Bootstrap CSS plugin](http://www.hostliketoast.com/2012/02/wordpress-twitter-bootstrap-css-plugin-v2-0-final/ "WordPress Twitter Bootstrap CSS plugin v2.0 (Final) - Notes on important changes") see the release article
-on our site.
+What is Twitter Bootstrap?
+It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love to use Twitter Bootstrap at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
+We love to use Twitter Bootstrap on our WordPress sites at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
+And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
-We wanted a way to quickly link the latest bootstrap CSS and Javascript to all pages, regardless of the Wordpress Theme.
-
-Now you can!
+With this plugin, now you can!
 
 *	Works with *any* Wordpress Theme without ever editing Theme files and NO programming needed.
+*	Now fully customizable with built-in LESS Compiler.
 *	Handy WordPress [SHORTCODES] to add Twitter Bootstrap elements to your site quickly
 *	Add your own custom CSS reset file
 *	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as is good practice)
+*	and more..
 
-The home for documentation of this plugin is: [Documentation for this WordPress Plugin](http://www.hostliketoast.com/wordpress-resource-centre/wordpress-plugins/ "WordPress Bootstrap CSS Plugin Documentation Home")
+To get the latest news and support go here: [WordPress Twitter Bootstrap CSS plugin](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/ "WordPress Twitter Bootstrap CSS Plugin Home") to see the release article on our site.
 
 **Why use Twitter Bootstrap?** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
@@ -36,16 +37,16 @@ From Twitter Bootstrap:
 *Bootstrap is a toolkit from Twitter designed to kickstart development of webapps and sites.
 It includes base CSS and HTML for typography, forms, buttons, tables, grids, navigation, and more*
 
+The problem?
 Many themes do not allow you to add custom CSS files easily. Even the Thesis Framework! So we take
 another approach and inject the CSS as one of the FIRST items in the HTML HEAD section. This way, no
-other CSS interferes and these may be used as a foundation/reset CSS.
+other CSS interferes first so you can be sure these bootstrap file can be used as a foundation/reset CSS.
 
 The CSS is only part of the solution. Twitter Bootstrap also have Javascript libraries
-to complement their Bootstrap solution. These may also be added to your site with the option to
-add them to the HEAD (by default they are added to the end of the BODY).
+to complement their Bootstrap CSS. These may also be added to your site with the option to
+add them to the HEAD of your site - by default they are added to the end of the BODY.
 
-We also wanted the option to alternatively include "reset.css" and "normalize.css".  These both form related roles
-as bootstrap, but are lighter.
+We also wanted the option to alternatively include YUI "reset.css" and "normalize.css".  These both form related roles to bootstrap, but are lighter.
 
 You could look at the difference between the styles as:
 
@@ -58,11 +59,11 @@ browsers. It makes site and web application development much faster.
 
 **Some References**:
 
+Bootstrap, from Twitter: http://twitter.github.com/bootstrap/
+
 Yahoo Reset CSS, YUI 2: http://developer.yahoo.com/yui/2/
 
 Normalize CSS: http://necolas.github.com/normalize.css/
-
-Bootstrap, from Twitter: http://twitter.github.com/bootstrap/
 
 == Installation ==
 
@@ -149,16 +150,17 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 == Changelog ==
 
 = 2.0.3 =
-* ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
-* ADDED: Option - use minimized or non-minized Bootstrap CSS
-* ADDED: Option - delete all plugin settings upon deactivation
+* ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
+* ADDED: Option - toggle use of minimized or non-minized Bootstrap CSS
+* ADDED: Option - toggle delete all plugin settings upon plugin deactivation
 * ADDED: Option - enable LESS compiler and include less-compiled CSS
 * ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
-* ADDED: Yahoo YUI! reset to version v3.4.1
+* ADDED: Yahoo YUI! reset.css v3.4.1
 * UPDATED: Plugin upgrade handling is much improved
-* UPDATED: Normalize CSS to the latest version
-* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
-* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
+* UPDATED: Normalize CSS updated to the latest version
+* REMOVED: support Twitter Bootstrap v1.4.0 ("legacy") !
+* REMOVED: support for Individual Twitter Bootstrap Javascript Libraries !
+* REMOVED: support for shortcodes [TBS_BLOCK] and [TBS_TWIPSY] !
 
 = 2.0.2.3 =
 * FIX: Fixed a bug where the plugin would error and WordPress may deactivate the plugin.
@@ -291,6 +293,18 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.3 =
+* ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
+* ADDED: Option - toggle use of minimized or non-minized Bootstrap CSS
+* ADDED: Option - toggle delete all plugin settings upon plugin deactivation
+* ADDED: Option - enable LESS compiler and include less-compiled CSS
+* ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
+* ADDED: Yahoo YUI! reset.css v3.4.1
+* UPDATED: Plugin upgrade handling is much improved
+* UPDATED: Normalize CSS updated to the latest version
+* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy") !
+* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries !
 
 = 2.0.2.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )

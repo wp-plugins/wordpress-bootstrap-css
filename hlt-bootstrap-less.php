@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2011 Worpit <helpdesk@hostliketoast.com>
+ * Copyright (c) 2012 Worpit <support@worpit.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -125,6 +125,17 @@ class HLT_BootstrapLess {
 		}
 		
 	}//populateAllOptions
+
+	public function deleteAllLessOptions() {
+
+		foreach ( $this->m_aAllBootstrapLessOptions as $aKeySectionTitle => $aLessSection ) {
+			
+			foreach ( $this->m_aAllBootstrapLessOptions[$aKeySectionTitle] as $sKey => &$aOptionParams ) {
+				HLT_BootstrapCss::deleteOption( $aOptionParams[0] );
+			}
+		}
+		
+	}//populateAllOptions
 	
 	public function resetToDefaultAllLessOptions( $insBootstrapDir ) {
 
@@ -169,29 +180,38 @@ class HLT_BootstrapLess {
 			}
 		}
 		
-		$this->reWriteVariablesLess($insBootstrapDir);
-		$this->compileLess($insBootstrapDir);
+		if ( $this->reWriteVariablesLess($insBootstrapDir) ) {
+			$this->compileLess($insBootstrapDir);
+		}
 		
 	}//processNewLessOptions
 	
 	public function reWriteVariablesLess( $insBootstrapDir ) {
 
+		$fSuccess = true;
+		
 		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
 		$sContents = file_get_contents( $sFilePathVariablesLess );
 		
-		$this->populateAllLessOptions();
-	
-		foreach ( $this->m_aAllBootstrapLessOptions as $aKeySectionTitle => $aLessSection ) {
-			
-			foreach ( $this->m_aAllBootstrapLessOptions[$aKeySectionTitle] as $sKey => $aOptionParams ) {
-				list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOptionParams;
-				
-				$sBootstrapLessVar = str_replace( self::LessOptionsPrefix, '', $sLessKey );
-				$sContents = preg_replace( '/^\s*(@'.$sBootstrapLessVar.':\s*)([^;]+)(;)\s*$/im', '${1}'.$sLessSaved.'${3}', $sContents );
-			}
-		}
+		if ( !$sContents ) {
+			//The Variable.less file couldn't be read: bail!
+			$fSuccess = false;
+		} else {
+			$this->populateAllLessOptions();
 		
-		file_put_contents( $sFilePathVariablesLess, $sContents );
+			foreach ( $this->m_aAllBootstrapLessOptions as $aKeySectionTitle => $aLessSection ) {
+				
+				foreach ( $this->m_aAllBootstrapLessOptions[$aKeySectionTitle] as $sKey => $aOptionParams ) {
+					list( $sLessKey, $sLessSaved, $sLessDefault, $sLessOptionType, $sLessHumanName ) = $aOptionParams;
+					
+					$sBootstrapLessVar = str_replace( self::LessOptionsPrefix, '', $sLessKey );
+					$sContents = preg_replace( '/^\s*(@'.$sBootstrapLessVar.':\s*)([^;]+)(;)\s*$/im', '${1}'.$sLessSaved.'${3}', $sContents );
+				}
+			}
+			
+			file_put_contents( $sFilePathVariablesLess, $sContents );
+		}
+		return $fSuccess;
 	
 	}//reWriteVariablesLess
 	
@@ -205,16 +225,17 @@ class HLT_BootstrapLess {
 		$sCompiledCss = '';
 		try {
 			$sCompiledCss = $oLessCompiler->parse();
+			
+			$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+			file_put_contents( $sLessFile.'.css', $sCompiledCss );
+		
+			//Basic Minify
+			$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
+			file_put_contents( $sLessFile.'.min.css', $sCompiledCss );
 		}
 		catch ( Exception $oE ) {
 			echo "lessphp fatal error: ".$oE->getMessage();
 		}
-		$sMinFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
-		file_put_contents( $sMinFile.'.css', $sCompiledCss );
-	
-		//Basic Minify
-		$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
-		file_put_contents( $sMinFile.'.min.css', $sCompiledCss );
 	}//compileLess
 	
 }//HLT_BootstrapLess
