@@ -62,6 +62,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const TwitterVersionLegacy	= '1.4.0';
 	const YUI3Version			= '3.4.1';
 	
+	const GoogleCdnJqueryVersion	= '1.7.2';
+	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
 	
@@ -81,16 +83,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.3.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.DS.self::$PLUGIN_PATH.DS;
 		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
-		
+
 		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS;
 		self::$BOOSTRAP_URL = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/';
-		
+
 		$this->defineAllPluginOptions();
 
 		if ( is_admin() ) {
@@ -117,6 +119,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			array( 'useshortcodes',				'N', 'checkbox' ),
 			array( 'use_minified_css',			'Y', 'checkbox' ),	//Defaults to Minified
 			array( 'use_compiled_css',			'N', 'checkbox' ),
+			array( 'replace_jquery_cdn',		'N', 'checkbox' ),
 			
 			//Miscellaneous
 			array( 'prettify',					'N', 'checkbox' ),
@@ -311,7 +314,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		parent::onWpPluginsLoaded();
 		
 		if ( is_admin() ) {
-		
 			$this->handlePluginUpgrade();
 			$this->handleSubmit();
 
@@ -329,7 +331,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	/**
-	 * Handles the upgrade from version 1 to version 2 of Twitter Bootstrap.
+	 * Handles the upgrade from version 1 to version 2 of Twitter Bootstrap as well as any other plugin upgrade
 	 */
 	public function handlePluginUpgrade() {
 		
@@ -380,9 +382,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				'tabs_js',		//upgrade from 1~2
 				'twipsy_js'		//upgrade from 1~2
 			);
-			
 			foreach ( $m_aAllOldPluginOptions as $sOldOptions ) {
 				self::deleteOption( $sOldOptions );
+			}
+			
+			//Recompile LESS CSS if applicable
+			if ( self::getOption('use_compiled_css') == 'Y' ) {
+				$oBoostrapLess = new HLT_BootstrapLess();				
+				if ( $oBoostrapLess->reWriteVariablesLess( self::$BOOSTRAP_DIR ) ) {
+					$oBoostrapLess->compileLess( self::$BOOSTRAP_DIR );
+				}
 			}
 		
 			//Set the flag so that this update handler isn't run again for this version.
@@ -413,6 +422,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'option_useshortcodes'				=> self::getOption( 'useshortcodes' ),
 			'option_use_minified_css'			=> self::getOption( 'use_minified_css' ),
 			'option_use_compiled_css'			=> self::getOption( 'use_compiled_css' ),
+			'option_replace_jquery_cdn'			=> self::getOption( 'replace_jquery_cdn' ),
 
 			'option_inc_bootstrap_css_wpadmin'	=> self::getOption( 'inc_bootstrap_css_wpadmin' ),
 			'option_hide_dashboard_rss_feed'	=> self::getOption( 'hide_dashboard_rss_feed' ),
@@ -480,6 +490,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		self::updateOption( 'useshortcodes',				$this->getAnswerFromPost( 'option_useshortcodes' ) );
 		self::updateOption( 'use_minified_css',				$this->getAnswerFromPost( 'option_use_minified_css' ) );
 		self::updateOption( 'use_compiled_css',				$this->getAnswerFromPost( 'option_use_compiled_css' ) );
+		self::updateOption( 'replace_jquery_cdn',			$this->getAnswerFromPost( 'option_replace_jquery_cdn' ) );
 		
 		self::updateOption( 'inc_bootstrap_css_wpadmin',	$this->getAnswerFromPost( 'option_inc_bootstrap_css_wpadmin' ) );	// Bootstrap v2.0+
 		self::updateOption( 'hide_dashboard_rss_feed',		$this->getAnswerFromPost( 'option_hide_dashboard_rss_feed' ) );
@@ -523,8 +534,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		$oBoostrapLess->processNewLessOptions( $_POST, 'hlt_', self::$BOOSTRAP_DIR );
 
-		
-		
 	}//handleSubmit_BootstrapLess
 	
 	protected function handleSubmit() {
@@ -557,7 +566,17 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		if ( $sBootstrapOption == 'twitter' && self::getOption( 'all_js' ) == 'Y' ) {
 			$sUrlPrefix = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/js/bootstrap';
-			wp_enqueue_script( 'jquery' );
+			
+			if ( self::getOption( 'replace_jquery_cdn' ) == 'Y' ) {
+				wp_deregister_script('jquery');
+				
+				$sGoogleJqueryUri = 'https://ajax.googleapis.com/ajax/libs/jquery/'.self::GoogleCdnJqueryVersion.'/jquery';
+				$sGoogleJqueryUri .= ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.js' : '.js';
+				
+				wp_register_script( 'jquery', $sGoogleJqueryUri, '', self::GoogleCdnJqueryVersion, false );
+			}
+			
+			wp_enqueue_script( 'jquery' ); //just include the normal JQuery with WordPress.
 			
 			wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', 'jquery', self::$VERSION, $fJsInFooter );
 			wp_enqueue_script( 'bootstrap-all-min' );

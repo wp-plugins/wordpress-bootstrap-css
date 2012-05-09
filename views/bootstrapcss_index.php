@@ -177,6 +177,21 @@
 							</div>
 	
 							<div class="control-group">
+								<label class="control-label" for="hlt_bootstrap_option_replace_jquery_cdn"><?php _hlt_e( 'Replace JQuery' ); ?><br/><span class="label"><?php _hlt_e( 'Default: Off' ); ?></span></label>
+								<div class="controls">
+									<div class="option_section <?php if ( $hlt_option_replace_jquery_cdn == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_replace_jquery_cdn">
+										<label class="checkbox" for="hlt_bootstrap_option_replace_jquery_cdn">
+											<input type="checkbox" name="hlt_bootstrap_option_replace_jquery_cdn" value="Y" id="hlt_bootstrap_option_replace_jquery_cdn" <?php if ( $hlt_option_replace_jquery_cdn == 'Y' ): ?>checked="checked"<?php endif; ?> />
+											<?php _hlt_e('Replace JQuery library link with Google CDN link' ); ?>
+										</label>
+										<p class="help-block">
+											<?php _hlt_e('In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from Google CDN.' ); ?>
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
 								<label class="control-label" for="hlt_bootstrap_option_use_compiled_css"><?php _hlt_e( 'Enable LESS Compiler' ); ?><br/><span class="label"><?php _hlt_e( 'Default: Off' ); ?></span></label>
 								<div class="controls">
 									<div class="option_section <?php if ( $hlt_option_use_compiled_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_use_compiled_css">

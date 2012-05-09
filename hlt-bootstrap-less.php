@@ -191,7 +191,7 @@ class HLT_BootstrapLess {
 		$fSuccess = true;
 		
 		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
-		$sContents = file_get_contents( $sFilePathVariablesLess );
+		$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
 		
 		if ( !$sContents ) {
 			//The Variable.less file couldn't be read: bail!

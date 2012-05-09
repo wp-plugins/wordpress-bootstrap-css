@@ -535,7 +535,7 @@ class HLT_BootstrapShortcodes {
 		}
 		
 		$insContent = '
-			<ul class="tabs" data-tabs="tabs">
+			<ul class="nav nav-tabs" data-tabs="tabs">
 				'.implode( "\n", $aTabs ).'
 			</ul>
 			<div id="my-tab-content" class="tab-content">
@@ -604,26 +604,12 @@ class HLT_BootstrapShortcodes {
 		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
 		<script type='text/javascript'>
 			jQuery( document ).ready(
-				function () {";
-		
-		if ( $this->sTwitterBootstrapVersion == '2' ) {
-			$sJavascript .= "
+				function () {
 					jQuery( '*[rel=popover]')
 						.popover(); 
 					
 					jQuery( '*[data-popover=popover]')
-						.popover();";
-		} else {
-			$sJavascript .= "
-					jQuery( '*[rel=popover]')
-						.popover( { offset: 10 } )
-						.click( function(e) { e.preventDefault() } ); 
-					
-					jQuery( '*[data-popover=popover]')
-						.popover( { offset: 10 } );";
-		}
-		
-		$sJavascript .= "
+						.popover();
 				}
 			);
 		</script>
@@ -636,21 +622,17 @@ class HLT_BootstrapShortcodes {
 	
 	public function printJavascriptForTooltips() {
 		
-		$sJavascript = '
+		$sJavascript = "
 			<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
-			<script type="text/javascript">
+			<script type=\"text/javascript\">
 				jQuery( document ).ready(
 					function () {
-		';
-		
-		$sJavascript .= "jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();";
-		
-		$sJavascript .= '
+						jQuery( '*[rel=tooltip],*[data-tooltip=tooltip]' ).tooltip();
 					}
 				);
 			</script>
 			<!-- END: Tooltip-enabling Javascript -->
-		';
+		";
 		
 		echo $sJavascript;
 		

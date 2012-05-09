@@ -149,8 +149,13 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+= 2.0.3.1 =
+* ADDED: Option - replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
+* IMPROVED Variable.less integrity. Now always uses the original copy for compilation in case it becomes corrupted.
+* IMPROVED Upgrade handling. in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
+
 = 2.0.3 =
-* ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
+* ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP for PHP LESS compiler](http://leafo.net/lessphp/) )
 * ADDED: Option - toggle use of minimized or non-minized Bootstrap CSS
 * ADDED: Option - toggle delete all plugin settings upon plugin deactivation
 * ADDED: Option - enable LESS compiler and include less-compiled CSS
