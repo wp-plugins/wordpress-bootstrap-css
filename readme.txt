@@ -3,10 +3,10 @@ Contributors: dlgoodchild, paultgoodchild
 Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
-Tested up to: 3.3.2
+Tested up to: 3.4
 Stable tag: 2.0.3
 
-With WordPress Twitter Bootstrap CSS you can include the latest Twitter Bootstrap CSS and Javascript libraries in your Wordpress site.
+WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
 == Description ==
 
@@ -119,7 +119,16 @@ Otherwise, consult your caching program's documentation.
 
 = Is the CSS "minified"? =
 
-Yes, but only in the case of Yahoo! YUI 2, and Twitter Bootstrap CSS.
+Yes, but only in the case of Yahoo! YUI 2/3, and Twitter Bootstrap CSS.
+
+You now have the option to enable minified CSS or not.
+
+= My Popover/Tooltip doesn't seem to work and it's generating Javascript errors in the console =
+
+This is likely due to you not linking to the latest version of JQuery. Twitter Bootstrap requires the latest
+version (1.7.2 at the time of writing). There is an option in the plugin to replace the JQuery of your WordPress
+installation with the latest version served from Google CDN. Try this if you're having issues with Popovers etc.,
+or better yet upgrade your WordPress to the latest version.
 
 = What's the reason for the Worpit menu? =
 
@@ -152,7 +161,8 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 = 2.0.3.1 =
 * ADDED: Option - replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
 * IMPROVED Variable.less integrity. Now always uses the original copy for compilation in case it becomes corrupted.
-* IMPROVED Upgrade handling. in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
+* IMPROVED Upgrade handling in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
+* IMPROVED [TBS_ROW] shortcode to allow fluid and also to allow option of creating a container or not.
 
 = 2.0.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP for PHP LESS compiler](http://leafo.net/lessphp/) )

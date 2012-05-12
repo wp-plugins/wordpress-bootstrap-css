@@ -574,10 +574,36 @@ class HLT_BootstrapShortcodes {
 	}
 	
 	public function row( $inaAtts = array(), $insContent = '' ) {
-	
-		$sReturn = '<div class="container">	<div class="row">';
+		
+		$this->def( &$inaAtts, 'container', 'y' );
+		$this->def( &$inaAtts, 'fluid', 'n' );
+		$this->def( &$inaAtts, 'style' );
+		$this->def( &$inaAtts, 'id' );
+		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'cstyle' );
+		$this->def( &$inaAtts, 'cid' );
+		$this->def( &$inaAtts, 'cclass' );
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'cid', 'id' );
+		$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
+		
+		$sFluid = ( strtolower($inaAtts['fluid']) == 'y' ) ? '-fluid' : '';
+		
+		$sReturn = '<div class="row'.$sFluid.' '.$inaAtts['class'].'" '
+					.$inaAtts['style']
+					.$inaAtts['id'].'>';
 		$sReturn .= $this->doShortcode( $insContent );
-		$sReturn .= '</div></div>';
+		$sReturn .= '</div>';
+		
+		if ( strtolower($inaAtts['container']) == 'y' ) {
+			$sReturn = '<div class="container'.$sFluid.' '.$inaAtts['cclass'].'"'
+						.$inaAtts['cstyle']
+						.$inaAtts['cid']
+						.'>'.$sReturn.'</div>';
+		}
 		
 		return $sReturn;
 	}//row
@@ -585,9 +611,9 @@ class HLT_BootstrapShortcodes {
 	public function column( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( &$inaAtts, 'size', 1 );
-		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+		$this->def( &$inaAtts, 'style' );
 		
 		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['class']. '"'
 					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
@@ -601,7 +627,7 @@ class HLT_BootstrapShortcodes {
 	public function printJavascriptForPopovers() {
 		
 		$sJavascript = "
-		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
+		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Popover-enabling Javascript -->
 		<script type='text/javascript'>
 			jQuery( document ).ready(
 				function () {
@@ -623,7 +649,7 @@ class HLT_BootstrapShortcodes {
 	public function printJavascriptForTooltips() {
 		
 		$sJavascript = "
-			<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip(Twipsy)-enabling Javascript -->
+			<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip-enabling Javascript -->
 			<script type=\"text/javascript\">
 				jQuery( document ).ready(
 					function () {
@@ -671,9 +697,10 @@ class HLT_BootstrapShortcodes {
 	protected function noEmptyHtml( $insContent, $insAttr ) {
 		return (($insContent != '')? ' '.$insAttr.'="'.$insContent.'" ' : '' );	
 	}
-	protected function noEmptyElement( &$inaArgs, $insAttrKey ) {
+	protected function noEmptyElement( &$inaArgs, $insAttrKey, $insElement = '' ) {
 		$sAttrValue = $inaArgs[$insAttrKey];
-		$inaArgs[$insAttrKey] = ( empty($sAttrValue) ) ? '' : ' '.$insAttrKey.'="'.$sAttrValue.'"';
+		$insElement = ( $insElement == '' )? $insAttrKey : $insElement;
+		$inaArgs[$insAttrKey] = ( empty($sAttrValue) ) ? '' : ' '.$insElement.'="'.$sAttrValue.'"';
 	}
 	
 	/**

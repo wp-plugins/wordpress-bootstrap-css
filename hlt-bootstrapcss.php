@@ -576,7 +576,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				wp_register_script( 'jquery', $sGoogleJqueryUri, '', self::GoogleCdnJqueryVersion, false );
 			}
 			
-			wp_enqueue_script( 'jquery' ); //just include the normal JQuery with WordPress.
+			wp_enqueue_script( 'jquery' );
 			
 			wp_register_script( 'bootstrap-all-min', $sUrlPrefix.'.min.js', 'jquery', self::$VERSION, $fJsInFooter );
 			wp_enqueue_script( 'bootstrap-all-min' );
