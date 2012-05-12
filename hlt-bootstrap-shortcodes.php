@@ -488,23 +488,23 @@ class HLT_BootstrapShortcodes {
 					 * Handle the dropdowns as the tab() shortcode handles the tab contents only
 					 */
 					$nOffsetTemp = $aMatch[0][1] + $nOffsetAdjustment;
-					
+
 					$sRemainder = substr( $insContent, $nOffsetTemp + strlen( $aMatch[0][0] ) );					
 					$nPos = strpos( $sRemainder, '[/TBS_TAB]' );
 					$sRemainder = substr( $sRemainder, 0, $nPos );
-										
+
 					// match all dropdowns until [/TBS_TAB]
 					if ( !preg_match_all( '/\[TBS_DROPDOWN_OPTION([^\]]*)\]/', $sRemainder, &$aSubMatches, PREG_SET_ORDER ) ) {
 						continue;
 					}
-					
+
 					$aOptions = array();
 					foreach ( $aSubMatches as $aSubMatch ) {
 						$sLink = '#';
 						if ( preg_match( '/link\s*=\s*("|\')(.*)\g{-2}+/i', $aSubMatch[1][0], $aSubMatches ) ) {
 							$sLink = $aSubMatches[2];
 						}
-						
+
 						$sName = 'Undefined';
 						if ( preg_match( '/name\s*=\s*("|\')(.*)\g{-2}+/i', $aSubMatch[1][0], $aSubMatches ) ) {
 							$sName = $aSubMatches[2];
@@ -512,7 +512,7 @@ class HLT_BootstrapShortcodes {
 						
 						$aOptions[] = '<li><a href="'.$sLink.'">'.$sName.'</a></li>';
 					}
-					
+
 					$aTabs[] = '
 						<li class="dropdown" data-dropdown="dropdown">
 							<a class="dropdown-toggle" href=" #">'.$sName.'</a>
@@ -573,13 +573,23 @@ class HLT_BootstrapShortcodes {
 		return $this->doShortcode( $insContent );
 	}
 	
+	/**
+	 * Prints the HTML necessary for Bootstrap Rows. Will also create a container DIV but it has the option
+	 * to not print it with: container=n
+	 * 
+	 * There is also the option to make it fluid layout with: fluid=y
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
 	public function row( $inaAtts = array(), $insContent = '' ) {
 		
-		$this->def( &$inaAtts, 'container', 'y' );
 		$this->def( &$inaAtts, 'fluid', 'n' );
 		$this->def( &$inaAtts, 'style' );
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
+		
+		$this->def( &$inaAtts, 'container', 'y' );
 		$this->def( &$inaAtts, 'cstyle' );
 		$this->def( &$inaAtts, 'cid' );
 		$this->def( &$inaAtts, 'cclass' );
@@ -595,8 +605,7 @@ class HLT_BootstrapShortcodes {
 		$sReturn = '<div class="row'.$sFluid.' '.$inaAtts['class'].'" '
 					.$inaAtts['style']
 					.$inaAtts['id'].'>';
-		$sReturn .= $this->doShortcode( $insContent );
-		$sReturn .= '</div>';
+		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
 		
 		if ( strtolower($inaAtts['container']) == 'y' ) {
 			$sReturn = '<div class="container'.$sFluid.' '.$inaAtts['cclass'].'"'
@@ -615,11 +624,14 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'class' );
 		$this->def( &$inaAtts, 'style' );
 		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
 		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['class']. '"'
-					.$this->noEmptyHtml( $inaAtts['id'], 'id' )
-					.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>';
-		$sReturn .= $this->doShortcode( $insContent );
-		$sReturn .= '</div>';
+					.$inaAtts['style']
+					.$inaAtts['id'].'>';
+		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
 		
 		return $sReturn;
 	}//row
