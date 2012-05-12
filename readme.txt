@@ -159,10 +159,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 == Changelog ==
 
 = 2.0.3.1 =
-* ADDED: Option - replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
+* ADDED: Option - to replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
+This is useful if your WordPress version isn't the latest and therefore has an incompatible JQuery library.
 * IMPROVED Variable.less integrity. Now always uses the original copy for compilation in case it becomes corrupted.
 * IMPROVED Upgrade handling in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
-* IMPROVED [TBS_ROW] shortcode to allow fluid and also to allow option of creating a container or not.
+* IMPROVED [TBS_ROW] shortcode to allow fluid rows/containers and also to allow option of creating a container or not.
 
 = 2.0.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP for PHP LESS compiler](http://leafo.net/lessphp/) )
