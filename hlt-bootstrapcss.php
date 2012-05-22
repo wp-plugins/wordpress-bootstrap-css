@@ -55,7 +55,7 @@ function _hlt__( $insStr ) {
 class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const InputPrefix			= 'hlt_bootstrap_';
-	const OptionPrefix			= 'hlt_bootstrapcss_';
+	const OptionPrefix			= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 	
 	// possibly configurable in the UI, we'll determine this as new releases occur.
 	const TwitterVersion		= '2.0.3';
@@ -104,6 +104,32 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	private function defineAllPluginOptions() {
 		
 		$this->m_aAllPluginOptions = array(
+				'Choose Bootstrap CSS Options' => array(
+						array( 'option', 					'',		'none', 	'select' ),
+						array( 'inc_responsive_css',		'',		'N',		'checkbox' ),
+						array( 'customcss',					'',		'N',		'checkbox' ),
+						array( 'customcss_url',				'',		'http://',	'text' )
+				),
+				'Twitter Bootstrap Javascript Library Options' => array(
+						array( 'all_js', 					'',		'N',	'checkbox' ),
+						array( 'js_head',					'',		'N',	'checkbox' )
+				),
+				'Extra Twitter Bootstrap Options' => array(
+						array( 'useshortcodes', 			'',		'N',	'checkbox' ),
+						array( 'use_minified_css',			'',		'N',	'checkbox' ),
+						array( 'use_compiled_css',			'',		'N',	'checkbox' ),
+						array( 'replace_jquery_cdn',		'',		'Y',	'checkbox' )
+				),
+				'Miscellaneous Plugin Options' => array(
+						array( 'inc_bootstrap_css_wpadmin', '',		'N',	'checkbox' ),
+						array( 'hide_dashboard_rss_feed',	'',		'N',	'checkbox' ),
+						array( 'delete_on_deactivate',		'',		'N',	'checkbox' ),
+						array( 'prettify',					'',		'Y',	'checkbox' )
+				)
+		);
+				
+				
+		$this->m_aAllPluginOptions = array(
 			array( 'option',					'none',	'select' ), //the main option of the plugin - which reset CSS to use
 			array( 'inc_responsive_css',		'N',	'checkbox' ),	// Bootstrap v2.0+
 			
@@ -112,7 +138,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			
 			//Twitter Javascript preferences
 			array( 'all_js',					'N', 'checkbox' ),	// Bootstrap v2.0+
-			
 			array( 'js_head',					'N', 'checkbox' ),
 			
 			//Twitter Bootstrap Extra Options
@@ -671,12 +696,17 @@ class HLT_BootstrapCss_Install {
 		foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
 			HLT_BootstrapCss::addOption( $aPluginOption[0], $aPluginOption[1] );
 		}
+		/* NEW OPTIONS
+		foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
+			foreach ( $aOptionsSection as &$aOptionParams ) {
+				HLT_BootstrapCss::addOption( $aOptionParams[0], $aOptionParams[2] );
+			}
+		}
+		*/
 	}
 }//HLT_BootstrapCss_Install
 
 class HLT_BootstrapCss_Uninstall {
-	
-	// TODO: when uninstalling, maybe have a WPversion save settings offsite-like setting
 
 	private $m_aAllPluginOptions;
 	
@@ -691,6 +721,13 @@ class HLT_BootstrapCss_Uninstall {
 			foreach ( $this->m_aAllPluginOptions as $aPluginOption ) {
 				HLT_BootstrapCss::deleteOption( $aPluginOption[0] );
 			}
+			/* NEW OPTIONS
+			foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
+				foreach ( $aOptionsSection as &$aOptionParams ) {
+					HLT_BootstrapCss::deleteOption( $aOptionParams[0] );
+				}
+			}
+			*/
 			$oBoostrapLess = new HLT_BootstrapLess();
 			$oBoostrapLess->deleteAllLessOptions();
 		}

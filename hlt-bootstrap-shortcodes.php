@@ -589,16 +589,11 @@ class HLT_BootstrapShortcodes {
 		$this->def( &$inaAtts, 'id' );
 		$this->def( &$inaAtts, 'class' );
 		
-		$this->def( &$inaAtts, 'container', 'y' );
-		$this->def( &$inaAtts, 'cstyle' );
-		$this->def( &$inaAtts, 'cid' );
-		$this->def( &$inaAtts, 'cclass' );
+		$this->def( &$inaAtts, 'container', 'n' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
-		$this->noEmptyElement( $inaAtts, 'cid', 'id' );
-		$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
 		
 		$sFluid = ( strtolower($inaAtts['fluid']) == 'y' ) ? '-fluid' : '';
 		
@@ -608,6 +603,13 @@ class HLT_BootstrapShortcodes {
 		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
 		
 		if ( strtolower($inaAtts['container']) == 'y' ) {
+			
+			$this->def( &$inaAtts, 'cstyle' );
+			$this->def( &$inaAtts, 'cid' );
+			$this->def( &$inaAtts, 'cclass' );
+			$this->noEmptyElement( $inaAtts, 'cid', 'id' );
+			$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
+			
 			$sReturn = '<div class="container'.$sFluid.' '.$inaAtts['cclass'].'"'
 						.$inaAtts['cstyle']
 						.$inaAtts['cid']

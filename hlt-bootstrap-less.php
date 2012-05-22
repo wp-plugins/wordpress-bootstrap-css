@@ -127,14 +127,11 @@ class HLT_BootstrapLess {
 	}//populateAllOptions
 
 	public function deleteAllLessOptions() {
-
 		foreach ( $this->m_aAllBootstrapLessOptions as $aKeySectionTitle => $aLessSection ) {
-			
 			foreach ( $this->m_aAllBootstrapLessOptions[$aKeySectionTitle] as $sKey => &$aOptionParams ) {
 				HLT_BootstrapCss::deleteOption( $aOptionParams[0] );
 			}
 		}
-		
 	}//populateAllOptions
 	
 	public function resetToDefaultAllLessOptions( $insBootstrapDir ) {
