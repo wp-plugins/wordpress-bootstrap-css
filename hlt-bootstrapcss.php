@@ -273,7 +273,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		//if shortcodes are enabled, instantiate
 		$sBootstrapOption = self::getOption( 'option' );
 		if ( self::getOption( 'option' ) == 'twitter' && self::getOption( 'useshortcodes' ) == 'Y' ) {
-			$oShortCodes = new HLT_BootstrapShortcodes( '2' );
+			$oShortCodes = new HLT_BootstrapShortcodes();
 		}
 	}//onWpInit
 	

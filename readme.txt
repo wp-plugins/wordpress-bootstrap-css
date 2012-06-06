@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -13,7 +13,7 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love to use Twitter Bootstrap on our WordPress sites at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
+We love Twitter Bootstrap on our WordPress sites at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
 And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
 With this plugin, now you can!
@@ -123,6 +123,13 @@ the other plugin installed).
 
 Otherwise, consult your caching program's documentation.
 
+= Do you make any other plugins? =
+
+Yes, we created [Custom Content By Country](http://wordpress.org/extend/plugins/custom-content-by-country/ "Custom Content By Country WordPress Plugin")
+plugin that lets you display content to users in specific regions.
+
+We also created the [Worpit Administration Dashboard](http://worpit.com/?wordpress) for people with multiple WordPress sites to manage.
+
 = Is the CSS "minified"? =
 
 Yes, but only in the case of Yahoo! YUI 2/3, and Twitter Bootstrap CSS.
@@ -164,12 +171,15 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-= 2.0.3.1 =
+= 2.0.4 =
+* UPDATED: Twitter Bootstrap version 2.0.4
 * ADDED: Option - to replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
-This is useful if your WordPress version isn't the latest and therefore has an incompatible JQuery library.
-* IMPROVED Variable.less integrity. Now always uses the original copy for compilation in case it becomes corrupted.
+This is useful if your WordPress version isn't the latest and has an incompatible JQuery library.
+* IMPROVED much of the plugin code.
+* IMPROVED variable.less integrity. Now always uses the original copy for LESS compilation in case it becomes corrupted.
 * IMPROVED Upgrade handling in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
 * IMPROVED [TBS_ROW] shortcode to allow fluid rows/containers and also to allow option of creating a container or not. Default to NOT creating container.
+* FIXED: A few reported bugs.
 
 = 2.0.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP for PHP LESS compiler](http://leafo.net/lessphp/) )
@@ -315,6 +325,15 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.4 =
+* UPDATED: Twitter Bootstrap version 2.0.4
+* ADDED: Option - to replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
+* IMPROVED much of the plugin code.
+* IMPROVED variable.less integrity. Now always uses the original copy for LESS compilation in case it becomes corrupted.
+* IMPROVED Upgrade handling in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
+* IMPROVED [TBS_ROW] shortcode to allow fluid rows/containers and also to allow option of creating a container or not. Default to NOT creating container.
+* FIXED: A few reported bugs.
 
 = 2.0.3 =
 * ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
