@@ -24,10 +24,6 @@
 
 include_once( dirname(__FILE__).'/widgets/bootstrapcss_widgets.php' );
 
-function getLessDownloadLink() {
-	
-}//getLessDownloadLink
-
 function getIsHexColour($insColour) {
 	return preg_match( '/^#[a-fA-F0-9]{3,6}$/', $insColour );
 }
@@ -173,7 +169,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 			<div class="span12">
 				<?php
 				if ( !$hlt_compiler_enabled ) {
-					?><div class="alert alert-error">You need to <a href="admin.php?page=hlt-directory-bootstrap-css">enable the LESS compiler option</a> before using this section.</div><?php
+					?><div class="alert alert-error">You need to <a href="admin.php?page=worpit-directory-wtb">enable the LESS compiler option</a> before using this section.</div><?php
 				}
 				else {
 					?><div class="alert alert-info">Customize the twitter bootstrap options below to tweak the appearance of your website.</div><?php

@@ -94,7 +94,7 @@ class HLT_DashboardRssWidget {
 
 		$sRssWidget .= '</ul>';
 		
-		$sRssWidget .= "<p>You can turn off this news widget from the <a href=\"admin.php?page=hlt-directory-bootstrap-css\">Options Page</a>, but we don't recommend that because you'll miss our latest news ;)</p></div>";
+		$sRssWidget .= "<p>You can turn off this news widget from the <a href=\"admin.php?page='.$this->getSubmenuId('bootstrap-css').'\">Options Page</a>, but we don't recommend that because you'll miss our latest news ;)</p></div>";
 		
 		echo $sRssWidget;
 	}

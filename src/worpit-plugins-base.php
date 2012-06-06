@@ -1,0 +1,403 @@
+<?php
+
+class HLT_Plugin {
+
+	static public $VERSION;
+
+	static public $PLUGIN_NAME;
+	static public $PLUGIN_PATH;
+	static public $PLUGIN_DIR;
+	static public $PLUGIN_URL;
+	static public $PLUGIN_BASENAME;
+	static public $OPTION_PREFIX;
+
+	const ParentTitle		= 'Worpit Plugins';
+	const ParentName		= 'Twitter Bootstrap';
+	const ParentPermissions	= 'manage_options';
+	const ParentMenuId		= 'worpit';
+	const BaseOptionPrefix	= 'worpit_';
+
+	const ViewExt			= '.php';
+	const ViewDir			= 'views';
+
+	public function __construct() {
+
+		add_action( 'plugins_loaded', array( &$this, 'onWpPluginsLoaded' ) );
+		add_action( 'init', array( &$this, 'onWpInit' ), 1 );
+		if ( is_admin() ) {
+			add_action( 'admin_init', array( &$this, 'onWpAdminInit' ) );
+			add_action( 'admin_notices', array( &$this, 'onWpAdminNotices' ) );
+			add_action( 'admin_menu', array( &$this, 'onWpAdminMenu' ) );
+			add_action( 'plugin_action_links', array( &$this, 'onWpPluginActionLinks' ), 10, 4 );
+
+			register_activation_hook( __FILE__, array( &$this, 'onWpActivatePlugin' ) );
+			register_deactivation_hook( __FILE__, array( &$this, 'onWpDeactivatePlugin' ) );
+		}
+		/* old 
+		 add_action( 'init', array( &$this, 'onWpInit' ), 1 );
+		add_action( 'admin_init', array( &$this, 'onWpAdminInit' ) );
+		add_action( 'plugins_loaded', array( &$this, 'onWpPluginsLoaded' ) );
+		*/
+		/**
+		 * We make the assumption that all settings updates are successful until told otherwise
+		 * by an actual failing update_option call.
+		 */
+		$this->m_fUpdateSuccessTracker = true;
+		$this->m_aFailedUpdateOptions = array();
+
+		$this->m_sParentMenuIdSuffix = 'base';
+	}
+
+	protected function getFullParentMenuId() {
+		return self::ParentMenuId .'-'. $this->m_sParentMenuIdSuffix;
+	}//getFullParentMenuId
+
+	protected function fixSubmenu() {
+		global $submenu;
+		$sFullParentMenuId = $this->getFullParentMenuId();
+		if ( isset( $submenu[$sFullParentMenuId] ) ) {
+			$submenu[$sFullParentMenuId][0][0] = 'Dashboard';
+		}
+	}
+
+	/**
+	 *
+	 * @param $insUrl
+	 * @param $innTimeout
+	 */
+	protected function redirect( $insUrl, $innTimeout = 1 ) {
+		echo '
+		<script type="text/javascript">
+		function redirect() {
+		window.location = "'.$insUrl.'";
+	}
+	var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
+	</script>';
+	}
+
+	protected function display( $insView, $inaData = array() ) {
+		$sFile = dirname(__FILE__).DS.'..'.DS.self::ViewDir.DS.$insView.self::ViewExt;
+
+		if ( !is_file( $sFile ) ) {
+			echo "View not found: ".$sFile;
+			return false;
+		}
+
+		if ( count( $inaData ) > 0 ) {
+			extract( $inaData, EXTR_PREFIX_ALL, 'hlt' );
+		}
+
+		ob_start();
+		include( $sFile );
+		$sContents = ob_get_contents();
+		ob_end_clean();
+
+		echo $sContents;
+		return true;
+	}
+
+	protected function getImageUrl( $insImage ) {
+		return self::$PLUGIN_URL.'resources/misc/images/'.$insImage;
+	}
+	protected function getCssUrl( $insCss ) {
+		return self::$PLUGIN_URL.'resources/misc/css/'.$insCss;
+	}
+
+	protected function getSubmenuPageTitle( $insTitle ) {
+		return self::ParentTitle.' - '.$insTitle;
+	}
+
+	protected function getSubmenuId( $insId ) {
+		return $this->getFullParentMenuId().'-'.$insId;
+	}
+
+	public function onWpPluginsLoaded() {
+
+		if ( is_admin() ) {
+			//Handle plugin upgrades
+			$this->handlePluginUpgrade();
+		}
+
+		if ( $this->isWorpitPluginAdminPage() ) {
+			//Handle form submit
+			$this->handlePluginFormSubmit();
+		}
+	}//onWpPluginsLoaded
+
+	public function onWpInit() {
+	}
+
+	public function onWpAdminInit() {
+
+		//Do Plugin-Specific Work
+		if ( $this->isWorpitPluginAdminPage() ) {
+
+			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
+			$this->enqueuePluginAdminCss();
+			$this->enqueueBootstrapAdminCss();
+			
+		}
+	}//onWpAdminInit
+
+	public function onWpAdminMenu() {
+
+		$sFullParentMenuId = $this->getFullParentMenuId();
+
+		add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, $sFullParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'worpit_16x16.png' ) );
+
+		//Create and Add the submenu items
+		$this->createPluginSubMenuItems();
+		if ( !empty($this->m_aPluginMenu) ) {
+			foreach ( $this->m_aPluginMenu as $sMenuTitle => $aMenu ) {
+				list( $sMenuItemText, $sMenuItemId, $sMenuCallBack ) = $aMenu;
+				add_submenu_page( $sFullParentMenuId, $sMenuTitle, $sMenuItemText, self::ParentPermissions, $sMenuItemId, array( &$this, $sMenuCallBack ) );
+			}
+		}
+
+		$this->fixSubmenu();
+
+		//add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, self::ParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'worpit_16x16.png' ) );
+	}
+
+	/**
+	 * The callback function for the main admin menu index page
+	 */
+	public function onDisplayMainMenu() {
+		$aData = array(
+				'plugin_url'	=> self::$PLUGIN_URL
+		);
+		$this->display( 'worpit_'.$this->m_sParentMenuIdSuffix.'_index', $aData );
+	}
+
+
+	protected function createPluginSubMenuItems(){
+		/* Override to create menu items
+		 $this->m_aPluginMenu = array(
+		 		//Menu Page Title => Menu Item name, page ID (slug), callback function onLoad.
+		 		$this->getSubmenuPageTitle( 'Content by Country' ) => array( 'Content by Country', $this->getSubmenuId('main'), 'onDisplayCbcMain' ),
+		 );
+		*/
+	}//createPluginSubMenuItems
+
+	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
+		if ( $insFile == self::$PLUGIN_BASENAME ) {
+			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page='.$this->getFullParentMenuId().'">' . __( 'Settings', 'worpit' ) . '</a>';
+			array_unshift( $inaLinks, $sSettingsLink );
+		}
+		return $inaLinks;
+	}
+
+	/**
+	 * Override this method to handle all the admin notices
+	 */
+	public function onWpAdminNotices() {
+	}
+
+	/**
+	 * This is called from within onWpAdminInit. Use this solely to manage upgrades of the plugin
+	 */
+	protected function handlePluginUpgrade() {
+	}
+
+	protected function handlePluginFormSubmit() {
+	}
+
+	public function enqueueBootstrapAdminCss() {
+		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl('bootstrap-wpadmin.css'), false, self::$VERSION );
+		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'), 'worpit_bootstrap_wpadmin_css', self::$VERSION );
+		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
+	}//enqueueBootstrapAdminCss
+
+	protected function enqueuePluginAdminCss() {
+		$iRand = rand();
+		wp_register_style( 'worpit_plugin_css'.$iRand, $this->getCssUrl('worpit-plugin.css'), false, self::$VERSION );
+		wp_enqueue_style( 'worpit_plugin_css'.$iRand );
+	}//enqueueBootstrapAdminCss
+	
+	/**
+	 * Provides the basic HTML template for printing a WordPress Admin Notices
+	 *
+	 * @param $insNotice -
+	 * @param $insMessageClass - either error or updated
+	 * @param $infPrint - if true, will echo. false will return the string
+	 * @return boolean|string
+	 */
+	protected function getAdminNotice( $insNotice = '', $insMessageClass = 'updated', $infPrint = false ) {
+
+		$sFullNotice = '
+			<div id="message" class="'.$insMessageClass.'">
+				<style>
+					#message form { margin: 0px; }
+				</style>
+				'.$insNotice.'
+			</div>
+		';
+
+		if ( $infPrint ) {
+			echo $sFullNotice;
+			return true;
+		} else {
+			return $sFullNotice;
+		}
+	}//getAdminNotice
+
+	/**
+	 * A little helper function
+	 */
+	protected function readyAllPluginOptions() {
+		$this->initPluginOptions();
+		$this->populateAllPluginOptions();
+	}
+
+	/**
+	 * Override to create the plugin options array
+	 */
+	protected function initPluginOptions() {
+	}
+
+	/**
+	 * Reads the current value for ALL plugin option from the WP options db.
+	 *
+	 * Called from within on admin_init
+	 */
+	protected function populateAllPluginOptions() {
+
+		if ( empty($this->m_aAllPluginOptions) ) {
+			return;
+		}
+
+		foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
+			$this->populatePluginOptionsSection($aOptionsSection);
+		}
+	}//populateAllPluginOptions
+
+	/**
+	 * Reads the current value for each plugin option in section from the WP options db.
+	 *
+	 * Called from within on admin_init
+	 */
+	protected function populatePluginOptionsSection( &$inaOptionsSection ) {
+
+		if ( empty($inaOptionsSection) ) {
+			return;
+		}
+
+		foreach ( $inaOptionsSection['section_options'] as &$aOptionParams ) {
+
+			list( $sOptionKey, $sOptionCurrent, $sOptionDefault ) = $aOptionParams;
+			$sCurrentOptionVal = self::getOption( $sOptionKey );
+			$aOptionParams[1] = ($sCurrentOptionVal == '' )? $sOptionDefault : $sCurrentOptionVal;
+		}
+	}//populatePluginOptionsSection
+
+	/**
+	 * $sAllOptionsInput is a comma separated list of all the input keys to be processed from the $_POST
+	 */
+	protected function updatePluginOptionsFromSubmit( $sAllOptionsInput ) {
+
+		if ( empty($sAllOptionsInput) ) {
+			return;
+		}
+		if ( empty($this->m_aAllPluginOptions) ) {
+			$this->initPluginOptions();
+		}
+
+		$aAllInputOptions = explode( ',', $sAllOptionsInput);
+		foreach ( $aAllInputOptions as $sInputKey ) {
+			$sOptionValue = $this->getAnswerFromPost( $sInputKey );
+			$this->updateOption( $sInputKey, $sOptionValue );
+		}
+	}//updatePluginOptionsFromSubmit
+
+	/**
+	 * Returns a comma seperated list of all the options in a given options section.
+	 *
+	 * @param array $aOptionsSection
+	 */
+	protected function getAllInputOptionsForSection( $aOptionsSection ) {
+
+		if ( empty($aOptionsSection) ) {
+			return '';
+		}
+		$iCount = 0;
+		foreach ( $aOptionsSection['section_options'] as $aOption ) {
+
+			if ( $iCount == 0 ) {
+				$sOptions = $aOption[0];
+			} else {
+				$sOptions .= ','.$aOption[0];
+			}
+			$iCount++;
+		}
+		return $sOptions;
+	}//getAllInputOptionsForSection
+
+	protected function isWorpitPluginAdminPage() {
+
+		$sSubPageNow = isset( $_GET['page'] )? $_GET['page']: '';
+		if ( is_admin() && !empty($sSubPageNow) && (strpos( $sSubPageNow, $this->getFullParentMenuId() ) === 0 )) { //admin area, and the 'page' begins with 'worpit'
+			return true;
+		}
+
+		return false;
+	}//isWorpitPluginAdminPage
+
+	protected function getAnswerFromPost( $insKey, $insPrefix = null ) {
+		if ( is_null( $insPrefix ) ) {
+			$insKey = self::$OPTION_PREFIX.$insKey;
+		}
+		return ( isset( $_POST[$insKey] )? $_POST[$insKey]: 'N' );
+	}
+
+	static public function getOption( $insKey, $insAddPrefix = '' ) {
+		return get_option( self::$OPTION_PREFIX.$insKey );
+	}
+
+	static public function addOption( $insKey, $insValue ) {
+		return add_option( self::$OPTION_PREFIX.$insKey, $insValue );
+	}
+
+	static public function updateOption( $insKey, $insValue ) {
+		if ( self::getOption( $insKey ) == $insValue ) {
+			return true;
+		}
+		$fResult = update_option( self::$OPTION_PREFIX.$insKey, $insValue );
+		if ( !$fResult ) {
+			$this->m_fUpdateSuccessTracker = false;
+			$this->m_aFailedUpdateOptions[] = self::$OPTION_PREFIX.$insKey;
+		}
+	}
+
+	static public function deleteOption( $insKey ) {
+		return delete_option( self::$OPTION_PREFIX.$insKey );
+	}
+
+	public function onWpActivatePlugin() {
+	}
+
+	public function onWpDeactivatePlugin() {
+	}
+
+	/**
+	 * Takes an array, an array key, and a default value. If key isn't set, sets it to default.
+	 */
+	protected function def( &$aSrc, $insKey, $insValue = '' ) {
+		if ( !isset( $aSrc[$insKey] ) ) {
+			$aSrc[$insKey] = $insValue;
+		}
+	}
+	/**
+	 * Takes an array, an array key and an element type. If value is empty, sets the html element
+	 * string to empty string, otherwise forms a complete html element parameter.
+	 *
+	 * E.g. noEmptyElement( aSomeArray, sSomeArrayKey, "style" )
+	 * will return String: style="aSomeArray[sSomeArrayKey]" or empty string.
+	 */
+	protected function noEmptyElement( &$inaArgs, $insAttrKey, $insElement = '' ) {
+		$sAttrValue = $inaArgs[$insAttrKey];
+		$insElement = ( $insElement == '' )? $insAttrKey : $insElement;
+		$inaArgs[$insAttrKey] = ( empty($sAttrValue) ) ? '' : ' '.$insElement.'="'.$sAttrValue.'"';
+	}
+
+}//CLASS Worpit Plugins Base

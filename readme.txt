@@ -65,9 +65,11 @@ Yahoo Reset CSS, YUI 2: http://developer.yahoo.com/yui/2/
 
 Normalize CSS: http://necolas.github.com/normalize.css/
 
-== Installation ==
+== Frequently Asked Questions ==
 
-This plugin should install as any other Wordpress.org respository plugin.
+= How can I install the plugin? =
+
+This plugin should install as any other WordPress.org respository plugin.
 
 1.	Browse to Plugins -> Add Plugin
 1.	Search: Wordpress Bootstrap CSS
@@ -86,7 +88,11 @@ Bootstrap CSS.
 
 Select the CSS file as desired.
 
-== Frequently Asked Questions ==
+= Why was Twitter ("Legacy") Bootstrap v1.4.0 support dropped from the plugin in v2.0.3? =
+
+Time and resources. The work to maintain it and ensure it's bug-free was getting too great.
+
+I've explained a bit more in this [support forum post here](http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-legacy-support-removed).
 
 = Can I link more than one CSS? =
 
@@ -107,7 +113,7 @@ already in such a manner that the CSS applied with this plugin is overwritten.
 CSS is hierarchical. This means that any styles defined that apply to an element that *already* has
 styles applied to it will take precedence over any previous styles.
 
-= Is WordPress Bootstrap CSS compatible with caching plugins? =
+= Is WordPress Twitter Bootstrap CSS compatible with caching plugins? =
 
 The only caching plugin that Worpit recommends, and has decent experience with, is W3
 Total Cache.
@@ -126,9 +132,9 @@ You now have the option to enable minified CSS or not.
 = My Popover/Tooltip doesn't seem to work and it's generating Javascript errors in the console =
 
 This is likely due to you not linking to the latest version of JQuery. Twitter Bootstrap requires the latest
-version (1.7.2 at the time of writing). There is an option in the plugin to replace the JQuery of your WordPress
-installation with the latest version served from Google CDN. Try this if you're having issues with Popovers etc.,
-or better yet upgrade your WordPress to the latest version.
+version (v1.7.2 at the time of writing). There is now ( plugin v2.0.3.1+ ) an option to replace the
+JQuery of your WordPress installation with the latest version served from Google CDN. Try this if you're
+having issues with Popovers etc., or better yet upgrade your WordPress to the latest version.
 
 = What's the reason for the Worpit menu? =
 
@@ -154,7 +160,7 @@ for various performance reason.  You can also selected to enable our WordPress S
 5. A new feature as of version 2.0.2.1. Plugin/Theme Developers can now include Twitter Bootstrap CSS in the WordPress Admin screen.
 Don't select this unless you know you need it - no harm if you do, but no point otherwise.
 
-6. As of version 2.0.2.1, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it. 
+6. As of version 2.0.2.1, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it.
 
 == Changelog ==
 

@@ -119,8 +119,10 @@ class HLT_BootstrapLess {
 		foreach ( $this->m_aAllBootstrapLessOptions as $aKeySectionTitle => $aLessSection ) {
 			
 			foreach ( $this->m_aAllBootstrapLessOptions[$aKeySectionTitle] as $sKey => &$aOptionParams ) {
-				$sCurrentOptionVal = HLT_BootstrapCss::getOption( $aOptionParams[0] );
-				$aOptionParams[1] = ($sCurrentOptionVal == '' )? $aOptionParams[2] : $sCurrentOptionVal;
+				if ($aOptionParams[0] != 'spacer') { //FIX DEBUG: http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-noticeswarningsdb-option-usage
+					$sCurrentOptionVal = HLT_BootstrapCss::getOption( $aOptionParams[0] );
+					$aOptionParams[1] = ($sCurrentOptionVal == '' )? $aOptionParams[2] : $sCurrentOptionVal;
+				}
 			}
 		}
 		
