@@ -15,10 +15,18 @@ class HLT_Plugin {
 	const ParentName		= 'Twitter Bootstrap';
 	const ParentPermissions	= 'manage_options';
 	const ParentMenuId		= 'worpit';
+	const VariablePrefix	= 'worpit';
 	const BaseOptionPrefix	= 'worpit_';
 
 	const ViewExt			= '.php';
 	const ViewDir			= 'views';
+
+	protected $m_aPluginMenu;
+
+	protected $m_aAllPluginOptions;
+	
+	protected $m_fUpdateSuccessTracker;
+	protected $m_aFailedUpdateOptions;
 
 	public function __construct() {
 
@@ -29,15 +37,7 @@ class HLT_Plugin {
 			add_action( 'admin_notices', array( &$this, 'onWpAdminNotices' ) );
 			add_action( 'admin_menu', array( &$this, 'onWpAdminMenu' ) );
 			add_action( 'plugin_action_links', array( &$this, 'onWpPluginActionLinks' ), 10, 4 );
-
-			register_activation_hook( __FILE__, array( &$this, 'onWpActivatePlugin' ) );
-			register_deactivation_hook( __FILE__, array( &$this, 'onWpDeactivatePlugin' ) );
 		}
-		/* old 
-		 add_action( 'init', array( &$this, 'onWpInit' ), 1 );
-		add_action( 'admin_init', array( &$this, 'onWpAdminInit' ) );
-		add_action( 'plugins_loaded', array( &$this, 'onWpPluginsLoaded' ) );
-		*/
 		/**
 		 * We make the assumption that all settings updates are successful until told otherwise
 		 * by an actual failing update_option call.
@@ -205,13 +205,13 @@ class HLT_Plugin {
 	public function enqueueBootstrapAdminCss() {
 		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl('bootstrap-wpadmin.css'), false, self::$VERSION );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
-		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'), 'worpit_bootstrap_wpadmin_css', self::$VERSION );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), self::$VERSION );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
 	}//enqueueBootstrapAdminCss
 
 	protected function enqueuePluginAdminCss() {
 		$iRand = rand();
-		wp_register_style( 'worpit_plugin_css'.$iRand, $this->getCssUrl('worpit-plugin.css'), false, self::$VERSION );
+		wp_register_style( 'worpit_plugin_css'.$iRand, $this->getCssUrl('worpit-plugin.css'), array('worpit_bootstrap_wpadmin_css_fixes'), self::$VERSION );
 		wp_enqueue_style( 'worpit_plugin_css'.$iRand );
 	}//enqueueBootstrapAdminCss
 	
@@ -342,6 +342,26 @@ class HLT_Plugin {
 
 		return false;
 	}//isWorpitPluginAdminPage
+	
+	protected function deleteAllPluginDbOptions() {
+
+		if ( !current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		
+		if (empty($this->m_aAllPluginOptions)) {
+			$this->initPluginOptions();
+		}
+		
+		foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
+			foreach ( $aOptionsSection['section_options'] as &$aOptionParams ) {
+				if ( isset( $aOptionParams[0] ) ) {
+					$this->deleteOption($aOptionParams[0]);
+				}
+			}
+		}
+		
+	}//deleteAllPluginDbOptions
 
 	protected function getAnswerFromPost( $insKey, $insPrefix = null ) {
 		if ( is_null( $insPrefix ) ) {
@@ -373,12 +393,17 @@ class HLT_Plugin {
 		return delete_option( self::$OPTION_PREFIX.$insKey );
 	}
 
-	public function onWpActivatePlugin() {
+	public function onWpActivatePlugin() { }
+	public function onWpDeactivatePlugin() { }
+	
+	public function onWpUninstallPlugin() {
+	
+		//Do we have admin priviledges?
+		if ( current_user_can( 'manage_options' ) ) {
+			$this->deleteAllPluginDbOptions();
+		}
 	}
-
-	public function onWpDeactivatePlugin() {
-	}
-
+	
 	/**
 	 * Takes an array, an array key, and a default value. If key isn't set, sets it to default.
 	 */

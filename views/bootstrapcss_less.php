@@ -169,7 +169,7 @@ function getBootstrapOptionSpan( $inaBootstrapOption, $iSpanSize, $fEnabled ) {
 			<div class="span12">
 				<?php
 				if ( !$hlt_compiler_enabled ) {
-					?><div class="alert alert-error">You need to <a href="admin.php?page=worpit-directory-wtb">enable the LESS compiler option</a> before using this section.</div><?php
+					?><div class="alert alert-error">You need to <a href="admin.php?page=<?php echo $hlt_page_link_options; ?>">enable the LESS compiler option</a> before using this section.</div><?php
 				}
 				else {
 					?><div class="alert alert-info">Customize the twitter bootstrap options below to tweak the appearance of your website.</div><?php

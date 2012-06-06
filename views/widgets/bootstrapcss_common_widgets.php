@@ -5,10 +5,10 @@
 		  	<div class="row">
 		  		<div class="span6">
 		  			<h3>Do you like the WordPress Twitter Bootstrap plugin?</h3>
-					<p>Why not do any or all of the following:</p>
+					<p>Help <u>spread the word</u> or check out what else we do ...</p>
 		  		</div>
 		  		<div class="span4">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" data-text="Get Twitter Bootstrap for your #WordPress website today!" data-via="PaulGoodchild" data-size="large" data-hashtags="bootstrap">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/?wtb_plugin" data-text="Get Twitter Bootstrap for your #WordPress website today!" data-via="Worpit" data-size="large" data-hashtags="bootstrap">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		  		</div>
 		  	</div>
 			<div class="row">

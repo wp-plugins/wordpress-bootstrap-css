@@ -47,7 +47,7 @@
 											<p class="help-block"><?php _hlt_e('No reset CSS will be applied'); ?></p>
 										</div>
 										<div id="desc_twitter" class="desc <?php if ( $hlt_option != 'twitter' ): ?>hidden<?php endif; ?>">
-											<p class="help-block"><?php _hlt_e('Bootstrap, from Twitter (latest release:'); ?>  v2.0.2) <a href="http://twitter.github.com/bootstrap/index.html" target="_blank"><span class="label label-info">more info</span></a></p>
+											<p class="help-block"><?php _hlt_e('Bootstrap, from Twitter (latest release:'); ?>  v2.0.4) <a href="http://twitter.github.com/bootstrap/index.html" target="_blank"><span class="label label-info">more info</span></a></p>
 										</div>
 										<div id="desc_yahoo-reset" class="desc <?php if ( $hlt_option != 'yahoo-reset' ): ?>hidden<?php endif; ?>">
 											<p class="help-block"><?php _hlt_e('YahooUI Reset CSS is a basic reset for all browsers'); ?></p>
@@ -162,7 +162,7 @@
 							</div>
 	
 							<div class="control-group">
-								<label class="control-label" for="hlt_bootstrap_option_use_minified_css"><?php _hlt_e( 'Use Minified CSS' ); ?><br/><span class="label"><?php _hlt_e( 'Default: On' ); ?></span></label>
+								<label class="control-label" for="hlt_bootstrap_option_use_minified_css"><?php _hlt_e( 'Use Minified CSS' ); ?><br/><span class="label"><?php _hlt_e( 'Default: Off' ); ?></span></label>
 								<div class="controls">
 									<div class="option_section <?php if ( $hlt_option_use_minified_css == 'Y' ): ?>selected_item<?php endif; ?>" id="section_hlt_bootstrap_option_use_minified_css">
 										<label class="checkbox" for="hlt_bootstrap_option_use_minified_css">
