@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4
-Stable tag: 2.0.4.1
+Stable tag: 2.0.4.2
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -171,6 +171,15 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+= 2.0.4.2 =
+
+* FIXED: Wasn't properly linking to Google Prettify CSS and JS files when the option was enabled.
+* UPDATED: Yahoo! YUI v3 to version 3.5.1.
+* UPDATED: Uses serialized data for the LESS CSS plugin options - greatly reducing database calls on the admin section and database usage.
+* UPDATED: Plugin now uses Worpit's standard plugin structure for dynamically creating plugin options pages. The whole plugin is more stable and more reliable.
+* UPDATED: Now flushes W3 Total Cache (if installed) when you update your LESS CSS options also.
+* ADDED: Worpit feed to the news feed.
+
 = 2.0.4.1 =
 
 * FIXED: Reported Bug (thanks Claudio!) with Responsive CSS includes - there was a typo in the code and the CSS wasn't linked to correctly.
@@ -330,7 +339,17 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-* FIXED: Bug with Responsive CSS includes - there was a typo in the code and the CSS wasn't linked to correctly.
+= 2.0.4.2 =
+
+* FIXED: Wasn't properly linking to Google Prettify CSS and JS files when the option was enabled.
+* UPDATED: Uses serialized data for the LESS CSS plugin options - greatly reducing database calls on the admin section and database usage.
+* UPDATED: Plugin now uses Worpit's standard plugin structure for dynamically creating plugin options pages. The whole plugin is more stable and more reliable.
+* UPDATED: Now flushes W3 Total Cache (if installed) when you update your LESS CSS options also.
+* ADDED: Worpit feed to the news feed.
+
+= 2.0.4.1 =
+
+* FIXED: Reported Bug (thanks Claudio!) with Responsive CSS includes - there was a typo in the code and the CSS wasn't linked to correctly.
 
 = 2.0.4 =
 * UPDATED: Twitter Bootstrap version 2.0.4

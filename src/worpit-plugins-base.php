@@ -52,29 +52,6 @@ class HLT_Plugin {
 		return self::ParentMenuId .'-'. $this->m_sParentMenuIdSuffix;
 	}//getFullParentMenuId
 
-	protected function fixSubmenu() {
-		global $submenu;
-		$sFullParentMenuId = $this->getFullParentMenuId();
-		if ( isset( $submenu[$sFullParentMenuId] ) ) {
-			$submenu[$sFullParentMenuId][0][0] = 'Dashboard';
-		}
-	}
-
-	/**
-	 *
-	 * @param $insUrl
-	 * @param $innTimeout
-	 */
-	protected function redirect( $insUrl, $innTimeout = 1 ) {
-		echo '
-		<script type="text/javascript">
-		function redirect() {
-		window.location = "'.$insUrl.'";
-	}
-	var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
-	</script>';
-	}
-
 	protected function display( $insView, $inaData = array() ) {
 		$sFile = dirname(__FILE__).DS.'..'.DS.self::ViewDir.DS.$insView.self::ViewExt;
 
@@ -84,7 +61,7 @@ class HLT_Plugin {
 		}
 
 		if ( count( $inaData ) > 0 ) {
-			extract( $inaData, EXTR_PREFIX_ALL, 'hlt' );
+			extract( $inaData, EXTR_PREFIX_ALL, self::VariablePrefix );
 		}
 
 		ob_start();
@@ -97,16 +74,18 @@ class HLT_Plugin {
 	}
 
 	protected function getImageUrl( $insImage ) {
-		return self::$PLUGIN_URL.'resources/misc/images/'.$insImage;
+		return self::$PLUGIN_URL.'resources/images/'.$insImage;
 	}
 	protected function getCssUrl( $insCss ) {
-		return self::$PLUGIN_URL.'resources/misc/css/'.$insCss;
+		return self::$PLUGIN_URL.'resources/css/'.$insCss;
+	}
+	protected function getJsUrl( $insJs ) {
+		return self::$PLUGIN_URL.'resources/js/'.$insJs;
 	}
 
 	protected function getSubmenuPageTitle( $insTitle ) {
 		return self::ParentTitle.' - '.$insTitle;
 	}
-
 	protected function getSubmenuId( $insId ) {
 		return $this->getFullParentMenuId().'-'.$insId;
 	}
@@ -124,8 +103,7 @@ class HLT_Plugin {
 		}
 	}//onWpPluginsLoaded
 
-	public function onWpInit() {
-	}
+	public function onWpInit() { }
 
 	public function onWpAdminInit() {
 
@@ -133,8 +111,8 @@ class HLT_Plugin {
 		if ( $this->isWorpitPluginAdminPage() ) {
 
 			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
-			$this->enqueuePluginAdminCss();
 			$this->enqueueBootstrapAdminCss();
+			$this->enqueuePluginAdminCss();
 			
 		}
 	}//onWpAdminInit
@@ -156,7 +134,23 @@ class HLT_Plugin {
 
 		$this->fixSubmenu();
 
-		//add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, self::ParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'worpit_16x16.png' ) );
+	}//onWpAdminMenu
+
+	protected function createPluginSubMenuItems(){
+		/* Override to create array of sub-menu items
+		 $this->m_aPluginMenu = array(
+		 		//Menu Page Title => Menu Item name, page ID (slug), callback function onLoad.
+		 		$this->getSubmenuPageTitle( 'Content by Country' ) => array( 'Content by Country', $this->getSubmenuId('main'), 'onDisplayCbcMain' ),
+		 );
+		*/
+	}//createPluginSubMenuItems
+
+	protected function fixSubmenu() {
+		global $submenu;
+		$sFullParentMenuId = $this->getFullParentMenuId();
+		if ( isset( $submenu[$sFullParentMenuId] ) ) {
+			$submenu[$sFullParentMenuId][0][0] = 'Dashboard';
+		}
 	}
 
 	/**
@@ -169,16 +163,12 @@ class HLT_Plugin {
 		$this->display( 'worpit_'.$this->m_sParentMenuIdSuffix.'_index', $aData );
 	}
 
-
-	protected function createPluginSubMenuItems(){
-		/* Override to create menu items
-		 $this->m_aPluginMenu = array(
-		 		//Menu Page Title => Menu Item name, page ID (slug), callback function onLoad.
-		 		$this->getSubmenuPageTitle( 'Content by Country' ) => array( 'Content by Country', $this->getSubmenuId('main'), 'onDisplayCbcMain' ),
-		 );
-		*/
-	}//createPluginSubMenuItems
-
+	/**
+	 * The Action Links in the main plugins page. Defaults to link to the main Dashboard page
+	 * 
+	 * @param $inaLinks
+	 * @param $insFile
+	 */
 	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
 		if ( $insFile == self::$PLUGIN_BASENAME ) {
 			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page='.$this->getFullParentMenuId().'">' . __( 'Settings', 'worpit' ) . '</a>';
@@ -190,17 +180,14 @@ class HLT_Plugin {
 	/**
 	 * Override this method to handle all the admin notices
 	 */
-	public function onWpAdminNotices() {
-	}
+	public function onWpAdminNotices() { }
 
 	/**
 	 * This is called from within onWpAdminInit. Use this solely to manage upgrades of the plugin
 	 */
-	protected function handlePluginUpgrade() {
-	}
+	protected function handlePluginUpgrade() { }
 
-	protected function handlePluginFormSubmit() {
-	}
+	protected function handlePluginFormSubmit() { }
 
 	public function enqueueBootstrapAdminCss() {
 		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl('bootstrap-wpadmin.css'), false, self::$VERSION );
@@ -218,7 +205,7 @@ class HLT_Plugin {
 	/**
 	 * Provides the basic HTML template for printing a WordPress Admin Notices
 	 *
-	 * @param $insNotice -
+	 * @param $insNotice - The message to be displayed.
 	 * @param $insMessageClass - either error or updated
 	 * @param $infPrint - if true, will echo. false will return the string
 	 * @return boolean|string
@@ -242,8 +229,18 @@ class HLT_Plugin {
 		}
 	}//getAdminNotice
 
+	protected function redirect( $insUrl, $innTimeout = 1 ) {
+		echo '
+			<script type="text/javascript">
+				function redirect() {
+					window.location = "'.$insUrl.'";
+				}
+				var oTimer = setTimeout( "redirect()", "'.($innTimeout * 1000).'" );
+			</script>';
+	}
+
 	/**
-	 * A little helper function
+	 * A little helper function that populates all the plugin options arrays with DB values
 	 */
 	protected function readyAllPluginOptions() {
 		$this->initPluginOptions();
@@ -251,45 +248,52 @@ class HLT_Plugin {
 	}
 
 	/**
-	 * Override to create the plugin options array
+	 * Override to create the plugin options array.
+	 * 
+	 * Returns false if nothing happens - i.e. not over-rided.
 	 */
 	protected function initPluginOptions() {
+		return false;
 	}
 
 	/**
-	 * Reads the current value for ALL plugin option from the WP options db.
-	 *
-	 * Called from within on admin_init
+	 * Reads the current value for ALL plugin options from the WP options db.
+	 * 
+	 * Assumes the standard plugin options array structure. Over-ride to change.
+	 * 
+	 * NOT automatically executed on any hooks.
 	 */
 	protected function populateAllPluginOptions() {
 
-		if ( empty($this->m_aAllPluginOptions) ) {
-			return;
+		if ( empty($this->m_aAllPluginOptions) && !$this->initPluginOptions() ) {
+			return false;
 		}
+		HLT_Plugin::PopulatePluginOptions( $this->m_aAllPluginOptions );
 
-		foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
-			$this->populatePluginOptionsSection($aOptionsSection);
-		}
 	}//populateAllPluginOptions
+	
+	public static function PopulatePluginOptions( &$inaAllOptions ) {
 
-	/**
-	 * Reads the current value for each plugin option in section from the WP options db.
-	 *
-	 * Called from within on admin_init
-	 */
-	protected function populatePluginOptionsSection( &$inaOptionsSection ) {
+		if ( empty($inaAllOptions) ) {
+			return false;
+		}
+		foreach ( $inaAllOptions as &$aOptionsSection ) {
+			HLT_Plugin::PopulatePluginOptionsSection($aOptionsSection);
+		}
+	}
+	
+	public static function PopulatePluginOptionsSection( &$inaOptionsSection ) {
 
 		if ( empty($inaOptionsSection) ) {
-			return;
+			return false;
 		}
-
 		foreach ( $inaOptionsSection['section_options'] as &$aOptionParams ) {
-
+			
 			list( $sOptionKey, $sOptionCurrent, $sOptionDefault ) = $aOptionParams;
 			$sCurrentOptionVal = self::getOption( $sOptionKey );
 			$aOptionParams[1] = ($sCurrentOptionVal == '' )? $sOptionDefault : $sCurrentOptionVal;
 		}
-	}//populatePluginOptionsSection
+	}
 
 	/**
 	 * $sAllOptionsInput is a comma separated list of all the input keys to be processed from the $_POST
@@ -299,23 +303,53 @@ class HLT_Plugin {
 		if ( empty($sAllOptionsInput) ) {
 			return;
 		}
-		if ( empty($this->m_aAllPluginOptions) ) {
-			$this->initPluginOptions();
-		}
 
 		$aAllInputOptions = explode( ',', $sAllOptionsInput);
 		foreach ( $aAllInputOptions as $sInputKey ) {
-			$sOptionValue = $this->getAnswerFromPost( $sInputKey );
-			$this->updateOption( $sInputKey, $sOptionValue );
+			$aInput = explode( ':', $sInputKey );
+			list( $sOptionType, $sOptionKey ) = $aInput;
+			
+			$sOptionValue = $this->getAnswerFromPost( $sOptionKey );
+			if ( is_null($sOptionValue) ) {
+				
+				if ( $sOptionType == 'text' ) { //if it was a text box, and it's null, don't update anything
+					continue;
+				} else if ( $sOptionType == 'checkbox' ) { //if it was a checkbox, and it's null, it means 'N'
+					$sOptionValue = 'N';
+				}
+				
+			}
+			$this->updateOption( $sOptionKey, $sOptionValue );
 		}
+		
+		return true;
 	}//updatePluginOptionsFromSubmit
+	
+	protected function collateAllFormInputsForAllOptions($aAllOptions, $sInputSeparator = ',') {
+
+		if ( empty($aAllOptions) ) {
+			return '';
+		}
+		$iCount = 0;
+		foreach ( $aAllOptions as $aOptionsSection ) {
+			
+			if ( $iCount == 0 ) {
+				$sCollated = $this->collateAllFormInputsForOptionsSection($aOptionsSection, $sInputSeparator);
+			} else {
+				$sCollated .= $sInputSeparator.$this->collateAllFormInputsForOptionsSection($aOptionsSection, $sInputSeparator);
+			}
+			$iCount++;
+		}
+		return $sCollated;
+		
+	}//collateAllFormInputsAllOptions
 
 	/**
 	 * Returns a comma seperated list of all the options in a given options section.
 	 *
 	 * @param array $aOptionsSection
 	 */
-	protected function getAllInputOptionsForSection( $aOptionsSection ) {
+	protected function collateAllFormInputsForOptionsSection( $aOptionsSection, $sInputSeparator = ',' ) {
 
 		if ( empty($aOptionsSection) ) {
 			return '';
@@ -323,15 +357,17 @@ class HLT_Plugin {
 		$iCount = 0;
 		foreach ( $aOptionsSection['section_options'] as $aOption ) {
 
+			list($sKey, $fill1, $fill2, $sType) =  $aOption;
+			
 			if ( $iCount == 0 ) {
-				$sOptions = $aOption[0];
+				$sCollated = $sType.':'.$sKey;
 			} else {
-				$sOptions .= ','.$aOption[0];
+				$sCollated .= $sInputSeparator.$sType.':'.$sKey;
 			}
 			$iCount++;
 		}
-		return $sOptions;
-	}//getAllInputOptionsForSection
+		return $sCollated;
+	}//collateAllFormInputsForOptionsSection
 
 	protected function isWorpitPluginAdminPage() {
 
@@ -349,8 +385,8 @@ class HLT_Plugin {
 			return;
 		}
 		
-		if (empty($this->m_aAllPluginOptions)) {
-			$this->initPluginOptions();
+		if ( empty($this->m_aAllPluginOptions) && !$this->initPluginOptions() ) {
+			return;
 		}
 		
 		foreach ( $this->m_aAllPluginOptions as &$aOptionsSection ) {
@@ -367,7 +403,7 @@ class HLT_Plugin {
 		if ( is_null( $insPrefix ) ) {
 			$insKey = self::$OPTION_PREFIX.$insKey;
 		}
-		return ( isset( $_POST[$insKey] )? $_POST[$insKey]: 'N' );
+		return ( isset( $_POST[$insKey] )? $_POST[$insKey]: null );
 	}
 
 	static public function getOption( $insKey, $insAddPrefix = '' ) {

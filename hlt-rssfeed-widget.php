@@ -4,7 +4,7 @@
  * Copyright (c) 2012 Worpit <support@worpit.com>
  * All rights reserved.
  * 
- * "WordPress Bootstrap CSS" is distributed under the GNU General Public License, Version 2,
+ * "WordPress Twitter Bootstrap CSS" is distributed under the GNU General Public License, Version 2,
  * June 1991. Copyright (C) 1989, 1991 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  * 
@@ -29,6 +29,7 @@ class HLT_DashboardRssWidget {
 		$this->m_aFeeds = array();
 		
 		$this->addFeed( 'hlt', 'http://www.hostliketoast.com/feed/' );
+		$this->addFeed( 'worpit', 'http://worpit.com/feed/' );
 		
 		add_action( 'wp_dashboard_setup', array( $this, 'addNewsWidget' ) );
 	}
@@ -46,11 +47,19 @@ class HLT_DashboardRssWidget {
 	}
 
 	public function renderNewsWidget() {
+		
 		$oRss = fetch_feed( $this->m_aFeeds['hlt'] );
 		
 		if ( !is_wp_error( $oRss ) ) {
-			$nMaxItems = $oRss->get_item_quantity( 5 );
+			$nMaxItems = $oRss->get_item_quantity( 3 );
 			$aItems = $oRss->get_items( 0, $nMaxItems );
+		}
+		
+		$oRss = fetch_feed( $this->m_aFeeds['worpit'] );
+		
+		if ( !is_wp_error( $oRss ) ) {
+			$nMaxItems = $oRss->get_item_quantity( 3 );
+			$aItems = array_merge( $oRss->get_items( 0, $nMaxItems ), $aItems );
 		}
 		
 		$sRssWidget = '

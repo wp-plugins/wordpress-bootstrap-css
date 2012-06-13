@@ -14,14 +14,15 @@
 			<div class="row">
 				<div class="span6">
 					<ul>
-						<li><a href="http://bit.ly/Icut1J " target="_blank"><strong>Read the plugin Help & Support page</strong></a>.</li>
-						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" target="_blank">Give this plugin a 5 star rating on WordPress.org.</a></li>
+						<li><a href="http://bit.ly/H3tiAu" target="_blank"><strong>All-new WordPress Admin For Multiple Sites!</strong></a></li>
+						<li><a href="http://bit.ly/Lxdugp">Our Content By Country WordPress Plugin</a></li>
 					</ul>
 				</div>
 				<div class="span5">
 					<ul>
-						<li><a href="http://bit.ly/H3tiAu" target="_blank"><strong>Discover all-new WordPress backup protection!</strong></a></li>
-						<li><a href="http://bit.ly/owxOjJ">Get Quality Wordpress Web Hosting</a></li>
+						<li><a href="http://bit.ly/Icut1J " target="_blank"><strong>Read the plugin Help & Support page</strong></a>.</li>
+						<li><a href="http://wordpress.org/extend/plugins/wordpress-bootstrap-css/" target="_blank">Give this plugin a 5 star rating on WordPress.org.</a></li>
+					<!-- <li><a href="http://bit.ly/owxOjJ">Get Quality Wordpress Web Hosting</a></li>  -->
 					</ul>
 				</div>
 			</div>

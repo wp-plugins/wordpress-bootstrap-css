@@ -121,3 +121,8 @@ table#tbl_tbs_options_javascript td {
 	vertical-align: top;
 	width: 50%;
 }
+
+/** OPTIONS PAGES **/
+.bootstrap-wpadmin .row.row_number_1 {
+	padding-top: 18px;
+}
