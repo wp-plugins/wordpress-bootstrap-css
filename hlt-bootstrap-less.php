@@ -77,8 +77,8 @@ class HLT_BootstrapLess {
 								array( self::LessOptionsPrefix.'purple', 			'', '#7a43b6',			'less_color',		'Purple',							'@purple' ),
 								array( self::LessOptionsPrefix.'baseFontSize',		'', '13px',				'less_size',			'Font Size',						'@baseFontSize' ),
 								array( self::LessOptionsPrefix.'baseLineHeight', 	'', '18px',				'less_size',			'Base Line Height',					'@baseLineHeight' ),
-								array( self::LessOptionsPrefix.'baseFontFamily',	'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'less_font',	'Fonts',	'@baseFontFamily' ),
-								array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, "Times New Roman", Times, serif',	'less_font',	'Alternative Fonts',	'@altFontFamily' ),
+								array( self::LessOptionsPrefix.'baseFontFamily',	'', '\'Helvetica Neue\', Helvetica, Arial, sans-serif',	'less_font',	'Fonts',	'@baseFontFamily' ),
+								array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, \'Times New Roman\', Times, serif',	'less_font',	'Alternative Fonts',	'@altFontFamily' ),
 						)
 				),
 		

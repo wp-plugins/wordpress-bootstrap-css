@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.0.4.2
+Version: 2.0.4.3
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -72,7 +72,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		register_activation_hook( __FILE__, array( &$this, 'onWpActivatePlugin' ) );
 		register_deactivation_hook( __FILE__, array( &$this, 'onWpDeactivatePlugin' ) );
-		register_uninstall_hook( __FILE__, array( &$this, 'onWpUninstallPlugin' ) );
+	//	register_uninstall_hook( __FILE__, array( &$this, 'onWpUninstallPlugin' ) );
 		
 		/**
 		 * We make the assumption that all settings updates are successful until told otherwise
@@ -81,7 +81,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_fUpdateSuccessTracker = true;
 		$this->m_aFailedUpdateOptions = array();
 
-		self::$VERSION		= '2.0.4.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		self::$VERSION		= '2.0.4.3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
