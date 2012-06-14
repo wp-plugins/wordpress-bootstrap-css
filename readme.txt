@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4
-Stable tag: 2.0.4.3
+Stable tag: 2.0.4.4
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -170,6 +170,12 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 6. As of version 2.0.2.1, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it.
 
 == Changelog ==
+
+= 2.0.4.4 =
+
+* FIXED: Further attempt to fix string escape issues (thanks Troy!).
+* FIXED: Bug with Grid Columns field being appended with 'px' in LESS compiler.
+* UPDATED: LESS PHP compiler to latest release (v0.3.5)
 
 = 2.0.4.3 =
 
@@ -343,6 +349,12 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.4.4 =
+
+* FIXED: Further attempt to fix string escape issues (thanks Troy!).
+* FIXED: Bug with Grid Columns field being appended with 'px' in LESS compiler.
+* UPDATED: LESS PHP compiler to latest release (v0.3.5)
 
 = 2.0.4.3 =
 

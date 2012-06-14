@@ -77,8 +77,8 @@ class HLT_BootstrapLess {
 								array( self::LessOptionsPrefix.'purple', 			'', '#7a43b6',			'less_color',		'Purple',							'@purple' ),
 								array( self::LessOptionsPrefix.'baseFontSize',		'', '13px',				'less_size',			'Font Size',						'@baseFontSize' ),
 								array( self::LessOptionsPrefix.'baseLineHeight', 	'', '18px',				'less_size',			'Base Line Height',					'@baseLineHeight' ),
-								array( self::LessOptionsPrefix.'baseFontFamily',	'', '\'Helvetica Neue\', Helvetica, Arial, sans-serif',	'less_font',	'Fonts',	'@baseFontFamily' ),
-								array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, \'Times New Roman\', Times, serif',	'less_font',	'Alternative Fonts',	'@altFontFamily' ),
+								array( self::LessOptionsPrefix.'baseFontFamily',	'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'less_font',	'Fonts',	'@baseFontFamily' ),
+								array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, "Times New Roman", Times, serif',	'less_font',	'Alternative Fonts',	'@altFontFamily' ),
 						)
 				),
 		
@@ -128,7 +128,7 @@ class HLT_BootstrapLess {
 				array(
 						'section_title' => 'The Grid',
 						'section_options' => array(
-								array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_size',	'Grid Columns' ),
+								array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_text',	'Grid Columns' ),
 								array( self::LessOptionsPrefix.'gridColumnWidth',	'', '60px',			'less_size',	'Grid Column Width' ),
 								array( self::LessOptionsPrefix.'gridGutterWidth',	'', '20px',			'less_size',	'Grid Gutter Width' ),
 								array( self::LessOptionsPrefix.'gridRowWidth',		'', '(@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1))',	'less_size',	'Grid Row Width' )
@@ -180,6 +180,10 @@ class HLT_BootstrapLess {
 				
 				list( $sOptionKey, $sOptionSaved, $sOptionDefault, $sOptionType, $sOptionHumanName ) = $aOptionParams;
 				
+				if ( $sOptionKey == 'spacer' ) {
+					continue;
+				}
+				
 				switch ( $insFunction ) {
 		
 					case 'process-post':
@@ -205,7 +209,7 @@ class HLT_BootstrapLess {
 							}
 						}
 						
-						$aOptionParams[1] = $sPostValue;
+						$aOptionParams[1] = stripslashes( $sPostValue );
 						
 						break 1;
 						
