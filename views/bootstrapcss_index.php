@@ -18,6 +18,7 @@ include_once( dirname(__FILE__).DS.'widgets'.DS.'bootstrapcss_widgets.php' );
 		
 			<form action="<?php echo $worpit_form_action; ?>" method="post" class="form-horizontal">
 			<?php
+				wp_nonce_field( $worpit_nonce_field );
 				printAllPluginOptionsForm( $worpit_aAllOptions, $worpit_var_prefix, 1 );
 			?>
 			<div class="form-actions">

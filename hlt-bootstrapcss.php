@@ -342,7 +342,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 						</p>
 					</form>
 			';
-			
+
 			$this->getAdminNotice( $sNotice, 'updated', true );
 		}
 		
@@ -374,6 +374,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'var_prefix'		=> self::$OPTION_PREFIX,
 			'aAllOptions'		=> $aAvailableOptions,
 			'all_options_input'	=> $sAllFormInputOptions,
+			'nonce_field'		=> $this->getSubmenuId('bootstrap-css').'_wtbcss',
 			'form_action'		=> 'admin.php?page='.$this->getSubmenuId('bootstrap-css')
 		);
 
@@ -395,7 +396,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
 			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' ),
 			'page_link_options'			=> $this->getSubmenuId('bootstrap-css'),
-
+			
+			'nonce_field'				=> $this->getSubmenuId('bootstrap-css').'_wtbless',
 			'form_action'				=> 'admin.php?page='.$this->getSubmenuId('bootstrap-less')
 		);
 		
@@ -439,6 +441,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}//handlePluginFormSubmit
 	
 	protected function handleSubmit_BootstrapCssOptions() {
+
+		//Ensures we're actually getting this request from WP.
+		check_admin_referer( $this->getSubmenuId('bootstrap-css').'_wtbcss' );
 		
 		if ( !isset($_POST[self::$OPTION_PREFIX.'all_options_input']) ) {
 			return;
@@ -459,6 +464,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}
 	
 	protected function handleSubmit_BootstrapLess() {
+
+		//Ensures we're actually getting this request from WP.
+		check_admin_referer( $this->getSubmenuId('bootstrap-css').'_wtbless' );
 		
 		//Compile LESS files
 		$oBoostrapLess = new HLT_BootstrapLess();

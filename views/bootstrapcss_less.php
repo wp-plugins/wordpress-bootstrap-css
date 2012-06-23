@@ -130,6 +130,7 @@ include_once( dirname(__FILE__).DS.'widgets'.DS.'bootstrapcss_widgets.php' );
 			<div class="span9 <?php echo ( $worpit_compiler_enabled? 'enabled_section': 'disabled_section' ); ?>">
 				<form action="<?php echo ( $worpit_compiler_enabled? $worpit_form_action: '' ) ; ?>" method="post" class="form-horizontal">
 				<?php
+					wp_nonce_field( $worpit_nonce_field );
 					printAllPluginOptionsForm( $worpit_aAllOptions, $worpit_var_prefix, 2 );
 				?>
 				<div class="form-actions">

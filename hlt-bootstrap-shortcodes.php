@@ -33,8 +33,8 @@ class HLT_BootstrapShortcodes {
 							'filterTheContentToFixNamedAnchors',
 							'noEmptyHtml',
 							'noEmptyElement',
-							'printJavascriptForTooltips',
-							'printJavascriptForPopovers' );
+							'PrintJavascriptForTooltips',
+							'PrintJavascriptForPopovers' );
 		
 		foreach ( $aMethods as $sMethod ) {
 			if ( !in_array( $sMethod, $aExclude ) ) {
@@ -385,8 +385,8 @@ class HLT_BootstrapShortcodes {
 					.'>'.$this->doShortcode($insContent).'</span>';
 		}
 		
-		remove_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
-		add_action( 'wp_footer', array(&$this, 'printJavascriptForTooltips' ) );
+		remove_action( 'wp_footer', array(&$this, 'PrintJavascriptForTooltips' ) );
+		add_action( 'wp_footer', array(&$this, 'PrintJavascriptForTooltips' ) );
 		return $sReturn;
 	}
 
@@ -414,8 +414,8 @@ class HLT_BootstrapShortcodes {
 					.$inaAtts['id']
 					.$inaAtts['class'].'>'.$this->doShortcode( $insContent ).'</span>';
 		
-		remove_action( 'wp_footer', array(&$this, 'printJavascriptForPopovers' ) );
-		add_action( 'wp_footer', array(&$this, 'printJavascriptForPopovers' ) );
+		remove_action( 'wp_footer', array(&$this, 'PrintJavascriptForPopovers' ) );
+		add_action( 'wp_footer', array(&$this, 'PrintJavascriptForPopovers' ) );
 		return $sReturn;
 	}
 	
@@ -638,7 +638,7 @@ class HLT_BootstrapShortcodes {
 		return $sReturn;
 	}//row
 	
-	public function printJavascriptForPopovers() {
+	public static function PrintJavascriptForPopovers() {
 		
 		$sJavascript = "
 		<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Popover-enabling Javascript -->
@@ -658,9 +658,9 @@ class HLT_BootstrapShortcodes {
 		
 		echo $sJavascript;
 		
-	}//printJavascriptForPopovers
+	}//PrintJavascriptForPopovers
 	
-	public function printJavascriptForTooltips() {
+	public static function PrintJavascriptForTooltips() {
 		
 		$sJavascript = "
 			<!-- BEGIN: WordPress Twitter Bootstrap CSS from http://worpit.com/ : Tooltip-enabling Javascript -->
@@ -676,7 +676,7 @@ class HLT_BootstrapShortcodes {
 		
 		echo $sJavascript;
 		
-	}//printJavascriptForPopovers
+	}//PrintJavascriptForTooltips
 
 	/**
 	 * Public, but should never be directly accessed other than by the WP add_filter method. 

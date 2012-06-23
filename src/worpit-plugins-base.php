@@ -25,6 +25,8 @@ class HLT_Plugin {
 
 	protected $m_aAllPluginOptions;
 	
+	protected $m_sParentMenuIdSuffix;
+	
 	protected $m_fUpdateSuccessTracker;
 	protected $m_aFailedUpdateOptions;
 
@@ -107,7 +109,7 @@ class HLT_Plugin {
 
 	public function onWpAdminInit() {
 
-		//Do Plugin-Specific Work
+		//Do Plugin-Specific Admin Work
 		if ( $this->isWorpitPluginAdminPage() ) {
 
 			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)

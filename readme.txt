@@ -171,6 +171,9 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+= 2.0.4.5 = 
+* ADDED: NONCE to form submissions to improve the security of the plugin.
+
 = 2.0.4.4 =
 
 * FIXED: Further attempt to fix string escape issues (thanks Troy!).
