@@ -242,12 +242,12 @@ class HLT_BootstrapLess {
 
 	}//resetToDefaultAllLessOptions
 	
-	public function processNewLessOptions( $sOptionsPrefix = '', $insBootstrapDir ) {
+	public function processNewLessOptions( $sOptionsPrefix = '', $insBootstrapDir, $infUseOriginalLessFile = TRUE ) {
 
 		$this->processLessOptions( 'process-post', array('options-prefix' => $sOptionsPrefix) );
 
-		if ( $this->reWriteVariablesLess($insBootstrapDir) ) {
-			$this->compileLess($insBootstrapDir);
+		if ( $this->reWriteVariablesLess( $insBootstrapDir, $infUseOriginalLessFile ) ) {
+			$this->compileLess( $insBootstrapDir );
 		}
 
 	}//processNewLessOptions

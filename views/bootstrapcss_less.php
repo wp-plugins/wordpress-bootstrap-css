@@ -68,6 +68,10 @@ include_once( dirname(__FILE__).DS.'widgets'.DS.'bootstrapcss_widgets.php' );
 		.toggle_checkbox {
 			float:right;
 		}
+		.bootstrap-wpadmin .form-horizontal .form-actions {
+			padding-left: 75px;
+			padding-right: 75px;
+		}
 	</style>
 	<script type="text/javascript">
 		function triggerColor( inoEl ) {
@@ -135,10 +139,12 @@ include_once( dirname(__FILE__).DS.'widgets'.DS.'bootstrapcss_widgets.php' );
 				?>
 				<div class="form-actions">
 					<input type="hidden" name="worpit_plugin_form_submit" value="Y" />
-					<button type="submit" class="btn btn-primary" name="submit" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Save All Settings'); ?></button>
-					<button type="submit" class="btn btn-danger" name="submit_reset" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset All To Defaults' ); ?></button>
-					<a class="btn btn-inverse" name="download_less_css" <?php echo ( file_exists( $worpit_less_file_location[0] ) ? 'href="'.$worpit_less_file_location[1].'"' :' disabled'); ?>><?php _hlt_e( 'Download Compiled CSS' ); ?></a>	
-					</div>
+					<button type="submit" class="btn btn-primary" name="submit" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS'); ?></button>
+					<button type="submit" class="btn btn-danger" name="submit_reset" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset Defaults' ); ?></button>
+					<button type="submit" class="btn btn-warning" name="submit_preserve" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS (preserve customizations)'); ?></button>
+					<a class="btn btn-inverse" name="download_less_css" <?php echo ( file_exists( $worpit_less_file_location[0] ) ? 'href="'.$worpit_less_file_location[1].'"' :' disabled'); ?>><?php _hlt_e( 'Download' ); ?></a>
+					<p style="margin-top: 20px;"><strong>Note: </strong>If in doubt or having compile issues, use the 'Compile CSS' or 'Reset' buttons. If you've made any customizations to 'Variable.less', compile with preserve customizations.</p>
+				</div>
 				</form>
 			</div><!-- / span9 -->
 			<div class="span3" id="side_widgets">

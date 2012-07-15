@@ -335,10 +335,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( $sCurrentVersion !== self::$VERSION ) {
 			$sNotice = '
 					<form method="post" action="admin.php?page='.$this->getSubmenuId('bootstrap-css').'">
-						<p><strong>WordPress Twitter Bootstrap</strong> plugin has been updated. Worth checking out the latest docs.
+						<p><strong>WordPress Twitter Bootstrap from <a href="http://worpit.com/?src=wtb_plugin">Worpit</a></strong> has been updated successfully.
 						<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 						<input type="hidden" value="'.$user_id.'" name="hlt_user_id" id="hlt_user_id">
-						<input type="submit" value="Okay, show me and hide this notice" name="submit" class="button-primary">
+						<input type="submit" value="Okay, take me to the main plugin page and hide this notice" name="submit" class="button-primary">
 						</p>
 					</form>
 			';
@@ -475,8 +475,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$oBoostrapLess->resetToDefaultAllLessOptions( self::$BOOSTRAP_DIR );
 			return;
 		}
+
+		if ( isset( $_POST['submit_preserve'] ) ) { //don't use the original variables.less
+			$oBoostrapLess->processNewLessOptions( self::$OPTION_PREFIX, self::$BOOSTRAP_DIR, FALSE );
+			return;
+		}
 		
-		$oBoostrapLess->processNewLessOptions( self::$OPTION_PREFIX, self::$BOOSTRAP_DIR );
+		$oBoostrapLess->processNewLessOptions( self::$OPTION_PREFIX, self::$BOOSTRAP_DIR, TRUE );
 
 	}//handleSubmit_BootstrapLess
 
