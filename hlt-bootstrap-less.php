@@ -237,7 +237,7 @@ class HLT_BootstrapLess {
 	public function resetToDefaultAllLessOptions( $insBootstrapDir ) {
 
 		$this->processLessOptions( 'delete' );
-		$this->reWriteVariablesLess($insBootstrapDir);
+		$this->reWriteVariablesLess( $insBootstrapDir, TRUE );
 		$this->compileLess($insBootstrapDir);
 
 	}//resetToDefaultAllLessOptions
@@ -252,12 +252,23 @@ class HLT_BootstrapLess {
 
 	}//processNewLessOptions
 	
-	public function reWriteVariablesLess( $insBootstrapDir ) {
+	/**
+	 * 
+	 * 
+	 * @param $insBootstrapDir
+	 * @param $infUseOriginalLessFile - boolean on whether to use the original less file as the template or not. Defaults to TRUE
+	 */
+	public function reWriteVariablesLess( $insBootstrapDir, $infUseOriginalLessFile = TRUE ) {
 
 		$fSuccess = true;
 		
 		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
-		$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
+		
+		if ( $infUseOriginalLessFile ) {
+			$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
+		} else {
+			$sContents = file_get_contents( $sFilePathVariablesLess );
+		}
 		
 		if ( !$sContents ) {
 			//The Variable.less file couldn't be read: bail!

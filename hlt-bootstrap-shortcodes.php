@@ -70,9 +70,9 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function icon( $inaAtts = array(), $insContent = '' ) {
 		
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class', 'icon-star-empty' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class', 'icon-star-empty' );
 		
 		//strip empty parameters
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -102,19 +102,19 @@ class HLT_BootstrapShortcodes {
 			}
 		}
 
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'link_title' );
-		$this->def( &$inaAtts, 'title' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'link_title' );
+		$this->def( $inaAtts, 'title' );
 		if (empty($inaAtts['title'])) {
 			$inaAtts['title'] = $inaAtts['link_title']; // backwards compatibility - originally only "link_title"
 		}
-		$this->def( &$inaAtts, 'value', '0' );
-		$this->def( &$inaAtts, 'text' );
-		$this->def( &$inaAtts, 'disabled', 'N' );
-		$this->def( &$inaAtts, 'toggle', 'N' );
-		$this->def( &$inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
+		$this->def( $inaAtts, 'value', '0' );
+		$this->def( $inaAtts, 'text' );
+		$this->def( $inaAtts, 'disabled', 'N' );
+		$this->def( $inaAtts, 'toggle', 'N' );
+		$this->def( $inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
 		
 		//strip empty parameters
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -184,10 +184,10 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function buttonGroup( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'toggle' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'toggle' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -218,9 +218,9 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function badge( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -251,9 +251,9 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -281,10 +281,10 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function blockquote( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'source' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'source' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -312,11 +312,11 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function alert( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'type', 'alert' );
-		$this->def( &$inaAtts, 'heading' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'type', 'alert' );
+		$this->def( $inaAtts, 'heading' );
 
 		//Ensures class starts with "alert-"
 		if ( !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
@@ -343,8 +343,8 @@ class HLT_BootstrapShortcodes {
 	
 	public function code( $inaAtts = array(), $insContent = '' ) {
 		
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
 
 		$sReturn = '<pre class="prettyprint linenums" '.$this->idHtml( $inaAtts['id'] ).' '.$this->noEmptyHtml( $inaAtts['style'], 'style' ).'>'.$insContent.'</pre>';
 
@@ -356,12 +356,12 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'placement', 'top' );
-		$this->def( &$inaAtts, 'title' );
-		$this->def( &$inaAtts, 'rel', 'tooltip' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'placement', 'top' );
+		$this->def( $inaAtts, 'title' );
+		$this->def( $inaAtts, 'rel', 'tooltip' );
 
 		if ( $inaAtts['placement'] == 'above' ) {
 			$inaAtts['placement'] = 'top';
@@ -395,12 +395,12 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function popover( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'placement', 'right' );
-		$this->def( &$inaAtts, 'title' );
-		$this->def( &$inaAtts, 'content' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'placement', 'right' );
+		$this->def( $inaAtts, 'title' );
+		$this->def( $inaAtts, 'content' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -420,7 +420,7 @@ class HLT_BootstrapShortcodes {
 	}
 	
 	public function dropdown( $inaAtts = array(), $insContent = '' ) {
-		$this->def( &$inaAtts, 'name', 'Undefined' );
+		$this->def( $inaAtts, 'name', 'Undefined' );
 		
 		$insContent = '
 			<ul class="tabs">
@@ -440,8 +440,8 @@ class HLT_BootstrapShortcodes {
 	 * This is used by both dropdown and tabgroup/tab
 	 */
 	public function dropdown_option( $inaAtts = array(), $insContent = '' ) {
-		$this->def( &$inaAtts, 'name', 'Undefined' );
-		$this->def( &$inaAtts, 'link', '#' );
+		$this->def( $inaAtts, 'name', 'Undefined' );
+		$this->def( $inaAtts, 'link', '#' );
 		
 		$insContent = '<li><a href="'.$inaAtts['link'].'">'.$inaAtts['name'].'</a></li>';
 		
@@ -550,14 +550,14 @@ class HLT_BootstrapShortcodes {
 	 * Reference: http://codex.wordpress.org/Function_Reference/get_page
 	 */
 	public function tab( $inaAtts = array(), $insContent = '' ) {
-		$this->def( &$inaAtts, 'page_id', 0 );
-		$this->def( &$inaAtts, 'type', 'page' ); // can be either page or dropdown
+		$this->def( $inaAtts, 'page_id', 0 );
+		$this->def( $inaAtts, 'type', 'page' ); // can be either page or dropdown
 		
 		// If this value is never not set, then the tabgroup method didn't do it's job!
-		$this->def( &$inaAtts, 'id', 'TbsTabId_' );
+		$this->def( $inaAtts, 'id', 'TbsTabId_' );
 		
 		// Actually not used as the tab name is used by the TabGroup
-		$this->def( &$inaAtts, 'name', 'Undefined' );
+		$this->def( $inaAtts, 'name', 'Undefined' );
 		
 		if ( $inaAtts['page_id'] > 0 ) {
 			$oPage = get_page( $inaAtts['page_id'] );
@@ -584,12 +584,12 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function row( $inaAtts = array(), $insContent = '' ) {
 		
-		$this->def( &$inaAtts, 'fluid', 'n' );
-		$this->def( &$inaAtts, 'style' );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
+		$this->def( $inaAtts, 'fluid', 'n' );
+		$this->def( $inaAtts, 'style' );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
 		
-		$this->def( &$inaAtts, 'container', 'n' );
+		$this->def( $inaAtts, 'container', 'n' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -604,9 +604,9 @@ class HLT_BootstrapShortcodes {
 		
 		if ( strtolower($inaAtts['container']) == 'y' ) {
 			
-			$this->def( &$inaAtts, 'cstyle' );
-			$this->def( &$inaAtts, 'cid' );
-			$this->def( &$inaAtts, 'cclass' );
+			$this->def( $inaAtts, 'cstyle' );
+			$this->def( $inaAtts, 'cid' );
+			$this->def( $inaAtts, 'cclass' );
 			$this->noEmptyElement( $inaAtts, 'cid', 'id' );
 			$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
 			
@@ -621,10 +621,10 @@ class HLT_BootstrapShortcodes {
 	
 	public function column( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( &$inaAtts, 'size', 1 );
-		$this->def( &$inaAtts, 'id' );
-		$this->def( &$inaAtts, 'class' );
-		$this->def( &$inaAtts, 'style' );
+		$this->def( $inaAtts, 'size', 1 );
+		$this->def( $inaAtts, 'id' );
+		$this->def( $inaAtts, 'class' );
+		$this->def( $inaAtts, 'style' );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
