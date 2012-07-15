@@ -297,7 +297,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				}
 				
 				if ( $oBoostrapLess->reWriteVariablesLess( self::$BOOSTRAP_DIR ) ) {
-					$oBoostrapLess->compileLess( self::$BOOSTRAP_DIR );
+					$oBoostrapLess->compileAllBootstrapLess( self::$BOOSTRAP_DIR );
 				}
 				
 			}//if: use_compiled_css == 'Y'
@@ -554,6 +554,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'twitter'					=> self::$BOOSTRAP_URL.'css/bootstrap'.$sMinifiedCssOption,
 			'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
 			'twitter_responsive'		=> self::$BOOSTRAP_URL.'css/bootstrap-responsive'.$sMinifiedCssOption,
+			'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
 			'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
 			'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-'.self::YUI3Version.'.min.css' ),
 			'normalize'					=> $this->getCssURL( 'normalize.css' ),
@@ -579,7 +580,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		//Add the Responsive CSS link
 		if ( $fResponsive && $sBoostrapOption == 'twitter' ) {
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$aLocalCss['twitter_responsive'].'">';
+			
+			$sResponsiveCssLink = $aLocalCss['twitter_responsive'];
+			
+			//link to the Twitter LESS-compiled CSS (only if the file exists)
+			if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
+				$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
+			}
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sResponsiveCssLink.'">';
 		}
 
 		//Custom/Reset CSS

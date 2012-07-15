@@ -171,6 +171,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+= 2.1.0 =
+* UPDATED: Normalize.css to latest version (2012-07-07) at time of release
+* [planned] UPDATED: Twitter Bootstrap to v2.1.0
+* ADDED: Responsive CSS is automatically recompiled when CSS is recompiled (regardless of whether enabled or not)
+
 = 2.0.4.5 = 
 * ADDED: NONCE to form submissions to improve the security of the plugin.
 * ADDED: A new compile button - compile CSS from Original or customized Variable.less an option (http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-make-compile-variablesless-from-original-an-option)
