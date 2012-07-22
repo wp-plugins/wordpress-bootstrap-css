@@ -43,7 +43,7 @@ class HLT_DashboardRssWidget {
 	}
 
 	public function addNewsWidget() {
-		add_meta_box( 'hlt_news_widget', __( 'The latest from the Host Like Toast Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
+		add_meta_box( 'hlt_news_widget', __( 'The latest from the Worpit Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
 	}
 
 	public function renderNewsWidget() {
@@ -98,12 +98,12 @@ class HLT_DashboardRssWidget {
 			}
 		}
 		else {
-			$sRssWidget .= '<li><a href="'.$this->m_aFeeds['hlt'].'">'.__('Check out the The Host Like Toast Blog!', 'hlt-wordpress-bootstrap-css').'</a></li>';
+			$sRssWidget .= '<li><a href="'.$this->m_aFeeds['worpit'].'">'.__('Check out The Worpit Blog!', 'hlt-wordpress-bootstrap-css').'</a></li>';
 		}
 
 		$sRssWidget .= '</ul>';
 		
-		$sRssWidget .= "<p>You can turn off this news widget from the <a href=\"admin.php?page='.$this->getSubmenuId('bootstrap-css').'\">Options Page</a>, but we don't recommend that because you'll miss our latest news ;)</p></div>";
+		$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page='. $this->getSubmenuId('bootstrap-css') .'">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
 		
 		echo $sRssWidget;
 	}

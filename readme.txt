@@ -13,7 +13,7 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love Twitter Bootstrap on our WordPress sites at [Worpit](http://worpit.com/ "Worpit: Fast, Centralized WordPress Admin").
+We love Twitter Bootstrap on our [WordPress sites at Worpit](http://worpit.com/ "Worpit: The Faster WordPress Manager").
 And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
 With this plugin, now you can!
@@ -128,7 +128,7 @@ Otherwise, consult your caching program's documentation.
 Yes, we created [Custom Content By Country](http://wordpress.org/extend/plugins/custom-content-by-country/ "Custom Content By Country WordPress Plugin")
 plugin that lets you display content to users in specific regions.
 
-We also created the [Worpit Administration Dashboard](http://worpit.com/?wordpress) for people with multiple WordPress sites to manage.
+We also created the [Worpit WordPress Site Manager](http://worpit.com/?src=wtb_readme) for people with more than one WordPress site to manage.
 
 = Is the CSS "minified"? =
 

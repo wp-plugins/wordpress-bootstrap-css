@@ -305,6 +305,7 @@ class HLT_BootstrapLess {
 		//parse LESS
 		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
 		$oLessCompiler = new lessc( $sFilePathToLess );
+	//	$oLessCompiler->setFormatter("compressed");
 		$sCompiledCss = '';
 		try {
 			$sCompiledCss = $oLessCompiler->parse();
