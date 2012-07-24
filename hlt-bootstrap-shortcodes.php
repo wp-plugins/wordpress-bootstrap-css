@@ -462,7 +462,7 @@ class HLT_BootstrapShortcodes {
 		 * 
 		 * PREG_OFFSET_CAPTURE requires PHP 4.3.0
 		 */
-		if ( preg_match_all( '/\[TBS_TAB([^\]]*)\]/', $insContent, &$aMatches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+		if ( preg_match_all( '/\[TBS_TAB([^\]]*)\]/', $insContent, $aMatches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
 			foreach ( $aMatches as $aMatch ) {
 				//aMatch = Array ( [0] => Array ( [0] => [TBS_TAB page_id="53" name="test1"] [1] => 1 ) [1] => Array ( [0] => page_id="53" name="test1" [1] => 9 ) )
 				 
@@ -494,7 +494,7 @@ class HLT_BootstrapShortcodes {
 					$sRemainder = substr( $sRemainder, 0, $nPos );
 
 					// match all dropdowns until [/TBS_TAB]
-					if ( !preg_match_all( '/\[TBS_DROPDOWN_OPTION([^\]]*)\]/', $sRemainder, &$aSubMatches, PREG_SET_ORDER ) ) {
+					if ( !preg_match_all( '/\[TBS_DROPDOWN_OPTION([^\]]*)\]/', $sRemainder, $aSubMatches, PREG_SET_ORDER ) ) {
 						continue;
 					}
 
