@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.0.4.5
+Version: 2.0.4.6
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -55,7 +55,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const GoogleCdnJqueryVersion	= '1.7.2';
 
-	static public $VERSION			= '2.0.4.5'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.0.4.6'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -334,8 +334,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		if ( $sCurrentVersion !== self::$VERSION ) {
 			$sNotice = '
+					<style>
+						a#fromWorpit {
+							padding: 0 5px;
+							border-bottom: 1px dashed rgba(0,0,0,0.1);
+							color: black;
+						}
+					</style>
 					<form method="post" action="admin.php?page='.$this->getSubmenuId('bootstrap-css').'">
-						<p><strong>WordPress Twitter Bootstrap from <a href="http://worpit.com/?src=wtb_plugin">Worpit</a></strong> has been updated successfully.
+						<p><strong>WordPress Twitter Bootstrap plugin <a href="http://bit.ly/QhYJzY" id="fromWorpit" title="Manage WordPress Better" target="_blank">from Worpit</a></strong> has been updated successfully.
 						<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 						<input type="hidden" value="'.$user_id.'" name="hlt_user_id" id="hlt_user_id">
 						<input type="submit" value="Okay, take me to the main plugin page and hide this notice" name="submit" class="button-primary">

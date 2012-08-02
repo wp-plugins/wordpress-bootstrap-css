@@ -622,9 +622,14 @@ class HLT_BootstrapShortcodes {
 	public function column( $inaAtts = array(), $insContent = '' ) {
 
 		$this->def( $inaAtts, 'size', 1 );
+		$this->def( $inaAtts, 'offset' );
 		$this->def( $inaAtts, 'id' );
 		$this->def( $inaAtts, 'class' );
 		$this->def( $inaAtts, 'style' );
+		
+		if ( !empty($inaAtts['offset']) ) {
+			$inaAtts['class'] .= ' offset'.$inaAtts['offset'];
+		}
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -637,6 +642,10 @@ class HLT_BootstrapShortcodes {
 		
 		return $sReturn;
 	}//row
+	
+	public function span( $inaAtts = array(), $insContent = '' ) {
+		return $this->column( $inaAtts, $insContent );
+	}
 	
 	public static function PrintJavascriptForPopovers() {
 		

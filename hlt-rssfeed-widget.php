@@ -98,12 +98,12 @@ class HLT_DashboardRssWidget {
 			}
 		}
 		else {
-			$sRssWidget .= '<li><a href="'.$this->m_aFeeds['worpit'].'">'.__('Check out The Worpit Blog!', 'hlt-wordpress-bootstrap-css').'</a></li>';
+			$sRssWidget .= '<li><a href="'.$this->m_aFeeds['worpit'].'">'.__('Check out The Worpit Blog', 'hlt-wordpress-bootstrap-css').'</a></li>';
 		}
 
 		$sRssWidget .= '</ul>';
 		
-		$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page='. $this->getSubmenuId('bootstrap-css') .'">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
+		$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page=worpit-wtb-bootstrap-css">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
 		
 		echo $sRssWidget;
 	}

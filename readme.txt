@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4.1
-Stable tag: 2.0.4.5
+Stable tag: 2.0.4.6
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -171,24 +171,25 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-= 2.1.0 =
+= 2.0.4.6 =
+* FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
+* FIXED: a few minor plugin interface bugs.
 * UPDATED: Normalize.css to latest version (2012-07-07) at time of release
-* [planned] UPDATED: Twitter Bootstrap to v2.1.0
-* ADDED: Responsive CSS is automatically recompiled when CSS is recompiled (regardless of whether enabled or not)
+* ADDED: Shortcode TBS_SPAN - this is just an alias for TBS_COLUMN added previously.
+* ADDED: offset parameter to the TBS_SPAN (and TBS_COLUMN) to reflect offset option in Twitter Bootstrap.
+* ADDED: Responsive CSS is automatically recompiled when CSS is recompiled (regardless of whether responsive is enabled or not)
 
-= 2.0.4.5 = 
+= 2.0.4.5 =
 * ADDED: NONCE to form submissions to improve the security of the plugin.
 * ADDED: A new compile button - compile CSS from Original or customized Variable.less an option (http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-make-compile-variablesless-from-original-an-option)
 * FIXED: Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
 
 = 2.0.4.4 =
-
 * FIXED: Further attempt to fix string escape issues (thanks Troy!).
 * FIXED: Bug with Grid Columns field being appended with 'px' in LESS compiler.
 * UPDATED: LESS PHP compiler to latest release (v0.3.5)
 
 = 2.0.4.3 =
-
 * FIXED: An attempt to fix problems some people have with the LESS compiler and escaping double-quoted fonts.
 ** IF you have had problems, do a RESET first, then attempt to compile your customizations. **
 
@@ -359,6 +360,13 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.4.6 =
+* FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
+* UPDATED: Normalize.css to latest version (2012-07-07) at time of release
+* ADDED: Shortcode TBS_SPAN - this is just an alias for TBS_COLUMN added previously.
+* ADDED: offset parameter to the TBS_SPAN (and TBS_COLUMN) to reflect offset option in Twitter Bootstrap.
+* ADDED: Responsive CSS is automatically recompiled when CSS is recompiled (regardless of whether responsive is enabled or not)
 
 = 2.0.4.5 = 
 * ADDED: NONCE to form submissions to improve the security of the plugin.
