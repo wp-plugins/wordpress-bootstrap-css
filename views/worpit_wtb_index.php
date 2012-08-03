@@ -31,8 +31,8 @@
 				<p>To learn more about what shortcodes are, <a href="http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/">check this link</a></p>
 				<p>The following shortcodes are available:</p>
 				<ol>
-					<li>[ TBS_ROW ] <span class="label label-success">new</span></li>
-					<li>[ TBS_SPAN ] <span class="label label-success">new</span></li>
+					<li>[ <a href="http://bit.ly/T65cho" title="Twitter Bootstrap Row Shortcode">TBS_ROW</a> ] <span class="label label-success">new</span></li>
+					<li>[ <a href="http://bit.ly/T65cho" title="Twitter Bootstrap Span Shortcode">TBS_SPAN</a> ] <span class="label label-success">new</span></li>
 					<li>[ <a href="http://bit.ly/HOt01C" title="Twitter Bootstrap Badge Shortcode">TBS_BADGE</a> ] </li>
 					<li>[ <a href="http://bit.ly/zmGUeD" title="Twitter Bootstrap Glyph Icon WordPress Shortcode">TBS_ICON</a> ]</li>
 					<li>[ <a href="http://bit.ly/AlETMx" title="Twitter Bootstrap Button WordPress Shortcode">TBS_BUTTON</a> ]</li>
