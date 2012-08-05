@@ -24,6 +24,8 @@
 class HLT_BootstrapShortcodes {
 	
 	protected $sTwitterBootstrapVersion;
+	
+	protected $m_sCollapseParentId;
 
 	public function __construct( $sVersion = '2' ) {
 		$aMethods = get_class_methods( $this );
@@ -70,9 +72,17 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function icon( $inaAtts = array(), $insContent = '' ) {
 		
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class', 'icon-star-empty' );
+		$aOptions = array(
+				'style'	=>	'',
+				'id'	=>	'',
+				'class'	=>	'icon-star-empty',
+		);
+		
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp($aOptions);
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//strip empty parameters
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -93,6 +103,26 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function button( $inaAtts = array(), $insContent = '' ) {
 		
+		$aOptions = array(
+				'style'			=>	'',
+				'id'			=>	'',
+				'class'			=>	'',
+				'link_title'	=>	'',
+				'title'			=>	'',
+				'value'			=>	'0',
+				'text'			=>	'',
+				'disabled'		=>	'N',
+				'toggle'		=>	'N',
+				'type'			=>	($sElementType == 'a')? '' : 'button',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp($aOptions);
+		}
+		
+//		$this->processOptions( $inaAtts, $aOptions );
+		
 		$sElementType = 'a';
 		if ( isset( $inaAtts['element'] ) ) {
 			$sElementType = $inaAtts['element'];
@@ -101,10 +131,10 @@ class HLT_BootstrapShortcodes {
 				$sElementType = 'button';
 			}
 		}
-
+		
+		$this->def( $inaAtts, 'style' );
 		$this->def( $inaAtts, 'id' );
 		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'style' );
 		$this->def( $inaAtts, 'link_title' );
 		$this->def( $inaAtts, 'title' );
 		if (empty($inaAtts['title'])) {
@@ -183,11 +213,20 @@ class HLT_BootstrapShortcodes {
 	 * @param $insContent
 	 */
 	public function buttonGroup( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'toggle' );
+		
+		$aOptions = array(
+				'toggle'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp($aOptions);
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -217,18 +256,27 @@ class HLT_BootstrapShortcodes {
 	 * @return string
 	 */
 	public function badge( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
+		
+		$aOptions = array(
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
-		//prefix the first class with "badge-" to ensure correctly class name for Twitter
-		if ( !preg_match( '/^badge-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'badge-'.$inaAtts['class'];
+		//prefix the first class with "badge-" to ensure correct class name for Twitter
+		if ( !empty($inaAtts['class']) && !preg_match( '/^badge-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'badge-'.$inaAtts['class'];
 		}
 
 		$sReturn = '<span class="badge '.$inaAtts['class'].'"'
@@ -250,18 +298,27 @@ class HLT_BootstrapShortcodes {
 	 * @return string
 	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
+		
+		$aOptions = array(
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
 		//prefix the first class with "label-" to ensure correctly class name for Twitter
-		if ( !preg_match( '/^label-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'label-'.$inaAtts['class'];
+		if ( !empty($inaAtts['class']) && !preg_match( '/^label-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'label-'.$inaAtts['class'];
 		}
 
 		$sReturn = '<span class="label '.$inaAtts['class'].'"'
@@ -280,15 +337,24 @@ class HLT_BootstrapShortcodes {
 	 * @return string
 	 */
 	public function blockquote( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'source' );
+		
+		$aOptions = array(
+				'source'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
-		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'class' );
 
 		$sReturn = '<blockquote '.$inaAtts['style']
@@ -311,16 +377,25 @@ class HLT_BootstrapShortcodes {
 	 * @param $insContent
 	 */
 	public function alert( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'type', 'alert' );
-		$this->def( $inaAtts, 'heading' );
+		
+		$aOptions = array(
+				'type'		=>	'alert',
+				'heading'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 
 		//Ensures class starts with "alert-"
-		if ( !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
-			$inaAtts['class'] = ( empty($inaAtts['class']) ) ? '' : 'alert-'.$inaAtts['class'];
+		if ( !empty($inaAtts['class']) && !preg_match( '/^alert-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'alert-'.$inaAtts['class'];
 		}
 		
 		//filters out empty elements
@@ -336,7 +411,7 @@ class HLT_BootstrapShortcodes {
 			$sReturn .= '<h4 class="alert-heading">'.$inaAtts['heading'].'</h4>';
 		}
 		
-		$sReturn .= $this->doShortcode($insContent).'</div>';
+		$sReturn .= $this->doShortcode( $insContent ).'</div>';
 
 		return  $sReturn ;
 	}
@@ -355,13 +430,21 @@ class HLT_BootstrapShortcodes {
 	 * Options for 'placement' are top | bottom | left | right
 	 */
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'placement', 'top' );
-		$this->def( $inaAtts, 'title' );
-		$this->def( $inaAtts, 'rel', 'tooltip' );
+		
+		$aOptions = array(
+				'placement'	=>	'top',
+				'title'		=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 
 		if ( $inaAtts['placement'] == 'above' ) {
 			$inaAtts['placement'] = 'top';
@@ -378,15 +461,15 @@ class HLT_BootstrapShortcodes {
 		$sReturn = $insContent;
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
-					.' rel="'.$inaAtts['rel'].'" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
+					.' rel="tooltip" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
 					.$inaAtts['style']
 					.$inaAtts['id']
 					.$inaAtts['class']
 					.'>'.$this->doShortcode($insContent).'</span>';
 		}
 		
-		remove_action( 'wp_footer', array(&$this, 'PrintJavascriptForTooltips' ) );
-		add_action( 'wp_footer', array(&$this, 'PrintJavascriptForTooltips' ) );
+		remove_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForTooltips' ) );
+		add_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForTooltips' ) );
 		return $sReturn;
 	}
 
@@ -394,13 +477,22 @@ class HLT_BootstrapShortcodes {
 	 * Options for 'placement' are top | bottom | left | right
 	 */
 	public function popover( $inaAtts = array(), $insContent = '' ) {
-
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'placement', 'right' );
-		$this->def( $inaAtts, 'title' );
-		$this->def( $inaAtts, 'content' );
+		
+		$aOptions = array(
+				'placement'	=>	'right',
+				'title'		=>	'',
+				'content'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -414,8 +506,8 @@ class HLT_BootstrapShortcodes {
 					.$inaAtts['id']
 					.$inaAtts['class'].'>'.$this->doShortcode( $insContent ).'</span>';
 		
-		remove_action( 'wp_footer', array(&$this, 'PrintJavascriptForPopovers' ) );
-		add_action( 'wp_footer', array(&$this, 'PrintJavascriptForPopovers' ) );
+		remove_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForPopovers' ) );
+		add_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForPopovers' ) );
 		return $sReturn;
 	}
 	
@@ -583,13 +675,24 @@ class HLT_BootstrapShortcodes {
 	 * @param $insContent
 	 */
 	public function row( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+				'fluid'		=>	'n',
+				'container'	=>	'n',
+				'cstyle'	=>	'',
+				'cid'		=>	'',
+				'cclass'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
 		
-		$this->def( $inaAtts, 'fluid', 'n' );
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
 		
-		$this->def( $inaAtts, 'container', 'n' );
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
@@ -604,9 +707,6 @@ class HLT_BootstrapShortcodes {
 		
 		if ( strtolower($inaAtts['container']) == 'y' ) {
 			
-			$this->def( $inaAtts, 'cstyle' );
-			$this->def( $inaAtts, 'cid' );
-			$this->def( $inaAtts, 'cclass' );
 			$this->noEmptyElement( $inaAtts, 'cid', 'id' );
 			$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
 			
@@ -621,21 +721,26 @@ class HLT_BootstrapShortcodes {
 	
 	public function column( $inaAtts = array(), $insContent = '' ) {
 
-		$this->def( $inaAtts, 'size', 1 );
-		$this->def( $inaAtts, 'offset' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'style' );
+		$aOptions = array(
+				'size'		=>	'1',
+				'offset'	=>	'',
+				'style'		=>	'',
+				'id'		=>	'',
+				'class'		=>	'',
+		);
 		
-		if ( !empty($inaAtts['offset']) ) {
-			$inaAtts['class'] .= ' offset'.$inaAtts['offset'];
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
 		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
 		
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
-		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['class']. '"'
+		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['offset'].' '.$inaAtts['class']. '"'
 					.$inaAtts['style']
 					.$inaAtts['id'].'>';
 		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
@@ -645,6 +750,177 @@ class HLT_BootstrapShortcodes {
 	
 	public function span( $inaAtts = array(), $insContent = '' ) {
 		return $this->column( $inaAtts, $insContent );
+	}
+	
+	public function collapse( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+				'accordion'	=>	'n',
+				'id'		=>	'randomly generated'
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$aOptions['id'] = 'TbsCollapseId-'.rand();
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//if accordian is set, set the Parent ID so we can use it later.
+		$this->m_sCollapseParentId = ( strtolower($inaAtts['accordion']) == 'y' )? '#'.$inaAtts['id'] : '';
+		
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		ob_start();
+		?>
+		<div class="accordion <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
+			<?php echo $this->doShortcode( $insContent ); ?>
+		</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		
+		return $sContent;
+		
+		/*
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+			  <div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" data-bitly-type="bitly_hover_card">
+				  Collapsible Group Item #1
+				</a>
+			  </div>
+			  <div id="collapseOne" class="accordion-body in collapse" style="height: auto; ">
+				<div class="accordion-inner">
+				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+				</div>
+			  </div>
+			</div>
+			<div class="accordion-group">
+			  <div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" data-bitly-type="bitly_hover_card">
+				  Collapsible Group Item #2
+				</a>
+			  </div>
+			  <div id="collapseTwo" class="accordion-body collapse">
+				<div class="accordion-inner">
+				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+				</div>
+			  </div>
+			</div>
+			<div class="accordion-group">
+			  <div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree" data-bitly-type="bitly_hover_card">
+				  Collapsible Group Item #3
+				</a>
+			  </div>
+			  <div id="collapseThree" class="accordion-body collapse">
+				<div class="accordion-inner">
+				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+				</div>
+			  </div>
+			</div>*/
+	
+	}
+	
+	public function collapse_group( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+				'group-id'	=>	'randomly generated',
+				'title'		=>	'"title" Not Set',
+				'open'		=>	'n',
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$aOptions['parent'] = $this->m_sCollapseParentId; //this will add the accordion effect, or not.
+		$sCollapseGroupId = 'TbsCollapseGroupId-'.rand();
+		$aOptions['group-id'] = $sCollapseGroupId;
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		$this->noEmptyElement( $inaAtts, 'parent', 'data-parent' ); //this should only be printed if accordion=y was set in the parent Shortcode
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		ob_start();
+		?>
+			<div class="accordion-group <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
+			  <div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" <?php echo $inaAtts['parent']; ?> href="#<?php echo $inaAtts['group-id']; ?>">
+				  <?php echo $inaAtts['title']; ?>
+				</a>
+			  </div>
+			  <div id="<?php echo $inaAtts['group-id']; ?>" class="accordion-body collapse <?php echo (strtolower($inaAtts['open']) == 'y') ? 'in' : '';?>">
+				<div class="accordion-inner">
+					<?php echo $insContent; ?>
+				</div>
+			  </div>
+			</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		
+		return $sContent;
+	}
+	
+	/**
+	 * Given the array of parameters/attributes and array of options and their defaults, sets them all up.
+	 * 
+	 * @param $inaAtts
+	 * @param $inaOptions
+	 */
+	protected function processOptions( &$inaAtts, &$inaOptions ) {
+		
+		if ( empty($inaOptions) ) {
+			return;
+		}
+		$aDefaults = array(
+				'style'	=>	'',
+				'id'	=>	'',
+				'class'	=>	''
+		);
+		$inaOptions = array_merge( $aDefaults, $inaOptions );
+		
+		foreach ($inaOptions as $sOption => $sDefault) {
+			$this->def( $inaAtts, $sOption, $sDefault );
+		}
+	}
+	
+	protected function getHelp( &$inaOptions ) {
+		
+		if ( empty($inaOptions) ) {
+			return '';
+		}
+		$aDefaults = array(
+				'style'	=>	'',
+				'id'	=>	'',
+				'class'	=>	''
+		);
+		$inaOptions = array_merge( $aDefaults, $inaOptions );
+		
+		$sHelp = '
+		Options are as follows (default values in brackets): 
+		<ul>
+		';
+		
+		foreach ($inaOptions as $sOption => $sDefault) {
+			$sHelp .= '<li>'.$sOption.' ( ';
+			$sHelp .= (empty($sDefault))? 'none' : '"'.$sDefault.'"';
+			$sHelp .= ' )</li>';
+		}
+		$sHelp .= '
+			</ul>
+		';
+		return $sHelp;
 	}
 	
 	public static function PrintJavascriptForPopovers() {
@@ -694,6 +970,7 @@ class HLT_BootstrapShortcodes {
 	public function filterTheContent( $insContent = "" ) {		
 		// Remove <p>'s that get added to [TBS...] by wpautop.
 		$insContent = preg_replace( '|(<p>\s*)?(\[/?TBS[^\]]+\])(\s*</p>)?|', "$2", $insContent );
+		$insContent = preg_replace( '|(<br />\s*)?(\[/?TBS[^\]]+\])(\s*</p>)?|', "$2", $insContent );
 		
 		return $insContent;
 	}

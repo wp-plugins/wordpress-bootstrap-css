@@ -171,6 +171,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+= 2.0.4.7 =
+* ADDED: Shortcode for Twitter Bootstrap accordions - collapsable blocks (http://twitter.github.com/bootstrap/javascript.html#collapse)
+The shortcodes are: [TBS_COLLAPSE] (parent) and {TBS_COLLAPSE_GROUP]. You need to nest the "GROUPS" within the parent.
+* ADDED: "help=y" parameter to all shortcodes so you can quickly print out all available shortcode parameters.
+
 = 2.0.4.6 =
 * FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
 * FIXED: a few minor plugin interface bugs.
