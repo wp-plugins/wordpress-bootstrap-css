@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4.1
-Stable tag: 2.0.4.6
+Stable tag: 2.0.4.7
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -13,7 +13,7 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love Twitter Bootstrap on our [WordPress sites at Worpit](http://worpit.com/ "Worpit: The Faster WordPress Manager").
+We love Twitter Bootstrap on our [WordPress sites at Worpit](http://worpit.com/ "Worpit: Manage WordPress Better").
 And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
 With this plugin, now you can!
@@ -87,6 +87,16 @@ A new menu item will appear on the left-hand side called 'Worpit'.  Click this m
 Bootstrap CSS.
 
 Select the CSS file as desired.
+
+= How can I use the WordPress Twitter Bootstrap Shortcodes? =
+
+I've put a full demo page of all the fully support shortcodes in this plugin:
+[Complete WordPress Twitter Bootstrap Shortcodes demo page](http://bit.ly/OFYCh8 "Complete WordPress Twitter Bootstrap Shortcodes demo page")
+
+= The WordPress Shortcodes aren't getting processed properly - why? =
+
+You need to enable the shortcodes feature in the options page. This is a performance optimization so that people who don't need
+it don't have to process it.  Also, some require the Bootstrap Javascript library to be loaded so enable that also if you require it. 
 
 = Why was Twitter ("Legacy") Bootstrap v1.4.0 support dropped from the plugin in v2.0.3? =
 
@@ -175,6 +185,7 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * ADDED: Shortcode for Twitter Bootstrap accordions - collapsable blocks (http://twitter.github.com/bootstrap/javascript.html#collapse)
 The shortcodes are: [TBS_COLLAPSE] (parent) and {TBS_COLLAPSE_GROUP]. You need to nest the "GROUPS" within the parent.
 * ADDED: "help=y" parameter to all shortcodes so you can quickly print out all available shortcode parameters.
+* ADDED: : [Complete WordPress Twitter Bootstrap Shortcodes demo page](http://bit.ly/OFYCh8 "Complete WordPress Twitter Bootstrap Shortcodes demo page")
 
 = 2.0.4.6 =
 * FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error

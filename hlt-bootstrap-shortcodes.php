@@ -73,8 +73,6 @@ class HLT_BootstrapShortcodes {
 	public function icon( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'style'	=>	'',
-				'id'	=>	'',
 				'class'	=>	'icon-star-empty',
 		);
 		
@@ -216,9 +214,6 @@ class HLT_BootstrapShortcodes {
 		
 		$aOptions = array(
 				'toggle'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -257,11 +252,7 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function badge( $inaAtts = array(), $insContent = '' ) {
 		
-		$aOptions = array(
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
-		);
+		$aOptions = array();
 		
 		//Print Help if asked for and return
 		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
@@ -299,11 +290,7 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
 		
-		$aOptions = array(
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
-		);
+		$aOptions = array();
 		
 		//Print Help if asked for and return
 		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
@@ -340,9 +327,6 @@ class HLT_BootstrapShortcodes {
 		
 		$aOptions = array(
 				'source'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -381,9 +365,6 @@ class HLT_BootstrapShortcodes {
 		$aOptions = array(
 				'type'		=>	'alert',
 				'heading'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -434,9 +415,6 @@ class HLT_BootstrapShortcodes {
 		$aOptions = array(
 				'placement'	=>	'top',
 				'title'		=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -482,9 +460,6 @@ class HLT_BootstrapShortcodes {
 				'placement'	=>	'right',
 				'title'		=>	'',
 				'content'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -682,9 +657,6 @@ class HLT_BootstrapShortcodes {
 				'cstyle'	=>	'',
 				'cid'		=>	'',
 				'cclass'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -724,9 +696,6 @@ class HLT_BootstrapShortcodes {
 		$aOptions = array(
 				'size'		=>	'1',
 				'offset'	=>	'',
-				'style'		=>	'',
-				'id'		=>	'',
-				'class'		=>	'',
 		);
 		
 		//Print Help if asked for and return
@@ -785,45 +754,6 @@ class HLT_BootstrapShortcodes {
 		ob_end_clean();
 		
 		return $sContent;
-		
-		/*
-		<div class="accordion" id="accordion2">
-			<div class="accordion-group">
-			  <div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" data-bitly-type="bitly_hover_card">
-				  Collapsible Group Item #1
-				</a>
-			  </div>
-			  <div id="collapseOne" class="accordion-body in collapse" style="height: auto; ">
-				<div class="accordion-inner">
-				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			  </div>
-			</div>
-			<div class="accordion-group">
-			  <div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" data-bitly-type="bitly_hover_card">
-				  Collapsible Group Item #2
-				</a>
-			  </div>
-			  <div id="collapseTwo" class="accordion-body collapse">
-				<div class="accordion-inner">
-				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			  </div>
-			</div>
-			<div class="accordion-group">
-			  <div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree" data-bitly-type="bitly_hover_card">
-				  Collapsible Group Item #3
-				</a>
-			  </div>
-			  <div id="collapseThree" class="accordion-body collapse">
-				<div class="accordion-inner">
-				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			  </div>
-			</div>*/
 	
 	}
 	
@@ -880,15 +810,16 @@ class HLT_BootstrapShortcodes {
 	 */
 	protected function processOptions( &$inaAtts, &$inaOptions ) {
 		
-		if ( empty($inaOptions) ) {
-			return;
-		}
 		$aDefaults = array(
 				'style'	=>	'',
 				'id'	=>	'',
 				'class'	=>	''
 		);
-		$inaOptions = array_merge( $aDefaults, $inaOptions );
+		if ( empty($inaOptions) ) {
+			$inaOptions = $aDefaults;
+		} else {
+			$inaOptions = array_merge( $aDefaults, $inaOptions );
+		}
 		
 		foreach ($inaOptions as $sOption => $sDefault) {
 			$this->def( $inaAtts, $sOption, $sDefault );
@@ -897,15 +828,16 @@ class HLT_BootstrapShortcodes {
 	
 	protected function getHelp( &$inaOptions ) {
 		
-		if ( empty($inaOptions) ) {
-			return '';
-		}
 		$aDefaults = array(
 				'style'	=>	'',
 				'id'	=>	'',
 				'class'	=>	''
 		);
-		$inaOptions = array_merge( $aDefaults, $inaOptions );
+		if ( empty($inaOptions) ) {
+			$inaOptions = $aDefaults;
+		} else {
+			$inaOptions = array_merge( $aDefaults, $inaOptions );
+		}
 		
 		$sHelp = '
 		Options are as follows (default values in brackets): 
