@@ -73,7 +73,7 @@ class HLT_BootstrapShortcodes {
 	public function icon( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'class'	=>	'icon-star-empty',
+				'class'	=>	array( 'icon-star-empty', 'Simply provide the class name of the icon desired.' ),
 		);
 		
 		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
@@ -213,7 +213,7 @@ class HLT_BootstrapShortcodes {
 	public function buttonGroup( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'toggle'	=>	'',
+				'toggle'	=>	array( '', 'Toggles whether buttons are in a group or not' ),
 		);
 		
 		//Print Help if asked for and return
@@ -252,7 +252,9 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function badge( $inaAtts = array(), $insContent = '' ) {
 		
-		$aOptions = array();
+		$aOptions = array(
+				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color of the badge - leave blank for default' )
+		);
 		
 		//Print Help if asked for and return
 		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
@@ -290,7 +292,9 @@ class HLT_BootstrapShortcodes {
 	 */
 	public function label( $inaAtts = array(), $insContent = '' ) {
 		
-		$aOptions = array();
+		$aOptions = array(
+				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color of the label - leave blank for default.' )
+		);
 		
 		//Print Help if asked for and return
 		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
@@ -326,7 +330,7 @@ class HLT_BootstrapShortcodes {
 	public function blockquote( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'source'	=>	'',
+				'source'	=>	array( '', '', 'Optional source text for the quotation' ),
 		);
 		
 		//Print Help if asked for and return
@@ -363,8 +367,9 @@ class HLT_BootstrapShortcodes {
 	public function alert( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'type'		=>	'alert',
-				'heading'	=>	'',
+				'class'		=>	array( '', 'alert-block', 'Add your desired classes or alert-block to create larger alert' ),
+				'color'		=>	array( '', 'info|success|error', 'Specify color of the alert box - leave blank for default' ),
+				'heading'	=>	array( '', '', 'Optional heading text for the alert box' ),
 		);
 		
 		//Print Help if asked for and return
@@ -413,8 +418,8 @@ class HLT_BootstrapShortcodes {
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'placement'	=>	'top',
-				'title'		=>	'',
+				'placement'	=>	array( 'top',	'top|bottom|left|right', 'Location of the tooltip.' ),
+				'title'		=>	array( '',		'', 'Specify content text of the tooltip' ),
 		);
 		
 		//Print Help if asked for and return
@@ -457,9 +462,9 @@ class HLT_BootstrapShortcodes {
 	public function popover( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'placement'	=>	'right',
-				'title'		=>	'',
-				'content'	=>	'',
+				'placement'	=>	array( 'right',	'top|bottom|left|right', 'Location of the popover.' ),
+				'title'		=>	array( '',		'', 'The Title text of the popover' ),
+				'content'	=>	array( '',		'',	'The main content text of the popover' )
 		);
 		
 		//Print Help if asked for and return
@@ -484,6 +489,215 @@ class HLT_BootstrapShortcodes {
 		remove_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForPopovers' ) );
 		add_action( 'wp_footer', array(__CLASS__, 'PrintJavascriptForPopovers' ) );
 		return $sReturn;
+	}
+
+	public function progress_bar( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+				'color'		=>	array( '',		'info|success|warning|danger', 'Change bar color.' ),
+				'width'		=>	array( '50%',	'', 'Specify width of the progress bar, e.g. 10px, 70%' ),
+				'striped'	=>	array( 'n',		'y|n', 'Toggles striped progress bar effect.n' ),
+				'active'	=>	array( 'n',		'y|n', 'Toggle active progress bar effect.' ),
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//prefix the first class with "badge-" to ensure correct class name for Twitter
+		if ( !empty($inaAtts['class']) && !preg_match( '/^progress-/', $inaAtts['class'] ) ) {
+			$inaAtts['class'] = 'progress-'.$inaAtts['class'];
+		}
+
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		if ( !empty($inaAtts['color']) && !preg_match( '/^progress-/', $inaAtts['color'] ) ) {
+			$inaAtts['class'] .= ' progress-'.$inaAtts['color'];
+		}
+		if ( strtolower($inaAtts['striped']) == 'y' ) {
+			$inaAtts['class'] .= ' progress-striped';
+			if ( strtolower($inaAtts['active']) == 'y' ) {
+				$inaAtts['class'] .= ' active';
+			}
+		}
+		
+		ob_start();
+		?>
+		<div class="progress <?php echo $inaAtts['class']; ?>">
+			<div class="bar" style="width: <?php echo $inaAtts['width']; ?>;"><?php echo $this->doShortcode( $insContent ); ?></div>
+		</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		
+		return $sContent;
+		
+	}	
+	/**
+	 * Prints the HTML necessary for Bootstrap Rows. Will also create a container DIV but it has the option
+	 * to not print it with: container=n
+	 * 
+	 * There is also the option to make it fluid layout with: fluid=y
+	 * 
+	 * @param $inaAtts
+	 * @param $insContent
+	 */
+	public function row( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+				'fluid'		=>	array( 'n', 'y|n', 'Toggles whether fluid classes are used.' ),
+				'container'	=>	array( 'n', 'y|n', 'Toggles whether to print HTML for surrounding container.' ),
+				'cstyle'	=>	array( '', '', 'If you print container, optional inline CSS styling on the container DIV' ),
+				'cid'		=>	array( '', '', 'If you print container, optional ID added to the container DIV' ),
+				'cclass'	=>	array( '', '', 'If you print container, optional class(es) added to the container DIV' ),
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		$sFluid = ( strtolower($inaAtts['fluid']) == 'y' ) ? '-fluid' : '';
+		
+		$sReturn = '<div class="row'.$sFluid.' '.$inaAtts['class'].'" '
+					.$inaAtts['style']
+					.$inaAtts['id'].'>';
+		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
+		
+		if ( strtolower($inaAtts['container']) == 'y' ) {
+			
+			$this->noEmptyElement( $inaAtts, 'cid', 'id' );
+			$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
+			
+			$sReturn = '<div class="container'.$sFluid.' '.$inaAtts['cclass'].'"'
+						.$inaAtts['cstyle']
+						.$inaAtts['cid']
+						.'>'.$sReturn.'</div>';
+		}
+		
+		return $sReturn;
+	}//row
+	
+	public function column( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+				'size'		=>	array( '1', '1|2|3|4|5|6|7|8|9|10|11|12', 'Specify the size of the span.' ),
+				'offset'	=>	array( '', '1|2|3|4|5|6|7|8|9|10|11|12', 'Specify the size of the offset.' ),
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//filters out empty elements
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['offset'].' '.$inaAtts['class']. '"'
+					.$inaAtts['style']
+					.$inaAtts['id'].'>';
+		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
+		
+		return $sReturn;
+	}//row
+	
+	public function span( $inaAtts = array(), $insContent = '' ) {
+		return $this->column( $inaAtts, $insContent );
+	}
+	
+	public function collapse( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+				'accordion'	=>	array( 'n', 'y|n', 'Toggle Accordion effect (where when one opens, the rest in the group closes).' ),
+				'id'		=>	array( 'Randomly Generated', '', 'Specify ID if you need it, otherwise randomly generated.' )
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$aOptions['id'][0] = 'TbsCollapseId-'.rand();
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//if accordian is set, set the Parent ID so we can use it later.
+		$this->m_sCollapseParentId = ( strtolower($inaAtts['accordion']) == 'y' )? '#'.$inaAtts['id'] : '';
+		
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		ob_start();
+		?>
+		<div class="accordion <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
+			<?php echo $this->doShortcode( $insContent ); ?>
+		</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		
+		return $sContent;
+	
+	}
+	
+	public function collapse_group( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+				'group-id'	=>	array( 'Randomly Generated',	'', 'Specify ID if you need it, otherwise randomly generated.' ),
+				'title'		=>	array( '"title" Not Set',		'', 'Specify text for the link clicked to expand or collapse text' ),
+				'open'		=>	array( 'n',						'y|n', 'Toggles whether text is expanded/open when the page loads.' ),
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$aOptions['parent'][0] = $this->m_sCollapseParentId; //this will add the accordion effect, or not.
+		$sCollapseGroupId = 'TbsCollapseGroupId-'.rand();
+		$aOptions['group-id'][0] = $sCollapseGroupId;
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		$this->noEmptyElement( $inaAtts, 'parent', 'data-parent' ); //this should only be printed if accordion=y was set in the parent Shortcode
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		ob_start();
+		?>
+			<div class="accordion-group <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
+			  <div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" <?php echo $inaAtts['parent']; ?> href="#<?php echo $inaAtts['group-id']; ?>">
+				  <?php echo $inaAtts['title']; ?>
+				</a>
+			  </div>
+			  <div id="<?php echo $inaAtts['group-id']; ?>" class="accordion-body collapse <?php echo (strtolower($inaAtts['open']) == 'y') ? 'in' : '';?>">
+				<div class="accordion-inner">
+					<?php echo $insContent; ?>
+				</div>
+			  </div>
+			</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		
+		return $sContent;
 	}
 	
 	public function dropdown( $inaAtts = array(), $insContent = '' ) {
@@ -639,169 +853,7 @@ class HLT_BootstrapShortcodes {
 		
 		return $this->doShortcode( $insContent );
 	}
-	
-	/**
-	 * Prints the HTML necessary for Bootstrap Rows. Will also create a container DIV but it has the option
-	 * to not print it with: container=n
-	 * 
-	 * There is also the option to make it fluid layout with: fluid=y
-	 * 
-	 * @param $inaAtts
-	 * @param $insContent
-	 */
-	public function row( $inaAtts = array(), $insContent = '' ) {
 
-		$aOptions = array(
-				'fluid'		=>	'n',
-				'container'	=>	'n',
-				'cstyle'	=>	'',
-				'cid'		=>	'',
-				'cclass'	=>	'',
-		);
-		
-		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
-			return $this->getHelp( $aOptions );
-		}
-		
-		$this->processOptions( $inaAtts, $aOptions );
-		
-		//filters out empty elements
-		$this->noEmptyElement( $inaAtts, 'id' );
-		$this->noEmptyElement( $inaAtts, 'style' );
-		
-		$sFluid = ( strtolower($inaAtts['fluid']) == 'y' ) ? '-fluid' : '';
-		
-		$sReturn = '<div class="row'.$sFluid.' '.$inaAtts['class'].'" '
-					.$inaAtts['style']
-					.$inaAtts['id'].'>';
-		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
-		
-		if ( strtolower($inaAtts['container']) == 'y' ) {
-			
-			$this->noEmptyElement( $inaAtts, 'cid', 'id' );
-			$this->noEmptyElement( $inaAtts, 'cstyle', 'style' );
-			
-			$sReturn = '<div class="container'.$sFluid.' '.$inaAtts['cclass'].'"'
-						.$inaAtts['cstyle']
-						.$inaAtts['cid']
-						.'>'.$sReturn.'</div>';
-		}
-		
-		return $sReturn;
-	}//row
-	
-	public function column( $inaAtts = array(), $insContent = '' ) {
-
-		$aOptions = array(
-				'size'		=>	'1',
-				'offset'	=>	'',
-		);
-		
-		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
-			return $this->getHelp( $aOptions );
-		}
-		
-		$this->processOptions( $inaAtts, $aOptions );
-		
-		//filters out empty elements
-		$this->noEmptyElement( $inaAtts, 'id' );
-		$this->noEmptyElement( $inaAtts, 'style' );
-		
-		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['offset'].' '.$inaAtts['class']. '"'
-					.$inaAtts['style']
-					.$inaAtts['id'].'>';
-		$sReturn .= $this->doShortcode( $insContent ) .'</div>';
-		
-		return $sReturn;
-	}//row
-	
-	public function span( $inaAtts = array(), $insContent = '' ) {
-		return $this->column( $inaAtts, $insContent );
-	}
-	
-	public function collapse( $inaAtts = array(), $insContent = '' ) {
-
-		$aOptions = array(
-				'accordion'	=>	'n',
-				'id'		=>	'randomly generated'
-		);
-		
-		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
-			return $this->getHelp( $aOptions );
-		}
-		
-		$aOptions['id'] = 'TbsCollapseId-'.rand();
-		
-		$this->processOptions( $inaAtts, $aOptions );
-		
-		//if accordian is set, set the Parent ID so we can use it later.
-		$this->m_sCollapseParentId = ( strtolower($inaAtts['accordion']) == 'y' )? '#'.$inaAtts['id'] : '';
-		
-		$this->noEmptyElement( $inaAtts, 'style' );
-		$this->noEmptyElement( $inaAtts, 'id' );
-		
-		ob_start();
-		?>
-		<div class="accordion <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
-			<?php echo $this->doShortcode( $insContent ); ?>
-		</div>
-		<?php
-		
-		$sContent = ob_get_contents();
-		ob_end_clean();
-		
-		return $sContent;
-	
-	}
-	
-	public function collapse_group( $inaAtts = array(), $insContent = '' ) {
-
-		$aOptions = array(
-				'group-id'	=>	'randomly generated',
-				'title'		=>	'"title" Not Set',
-				'open'		=>	'n',
-		);
-		
-		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
-			return $this->getHelp( $aOptions );
-		}
-		
-		$aOptions['parent'] = $this->m_sCollapseParentId; //this will add the accordion effect, or not.
-		$sCollapseGroupId = 'TbsCollapseGroupId-'.rand();
-		$aOptions['group-id'] = $sCollapseGroupId;
-		
-		$this->processOptions( $inaAtts, $aOptions );
-		
-		$this->noEmptyElement( $inaAtts, 'parent', 'data-parent' ); //this should only be printed if accordion=y was set in the parent Shortcode
-		$this->noEmptyElement( $inaAtts, 'style' );
-		$this->noEmptyElement( $inaAtts, 'id' );
-		
-		ob_start();
-		?>
-			<div class="accordion-group <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
-			  <div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" <?php echo $inaAtts['parent']; ?> href="#<?php echo $inaAtts['group-id']; ?>">
-				  <?php echo $inaAtts['title']; ?>
-				</a>
-			  </div>
-			  <div id="<?php echo $inaAtts['group-id']; ?>" class="accordion-body collapse <?php echo (strtolower($inaAtts['open']) == 'y') ? 'in' : '';?>">
-				<div class="accordion-inner">
-					<?php echo $insContent; ?>
-				</div>
-			  </div>
-			</div>
-		<?php
-		
-		$sContent = ob_get_contents();
-		ob_end_clean();
-		
-		return $sContent;
-	}
-	
 	/**
 	 * Given the array of parameters/attributes and array of options and their defaults, sets them all up.
 	 * 
@@ -809,11 +861,11 @@ class HLT_BootstrapShortcodes {
 	 * @param $inaOptions
 	 */
 	protected function processOptions( &$inaAtts, &$inaOptions ) {
-		
+
 		$aDefaults = array(
-				'style'	=>	'',
-				'id'	=>	'',
-				'class'	=>	''
+				'style'	=>	array( '', '', 'Custom inline styling applied to this element' ),
+				'id'	=>	array( '', '', 'Custom ID added to this element' ),
+				'class'	=>	array( '', '', 'Custom class(es) added to this element' )
 		);
 		if ( empty($inaOptions) ) {
 			$inaOptions = $aDefaults;
@@ -821,7 +873,8 @@ class HLT_BootstrapShortcodes {
 			$inaOptions = array_merge( $aDefaults, $inaOptions );
 		}
 		
-		foreach ($inaOptions as $sOption => $sDefault) {
+		foreach ($inaOptions as $sOption => $aOptionData) {
+			list( $sDefault, $sDescription ) = $aOptionData;
 			$this->def( $inaAtts, $sOption, $sDefault );
 		}
 	}
@@ -829,9 +882,9 @@ class HLT_BootstrapShortcodes {
 	protected function getHelp( &$inaOptions ) {
 		
 		$aDefaults = array(
-				'style'	=>	'',
-				'id'	=>	'',
-				'class'	=>	''
+				'style'	=>	array( '', '', 'Custom inline styling applied to this element' ),
+				'id'	=>	array( '', '', 'Custom ID added to this element' ),
+				'class'	=>	array( '', '', 'Custom class(es) added to this element' )
 		);
 		if ( empty($inaOptions) ) {
 			$inaOptions = $aDefaults;
@@ -840,17 +893,48 @@ class HLT_BootstrapShortcodes {
 		}
 		
 		$sHelp = '
-		Options are as follows (default values in brackets): 
-		<ul>
+		<style>
+			#BootstrapHelpBlock ul {
+				margin-left: 0;
+			}
+			#BootstrapHelpBlock p,
+			#BootstrapHelpBlock li {
+				font-family: arial;
+				font-size: 12px !important;
+			}
+			#BootstrapHelpBlock .option_name,
+			#BootstrapHelpBlock .option_value {
+				font-family: courier;
+			}
+			#BootstrapHelpBlock .option_value {
+				background-color: white;
+				border: 1px dashed #888;
+				margin-left: 6px;
+				padding: 3px 3px;
+			}
+		</style>
+		<div class="well" id="BootstrapHelpBlock">
+			<p>Options are as follows (default values in brackets):</p> 
+			<ul>
 		';
 		
-		foreach ($inaOptions as $sOption => $sDefault) {
-			$sHelp .= '<li>'.$sOption.' ( ';
-			$sHelp .= (empty($sDefault))? 'none' : '"'.$sDefault.'"';
-			$sHelp .= ' )</li>';
+		foreach ($inaOptions as $sOption => $aOptionData) {
+			list( $sDefault, $sValues, $sDescription ) = $aOptionData;
+			$sDefault = (empty($sDefault))? 'none' : '"'.$sDefault.'"';
+			$sHelp .= '<li><span class="option_name">'.$sOption.'</span> ( '.$sDefault.' ) ';
+			if ( $sValues !== '' ) {
+				$sHelp .= '- Possible Values:';
+				$aPossibleValues = explode( '|', $sValues );
+				foreach( $aPossibleValues as $sValue ) {
+					$sHelp .= '<span class="option_value">'.$sValue.'</span>';
+				}
+				$sHelp .= '. ';
+			}
+			$sHelp .= '<em>'.$sDescription.'</em></li>';
 		}
 		$sHelp .= '
 			</ul>
+		</div>
 		';
 		return $sHelp;
 	}
