@@ -73,10 +73,10 @@ class HLT_BootstrapShortcodes {
 	public function icon( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'class'	=>	array( 'icon-star-empty', 'Simply provide the class name of the icon desired.' ),
+				'class'	=>	array( 'icon-star-empty', '', 'Simply provide the class name of the icon desired.' ),
 		);
 		
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp($aOptions);
 		}
 		
@@ -100,55 +100,44 @@ class HLT_BootstrapShortcodes {
 	 * @param $insContent
 	 */
 	public function button( $inaAtts = array(), $insContent = '' ) {
-		
+
 		$aOptions = array(
-				'style'			=>	'',
-				'id'			=>	'',
-				'class'			=>	'',
-				'link_title'	=>	'',
-				'title'			=>	'',
-				'value'			=>	'0',
-				'text'			=>	'',
-				'disabled'		=>	'N',
-				'toggle'		=>	'N',
-				'type'			=>	($sElementType == 'a')? '' : 'button',
+				'element'		=> array( 'button', '', 'Manually specify the HTML element for this button' ),
+				'class'			=> array( '', 'btn-large|btn-small|btn-mini', 'Specify additional button class styles.' ),
+				'color'			=> array( '', 'primary|info|success|warning|danger|inverse', 'Specify the button color class. Leave blank for default color.' ),
+				'link'			=> array( '', '', 'If specified, the button is a HTML anchor link' ),
+				'target'		=> array( '', '_blank|_parent|_self|_top', 'Specify the target, if link is provided. E.g. _blank .' ),
+				'title'			=> array( '', '', 'Set the link title attribute' ),
+				'value'			=> array( '0', '', 'Set the value of the button' ),
+				'text'			=> array( '', '', 'Set Button text' ),
+				'disabled'		=> array( 'n', 'y|n', 'Specify whether button is disabled.' ),
+				'toggle'		=> array( 'n', 'y|n', 'Specify whether button is a toggle button.' ),
+				'type'			=> array( 'button', '', 'Not used/relevant if "link" is provided.' ),
 		);
-		
+
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp($aOptions);
 		}
 		
-//		$this->processOptions( $inaAtts, $aOptions );
+		$this->processOptions( $inaAtts, $aOptions );
 		
-		$sElementType = 'a';
-		if ( isset( $inaAtts['element'] ) ) {
-			$sElementType = $inaAtts['element'];
-		} else {
-			if ( !isset( $inaAtts['link'] ) ) { //i.e. there's no link defined, set as button
-				$sElementType = 'button';
-			}
+		$sElementType = $inaAtts['element'];
+		if ( !empty( $inaAtts['link'] ) ) { //i.e. link is defined, force anchor tag
+			$sElementType = 'a';
+			$inaAtts['type'] = '';
 		}
 		
-		$this->def( $inaAtts, 'style' );
-		$this->def( $inaAtts, 'id' );
-		$this->def( $inaAtts, 'class' );
-		$this->def( $inaAtts, 'link_title' );
-		$this->def( $inaAtts, 'title' );
-		if (empty($inaAtts['title'])) {
+		if (empty($inaAtts['title']) && isset($inaAtts['link_title']) ) {
 			$inaAtts['title'] = $inaAtts['link_title']; // backwards compatibility - originally only "link_title"
 		}
-		$this->def( $inaAtts, 'value', '0' );
-		$this->def( $inaAtts, 'text' );
-		$this->def( $inaAtts, 'disabled', 'N' );
-		$this->def( $inaAtts, 'toggle', 'N' );
-		$this->def( $inaAtts, 'type', ($sElementType == 'a')? '' : 'button' );
 		
 		//strip empty parameters
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		$this->noEmptyElement( $inaAtts, 'title' );
 		$this->noEmptyElement( $inaAtts, 'type' );
+		$this->noEmptyElement( $inaAtts, 'target' );
 		
 		$sClassString = 'btn';
 		
@@ -166,6 +155,7 @@ class HLT_BootstrapShortcodes {
 					.$inaAtts['style']
 					.$inaAtts['id']
 					.$inaAtts['type']
+					.$inaAtts['target']
 					.' class="'.$sClassString.'"'
 		;
 
@@ -217,7 +207,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp($aOptions);
 		}
 		
@@ -251,18 +241,18 @@ class HLT_BootstrapShortcodes {
 	 * @return string
 	 */
 	public function badge( $inaAtts = array(), $insContent = '' ) {
-		
+
 		$aOptions = array(
-				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color of the badge - leave blank for default' )
+				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color class of the badge - leave blank for default' )
 		);
-		
+
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
-		
+
 		$this->processOptions( $inaAtts, $aOptions );
-		
+
 		//filters out empty elements
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
@@ -293,11 +283,11 @@ class HLT_BootstrapShortcodes {
 	public function label( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color of the label - leave blank for default.' )
+				'color'		=>	array( '', 'info|success|warning|important|inverse', 'Specify color class of the label - leave blank for default.' )
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -334,7 +324,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -367,13 +357,13 @@ class HLT_BootstrapShortcodes {
 	public function alert( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'class'		=>	array( '', 'alert-block', 'Add your desired classes or alert-block to create larger alert' ),
-				'color'		=>	array( '', 'info|success|error', 'Specify color of the alert box - leave blank for default' ),
+				'class'		=>	array( '', 'alert-block', 'Add your desired classes, or alert-block to create larger alert' ),
+				'color'		=>	array( '', 'info|success|error', 'Specify color class of the alert box - leave blank for default' ),
 				'heading'	=>	array( '', '', 'Optional heading text for the alert box' ),
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -418,12 +408,13 @@ class HLT_BootstrapShortcodes {
 	public function tooltip( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
+				'help_text'	=>	'Remember to enable Bootstrap Javascript in the options for this to work.',
 				'placement'	=>	array( 'top',	'top|bottom|left|right', 'Location of the tooltip.' ),
 				'title'		=>	array( '',		'', 'Specify content text of the tooltip' ),
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -462,13 +453,14 @@ class HLT_BootstrapShortcodes {
 	public function popover( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
+				'help_text'	=>	'Remember to enable Bootstrap Javascript in the options for this to work.',
 				'placement'	=>	array( 'right',	'top|bottom|left|right', 'Location of the popover.' ),
 				'title'		=>	array( '',		'', 'The Title text of the popover' ),
 				'content'	=>	array( '',		'',	'The main content text of the popover' )
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -494,14 +486,14 @@ class HLT_BootstrapShortcodes {
 	public function progress_bar( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'color'		=>	array( '',		'info|success|warning|danger', 'Change bar color.' ),
+				'color'		=>	array( '',		'info|success|warning|danger', 'Change bar color class.' ),
 				'width'		=>	array( '50%',	'', 'Specify width of the progress bar, e.g. 10px, 70%' ),
 				'striped'	=>	array( 'n',		'y|n', 'Toggles striped progress bar effect.n' ),
 				'active'	=>	array( 'n',		'y|n', 'Toggle active progress bar effect.' ),
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -515,9 +507,6 @@ class HLT_BootstrapShortcodes {
 		$this->noEmptyElement( $inaAtts, 'style' );
 		$this->noEmptyElement( $inaAtts, 'id' );
 		
-		if ( !empty($inaAtts['color']) && !preg_match( '/^progress-/', $inaAtts['color'] ) ) {
-			$inaAtts['class'] .= ' progress-'.$inaAtts['color'];
-		}
 		if ( strtolower($inaAtts['striped']) == 'y' ) {
 			$inaAtts['class'] .= ' progress-striped';
 			if ( strtolower($inaAtts['active']) == 'y' ) {
@@ -558,7 +547,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -597,7 +586,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -627,7 +616,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -664,7 +653,7 @@ class HLT_BootstrapShortcodes {
 		);
 		
 		//Print Help if asked for and return
-		if ( isset($inaAtts['help']) && strtolower($inaAtts['help']) == 'y' ) {
+		if ( isset($inaAtts['help']) ) {
 			return $this->getHelp( $aOptions );
 		}
 		
@@ -877,11 +866,16 @@ class HLT_BootstrapShortcodes {
 			list( $sDefault, $sDescription ) = $aOptionData;
 			$this->def( $inaAtts, $sOption, $sDefault );
 		}
+		
+		if ( !empty( $inaAtts['color'] ) ) {
+			$inaAtts['class'] = $inaAtts['color'] .' '. $inaAtts['class'];
+		}
 	}
 	
 	protected function getHelp( &$inaOptions ) {
 		
 		$aDefaults = array(
+				'help_text'	=>	'',
 				'style'	=>	array( '', '', 'Custom inline styling applied to this element' ),
 				'id'	=>	array( '', '', 'Custom ID added to this element' ),
 				'class'	=>	array( '', '', 'Custom class(es) added to this element' )
@@ -914,11 +908,18 @@ class HLT_BootstrapShortcodes {
 			}
 		</style>
 		<div class="well" id="BootstrapHelpBlock">
-			<p>Options are as follows (default values in brackets):</p> 
+		';
+		if ( !empty($inaOptions['help_text'] ) ) {
+			$sHelp .= '<p>'.$inaOptions['help_text'].'</p>';
+		}
+		$sHelp .= '<p>Options are as follows (default values in brackets):</p> 
 			<ul>
 		';
 		
 		foreach ($inaOptions as $sOption => $aOptionData) {
+			if ($sOption == 'help_text') {
+				continue;
+			}
 			list( $sDefault, $sValues, $sDescription ) = $aOptionData;
 			$sDefault = (empty($sDefault))? 'none' : '"'.$sDefault.'"';
 			$sHelp .= '<li><span class="option_name">'.$sOption.'</span> ( '.$sDefault.' ) ';

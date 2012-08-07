@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4.1
-Stable tag: 2.0.4.7
+Stable tag: 2.0.4.8
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -93,6 +93,11 @@ Select the CSS file as desired.
 I've put a full demo page of all the fully support shortcodes in this plugin:
 [Complete WordPress Twitter Bootstrap Shortcodes demo page](http://bit.ly/OFYCh8 "Complete WordPress Twitter Bootstrap Shortcodes demo page")
 
+= What are all the parameters for all the shortcodes? =
+
+For all the shortcodes simply type help="y" and preview your post - it will print a box for you showing all parameters, their default values
+and an explanation where appropriate.
+
 = The WordPress Shortcodes aren't getting processed properly - why? =
 
 You need to enable the shortcodes feature in the options page. This is a performance optimization so that people who don't need
@@ -135,10 +140,10 @@ Otherwise, consult your caching program's documentation.
 
 = Do you make any other plugins? =
 
+We also created the [Worpit Multiple WordPress Site Manager](http://worpit.com/?src=wtb_readme) for people with more than one WordPress site to manage.
+
 Yes, we created [Custom Content By Country](http://wordpress.org/extend/plugins/custom-content-by-country/ "Custom Content By Country WordPress Plugin")
 plugin that lets you display content to users in specific regions.
-
-We also created the [Worpit WordPress Site Manager](http://worpit.com/?src=wtb_readme) for people with more than one WordPress site to manage.
 
 = Is the CSS "minified"? =
 
@@ -180,6 +185,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 6. As of version 2.0.2.1, we've included a news feed on the Dashboard. If you don't want it displayed, select this to hide it.
 
 == Changelog ==
+
+= 2.0.4.8 =
+* ADDED: Shortcode [TBS_PROGRESS_BAR] for Twitter Bootstrap Progress Bars (http://twitter.github.com/bootstrap/components.html#progress)
+* ADDED: MUCH more verbose help on ALL shortcodes. Simply type: help="y" and it will print the help box on your post.
+* ADDED: 'target' parameter to the TBS_BUTTON shortcode so you can open in new window if you want. i.e. target="_blank"
 
 = 2.0.4.7 =
 * ADDED: Shortcode for Twitter Bootstrap accordions - collapsable blocks (http://twitter.github.com/bootstrap/javascript.html#collapse)
@@ -376,6 +386,10 @@ is temporary until we fix.
 * Twitter Bootstrap version 1.2.0
 
 == Upgrade Notice ==
+
+= 2.0.4.8 =
+* New Shortcode!
+* New Shortcode Help.
 
 = 2.0.4.6 =
 * FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
