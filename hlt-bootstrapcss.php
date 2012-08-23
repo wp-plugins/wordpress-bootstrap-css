@@ -582,7 +582,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 					) {
 				$sCssLink = $aLocalCss['twitter_less'];
 			}
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'">';
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'" />';
 		}
 		
 		//Add the Responsive CSS link
@@ -594,14 +594,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
 				$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
 			}
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sResponsiveCssLink.'">';
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sResponsiveCssLink.'" />';
 		}
 
 		//Custom/Reset CSS
 		if ( $fCustomCss ) {
 			$sCustomCssUrl = self::getOption( 'customcss_url' );
 			if ( !empty($sCustomCssUrl) ) {
-				$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'">';
+				$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'" />';
 			}
 		}
 		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Worpit. -->";
