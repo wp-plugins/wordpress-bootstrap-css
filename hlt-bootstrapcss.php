@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.0.4.8
+Version: 2.1.0.0
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -49,13 +49,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 	
-	const TwitterVersion			= '2.0.4';
+	const TwitterVersion			= '2.1.0';
 	const TwitterVersionLegacy		= '1.4.0';
-	const YUI3Version				= '3.5.1';
+	const NormalizeVersion			= '2.0.1';
+	const YUI3Version				= '3.6.0';
 	
 	const GoogleCdnJqueryVersion	= '1.7.2';
 
-	static public $VERSION			= '2.0.4.8'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.1.0.0'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -563,8 +564,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'twitter_responsive'		=> self::$BOOSTRAP_URL.'css/bootstrap-responsive'.$sMinifiedCssOption,
 			'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
 			'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
-			'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-'.self::YUI3Version.'.min.css' ),
-			'normalize'					=> $this->getCssURL( 'normalize.css' ),
+			'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version,
+			'normalize'					=> $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion,
 		);
 		
 		$sCssLink = $aLocalCss[$sBoostrapOption];
