@@ -103,7 +103,7 @@ class HLT_BootstrapShortcodes {
 
 		$aOptions = array(
 				'element'		=> array( 'button', '', 'Manually specify the HTML element for this button' ),
-				'class'			=> array( '', 'btn-large|btn-small|btn-mini', 'Specify additional button class styles.' ),
+				'class'			=> array( '', 'btn-large|btn-small|btn-mini|btn-block', 'Specify additional button class styles.' ),
 				'color'			=> array( '', 'primary|info|success|warning|danger|inverse', 'Specify the button color class. Leave blank for default color.' ),
 				'link'			=> array( '', '', 'If specified, the button is a HTML anchor link' ),
 				'target'		=> array( '', '_blank|_parent|_self|_top', 'Specify the target, if link is provided. E.g. _blank .' ),

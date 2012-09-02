@@ -137,7 +137,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				'section_title' => 'Miscellaneous Plugin Options',
 				'section_options' => array(
 					array( 'inc_bootstrap_css_wpadmin',	'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
-					array( 'hide_dashboard_rss_feed',	'',		'N', 		'checkbox',		'Hide HLT News Feed', 'Hide the Host Like Toast news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
+					array( 'hide_dashboard_rss_feed',	'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the Worpit Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
 					array( 'delete_on_deactivate',		'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
 					array( 'prettify',					'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
 											Google Prettify Javascript library for use with these code blocks.' ),

@@ -190,6 +190,9 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 
+= 2.1.0.1 =
+* FIX: RSS Feed Widget urls
+
 = 2.1.0.0 =
 * UPDATED: Twitter Bootstrap library to latest release of 2.1.0
 * UPDATED: Normalize CSS upgraded to version 2.0.1

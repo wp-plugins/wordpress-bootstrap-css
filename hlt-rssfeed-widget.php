@@ -29,7 +29,7 @@ class HLT_DashboardRssWidget {
 		$this->m_aFeeds = array();
 		
 		$this->addFeed( 'hlt', 'http://www.hostliketoast.com/feed/' );
-		$this->addFeed( 'worpit', 'http://worpit.com/feed/' );
+		$this->addFeed( 'worpit', 'http://feeds.feedburner.com/worpit/' );
 		
 		add_action( 'wp_dashboard_setup', array( $this, 'addNewsWidget' ) );
 	}
@@ -43,16 +43,21 @@ class HLT_DashboardRssWidget {
 	}
 
 	public function addNewsWidget() {
-		add_meta_box( 'hlt_news_widget', __( 'The latest from the Worpit Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
+		add_meta_box( 'hlt_news_widget', __( 'The Worpit Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
 	}
 
 	public function renderNewsWidget() {
+		
+		$aItems = array();
 		
 		$oRss = fetch_feed( $this->m_aFeeds['hlt'] );
 		
 		if ( !is_wp_error( $oRss ) ) {
 			$nMaxItems = $oRss->get_item_quantity( 3 );
 			$aItems = $oRss->get_items( 0, $nMaxItems );
+		} else {
+			
+				echo $oRss->get_error_message();
 		}
 		
 		$oRss = fetch_feed( $this->m_aFeeds['worpit'] );
