@@ -192,6 +192,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 
 = 2.1.0.1 =
 * FIX: RSS Feed Widget urls
+* ADDED: btn-block to the shortcode help for buttons.
 
 = 2.1.0.0 =
 * UPDATED: Twitter Bootstrap library to latest release of 2.1.0

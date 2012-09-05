@@ -55,9 +55,6 @@ class HLT_DashboardRssWidget {
 		if ( !is_wp_error( $oRss ) ) {
 			$nMaxItems = $oRss->get_item_quantity( 3 );
 			$aItems = $oRss->get_items( 0, $nMaxItems );
-		} else {
-			
-				echo $oRss->get_error_message();
 		}
 		
 		$oRss = fetch_feed( $this->m_aFeeds['worpit'] );
