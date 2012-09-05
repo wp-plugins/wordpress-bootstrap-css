@@ -411,6 +411,7 @@ class HLT_BootstrapShortcodes {
 				'help_text'	=>	'Remember to enable Bootstrap Javascript in the options for this to work.',
 				'placement'	=>	array( 'top',	'top|bottom|left|right', 'Location of the tooltip.' ),
 				'title'		=>	array( '',		'', 'Specify content text of the tooltip' ),
+				'trigger'	=>	array( 'hover', 'click|hover|focus|manual', 'How you want your Tooltip activated. E.g. when a user clicks or hovers on the item')
 		);
 		
 		//Print Help if asked for and return
@@ -436,6 +437,7 @@ class HLT_BootstrapShortcodes {
 		if ( $inaAtts['title'] != '' ) {
 			$sReturn = '<span'
 					.' rel="tooltip" data-placement="'.$inaAtts['placement'].'" data-original-title="'.$inaAtts['title'].'"'
+					.' data-trigger="'.$inaAtts['trigger'].'"'
 					.$inaAtts['style']
 					.$inaAtts['id']
 					.$inaAtts['class']
@@ -456,7 +458,8 @@ class HLT_BootstrapShortcodes {
 				'help_text'	=>	'Remember to enable Bootstrap Javascript in the options for this to work.',
 				'placement'	=>	array( 'right',	'top|bottom|left|right', 'Location of the popover.' ),
 				'title'		=>	array( '',		'', 'The Title text of the popover' ),
-				'content'	=>	array( '',		'',	'The main content text of the popover' )
+				'content'	=>	array( '',		'',	'The main content text of the popover' ),
+				'trigger'	=>	array( 'hover', 'click|hover|focus|manual', 'How you want your Popover activated. E.g. when a user clicks or hovers on the item')
 		);
 		
 		//Print Help if asked for and return
@@ -474,6 +477,7 @@ class HLT_BootstrapShortcodes {
 		$sReturn = '<span'
 					.' rel="popover" data-placement="'.$inaAtts['placement'].'" title="'.$inaAtts['title'].'"'
 					.' data-content="'.$inaAtts['content'].'"'
+					.' data-trigger="'.$inaAtts['trigger'].'"'
 					.$inaAtts['style']
 					.$inaAtts['id']
 					.$inaAtts['class'].'>'.$this->doShortcode( $insContent ).'</span>';
@@ -948,7 +952,7 @@ class HLT_BootstrapShortcodes {
 			jQuery( document ).ready(
 				function () {
 					jQuery( '*[rel=popover]')
-						.popover(); 
+						.popover();
 					
 					jQuery( '*[data-popover=popover]')
 						.popover();

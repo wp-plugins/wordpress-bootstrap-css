@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.4.1
-Stable tag: 2.1.0.0
+Stable tag: 2.1.1.0
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -190,9 +190,12 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 
-= 2.1.0.1 =
-* FIX: RSS Feed Widget urls
+= 2.1.1.0 =
+* UPDATED: Twitter Bootstrap library to latest release v2.1.1
+* ADDED: option to Popover to allow you to set the activation 'trigger' and defaulted it to pre-Bootstrap 2.1.0 behaviour - i.e. on hover!
+* ADDED: option to Tooltip to allow you to set the activation 'trigger' and defaulted it to pre-Bootstrap 2.1.0 behaviour - i.e. on hover!
 * ADDED: btn-block to the shortcode help for buttons.
+* FIX: RSS Feed Widget urls
 
 = 2.1.0.0 =
 * UPDATED: Twitter Bootstrap library to latest release of 2.1.0
