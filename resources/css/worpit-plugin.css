@@ -4,6 +4,14 @@
 	
 .bootstrap-wpadmin {
 }
+.bootstrap-wpadmin h2 {
+	line-height: 35px;
+	margin: 0;
+}
+.bootstrap-wpadmin h3 {
+	font-size: 20px;
+	line-height: 10px;
+}
 .bootstrap-wpadmin .row {
 	margin-left: 0;
 }

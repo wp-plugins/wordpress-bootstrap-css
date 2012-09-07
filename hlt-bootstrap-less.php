@@ -22,6 +22,8 @@
  *
  */
 
+if ( !class_exists('HLT_BootstrapLess') ):
+
 class HLT_BootstrapLess {
 	
 	const LessOptionsPrefix = 'less_';
@@ -330,3 +332,5 @@ class HLT_BootstrapLess {
 	}//compileLess
 	
 }//HLT_BootstrapLess
+
+endif;

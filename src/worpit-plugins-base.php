@@ -1,5 +1,7 @@
 <?php
 
+if ( !class_exists('HLT_Plugin') ):
+
 class HLT_Plugin {
 
 	static public $VERSION;
@@ -464,3 +466,6 @@ class HLT_Plugin {
 	}
 
 }//CLASS Worpit Plugins Base
+
+endif;
+

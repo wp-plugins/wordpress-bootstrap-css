@@ -21,6 +21,8 @@
  *
  */
 
+if ( !class_exists('HLT_DashboardRssWidget') ):
+
 class HLT_DashboardRssWidget {
 
 	protected $m_aFeeds;
@@ -110,3 +112,5 @@ class HLT_DashboardRssWidget {
 		echo $sRssWidget;
 	}
 }//class HLT_DashboardRssWidget
+
+endif;

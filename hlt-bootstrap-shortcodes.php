@@ -21,6 +21,8 @@
  *
  */
 
+if ( !class_exists('HLT_BootstrapShortcodes') ):
+
 class HLT_BootstrapShortcodes {
 	
 	protected $sTwitterBootstrapVersion;
@@ -1060,3 +1062,5 @@ class HLT_BootstrapShortcodes {
 	}
 	
 }//class HLT_BootstrapShortcodes
+
+endif;
