@@ -190,6 +190,12 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 
+= 2.1.1.2 =
+
+* ADDED: New shortcode: TBS_TEXT
+* ADDED: New shortcode: TBS_ABBR
+* ADDED: Option to set TBS_ICON to the white version of the icon using field white='y'
+
 = 2.1.1.1 =
 
 * Added a guard around class declarations to prevents fatal errors if you have the plugin installed twice(?).

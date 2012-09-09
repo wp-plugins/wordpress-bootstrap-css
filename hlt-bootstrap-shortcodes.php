@@ -64,6 +64,67 @@ class HLT_BootstrapShortcodes {
 		 * remove_filter( 'comment_text', 'wpautop' );
 		 */
 	}
+	
+	public function abbr( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+				'title'	=>	array( '', '', 'This is the text that appears when you hover.' ),
+		);
+		
+		if ( isset($inaAtts['help']) ) {
+			return $this->getHelp($aOptions);
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		//strip empty parameters
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'class' );
+		
+		$sReturn = '<abbr title="'.$inaAtts['title'].'" '
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.$inaAtts['class']
+					.'>'.$insContent.'</abbr>';
+		
+		return $sReturn;
+	}
+	
+	public function text( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+				'color'		=>	array( '', 'muted|lead|info|success|warning|error', 'Specify color class the text. If you have CSS styles defined they will probably override this.' )
+		);
+		
+		if ( isset($inaAtts['help']) ) {
+			return $this->getHelp($aOptions);
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		//prefix the first class with "text-" to ensure correct class name for Twitter
+		if ( $inaAtts['color'] != 'muted' ) {
+			if ( !empty($inaAtts['color']) && !preg_match( '/^text-/', $inaAtts['color'] ) ) {
+				$inaAtts['color'] = 'text-'.$inaAtts['color'];
+			}
+		}
+
+		$inaAtts['color'] = 
+				
+		$sReturn = '<p class="'.$inaAtts['color'].'" '
+					.$inaAtts['style']
+					.$inaAtts['id']
+					.'>'.$insContent.'</p>';
+		
+		return $sReturn;
+		
+		
+	}
+	
 	/**
 	 * Prints the necessary HTML for Twitter Bootstrap Icons.
 	 * 
@@ -76,6 +137,7 @@ class HLT_BootstrapShortcodes {
 		
 		$aOptions = array(
 				'class'	=>	array( 'icon-star-empty', '', 'Simply provide the class name of the icon desired.' ),
+				'white'	=>	array( 'n', 'y|n', 'Set the icon to white.' ),
 		);
 		
 		if ( isset($inaAtts['help']) ) {
@@ -87,6 +149,10 @@ class HLT_BootstrapShortcodes {
 		//strip empty parameters
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
+		
+		if ( $inaAtts['white'] == 'y' ) {
+			$inaAtts['class'] .= ' icon-white';
+		}
 		
 		$sReturn = '<i class="'.$inaAtts['class'].'"'.$inaAtts['style'].$inaAtts['id'].'></i>';
 		

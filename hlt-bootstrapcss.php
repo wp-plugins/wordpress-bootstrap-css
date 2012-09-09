@@ -58,7 +58,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const GoogleCdnJqueryVersion	= '1.7.2';
 
-	static public $VERSION			= '2.1.1.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.1.1.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
