@@ -3,12 +3,15 @@ Contributors: dlgoodchild, paultgoodchild
 Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
-Tested up to: 3.4.1
+Tested up to: 3.4.2
 Stable tag: 2.1.1.1
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
 == Description ==
+
+** Warning: IF you're dependent on the LESS compiler, do not upgrade yet. There is a problem with Bootstrap less code in their latest release
+This is not a problem of the plugin. This will be fixed in Twitter Bootstrap version 2.1.2 (due out soon) ** 
 
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
@@ -189,12 +192,19 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
+* Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
 
-= 2.1.1.2 =
+= BETA (download and use at your own risk) =
 
-* ADDED: New shortcode: TBS_TEXT
-* ADDED: New shortcode: TBS_ABBR
-* ADDED: Option to set TBS_ICON to the white version of the icon using field white='y'
+(Download Here)["http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip"]
+
+* ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
+* ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
+* ADDED: Option to set TBS_ICON to the white version of the icon using parameter: white="y"
+* UPDATED: LESS PHP Compiler to latest release 0.3.8
+* UPDATED: Using new LESS PHP compiler to write CSS files.
+* UPDATED: Using new LESS PHP compiler to create minified CSS files.
+* CHANGED: Using plugin_url() instead of PLUGIN_URL because it seems SSL is ignored with the latter(?)
 
 = 2.1.1.1 =
 
@@ -416,179 +426,3 @@ is temporary until we fix.
 = 2.1.1.1 =
 
 * Added a guard around class declarations to prevents fatal errors if you have the plugin installed twice(?).
-
-= 2.1.0.0 =
-* UPDATED: Twitter Bootstrap library to latest release of 2.1.0
-
-= 2.0.4.8 =
-* New Shortcode!
-* New Shortcode Help.
-
-= 2.0.4.6 =
-* FIXED: (again) Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
-* UPDATED: Normalize.css to latest version (2012-07-07) at time of release
-* ADDED: Shortcode TBS_SPAN - this is just an alias for TBS_COLUMN added previously.
-* ADDED: offset parameter to the TBS_SPAN (and TBS_COLUMN) to reflect offset option in Twitter Bootstrap.
-* ADDED: Responsive CSS is automatically recompiled when CSS is recompiled (regardless of whether responsive is enabled or not)
-
-= 2.0.4.5 = 
-* ADDED: NONCE to form submissions to improve the security of the plugin.
-* ADDED: A new compile button - compile CSS from Original or customized Variable.less an option (http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-make-compile-variablesless-from-original-an-option)
-* FIXED: Fatal error reported- http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-cant-activate-the-plugin-because-of-fatal-error
-
-= 2.0.4.4 =
-
-* FIXED: Further attempt to fix string escape issues (thanks Troy!).
-* FIXED: Bug with Grid Columns field being appended with 'px' in LESS compiler.
-* UPDATED: LESS PHP compiler to latest release (v0.3.5)
-
-= 2.0.4.3 =
-
-* FIXED: An attempt to fix problems some people have with the LESS compiler and escaping double-quoted fonts.
-
-= 2.0.4.2 =
-
-* FIXED: Wasn't properly linking to Google Prettify CSS and JS files when the option was enabled.
-* UPDATED: Uses serialized data for the LESS CSS plugin options - greatly reducing database calls on the admin section and database usage.
-* UPDATED: Plugin now uses Worpit's standard plugin structure for dynamically creating plugin options pages. The whole plugin is more stable and more reliable.
-* UPDATED: Now flushes W3 Total Cache (if installed) when you update your LESS CSS options also.
-* ADDED: Worpit feed to the news feed.
-
-= 2.0.4.1 =
-
-* FIXED: Reported Bug (thanks Claudio!) with Responsive CSS includes - there was a typo in the code and the CSS wasn't linked to correctly.
-
-= 2.0.4 =
-* UPDATED: Twitter Bootstrap version 2.0.4
-* ADDED: Option - to replace WordPress JQuery library with the latest (at the time of plugin release) as served from Google CDN
-* IMPROVED much of the plugin code.
-* IMPROVED variable.less integrity. Now always uses the original copy for LESS compilation in case it becomes corrupted.
-* IMPROVED Upgrade handling in terms of LESS compiled CSS. Now automatically recompiles CSS upon upgrade where applicable.
-* IMPROVED [TBS_ROW] shortcode to allow fluid rows/containers and also to allow option of creating a container or not. Default to NOT creating container.
-* FIXED: A few reported bugs.
-
-= 2.0.3 =
-* ADDED: LESS Compiler for some of the most common Bootstrap style options! ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
-* ADDED: Option - toggle use of minimized or non-minized Bootstrap CSS
-* ADDED: Option - toggle delete all plugin settings upon plugin deactivation
-* ADDED: Option - enable LESS compiler and include less-compiled CSS
-* ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
-* ADDED: Yahoo YUI! reset.css v3.4.1
-* UPDATED: Plugin upgrade handling is much improved
-* UPDATED: Normalize CSS updated to the latest version
-* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy") !
-* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries !
-
-= 2.0.2.3 =
-* ADDED: LESS Compiler for some of the most common Bootstrap style options ( [thanks to LESSCPHP](http://leafo.net/lessphp/) )
-* ADDED: Option - use minimized or non-minized Bootstrap CSS
-* ADDED: Option - delete all plugin settings upon deactivation
-* ADDED: Option - enable LESS compiler and include less-compiled CSS
-* ADDED: Now enqueues native WordPress JQuery Javascript when Bootstrap Javascript is enabled.
-* ADDED: Yahoo YUI! reset to version v3.4.1
-* UPDATED: Plugin upgrade handling is much improved
-* UPDATED: Normalize CSS to the latest version
-* REMOVED: Support Twitter Bootstrap v1.4.0 ("legacy")
-* REMOVED: Support for Individual Twitter Bootstrap Javascript Libraries.
-
-= 2.0.2.2 =
-Skipped.
-
-= 2.0.2.1 =
-* ADDED: *Ability to include Twitter Bootstrap CSS in WP Admin (along with some CSS fixes to accomodate)*
-* ADDED: WordPress Admin notices for upgrades and success settings operations.
-* ADDED: New Shortcode: TBS_BADGE
-* ADDED: Host Like Toast RSS News feed on Dashboard + option to hide (hlt-rssfeed-widget.php)
-* UPDATED: Settings page now uses a new Twitter Bootstrap layout/design
-* UPDATED: The screenshots for the docs
-* STARTED: The process of Internationalisation (I18n) for the plugin. Anyone who wants to help out, please get in touch.
-
-= 2.0.2 =
-* UPDATED: Updated Twitter Bootstrap library to v2.0.2
-* ADDED: Ability to include Responsive CSS stylesheet that comes with Twitter Bootstrap version 2.0+
-* ADDED: Reorg'd some of the interface to be a little more logical
-* FIXED: serious oversight with including individual Javascript libraries.
-
-= 2.0.1c =
-* ADDED: Ability to add the "disabled" option to Twitter Bootstrap button components.
-* FIXED: a couple of bugs in the shortcodes
-
-= 2.0.1b =
-* ADDED: New shortcode [TBS_ICON](http://bit.ly/zmGUeD "Twitter Bootstrap Glyph Icon WordPress Shortcode") to allow you to easily make use of [Twitter Bootstrap Glyphicons](http://bit.ly/AxCdQj)
-* ADDED: New shortcode [TBS_BUTTONGROUP] to allow you to easily make use of [Twitter Bootstrap Button Groups](http://bit.ly/z13ICu)
-* CHANGED: Rewrote [TBS_BUTTON]. Now you can add "toggle" option, and specify the exact html element type, eg [a], [button], [input]
-* CHANGED: Rewrote [TBS_ALERT]. Now you can add the Alert Heading using the parameter: heading="my lovely heading"
-* With [TBS_ALERT], parameter "type" is no longer supported - use parameter "class" instead
-* CHANGED: Added inline Javascript for activating Popover and Tooltips - nice page-loading optimization and also only execute JS code necessary
-* Throughout, attempted to retain support for Twitter Bootstrap 1.4.0. But no guarantees - you should upgrade and convert asap.
-* TODO: necessary javascript snippet to enable button toggling - couldn't get it working.
-
-= 2.0.1 =
-* Twitter Bootstrap library upgraded to v2.0.1
-
-= 2.0.0 =
-* Added the options for Twitter Bootstrap Library 2.0.0
-* Maintained compatibility with Twitter Bootstrap Library 1.4.0
-* Removed option to HotLink to resources
-* Added more Javascript libraries for 1.4.0 and 2.0.0
-* Fixed several bugs.
-* Keeping plugin version numbering in-line with Twitter Bootstrap versioning.
-* References to "Twipsy" renamed to "Tooltips" to be inline with version 2.0.0
-* Most SHORTCODES work between both versions. [Latest Notes](http://bit.ly/wLkYjf "Host Like Toast WordPress Twitter Bootstrap plugin release notes v2.0")
-
-= 0.9.1 =
-* Restructured and centralized CSS on admin side.
-
-= 0.9 =
-* Improved compatibility with WordPress 3.3 and some bug fixes.
-
-= 0.8.6 =
-* [TBS_TWIPSY] and [TBS_POPOVER] are by default <SPAN> tags (There may be an option at a later date to specify the element)
-
-= 0.8.5 =
-* Made some functional improvements to [TBS_TWIPSY]
-* Fixed [TBS_POPOVER].
-
-= 0.8.4 =
-* Fixed a quoting bug in [TBS_BLOCK]
-* Added [TBS_ALERT] shortcode
-
-= 0.8.3 =
-* Added option to inline "style" labels, blocks, and code.
-* Added [TBS_BLOCKQUOTE] shortcode with parameter "source" for citing source.
-
-= 0.8.2 =
-* Added option to "style" buttons inline.
-* Some bug fixes with shortcodes.
-
-= 0.8 =
-* This is a huge release. We have implemented some of the major Twitter Bootstrap feature through [Wordpress Shortcodes](http://www.hostliketoast.com/2011/12/how-extend-wordpress-powerful-shortcodes/ "What are WordPress Shortcodes?").
-
-= 0.7 =
-* Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
-
-= 0.6 =
-* Updated to account for the latest version of Twitter Bootsrap version 1.4.0
-
-= 0.5 =
-* Re-added the attempt utilize W3 Total Cache "flush all" if the plugin is active (compatible with W3 Total Cache v0.9.2.4)
-
-= 0.4 =
-* Added the ability to include your own custom CSS file using a URL for the source. This custom CSS
-file will be linked immediately after the bootstrap CSS (if you add one).
-
-= 0.3 =
-* Added support for 'Bootstrap, from Twitter' Javascript libraries. You can now select which of the invididual JS libraries to include.
-
-= 0.2 =
-* Updated Twitter Bootstrap CSS link to version 1.3.0.
-
-= 0.1.2 =
-* Removed support for automatic W3 Total Cache flushing as the author of the other plugin has altered his code. This
-is temporary until we fix.
-
-= 0.1.1 =
-* bugfix for 'None' option. Update recommended.
-
-= 0.1 =
-* First public release

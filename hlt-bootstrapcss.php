@@ -89,16 +89,17 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.DS.self::$PLUGIN_PATH.DS;
-		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
+//		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
+		self::$PLUGIN_URL	= plugins_url( '/', __FILE__ ) ; //this seems to use SSL more reliably(?)
 		self::$OPTION_PREFIX = self::BaseOptionPrefix . self::OptionPrefix;
 		self::$OPTION_PREFIX = self::OptionPrefix;
 
 		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS;
-		self::$BOOSTRAP_URL = self::$PLUGIN_URL.'resources/bootstrap-'.self::TwitterVersion.'/';
-		
+		self::$BOOSTRAP_URL = plugins_url( 'resources/bootstrap-'.self::TwitterVersion.'/', __FILE__ ) ;
+
 		$this->m_sParentMenuIdSuffix = 'wtb';
 		
-	}
+	}//__construct
 	
 	protected function initPluginOptions() {
 		

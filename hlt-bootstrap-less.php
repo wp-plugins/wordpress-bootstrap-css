@@ -296,6 +296,11 @@ class HLT_BootstrapLess {
 		
 	}//compileAllBootstrapLess
 	
+	/**
+	 * 
+	 * @param $insBootstrapDir
+	 * @param $insCompileTarget - currently only either 'bootstrap' or 'responsive'
+	 */
 	public function compileLess( $insBootstrapDir, $insCompileTarget = 'bootstrap' ) {
 		
 		if ( empty($insBootstrapDir) ) {
@@ -306,10 +311,50 @@ class HLT_BootstrapLess {
 		
 		//parse LESS
 		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
-		$oLessCompiler = new lessc( $sFilePathToLess );
-	//	$oLessCompiler->setFormatter("compressed");
+		
+		// New method
+		$oLessCompiler = new lessc();
+		
+		// Original method
+		//$oLessCompiler = new lessc( $sFilePathToLess );
+		
+		
 		$sCompiledCss = '';
+		
 		try {
+			/**
+			 * New Method (to use new lessphp interface)
+			 * 
+			 * 1. Determine target filename(s)
+			 * 2. Compile + write to disk
+			 * 3. Compile + compress + write to disk
+			 */
+			
+			if ($insCompileTarget == 'responsive') {
+				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap-responsive.less';
+			} else if ($insCompileTarget == 'bootstrap') {
+				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+			} else { //Are there others?
+				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+			}
+			
+			// Write normal CSS
+			$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.css' );
+			
+			// Write compress CSS
+			$oLessCompiler->setFormatter("compressed");
+			$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.min.css' );
+			
+			/**
+			 * Original method
+			 * 
+			 * 1. Compile
+			 * 2. Determine target filename(s)
+			 * 3. Write to disk
+			 * 4. Compress/Minify
+			 * 5. Write to disk
+			 */
+			/*
 			$sCompiledCss = $oLessCompiler->parse();
 			
 			if ($insCompileTarget == 'responsive') {
@@ -325,6 +370,7 @@ class HLT_BootstrapLess {
 			//Basic Minify
 			$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
 			file_put_contents( $sLessFile.'.min.css', $sCompiledCss );
+			*/
 		}
 		catch ( Exception $oE ) {
 			echo "lessphp fatal error: ".$oE->getMessage();
