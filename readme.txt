@@ -196,7 +196,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 
 = BETA (download and use at your own risk) =
 
-(Download Here)["http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip"]
+[Download Here]("http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip")
 
 * ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
