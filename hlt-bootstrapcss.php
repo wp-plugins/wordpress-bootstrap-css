@@ -30,12 +30,11 @@ Author URI: http://worpit.com/
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 require_once( dirname(__FILE__).'/src/worpit-plugins-base.php' );
 include_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
 include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
 include_once( dirname(__FILE__).'/hlt-rssfeed-widget.php' );
-
-define( 'DS', DIRECTORY_SEPARATOR );
 
 function _hlt_e( $insStr ) {
 	_e( $insStr, 'hlt-wordpress-bootstrap-css' );
@@ -88,13 +87,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
-		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.DS.self::$PLUGIN_PATH.DS;
+		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.WORPIT_DS.self::$PLUGIN_PATH.WORPIT_DS;
 //		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
 		self::$PLUGIN_URL	= plugins_url( '/', __FILE__ ) ; //this seems to use SSL more reliably(?)
 		self::$OPTION_PREFIX = self::BaseOptionPrefix . self::OptionPrefix;
 		self::$OPTION_PREFIX = self::OptionPrefix;
 
-		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.DS.'bootstrap-'.self::TwitterVersion.DS;
+		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.WORPIT_DS.'bootstrap-'.self::TwitterVersion.WORPIT_DS;
 		self::$BOOSTRAP_URL = plugins_url( 'resources/bootstrap-'.self::TwitterVersion.'/', __FILE__ ) ;
 
 		$this->m_sParentMenuIdSuffix = 'wtb';
@@ -405,7 +404,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'compiler_enabled'			=> self::getOption( 'use_compiled_css' ) === 'Y',
 
 			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
-			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' ),
+			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' ),
 			'page_link_options'			=> $this->getSubmenuId('bootstrap-css'),
 			
 			'nonce_field'				=> $this->getSubmenuId('bootstrap-css').'_wtbless',
@@ -582,7 +581,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			//link to the Twitter LESS-compiled CSS (only if the file exists)
 			if ( $sBoostrapOption == 'twitter'
 					&& self::getOption( 'use_compiled_css' ) == 'Y'
-					&& file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap.less'.$sMinifiedCssOption )
+					&& file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap.less'.$sMinifiedCssOption )
 					) {
 				$sCssLink = $aLocalCss['twitter_less'];
 			}
@@ -595,7 +594,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			$sResponsiveCssLink = $aLocalCss['twitter_responsive'];
 			
 			//link to the Twitter LESS-compiled CSS (only if the file exists)
-			if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
+			if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
 				$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
 			}
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sResponsiveCssLink.'" />';

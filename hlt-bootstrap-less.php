@@ -264,7 +264,7 @@ class HLT_BootstrapLess {
 
 		$fSuccess = true;
 		
-		$sFilePathVariablesLess = $insBootstrapDir.'less'.DS.'variables.less';
+		$sFilePathVariablesLess = $insBootstrapDir.'less'.WORPIT_DS.'variables.less';
 		
 		if ( $infUseOriginalLessFile ) {
 			$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
@@ -307,7 +307,7 @@ class HLT_BootstrapLess {
 			return false;
 		}
 		
-		$sFilePathToLess = $insBootstrapDir.'less'.DS.$insCompileTarget.'.less';
+		$sFilePathToLess = $insBootstrapDir.'less'.WORPIT_DS.$insCompileTarget.'.less';
 		
 		//parse LESS
 		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
@@ -331,11 +331,11 @@ class HLT_BootstrapLess {
 			 */
 			
 			if ($insCompileTarget == 'responsive') {
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap-responsive.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap-responsive.less';
 			} else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
 			} else { //Are there others?
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
 			}
 			
 			// Write normal CSS
@@ -358,11 +358,11 @@ class HLT_BootstrapLess {
 			$sCompiledCss = $oLessCompiler->parse();
 			
 			if ($insCompileTarget == 'responsive') {
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap-responsive.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap-responsive.less';
 			} else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
 			} else { //Are there others?
-				$sLessFile = $insBootstrapDir.'css'.DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
 			}
 			
 			file_put_contents( $sLessFile.'.css', $sCompiledCss );

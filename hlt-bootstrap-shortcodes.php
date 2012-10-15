@@ -25,11 +25,11 @@ if ( !class_exists('HLT_BootstrapShortcodes') ):
 
 class HLT_BootstrapShortcodes {
 	
-	protected $sTwitterBootstrapVersion;
-	
+	protected $m_sFileName;
 	protected $m_sCollapseParentId;
 
-	public function __construct( $sVersion = '2' ) {
+	public function __construct( ) {
+		
 		$aMethods = get_class_methods( $this );
 		$aExclude = array( 'idHtml',
 							'def',
@@ -42,11 +42,10 @@ class HLT_BootstrapShortcodes {
 		
 		foreach ( $aMethods as $sMethod ) {
 			if ( !in_array( $sMethod, $aExclude ) ) {
-				add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
+				if ( basename(__FILE__) == 'hlt-bootstrap-shortcodes.php' )
+					add_shortcode( 'TBS_'.strtoupper( $sMethod ), array( &$this, $sMethod ) );
 			}
 		}
-		
-		$this->sTwitterBootstrapVersion = $sVersion;
 
 		add_filter( 'the_content', array( &$this, 'filterTheContent' ), 10 );		
 		add_filter( 'the_content', array( &$this, 'filterTheContentToFixNamedAnchors' ), 99 );

@@ -1,7 +1,7 @@
 <?php
 
-include_once( dirname(__FILE__).DS.'worpit_options_helper.php' );
-include_once( dirname(__FILE__).DS.'widgets'.DS.'bootstrapcss_widgets.php' );
+include_once( dirname(__FILE__).WORPIT_DS.'worpit_options_helper.php' );
+include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widgets.php' );
 	
 ?>
 <div class="wrap">

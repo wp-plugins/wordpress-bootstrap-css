@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined('WORPIT_DS') ) {
+	define( 'WORPIT_DS', DIRECTORY_SEPARATOR );
+}
+
 if ( !class_exists('HLT_Plugin') ):
 
 class HLT_Plugin {
@@ -57,7 +61,7 @@ class HLT_Plugin {
 	}//getFullParentMenuId
 
 	protected function display( $insView, $inaData = array() ) {
-		$sFile = dirname(__FILE__).DS.'..'.DS.self::ViewDir.DS.$insView.self::ViewExt;
+		$sFile = dirname(__FILE__).WORPIT_DS.'..'.WORPIT_DS.self::ViewDir.WORPIT_DS.$insView.self::ViewExt;
 
 		if ( !is_file( $sFile ) ) {
 			echo "View not found: ".$sFile;
