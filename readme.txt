@@ -196,7 +196,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 
 = BETA (download and use at your own risk) =
 
-[Download Here]("http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip")
+[Download Here](http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip)
 
 * ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
@@ -205,6 +205,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 * UPDATED: Using new LESS PHP compiler to write CSS files.
 * UPDATED: Using new LESS PHP compiler to create minified CSS files.
 * CHANGED: Using plugin_url() instead of PLUGIN_URL because it seems SSL is ignored with the latter(?)
+* CHANGED: Directory separator to WORPIT_DS, moved it to a base class, and ensured there'd be no attempt to redefine it if it already exists.
 
 = 2.1.1.1 =
 
