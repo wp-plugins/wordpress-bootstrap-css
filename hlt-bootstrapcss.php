@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.2.1
+Version: 2.2.1.1
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -57,7 +57,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const GoogleCdnJqueryVersion	= '1.8.2';
 
-	static public $VERSION			= '2.2.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.2.1.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -137,10 +137,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_aPluginOptions_MiscOptionsSection = 	array(
 				'section_title' => 'Miscellaneous Plugin Options',
 				'section_options' => array(
-					array( 'inc_bootstrap_css_wpadmin',	'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
-					array( 'hide_dashboard_rss_feed',	'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the Worpit Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
-					array( 'delete_on_deactivate',		'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
-					array( 'prettify',					'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
+					array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
+					array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
+					array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the Worpit Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
+					array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
+					array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
 											Google Prettify Javascript library for use with these code blocks.' ),
 			),
 		);
@@ -167,9 +168,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		//if shortcodes are enabled, instantiate
 		$sBootstrapOption = self::getOption( 'option' );
-		if ( self::getOption( 'option' ) == 'twitter' && self::getOption( 'useshortcodes' ) == 'Y' ) {
+		if ( $sBootstrapOption == 'twitter' && self::getOption( 'useshortcodes' ) == 'Y' ) {
 			$oShortCodes = new HLT_BootstrapShortcodes();
 		}
+		
+		//if option to enable shortcodes in sidebar is on, add filter
+		$sShortcodeSidebarOption = self::getOption( 'enable_shortcodes_sidebarwidgets' );
+		if ( $sShortcodeSidebarOption == 'Y' ) {
+			add_filter('widget_text', 'do_shortcode');
+		}
+		
 	}//onWpInit
 	
 	public function onWpAdminInit() {

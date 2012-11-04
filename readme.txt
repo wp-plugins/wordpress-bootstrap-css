@@ -191,9 +191,10 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
 
-= 2.2.1 =
+= 2.2.1.1 =
 
 * UPDATED: Twitter Bootstrap library version to 2.2.1
+* ADDED: New option to use shortcodes within sidebar widgets.
 * ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: Option to set TBS_ICON to the white version of the icon using parameter: white="y"
