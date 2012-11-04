@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.1.1.1
+Version: 2.2.1
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -50,14 +50,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 	
-	const TwitterVersion			= '2.1.1';
+	const TwitterVersion			= '2.2.1'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '1.4.0';
 	const NormalizeVersion			= '2.0.1';
 	const YUI3Version				= '3.6.0';
 	
-	const GoogleCdnJqueryVersion	= '1.7.2';
+	const GoogleCdnJqueryVersion	= '1.8.2';
 
-	static public $VERSION			= '2.1.1.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.2.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -88,8 +88,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.WORPIT_DS.self::$PLUGIN_PATH.WORPIT_DS;
-//		self::$PLUGIN_URL	= WP_PLUGIN_URL.'/'.self::$PLUGIN_PATH.'/';
-		self::$PLUGIN_URL	= plugins_url( '/', __FILE__ ) ; //this seems to use SSL more reliably(?)
+		self::$PLUGIN_URL	= plugins_url( '/', __FILE__ ) ; //this seems to use SSL more reliably than WP_PLUGIN_URL
 		self::$OPTION_PREFIX = self::BaseOptionPrefix . self::OptionPrefix;
 		self::$OPTION_PREFIX = self::OptionPrefix;
 
@@ -197,8 +196,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 			
 		}
-		//Adds the WP Admin Twitter Bootstrap files if the option is set
-		if ( is_admin() && self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
+		
+		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a Worpit admin page.
+		if ( $this->isWorpitPluginAdminPage() || ( is_admin() && self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) ) {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'enqueueBootstrapAdminCss' ), 99 );
 		}
 		
@@ -679,7 +679,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	}//onWpDeactivatePlugin
 	
 	public function onWpActivatePlugin() { }
-
+	
+	public function enqueueBootstrapAdminCss() {
+		wp_register_style( 'worpit_bootstrap_wpadmin_css', self::$BOOSTRAP_URL.'css/bootstrap-wpadmin.css', false, self::$VERSION );
+		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), self::$VERSION );
+		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
+	}//enqueueBootstrapAdminCss
+	
 }//HLT_BootstrapCss
 
 endif;

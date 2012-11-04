@@ -194,17 +194,17 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
 
-= BETA (download and use at your own risk) =
+= 2.2.1 =
 
-[Download Here](http://downloads.wordpress.org/plugin/wordpress-bootstrap-css.zip)
-
+* UPDATED: Twitter Bootstrap library version to 2.2.1
 * ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
 * ADDED: Option to set TBS_ICON to the white version of the icon using parameter: white="y"
 * UPDATED: LESS PHP Compiler to latest release 0.3.8
 * UPDATED: Using new LESS PHP compiler to write CSS files.
 * UPDATED: Using new LESS PHP compiler to create minified CSS files.
-* CHANGED: Using plugin_url() instead of PLUGIN_URL because it seems SSL is ignored with the latter(?)
+* UPDATED: Google CDN JQuery library now links to version 1.8.2
+* CHANGED: Using plugin_url() instead of PLUGIN_URL because it seems SSL is ignored with the latter
 * CHANGED: Directory separator to WORPIT_DS, moved it to a base class, and ensured there'd be no attempt to redefine it if it already exists.
 
 = 2.1.1.1 =

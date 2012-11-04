@@ -119,7 +119,6 @@ class HLT_Plugin {
 		if ( $this->isWorpitPluginAdminPage() ) {
 
 			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
-			$this->enqueueBootstrapAdminCss();
 			$this->enqueuePluginAdminCss();
 			
 		}
@@ -197,18 +196,11 @@ class HLT_Plugin {
 
 	protected function handlePluginFormSubmit() { }
 
-	public function enqueueBootstrapAdminCss() {
-		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl('bootstrap-wpadmin.css'), false, self::$VERSION );
-		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
-		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), self::$VERSION );
-		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
-	}//enqueueBootstrapAdminCss
-
 	protected function enqueuePluginAdminCss() {
 		$iRand = rand();
 		wp_register_style( 'worpit_plugin_css'.$iRand, $this->getCssUrl('worpit-plugin.css'), array('worpit_bootstrap_wpadmin_css_fixes'), self::$VERSION );
 		wp_enqueue_style( 'worpit_plugin_css'.$iRand );
-	}//enqueueBootstrapAdminCss
+	}//enqueuePluginAdminCss
 	
 	/**
 	 * Provides the basic HTML template for printing a WordPress Admin Notices
