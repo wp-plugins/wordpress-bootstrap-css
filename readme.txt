@@ -10,9 +10,6 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 
 == Description ==
 
-** Warning: IF you're dependent on the LESS compiler, do not upgrade yet. There is a problem with Bootstrap less code in their latest release
-This is not a problem of the plugin. This will be fixed in Twitter Bootstrap version 2.1.2 (due out soon) ** 
-
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
