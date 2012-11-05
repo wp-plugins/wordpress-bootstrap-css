@@ -33,8 +33,8 @@ class HLT_Plugin {
 	
 	protected $m_sParentMenuIdSuffix;
 	
-	protected $m_fUpdateSuccessTracker;
-	protected $m_aFailedUpdateOptions;
+	static protected $m_fUpdateSuccessTracker;
+	static protected $m_aFailedUpdateOptions;
 
 	public function __construct() {
 
@@ -50,8 +50,8 @@ class HLT_Plugin {
 		 * We make the assumption that all settings updates are successful until told otherwise
 		 * by an actual failing update_option call.
 		 */
-		$this->m_fUpdateSuccessTracker = true;
-		$this->m_aFailedUpdateOptions = array();
+		self::$m_fUpdateSuccessTracker = true;
+		self::$m_aFailedUpdateOptions = array();
 
 		$this->m_sParentMenuIdSuffix = 'base';
 	}
@@ -268,7 +268,7 @@ class HLT_Plugin {
 		if ( empty($this->m_aAllPluginOptions) && !$this->initPluginOptions() ) {
 			return false;
 		}
-		HLT_Plugin::PopulatePluginOptions( $this->m_aAllPluginOptions );
+		self::PopulatePluginOptions( $this->m_aAllPluginOptions );
 
 	}//populateAllPluginOptions
 	
@@ -278,7 +278,7 @@ class HLT_Plugin {
 			return false;
 		}
 		foreach ( $inaAllOptions as &$aOptionsSection ) {
-			HLT_Plugin::PopulatePluginOptionsSection($aOptionsSection);
+			self::PopulatePluginOptionsSection($aOptionsSection);
 		}
 	}
 	
@@ -420,8 +420,8 @@ class HLT_Plugin {
 		}
 		$fResult = update_option( self::$OPTION_PREFIX.$insKey, $insValue );
 		if ( !$fResult ) {
-			$this->m_fUpdateSuccessTracker = false;
-			$this->m_aFailedUpdateOptions[] = self::$OPTION_PREFIX.$insKey;
+			self::$m_fUpdateSuccessTracker = false;
+			self::$m_aFailedUpdateOptions[] = self::$OPTION_PREFIX.$insKey;
 		}
 	}
 

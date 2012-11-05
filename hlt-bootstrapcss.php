@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.2.1.1
+Version: 2.2.1.2
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -57,7 +57,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const GoogleCdnJqueryVersion	= '1.8.2';
 
-	static public $VERSION			= '2.2.1.1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.2.1.2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -77,13 +77,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		register_activation_hook( __FILE__, array( &$this, 'onWpActivatePlugin' ) );
 		register_deactivation_hook( __FILE__, array( &$this, 'onWpDeactivatePlugin' ) );
 	//	register_uninstall_hook( __FILE__, array( &$this, 'onWpUninstallPlugin' ) );
-		
-		/**
-		 * We make the assumption that all settings updates are successful until told otherwise
-		 * by an actual failing update_option call.
-		 */
-		$this->m_fUpdateSuccessTracker = true;
-		$this->m_aFailedUpdateOptions = array();
 		
 		self::$PLUGIN_NAME	= basename(__FILE__);
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
@@ -443,7 +436,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
-		if ( !$this->m_fUpdateSuccessTracker ) {
+		if ( !self::$m_fUpdateSuccessTracker ) {
 			self::updateOption( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Failed</strong>.' );
 		}
 		else {
