@@ -186,17 +186,22 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
+[See Shortcodes Demo Here](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/wordpress-shortcodes-demo/).
+
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
 
+= beta =
+* FIXED: Reported bug: http://wordpress.org/support/topic/tbs_span-size3-offset4-generates-wrong-code
+
 = 2.2.1.2 =
 
 * UPDATED: Twitter Bootstrap library version to 2.2.1
 * ADDED: New option to use shortcodes within sidebar widgets.
-* ADDED: New shortcode: TBS_TEXT [See emphasis classes]("http://twitter.github.com/bootstrap/base-css.html#typography")
-* ADDED: New shortcode: TBS_ABBR [See abbreviations]("http://twitter.github.com/bootstrap/base-css.html#typography")
+* ADDED: New shortcode: TBS_TEXT [See emphasis classes](http://twitter.github.com/bootstrap/base-css.html#typography)
+* ADDED: New shortcode: TBS_ABBR [See abbreviations](http://twitter.github.com/bootstrap/base-css.html#typography)
 * ADDED: Option to set TBS_ICON to the white version of the icon using parameter: white="y"
 * UPDATED: LESS PHP Compiler to latest release 0.3.8
 * UPDATED: Using new LESS PHP compiler to write CSS files.

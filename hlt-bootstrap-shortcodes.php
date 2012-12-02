@@ -667,6 +667,8 @@ class HLT_BootstrapShortcodes {
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'style' );
 		
+		$inaAtts['offset'] = empty( $inaAtts['offset'] )? '' : 'offset'.$inaAtts['offset'];
+		
 		$sReturn = '<div class="span'.$inaAtts['size'].' '.$inaAtts['offset'].' '.$inaAtts['class']. '"'
 					.$inaAtts['style']
 					.$inaAtts['id'].'>';
