@@ -3,8 +3,8 @@ Contributors: dlgoodchild, paultgoodchild
 Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
-Tested up to: 3.4.2
-Stable tag: 2.2.1.2
+Tested up to: 3.5
+Stable tag: 2.2.2.a
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -193,7 +193,9 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
 
-= beta =
+= 2.2.2.a =
+* UPDATED: Twitter Bootstrap library to version 2.2.2
+* UPDATED: Changed Google CDN for Jquery to use 1.8.3 (inline with WordPress 3.5)
 * FIXED: Reported bug: http://wordpress.org/support/topic/tbs_span-size3-offset4-generates-wrong-code
 
 = 2.2.1.2 =
@@ -428,6 +430,6 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.2.1.2 =
-
-* UPDATED: Twitter Bootstrap library version to 2.2.1
+= 2.2.2.a =
+* UPDATED: Twitter Bootstrap library to version 2.2.2
+* FIXED: Reported bug: http://wordpress.org/support/topic/tbs_span-size3-offset4-generates-wrong-code
