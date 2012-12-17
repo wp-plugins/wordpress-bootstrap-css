@@ -192,6 +192,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization.
+* Use CDNJS to provide the libraries.
+* Allow user to toggle include method for libraries.
+
+= beta =
+* Added option to include Bootstrap CSS in the WP Editor (request: http://wordpress.org/support/topic/include-twitter-bootstrap-to-wp-editor)
 
 = 2.2.2.a =
 * UPDATED: Twitter Bootstrap library to version 2.2.2

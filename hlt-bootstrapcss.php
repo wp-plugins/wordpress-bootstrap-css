@@ -131,6 +131,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				'section_title' => 'Miscellaneous Plugin Options',
 				'section_options' => array(
 					array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
+					array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor', 'Only select this if you want to have Bootstrap styles show in the editor.' ),
 					array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
 					array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the Worpit Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
 					array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
@@ -201,6 +202,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a Worpit admin page.
 		if ( $this->isWorpitPluginAdminPage() || ( is_admin() && self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) ) {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'enqueueBootstrapAdminCss' ), 99 );
+		}
+		
+		if ( is_admin() && self::getOption( 'inc_bootstrap_css_in_editor' ) == 'Y' ) {
+			add_filter( 'mce_css', array( &$this, 'filter_include_bootstrap_in_editor' ) );
 		}
 		
 		//Multilingual support.
@@ -328,6 +333,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->adminNoticeVersionUpgrade();
 		$this->adminNoticeOptionsUpdated();
 	}
+	
 	
 	private function adminNoticeVersionUpgrade() {
 
@@ -496,6 +502,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 	}//handleSubmit_BootstrapLess
 
+	public function filter_include_bootstrap_in_editor( $mce_css ) {
+		$mce_css = explode( ',', $mce_css);
+		$mce_css = array_map( 'trim', $mce_css);
+		array_unshift( $mce_css, self::$BOOSTRAP_URL.'css/bootstrap.min.css' );
+		return implode( ',', $mce_css );
+	}
+	
 	public function onWpPrintStyles() {
 		if ( self::getOption( 'prettify' ) == 'Y' ) {
 			$sUrl = $this->getCssUrl( 'google-code-prettify/prettify.css' );
@@ -503,6 +516,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			wp_enqueue_style( 'prettify_style' );
 		}
 	}
+	
 
 	public function onWpEnqueueScripts() {
 		
@@ -541,6 +555,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function onOutputBufferFlush( $insContent ) {
 		return $this->rewriteHead( $insContent );
 	}
+	
 
 	/**
 	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
