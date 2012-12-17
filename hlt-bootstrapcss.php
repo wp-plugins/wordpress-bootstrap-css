@@ -697,9 +697,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	public function onWpActivatePlugin() { }
 	
 	public function enqueueBootstrapAdminCss() {
-		wp_register_style( 'worpit_bootstrap_wpadmin_css', self::$BOOSTRAP_URL.'css/bootstrap-wpadmin.css', false, self::$VERSION );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl( 'bootstrap-wpadmin.css' ), false, self::$VERSION );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
-		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes',  $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), self::$VERSION );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes', $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), self::$VERSION );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
 	}//enqueueBootstrapAdminCss
 	
