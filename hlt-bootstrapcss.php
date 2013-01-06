@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.2.2.a
+Version: 2.2.2.b
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -55,9 +55,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const NormalizeVersion			= '2.0.1';
 	const YUI3Version				= '3.6.0';
 	
-	const GoogleCdnJqueryVersion	= '1.8.3';
+	const CdnjsStem					= '//cdnjs.cloudflare.com/ajax/libs/'; //All cdnjs libraries are under this path
+	
+	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.2.2.a'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.2.2.b'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -124,12 +126,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 					array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes', 'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
 					array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified', 'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
 					array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS', 'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
-					array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery', 'Replace JQuery library with Google CDN', 'In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from Google CDN.' ),
+					array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery', 'Replace JQuery library with JQuery from CDNJS', 'In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS.' ),
 			),
 		);
 		$this->m_aPluginOptions_MiscOptionsSection = 	array(
 				'section_title' => 'Miscellaneous Plugin Options',
 				'section_options' => array(
+					array( 'use_cdnjs',							'',		'N', 		'checkbox',		'Use CDNJS', 'Link to CDNJS libraries', 'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).' ),
 					array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
 					array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor', 'Only select this if you want to have Bootstrap styles show in the editor.' ),
 					array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
@@ -527,15 +530,21 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			
 			$sExtension = ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.js' : '.js';
 
-			$sUrlBootstrapJs = self::$BOOSTRAP_URL.'js/bootstrap'.$sExtension;
+			if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+				//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js
+				$sUrlBootstrapJs = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/bootstrap'.$sExtension;
+			}
+			else {
+				$sUrlBootstrapJs = self::$BOOSTRAP_URL.'js/bootstrap'.$sExtension;
+			}
 
 			if ( self::getOption( 'replace_jquery_cdn' ) == 'Y' ) {
 				wp_deregister_script('jquery');
 				
-				$sGoogleJqueryUri = 'https://ajax.googleapis.com/ajax/libs/jquery/'.self::GoogleCdnJqueryVersion.'/jquery';
-				$sGoogleJqueryUri .= $sExtension;
+				//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js
+				$sJqueryCdnUri = self::CdnjsStem.'jquery/'.self::CdnJqueryVersion.'/jquery'.$sExtension;
 				
-				wp_register_script( 'jquery', $sGoogleJqueryUri, '', self::GoogleCdnJqueryVersion, false );
+				wp_register_script( 'jquery', $sJqueryCdnUri, '', self::CdnJqueryVersion, false );
 			}
 			
 			wp_enqueue_script( 'jquery' );
@@ -564,6 +573,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	public function rewriteHead( $insContents ) {
 		
+		/** TODO : this whole thing should be optimized to run only once or upon a plugin upgrade **/
+		
 		$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
 		
 		$sBoostrapOption = self::getOption( 'option' );
@@ -577,14 +588,31 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 		
 		$aLocalCss = array(
-			'twitter'					=> self::$BOOSTRAP_URL.'css/bootstrap'.$sMinifiedCssOption,
 			'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
-			'twitter_responsive'		=> self::$BOOSTRAP_URL.'css/bootstrap-responsive'.$sMinifiedCssOption,
 			'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
 			'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
 			'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version,
-			'normalize'					=> $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion,
 		);
+		
+		$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; //default is to serve it "local"
+		
+		//Use CDNJS only if chosen to do so AND you're not using LESS-compiled libraries
+		if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+			
+			// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css 
+			$aLocalCss[ 'normalize' ] = self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css';
+			
+			//only if not using less-compiler
+			if ( self::getOption( 'use_compiled_css' ) != 'Y' ) {
+				$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
+			}
+			
+		}
+		else {
+			$aLocalCss[ 'normalize' ] = $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion;
+		}
+		$aLocalCss[ 'twitter' ] = $sTwitterStem.$sMinifiedCssOption;
+		$aLocalCss[ 'twitter_responsive' ] = $sTwitterStem.'-responsive'.$sMinifiedCssOption;
 		
 		$sCssLink = $aLocalCss[$sBoostrapOption];
 		
