@@ -228,8 +228,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	protected function handlePluginUpgrade() {
 		
+		$sCurrentPluginVersion = self::getOption( 'current_plugin_version' );
+		
+		// Forces a rebuild for the list of CSS includes
+		if ( $sCurrentPluginVersion !== self::$VERSION ) {
+			self::deleteOption( 'includes_list' );
+		}
+		
 		//current_user_can( 'manage_options' ) ensure only valid users attempt this.
-		if ( self::getOption( 'current_plugin_version' ) !== self::$VERSION && current_user_can( 'manage_options' ) ) {
+		if ( $sCurrentPluginVersion !== self::$VERSION && current_user_can( 'manage_options' ) ) {
 
 			//Manages those users who are coming from a version pre-Twitter 2.0+
 			if ( self::getOption( 'upgraded1to2' ) !== 'Y' ) {
@@ -279,7 +286,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				self::deleteOption( $sOldOptions );
 			}
 			
-			//Recompile LESS CSS if applicable and delete all old WP Options values from DB
+			//Recompile LESS CSS if applicable
 			if ( self::getOption('use_compiled_css') == 'Y' ) {
 				
 				$oBoostrapLess = new HLT_BootstrapLess();
@@ -469,6 +476,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			return;
 		}
 		$this->updatePluginOptionsFromSubmit( $_POST[self::$OPTION_PREFIX.'all_options_input'] );
+		
+		self::deleteOption( 'includes_list' );
 
 		//DEBUG error problem reported: http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-noticeswarningsdb-option-usage
 		$sCustomUrl = (isset( $_POST[self::$OPTION_PREFIX.'customcss_url'] ))? $_POST[self::$OPTION_PREFIX.'customcss_url'] : '';
@@ -520,7 +529,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		}
 	}
 	
-
 	public function onWpEnqueueScripts() {
 		
 		$fJsInFooter = (self::getOption( 'js_head' ) == 'Y'? false : true);
@@ -575,84 +583,101 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		/** TODO : this whole thing should be optimized to run only once or upon a plugin upgrade **/
 		
-		$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
+		$aIncludesList = self::getOption( 'includes_list' );
 		
-		$sBoostrapOption = self::getOption( 'option' );
-		$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
-		$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
-		
-		$sMinifiedCssOption = ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.css' : '.css';
-		
-		if ( !in_array( $sBoostrapOption, $aPossibleOptions ) && !$fCustomCss ) {
-			return $insContents;
-		}
-		
-		$aLocalCss = array(
-			'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
-			'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
-			'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
-			'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version,
-		);
-		
-		$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; //default is to serve it "local"
-		
-		//Use CDNJS only if chosen to do so AND you're not using LESS-compiled libraries
-		if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+		if ( !is_array($aIncludesList) ) { //fallback to the original method of inclusion
 			
-			// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css 
-			$aLocalCss[ 'normalize' ] = self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css';
+			$aIncludesList = array();
 			
-			//only if not using less-compiler
-			if ( self::getOption( 'use_compiled_css' ) != 'Y' ) {
-				$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
+			$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
+			
+			$sIncludeOption = self::getOption( 'option' );
+			$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
+			$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
+			
+			$sMinifiedCssOption = ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.css' : '.css';
+			
+			if ( !in_array( $sIncludeOption, $aPossibleOptions ) && !$fCustomCss ) {
+				return $insContents;
 			}
 			
+			$aLocalCss = array(
+				'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
+				'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
+				'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
+				'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version,
+			);
+			
+			$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; //default is to serve it "local"
+			
+			//Use CDNJS only if chosen to do so AND you're not using LESS-compiled libraries
+			if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+				
+				// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css 
+				$aLocalCss[ 'normalize' ] = self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css';
+				
+				//only if not using less-compiler
+				if ( self::getOption( 'use_compiled_css' ) != 'Y' ) {
+					$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
+				}
+				
+			}
+			else {
+				$aLocalCss[ 'normalize' ] = $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion;
+			}
+			$aLocalCss[ 'twitter' ] = $sTwitterStem.$sMinifiedCssOption;
+			$aLocalCss[ 'twitter_responsive' ] = $sTwitterStem.'-responsive'.$sMinifiedCssOption;
+			
+			//link to the Twitter LESS-compiled CSS (only if the file exists)
+			if ( $sIncludeOption == 'twitter' && self::getOption( 'use_compiled_css' ) == 'Y'
+					&& file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap.less'.$sMinifiedCssOption )
+					) {
+				$sIncludeLink = $aLocalCss[ 'twitter_less' ];
+			}
+			else {
+				$sIncludeLink = $aLocalCss[ $sIncludeOption ];
+			}
+			
+			$aIncludesList[] = $sIncludeLink;
+			
+			//Add the Responsive CSS link
+			if ( $fResponsive && $sIncludeOption == 'twitter' ) {
+				
+				//link to the Twitter LESS-compiled CSS (only if the file exists)
+				if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
+					$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
+				}
+				else {
+					$sResponsiveCssLink = $aLocalCss['twitter_responsive'];
+				}
+				$aIncludesList[] = $sResponsiveCssLink;
+			}
+			
+			//Custom/Reset CSS
+			if ( $fCustomCss ) {
+				$sCustomCssUrl = self::getOption( 'customcss_url' );
+				if ( !empty($sCustomCssUrl) ) {
+					$aIncludesList[] = $sCustomCssUrl;
+				}
+			}
+			
+			self::updateOption( 'includes_list', $aIncludesList );
 		}
 		else {
-			$aLocalCss[ 'normalize' ] = $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion;
+			//
 		}
-		$aLocalCss[ 'twitter' ] = $sTwitterStem.$sMinifiedCssOption;
-		$aLocalCss[ 'twitter_responsive' ] = $sTwitterStem.'-responsive'.$sMinifiedCssOption;
-		
-		$sCssLink = $aLocalCss[$sBoostrapOption];
 		
 		//Add the CSS link
-		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		$sReplace = '${1}';
 		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
 		
-		if ( in_array( $sBoostrapOption, $aPossibleOptions ) ) {
-			//link to the Twitter LESS-compiled CSS (only if the file exists)
-			if ( $sBoostrapOption == 'twitter'
-					&& self::getOption( 'use_compiled_css' ) == 'Y'
-					&& file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap.less'.$sMinifiedCssOption )
-					) {
-				$sCssLink = $aLocalCss['twitter_less'];
-			}
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCssLink.'" />';
-		}
-		
-		//Add the Responsive CSS link
-		if ( $fResponsive && $sBoostrapOption == 'twitter' ) {
-			
-			$sResponsiveCssLink = $aLocalCss['twitter_responsive'];
-			
-			//link to the Twitter LESS-compiled CSS (only if the file exists)
-			if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
-				$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
-			}
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sResponsiveCssLink.'" />';
+		foreach ( $aIncludesList as $sInclude ) {
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sInclude.'" />';
 		}
 
-		//Custom/Reset CSS
-		if ( $fCustomCss ) {
-			$sCustomCssUrl = self::getOption( 'customcss_url' );
-			if ( !empty($sCustomCssUrl) ) {
-				$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sCustomCssUrl.'" />';
-			}
-		}
 		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Worpit. -->";
 		
+		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
 		return preg_replace( $sRegExp, $sReplace, $insContents );
 	}
 	
