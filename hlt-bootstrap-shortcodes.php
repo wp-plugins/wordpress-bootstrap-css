@@ -750,7 +750,7 @@ class HLT_BootstrapShortcodes {
 			  </div>
 			  <div id="<?php echo $inaAtts['group-id']; ?>" class="accordion-body collapse <?php echo (strtolower($inaAtts['open']) == 'y') ? 'in' : '';?>">
 				<div class="accordion-inner">
-					<?php echo $insContent; ?>
+					<?php echo $this->doShortcode( $insContent ); ?>
 				</div>
 			  </div>
 			</div>

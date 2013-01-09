@@ -196,6 +196,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 
 = beta =
 * ADDED: Optimization where the list of CSS links to be included is only created once and then saved in the options table. This is a nice optimization so it's not done on every page load.
+* FIXED: Bug where accordion content was not processing shortcodes (http://wordpress.org/support/topic/doshortcode-inside-bootstrap).
 
 = 2.2.2.b =
 * ADDED: option to include Bootstrap CSS in the WP Editor (request: http://wordpress.org/support/topic/include-twitter-bootstrap-to-wp-editor)
