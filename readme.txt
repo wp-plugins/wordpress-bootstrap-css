@@ -4,7 +4,7 @@ Donate link: http://worpit.com/
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.5
-Stable tag: 2.2.2.b
+Stable tag: 2.3.0.a
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -191,12 +191,14 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
-* Provide option to combine Bootstrap and Bootstrap Responsive CSS files into one as a small optimization - not necessary as it's coming in Twitter 3.0
 * Allow user to toggle include method for libraries.
 
-= beta =
+= 2.3.0.a =
+* UPDATED: Bootstrap version to latest release 2.3.0
+* UPDATED: Normalize CSS to latest release 2.1.0 (https://github.com/necolas/normalize.css/blob/v2.1.0/CHANGELOG.md)
 * ADDED: Optimization where the list of CSS links to be included is only created once and then saved in the options table. This is a nice optimization so it's not done on every page load.
 * FIXED: Bug where accordion content was not processing shortcodes (http://wordpress.org/support/topic/doshortcode-inside-bootstrap).
+* FIXED: No longer a fatal error if another less.php library was included.  Minimum must be 0.3.8 though, otherwise compiling will outright fail. 
 
 = 2.2.2.b =
 * ADDED: option to include Bootstrap CSS in the WP Editor (request: http://wordpress.org/support/topic/include-twitter-bootstrap-to-wp-editor)
