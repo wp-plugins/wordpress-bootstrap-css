@@ -110,7 +110,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 					array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,		'Bootstrap Option', 'Choose Your Preferred Bootstrap Option', '' ),
 					array( 'inc_responsive_css',	'',		'N', 		'checkbox',		'Responsive CSS', 'Include Bootstrap Responsive CSS', "Alone, this doesn't make your WordPress site 'responsive'." ),
 					array( 'customcss',				'',		'N', 		'checkbox',		'Custom Reset CSS', 'Enable custom CSS link', '(note: linked after any bootstrap/reset CSS selected above)' ),
-					array( 'customcss_url',			'',		'http://', 	'text',		'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
+					array( 'customcss_url',			'',		'http://', 	'text',			'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
 			),
 		);
 		$this->m_aPluginOptions_TwitterBootstrapSection = 	array(

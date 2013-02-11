@@ -119,7 +119,8 @@ function getPluginOptionSpan( $inaOption, $iSpanSize, $insVarPrefix = '' ) {
 						name="'.$insVarPrefix.$sOptionKey.'"
 						value="'.$sTextInput.'"
 						placeholder="'.$sTextInput.'"
-						id="'.$insVarPrefix.$sOptionKey.'" />';
+						id="'.$insVarPrefix.$sOptionKey.'"
+						class="span5" />';
 			
 			$sOptionHelpText = '<p class="help-block">'.$sOptionHelpText.'</p>';
 			

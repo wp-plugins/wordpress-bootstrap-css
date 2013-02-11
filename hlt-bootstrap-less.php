@@ -310,14 +310,18 @@ class HLT_BootstrapLess {
 		$sFilePathToLess = $insBootstrapDir.'less'.WORPIT_DS.$insCompileTarget.'.less';
 		
 		//parse LESS
-		include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
+		if ( !class_exists('lessc') ) {
+			include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
+		}
+		elseif ( lessc::$VERSION != 'v0.3.8' ) { //not running a supported version of the less compiler for bootstrap
+			return false;
+		}
 		
 		// New method
 		$oLessCompiler = new lessc();
 		
 		// Original method
 		//$oLessCompiler = new lessc( $sFilePathToLess );
-		
 		
 		$sCompiledCss = '';
 		
