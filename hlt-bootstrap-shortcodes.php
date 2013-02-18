@@ -684,8 +684,8 @@ class HLT_BootstrapShortcodes {
 	public function collapse( $inaAtts = array(), $insContent = '' ) {
 		
 		$aOptions = array(
-				'accordion'	=>	array( 'n', 'y|n', 'Toggle Accordion effect (where when one opens, the rest in the group closes).' ),
-				'id'		=>	array( 'Randomly Generated', '', 'Specify ID if you need it, otherwise randomly generated.' )
+			'accordion'	=>	array( 'n', 'y|n', 'Toggle Accordion effect (where when one opens, the rest in the group closes).' ),
+			'id'		=>	array( 'Randomly Generated', '', 'Specify ID if you need it, otherwise randomly generated.' )
 		);
 		
 		//Print Help if asked for and return
@@ -720,9 +720,9 @@ class HLT_BootstrapShortcodes {
 	public function collapse_group( $inaAtts = array(), $insContent = '' ) {
 
 		$aOptions = array(
-				'group-id'	=>	array( 'Randomly Generated',	'', 'Specify ID if you need it, otherwise randomly generated.' ),
-				'title'		=>	array( '"title" Not Set',		'', 'Specify text for the link clicked to expand or collapse text' ),
-				'open'		=>	array( 'n',						'y|n', 'Toggles whether text is expanded/open when the page loads.' ),
+			'group-id'	=>	array( 'Randomly Generated',	'', 'Specify ID if you need it, otherwise randomly generated.' ),
+			'title'		=>	array( '"title" Not Set',		'', 'Specify text for the link clicked to expand or collapse text' ),
+			'open'		=>	array( 'n',						'y|n', 'Toggles whether text is expanded/open when the page loads.' ),
 		);
 		
 		//Print Help if asked for and return
@@ -761,6 +761,93 @@ class HLT_BootstrapShortcodes {
 		
 		return $sContent;
 	}
+	
+	public function thumbnail( $inaAtts = array(), $insContent = '' ) {
+
+		$aOptions = array(
+			'span'				=>	array( '',	'1|2|..|12',	'The span width of the thumbnail component.' ),
+			'src'				=>	array( '',	'',				'The full URL to the image source' ),
+			'href'			=>	array( '',	'',				'The source that the image links to if any' ),
+			'href-target'	=>	array( '',	'',				'The source that the image links to if any' ),
+			'img-dim'			=>	array( '',	'',				'The image dimensions. Comma-separate width, height. e.g. "300px,200px"' ),
+			'img-alt'			=>	array( '',	'',				'The ALT meta tag for the image.' )
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		
+		if ( !empty( $inaAtts['span'] ) ) {
+			$inaAtts['span'] = 'span'.$inaAtts['span'];
+		}
+		$inaAtts['class'] .= $inaAtts['span'];
+		
+		if ( !empty( $inaAtts['img-dim'] ) ) {
+			$aDims = explode( ',', $inaAtts['img-dim'] );
+			if ( count($aDims) == 2 ) {
+				$inaAtts['style'] .= 'width:'.trim($aDims[0]).';height:'.trim($aDims[1]).';';
+			}
+		}
+		
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		$this->noEmptyElement( $inaAtts, 'class' );
+		$this->noEmptyElement( $inaAtts, 'alt', 'img-alt' );
+		$this->noEmptyElement( $inaAtts, 'href', 'href' );
+		$this->noEmptyElement( $inaAtts, 'target', 'href-target' );
+		
+		ob_start();
+		?>
+		<li <?php echo $inaAtts['class'] . $inaAtts['id'] .  $inaAtts['style'] ?>>
+			<div class="thumbnail">
+				<a <?php echo $inaAtts['href']; ?> <?php echo $inaAtts['href-target']; ?>>
+					<img <?php echo $inaAtts['alt']; ?> data-src="<?php echo $inaAtts['src']; ?>" <?php echo $inaAtts['style']; ?> src="<?php echo $inaAtts['src']; ?>" />
+				</a>
+				<div class="caption">
+					<?php echo $this->doShortcode( $insContent ); ?>
+				</div>
+			</div>
+		</li>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		return $sContent;
+	}//thumbnail
+	
+	public function thumbnails( $inaAtts = array(), $insContent = '' ) {
+		
+		$aOptions = array(
+			'container'	=>	array( 'row-fluid', 'row|row-fluid', 'Whether the thumbnails will be in a fluid or non-fluid row. Essentially a class name' ),
+			'id'		=>	array( '', '', 'Specify ID if you need it, otherwise randomly generated.' )
+		);
+		
+		//Print Help if asked for and return
+		if ( isset($inaAtts['help']) ) {
+			return $this->getHelp( $aOptions );
+		}
+		
+		$this->processOptions( $inaAtts, $aOptions );
+		$this->noEmptyElement( $inaAtts, 'style' );
+		$this->noEmptyElement( $inaAtts, 'id' );
+		
+		ob_start();
+		?>
+		<div class="<?php echo $inaAtts['container']; ?> <?php echo $inaAtts['class']; ?>" <?php echo $inaAtts['id']; ?> <?php echo $inaAtts['style']; ?>>
+			<ul class="thumbnails">
+			<?php echo $this->doShortcode( $insContent ); ?>
+			</ul>
+		</div>
+		<?php
+		
+		$sContent = ob_get_contents();
+		ob_end_clean();
+		return $sContent;
+		
+	}//thumbnails
 	
 	public function dropdown( $inaAtts = array(), $insContent = '' ) {
 		$this->def( $inaAtts, 'name', 'Undefined' );
@@ -925,9 +1012,9 @@ class HLT_BootstrapShortcodes {
 	protected function processOptions( &$inaAtts, &$inaOptions ) {
 
 		$aDefaults = array(
-				'style'	=>	array( '', '', 'Custom inline styling applied to this element' ),
-				'id'	=>	array( '', '', 'Custom ID added to this element' ),
-				'class'	=>	array( '', '', 'Custom class(es) added to this element' )
+			'style'	=>	array( '', '', 'Custom inline styling applied to this element' ),
+			'id'	=>	array( '', '', 'Custom ID added to this element' ),
+			'class'	=>	array( '', '', 'Custom class(es) added to this element' )
 		);
 		if ( empty($inaOptions) ) {
 			$inaOptions = $aDefaults;

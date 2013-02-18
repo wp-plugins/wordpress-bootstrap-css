@@ -193,6 +193,9 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Allow user to toggle include method for libraries.
 
+= 2.3.0.c =
+* ADDED: New shortcodes: TBS_THUMBNAILS and TBS_THUMBNAIL - use in conjuction.
+
 = 2.3.0.b =
 * UPDATED: less.php library with a fix from the lesscphp author for an error generated due to unhandled less syntax.
 
