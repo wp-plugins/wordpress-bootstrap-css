@@ -77,7 +77,7 @@
 				</ul>
 			</div>
 			<div class="shortcode-usage">
-				<p>There will be much more <a href="http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/">documentation forthcoming on the Worpit website</a>.</a></p>
+				<p>There will be much more <a href="http://worpit.com/our-wordpress-plugins/wordpress-twitter-bootstrap-css-plugin-home/">documentation forthcoming on the Worpit website</a>.</a></p>
 			</div>
 		  </div>
 		  </div><!-- / span6 -->

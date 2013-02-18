@@ -767,10 +767,11 @@ class HLT_BootstrapShortcodes {
 		$aOptions = array(
 			'span'				=>	array( '',	'1|2|..|12',	'The span width of the thumbnail component.' ),
 			'src'				=>	array( '',	'',				'The full URL to the image source' ),
-			'href'			=>	array( '',	'',				'The source that the image links to if any' ),
-			'href-target'	=>	array( '',	'',				'The source that the image links to if any' ),
-			'img-dim'			=>	array( '',	'',				'The image dimensions. Comma-separate width, height. e.g. "300px,200px"' ),
-			'img-alt'			=>	array( '',	'',				'The ALT meta tag for the image.' )
+			'href'				=>	array( '',	'',				'The source that the image links to if any' ),
+			'href-target'		=>	array( '',	'',				'The source that the image links to if any' ),
+			'dims'				=>	array( '',	'',				'The image dimensions. Comma-separate width, height. e.g. "300px,200px"' ),
+			'alt'				=>	array( '',	'',				'The ALT meta tag for the image.' ),
+			'imgstyle'			=>	array( '',	'',				'Particular styling for the image.' ),
 		);
 		
 		//Print Help if asked for and return
@@ -785,26 +786,26 @@ class HLT_BootstrapShortcodes {
 		}
 		$inaAtts['class'] .= $inaAtts['span'];
 		
-		if ( !empty( $inaAtts['img-dim'] ) ) {
-			$aDims = explode( ',', $inaAtts['img-dim'] );
+		if ( !empty( $inaAtts['dims'] ) ) {
+			$aDims = explode( ',', $inaAtts['dims'] );
 			if ( count($aDims) == 2 ) {
-				$inaAtts['style'] .= 'width:'.trim($aDims[0]).';height:'.trim($aDims[1]).';';
+				$inaAtts['imgstyle'] .= 'width:'.trim($aDims[0]).';height:'.trim($aDims[1]).';';
 			}
 		}
 		
 		$this->noEmptyElement( $inaAtts, 'style' );
 		$this->noEmptyElement( $inaAtts, 'id' );
 		$this->noEmptyElement( $inaAtts, 'class' );
-		$this->noEmptyElement( $inaAtts, 'alt', 'img-alt' );
+		$this->noEmptyElement( $inaAtts, 'alt', 'alt' );
 		$this->noEmptyElement( $inaAtts, 'href', 'href' );
 		$this->noEmptyElement( $inaAtts, 'target', 'href-target' );
 		
 		ob_start();
 		?>
-		<li <?php echo $inaAtts['class'] . $inaAtts['id'] .  $inaAtts['style'] ?>>
+		<li <?php echo $inaAtts['class'] . $inaAtts['id'] . $inaAtts['style'] ?>>
 			<div class="thumbnail">
 				<a <?php echo $inaAtts['href']; ?> <?php echo $inaAtts['href-target']; ?>>
-					<img <?php echo $inaAtts['alt']; ?> data-src="<?php echo $inaAtts['src']; ?>" <?php echo $inaAtts['style']; ?> src="<?php echo $inaAtts['src']; ?>" />
+					<img <?php echo $inaAtts['alt']; ?> src="<?php echo $inaAtts['src']; ?>" style="<?php echo $inaAtts['imgstyle']; ?>" />
 				</a>
 				<div class="caption">
 					<?php echo $this->doShortcode( $insContent ); ?>
@@ -816,6 +817,7 @@ class HLT_BootstrapShortcodes {
 		$sContent = ob_get_contents();
 		ob_end_clean();
 		return $sContent;
+		
 	}//thumbnail
 	
 	public function thumbnails( $inaAtts = array(), $insContent = '' ) {

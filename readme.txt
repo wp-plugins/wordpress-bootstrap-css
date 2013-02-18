@@ -25,7 +25,7 @@ With this plugin, now you can!
 *	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as is good practice)
 *	and more..
 
-To get the latest news and support go here: [WordPress Twitter Bootstrap CSS plugin](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/ "WordPress Twitter Bootstrap CSS Plugin Home") to see the release article on our site.
+To get the latest news and support go here: [WordPress Twitter Bootstrap CSS plugin](http://worpit.com/our-wordpress-plugins/wordpress-twitter-bootstrap-css-plugin-home/ "WordPress Twitter Bootstrap CSS Plugin Home") to see the release article on our site.
 
 **Why use Twitter Bootstrap?** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
@@ -186,7 +186,7 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-[See Shortcodes Demo Here](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/wordpress-shortcodes-demo/).
+[See Shortcodes Demo Here](http://worpit.com/our-wordpress-plugins/wordpress-shortcodes-demo/).
 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
@@ -409,7 +409,7 @@ Skipped.
 * Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap POPOVER window
 * Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
 * Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TAB! Now you can create TAB'd content in your posts!
-* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/ "Worpit WordPress Twitter Bootstrap Plugin").
+* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://worpit.com/our-wordpress-plugins/wordpress-twitter-bootstrap-css-plugin-home/ "Worpit WordPress Twitter Bootstrap Plugin").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
