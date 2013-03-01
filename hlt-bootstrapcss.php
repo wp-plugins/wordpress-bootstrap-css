@@ -4,7 +4,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.3.0.b
+Version: 2.3.1.a
 Author: Worpit
 Author URI: http://worpit.com/
 */
@@ -50,7 +50,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 	
-	const TwitterVersion			= '2.3.0'; //should reflect the Bootstrap version folder name
+	const TwitterVersion			= '2.3.1'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '1.4.0';
 	const NormalizeVersion			= '2.0.1';
 	const YUI3Version				= '3.6.0';
@@ -59,7 +59,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.0.b'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.1.a'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -344,7 +344,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->adminNoticeOptionsUpdated();
 	}
 	
-	
 	private function adminNoticeVersionUpgrade() {
 
 		global $current_user;
@@ -353,23 +352,26 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sCurrentVersion = get_user_meta( $user_id, self::$OPTION_PREFIX.'current_version', true );
 
 		if ( $sCurrentVersion !== self::$VERSION ) {
-			$sNotice = '
-					<style>
-						a#fromWorpit {
-							padding: 0 5px;
-							border-bottom: 1px dashed rgba(0,0,0,0.1);
-							color: black;
-						}
-					</style>
-					<form method="post" action="admin.php?page='.$this->getSubmenuId('bootstrap-css').'">
-						<p><strong>WordPress Twitter Bootstrap plugin <a href="http://bit.ly/QhYJzY" id="fromWorpit" title="Manage WordPress Better" target="_blank">from Worpit</a></strong> has been updated successfully.
-						<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
-						<input type="hidden" value="'.$user_id.'" name="hlt_user_id" id="hlt_user_id">
-						<input type="submit" value="Okay, take me to the main plugin page and hide this notice" name="submit" class="button-primary">
-						</p>
-					</form>
-			';
-
+			ob_start();
+			?>
+				<style>
+					a#fromWorpit { padding: 0 5px; border-bottom: 1px dashed rgba(0,0,0,0.1); color: blue; font-weight: bold; }
+				</style>
+				<form id="WorpitUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
+					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
+					<input type="hidden" value="<?php echo $user_id; ?>" name="hlt_user_id" id="hlt_user_id">
+					<h4 style="margin:10px 0 3px;">Quick question: Do you manage more than 1 WordPress site and all the plugin updates every day?</h4>
+					<input type="submit" value="Cool, just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
+					<p>
+						Worpit, the friendly folks that brought you this cool plugin, can help you.
+						<a href="http://worpit.com/?src=wtb_update_notice" id="fromWorpit" title="Manage WordPress Better" target="_blank">Wanna know how</a>?<br />
+					</p>
+					<div class=""></div>
+				</form>
+			<?php
+			$sNotice = ob_get_contents();
+			ob_end_clean();
+			
 			$this->getAdminNotice( $sNotice, 'updated', true );
 		}
 		
@@ -573,7 +575,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		return $this->rewriteHead( $insContent );
 	}
 	
-
 	/**
 	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
 	 *

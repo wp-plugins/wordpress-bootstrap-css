@@ -14,7 +14,7 @@
 			<div class="row">
 				<div class="span6">
 					<ul>
-						<li><a href="http://bit.ly/QhYJzY" target="_blank"><strong>Worpit: Manage WordPress Better!</strong></a></li>
+						<li><a href="http://bit.ly/13tdUOi" target="_blank"><strong>Worpit: Manage WordPress Better!</strong></a></li>
 						<li><a href="http://bit.ly/Lxdugp">Content By Country WordPress Plugin</a></li>
 					</ul>
 				</div>
