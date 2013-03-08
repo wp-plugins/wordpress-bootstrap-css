@@ -1,16 +1,15 @@
 <?php
-
 /*
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.3.1.a
+Version: 2.3.1.b
 Author: Worpit
-Author URI: http://worpit.com/
+Author URI: http://icwp.io/v
 */
 
 /**
- * Copyright (c) 2012 Worpit <support@worpit.com>
+ * Copyright (c) 2013 Worpit <support@worpit.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -59,7 +58,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.1.a'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.1.b'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -360,11 +359,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				<form id="WorpitUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
 					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 					<input type="hidden" value="<?php echo $user_id; ?>" name="hlt_user_id" id="hlt_user_id">
-					<h4 style="margin:10px 0 3px;">Quick question: Do you manage more than 1 WordPress site and all the plugin updates every day?</h4>
+					<h4 style="margin:10px 0 3px;">Quick question: Do you manage more than 1 WordPress site and all those plugin updates every day?</h4>
 					<input type="submit" value="Cool, just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
 					<p>
-						Worpit, the friendly folks that brought you this cool plugin, can help you.
-						<a href="http://worpit.com/?src=wtb_update_notice" id="fromWorpit" title="Manage WordPress Better" target="_blank">Wanna know how</a>?<br />
+						Free up your admin time today and do it all from 1 place in a few clicks.
+						<a href="http://icwp.io/5" id="fromWorpit" title="Manage Multiple WordPress Sites Better" target="_blank">Wanna know how</a>?<br />
 					</p>
 					<div class=""></div>
 				</form>
@@ -670,7 +669,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		//Add the CSS link
 		$sReplace = '${1}';
-		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from http://worpit.com/ -->";
+		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from Worpit http://icwp.io/w/ -->";
 		
 		foreach ( $aIncludesList as $sInclude ) {
 			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sInclude.'" />';

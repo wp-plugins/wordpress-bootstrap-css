@@ -30,7 +30,7 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 			</div><!-- / span9 -->
 		
 			<div class="span3" id="side_widgets">
-		  		<?php echo getWidgetIframeHtml('side-widgets'); ?>
+		  		<?php echo getWidgetIframeHtml('side-widgets-wtb'); ?>
 			</div>
 		</div><!-- / row -->
 	

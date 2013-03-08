@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: dlgoodchild, paultgoodchild
-Donate link: http://worpit.com/
+Donate link: http://icwp.io/q
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.5
-Stable tag: 2.3.1.a
+Stable tag: 2.3.1.b
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -13,7 +13,7 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love Twitter Bootstrap on our [WordPress sites at Worpit](http://worpit.com/ "Worpit: Manage WordPress Better").
+We love Twitter Bootstrap on our [WordPress sites at Worpit](http://icwp.io/2 "Worpit: Manage WordPress Better").
 And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
 With this plugin, now you can!
@@ -25,7 +25,7 @@ With this plugin, now you can!
 *	Option to add JavaScript to the [HEAD] (defaults to end of [BODY] as is good practice)
 *	and more..
 
-To get the latest news and support go here: [WordPress Twitter Bootstrap CSS plugin](http://worpit.com/our-wordpress-plugins/wordpress-twitter-bootstrap-css-plugin-home/ "WordPress Twitter Bootstrap CSS Plugin Home") to see the release article on our site.
+To get the latest news and support go here: [WordPress Twitter Bootstrap CSS Plugin Home](http://icwp.io/8 "WordPress Twitter Bootstrap CSS Plugin Home") to see the release article on our site.
 
 **Why use Twitter Bootstrap?** 
 It's good practice to have a core, underlying CSS definition so that your website appears and acts consistently across all
@@ -140,7 +140,7 @@ Otherwise, consult your caching program's documentation.
 
 = Do you make any other plugins? =
 
-We also created the [Worpit Multiple WordPress Site Manager](http://worpit.com/?src=wtb_readme) for people with more than one WordPress site to manage.
+We also created the [Multiple WordPress Site Manager (Worpit) ](http://icwp.io/3) to make it easier for you manage all your WordPress sites in one place.
 
 Yes, we created [Custom Content By Country](http://wordpress.org/extend/plugins/custom-content-by-country/ "Custom Content By Country WordPress Plugin")
 plugin that lets you display content to users in specific regions.
@@ -186,12 +186,15 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 
 == Changelog ==
 
-[See Shortcodes Demo Here](http://worpit.com/our-wordpress-plugins/wordpress-shortcodes-demo/).
+[See Full Demos Of All Shortcodes Available In This Plugin](http://icwp.io/o).
 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Allow user to toggle include method for libraries.
+
+= 2.3.1.b =
+* UPDATED: LESS PHP to version 0.3.9 for full compatibility with Twitter Bootstrap 2.3
 
 = 2.3.1.a =
 * UPDATED: Bootstrap version to latest release 2.3.1
@@ -410,7 +413,7 @@ Skipped.
 * Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap POPOVER window
 * Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
 * Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TAB! Now you can create TAB'd content in your posts!
-* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://worpit.com/our-wordpress-plugins/wordpress-twitter-bootstrap-css-plugin-home/ "Worpit WordPress Twitter Bootstrap Plugin").
+* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://icwp.io/p "Worpit WordPress Twitter Bootstrap Plugin").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.
@@ -450,7 +453,8 @@ is temporary until we fix.
 
 == Upgrade Notice ==
 
-= 2.3.0 =
-* UPDATED: Bootstrap version to latest release 2.3.0
+= 2.3.1 =
+* UPDATED: LESS PHP to version 0.3.9 for full compatibility with Twitter Bootstrap 2.3
+* UPDATED: Bootstrap version to latest release 2.3.1
 * UPDATED: Normalize CSS to latest release 2.1.0 (https://github.com/necolas/normalize.css/blob/v2.1.0/CHANGELOG.md)
 * ADDED: Optimization where the list of CSS links to be included is only created once and then saved in the options table. This is a nice optimization so it's not done on every page load.
