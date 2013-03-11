@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Allows you to install Twitter Bootstrap CSS and Javascript files for your site, before all others.
-Version: 2.3.1.b
+Version: 2.3.1.c
 Author: Worpit
 Author URI: http://icwp.io/v
 */
@@ -33,7 +33,6 @@ Author URI: http://icwp.io/v
 require_once( dirname(__FILE__).'/src/worpit-plugins-base.php' );
 include_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
 include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
-include_once( dirname(__FILE__).'/hlt-rssfeed-widget.php' );
 
 function _hlt_e( $insStr ) {
 	_e( $insStr, 'hlt-wordpress-bootstrap-css' );
@@ -58,7 +57,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.1.b'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.1.c'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -184,6 +183,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( $pagenow == 'index.php' ) {
 			$sDashboardRssOption = self::getOption( 'hide_dashboard_rss_feed' );
 			if ( empty( $sDashboardRssOption ) || self::getOption( 'hide_dashboard_rss_feed' ) == 'N' ) {
+				include_once( dirname(__FILE__).'/hlt-rssfeed-widget.php' );
 				$oHLT_DashboardRssWidget = new HLT_DashboardRssWidget();
 			}
 		}
@@ -541,7 +541,9 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 			if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
 				//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js
-				$sUrlBootstrapJs = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/bootstrap'.$sExtension;
+				//Since version 2.3.0, now changed to:
+				////cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js
+				$sUrlBootstrapJs = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/js/bootstrap'.$sExtension;
 			}
 			else {
 				$sUrlBootstrapJs = self::$BOOSTRAP_URL.'js/bootstrap'.$sExtension;

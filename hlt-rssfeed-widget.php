@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2012 Worpit <support@worpit.com>
+ * Copyright (c) 2013 Worpit <support@worpit.com>
  * All rights reserved.
  * 
  * "WordPress Twitter Bootstrap CSS" is distributed under the GNU General Public License, Version 2,
