@@ -13,7 +13,7 @@ WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CS
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
 
-We love Twitter Bootstrap on our [WordPress sites at Worpit](http://icwp.io/2 "Worpit: Manage WordPress Better").
+We love Twitter Bootstrap on our [WordPress sites at iControlWP](http://icwp.io/2 "iControlWP: Secure WordPress Management").
 And we wanted a way to quickly link the latest Bootstrap CSS and Javascript to all pages, regardless of the WordPress Theme.
 
 With this plugin, now you can!
@@ -83,7 +83,7 @@ Alternatively using FTP:
 1.	Upload this whole folder to your '/wp-content/plugins/' directory
 1.	From the plugins page within Wordpress locate the plugin 'Wordpress Bootstrap CSS' and click Activate
 
-A new menu item will appear on the left-hand side called 'Worpit'.  Click this menu and select
+A new menu item will appear on the left-hand side called 'Twitter Bootstrap'.  Click this menu and select
 Bootstrap CSS.
 
 Select the CSS file as desired.
@@ -130,7 +130,7 @@ styles applied to it will take precedence over any previous styles.
 
 = Is WordPress Twitter Bootstrap CSS compatible with caching plugins? =
 
-The only caching plugin that Worpit recommends, and has decent experience with, is W3
+The only caching plugin that iControlWP recommends, and has decent experience with, is W3
 Total Cache.
 
 This plugin will automatically flush your W3TC cache when you save changes on this plugin (assuming you have
@@ -140,7 +140,7 @@ Otherwise, consult your caching program's documentation.
 
 = Do you make any other plugins? =
 
-We also created the [Multiple WordPress Site Manager (Worpit) ](http://icwp.io/3) to make it easier for you manage all your WordPress sites in one place.
+We also created the [Multiple WordPress Site Manager (iControlWP) ](http://icwp.io/3) to make it easier for you manage all your WordPress sites in one place.
 
 Yes, we created [Custom Content By Country](http://wordpress.org/extend/plugins/custom-content-by-country/ "Custom Content By Country WordPress Plugin")
 plugin that lets you display content to users in specific regions.
@@ -157,15 +157,6 @@ This is likely due to you not linking to the latest version of JQuery. Twitter B
 version (v1.7.2 at the time of writing). There is now ( plugin v2.0.3.1+ ) an option to replace the
 JQuery of your WordPress installation with the latest version served from Google CDN. Try this if you're
 having issues with Popovers etc., or better yet upgrade your WordPress to the latest version.
-
-= What's the reason for the Worpit menu? =
-
-We're planning on releasing more plugins in the future and they'll use much of the same code base. In this way
-we hope to minimize extra and unnecessary code and give your website a far superior browsing experience without
-the typical performance penalty that comes with too many plugins.
-
-Our plugin interface will be consistent and grouped together where possible so you don't have to hunt down the
-settings page each time (as is the case with most plugins out there).
 
 == Screenshots ==
 
@@ -192,6 +183,11 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
 * Allow user to toggle include method for libraries.
+
+= 2.3.1-2 =
+* ADDED: The option to enqueue the CSS styles using the WordPress styles enqueue option. There's no guarantee that this will add the files so that they're first CSS, so not recommended.
+* CHANGED: Vastly simplified the logic for CSS files being included so it's a little easier to maintain.
+* CHANGED: references to Worpit are now iControlWP.
 
 = 2.3.1-1 =
 * FIX: CDNJS changed their path for their Bootstrap Javscript files since versin 2.3.0 so the code now reflects this.
@@ -293,9 +289,9 @@ The shortcodes are: [TBS_COLLAPSE] (parent) and {TBS_COLLAPSE_GROUP]. You need t
 * FIXED: Wasn't properly linking to Google Prettify CSS and JS files when the option was enabled.
 * UPDATED: Yahoo! YUI v3 to version 3.5.1.
 * UPDATED: Uses serialized data for the LESS CSS plugin options - greatly reducing database calls on the admin section and database usage.
-* UPDATED: Plugin now uses Worpit's standard plugin structure for dynamically creating plugin options pages. The whole plugin is more stable and more reliable.
+* UPDATED: Plugin now uses iControlWP's standard plugin structure for dynamically creating plugin options pages. The whole plugin is more stable and more reliable.
 * UPDATED: Now flushes W3 Total Cache (if installed) when you update your LESS CSS options also.
-* ADDED: Worpit feed to the news feed.
+* ADDED: iControlWP feed to the news feed.
 
 = 2.0.4.1 =
 
@@ -416,7 +412,7 @@ Skipped.
 * Shortcode [TBS_POPOVER] : produces a Twitter Bootstrap POPOVER window
 * Shortcode [TBS_DROPDOWN] + [TBS_DROPDOWN_OPTION] : produces a Twitter Bootstrap styled DROPDOWN MENU
 * Shortcode [TBS_TABGROUP] + [TAB] : produces a Twitter Bootstrap TAB! Now you can create TAB'd content in your posts!
-* More documentation will be forthcoming in the [Worpit WordPress Plugins Page](http://icwp.io/p "Worpit WordPress Twitter Bootstrap Plugin").
+* More documentation will be forthcoming in the [iControlWP WordPress Plugins Page](http://icwp.io/p "iControlWP WordPress Twitter Bootstrap Plugin").
 
 = 0.7 =
 * Quick fix for Login and Register pages - for now there is no Bootstrap added to the login/register pages whatsoever.

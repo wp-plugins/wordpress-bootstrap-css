@@ -17,10 +17,10 @@ class HLT_Plugin {
 	static public $PLUGIN_BASENAME;
 	static public $OPTION_PREFIX;
 
-	const ParentTitle		= 'Worpit Plugins';
+	const ParentTitle		= 'iControlWP Plugins';
 	const ParentName		= 'Twitter Bootstrap';
 	const ParentPermissions	= 'manage_options';
-	const ParentMenuId		= 'worpit';
+	const ParentMenuId		= 'icwp';
 	const VariablePrefix	= 'worpit';
 	const BaseOptionPrefix	= 'worpit_';
 
@@ -39,7 +39,7 @@ class HLT_Plugin {
 	public function __construct() {
 
 		add_action( 'plugins_loaded', array( &$this, 'onWpPluginsLoaded' ) );
-		add_action( 'init', array( &$this, 'onWpInit' ), 1 );
+		add_action( 'init', array( &$this, 'onWpInit' ), 0 );
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( &$this, 'onWpAdminInit' ) );
 			add_action( 'admin_notices', array( &$this, 'onWpAdminNotices' ) );
@@ -105,7 +105,7 @@ class HLT_Plugin {
 			$this->handlePluginUpgrade();
 		}
 
-		if ( $this->isWorpitPluginAdminPage() ) {
+		if ( $this->isIcwpPluginAdminPage() ) {
 			//Handle form submit
 			$this->handlePluginFormSubmit();
 		}
@@ -116,7 +116,7 @@ class HLT_Plugin {
 	public function onWpAdminInit() {
 
 		//Do Plugin-Specific Admin Work
-		if ( $this->isWorpitPluginAdminPage() ) {
+		if ( $this->isIcwpPluginAdminPage() ) {
 
 			//Links up CSS styles for the plugin itself (set the admin bootstrap CSS as a dependency also)
 			$this->enqueuePluginAdminCss();
@@ -128,7 +128,7 @@ class HLT_Plugin {
 
 		$sFullParentMenuId = $this->getFullParentMenuId();
 
-		add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, $sFullParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'worpit_16x16.png' ) );
+		add_menu_page( self::ParentTitle, self::ParentName, self::ParentPermissions, $sFullParentMenuId, array( $this, 'onDisplayMainMenu' ), $this->getImageUrl( 'icontrolwp_16x16.png' ) );
 
 		//Create and Add the submenu items
 		$this->createPluginSubMenuItems();
@@ -369,7 +369,7 @@ class HLT_Plugin {
 		return $sCollated;
 	}//collateAllFormInputsForOptionsSection
 
-	protected function isWorpitPluginAdminPage() {
+	protected function isIcwpPluginAdminPage() {
 
 		$sSubPageNow = isset( $_GET['page'] )? $_GET['page']: '';
 		if ( is_admin() && !empty($sSubPageNow) && (strpos( $sSubPageNow, $this->getFullParentMenuId() ) === 0 )) { //admin area, and the 'page' begins with 'worpit'
@@ -377,7 +377,7 @@ class HLT_Plugin {
 		}
 
 		return false;
-	}//isWorpitPluginAdminPage
+	}//isIcwpPluginAdminPage
 	
 	protected function deleteAllPluginDbOptions() {
 

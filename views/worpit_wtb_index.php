@@ -6,8 +6,8 @@
 	<div class="bootstrap-wpadmin">
 
 		<div class="page-header">
-			<a href="http://icwp.io/t" target="_blank"><div class="icon32" id="worpit-icon"><br /></div></a>
-			<h2><?php _hlt_e( 'Dashboard :: Twitter Bootstrap Plugin from Worpit' ); ?></h2><?php _hlt_e( '' ); ?>
+			<a href="http://icwp.io/t" target="_blank"><div class="icon32" id="icontrolwp-icon"><br /></div></a>
+			<h2><?php _hlt_e( 'Dashboard :: Twitter Bootstrap Plugin (from iControlWP)' ); ?></h2><?php _hlt_e( '' ); ?>
 		</div>
 
 		<?php include_once( dirname(__FILE__).'/widgets/bootstrapcss_common_widgets.php' ); ?>
@@ -62,9 +62,9 @@
 				<p>Check the <a href="http://icwp.io/m" target="_blank">Twitter Bootstrap Plugin Shortcodes Demo Page</a> for complete demos for all shortcodes!</p>
 				<p>The following are just some examples of how you can use the shortcodes with the associated HTML output</p>
 				<ul>
-					<li><span class="code">[TBS_BUTTON id="mySpecialButton" link="http://worpit.com"]Click Me[/TBS_BUTTON]</span>
+					<li><span class="code">[TBS_BUTTON id="mySpecialButton" link="http://www.icontrolwp.com"]Click Me[/TBS_BUTTON]</span>
 					<p>will give the following HTML:</p>
-					<p class="code">&lt;a href="http://worpit.com/" class="btn"&gt;Click Me&lt;/a&gt;</p>
+					<p class="code">&lt;a href="http://www.icontrolwp.com/" class="btn"&gt;Click Me&lt;/a&gt;</p>
 					<p class="code-description">This will produce a full-featured button with modern gradient, hover and click styles.</p>
 					</li>
 				</ul>
@@ -79,7 +79,7 @@
 				</ul>
 			</div>
 			<div class="shortcode-usage">
-				<p>There will be much more <a href="http://icwp.io/s" target="_blank">documentation forthcoming on the Worpit website</a>.</a></p>
+				<p>There will be much more <a href="http://icwp.io/s" target="_blank">documentation forthcoming on the iControlWP website</a>.</a></p>
 			</div>
 		  </div>
 		  </div><!-- / span6 -->

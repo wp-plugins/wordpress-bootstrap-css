@@ -1,15 +1,13 @@
 <?php
-
 include_once( dirname(__FILE__).WORPIT_DS.'worpit_options_helper.php' );
 include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widgets.php' );
-	
 ?>
 <div class="wrap">
 	<div class="bootstrap-wpadmin">
 
 		<div class="page-header">
-			<a href="http://worpit.com/"><div class="icon32" id="worpit-icon"><br /></div></a>
-			<h2><?php _hlt_e( 'Bootstrap Options :: Twitter Bootstrap Plugin from Worpit' ); ?></h2><?php _hlt_e( '' ); ?>
+			<a href="http://wwwicontrolwp.com/"><div class="icon32" id="icontrolwp-icon"><br /></div></a>
+			<h2><?php _hlt_e( 'Bootstrap Options :: Twitter Bootstrap Plugin (from iControlWP)' ); ?></h2><?php _hlt_e( '' ); ?>
 		</div>
 		
 		<div class="row">

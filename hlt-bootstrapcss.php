@@ -1,15 +1,15 @@
 <?php
 /*
 Plugin Name: WordPress Twitter Bootstrap CSS
-Plugin URI: http://worpit.com/wordpress-twitter-bootstrap-css-plugin-home/
-Description: Now you can install Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 2.3.1-1
-Author: Worpit
+Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
+Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
+Version: 2.3.1-2
+Author: iControlWP
 Author URI: http://icwp.io/v
 */
 
 /**
- * Copyright (c) 2013 Worpit <support@worpit.com>
+ * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -57,7 +57,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.1-1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.1-2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -95,48 +95,49 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	protected function initPluginOptions() {
 		
 		$this->m_aBootstrapOptions = array( 'select',
-					array( 'none', 			'None' ),
-					array( 'twitter',		'Twitter Bootstrap CSS v'.self::TwitterVersion ),
-					array( 'yahoo-reset',	'Yahoo UI Reset CSS v2.9.0' ),
-					array( 'yahoo-reset-3',	'Yahoo UI Reset CSS v'.self::YUI3Version ),
-					array( 'normalize',		'Normalize CSS' )
+			array( 'none', 			'None' ),
+			array( 'twitter',		'Twitter Bootstrap CSS v'.self::TwitterVersion ),
+			array( 'yahoo-reset',	'Yahoo UI Reset CSS v2.9.0' ),
+			array( 'yahoo-reset-3',	'Yahoo UI Reset CSS v'.self::YUI3Version ),
+			array( 'normalize',		'Normalize CSS' )
 		);
 
 		$this->m_aPluginOptions_BootstrapSection = 	array(
-				'section_title' => 'Choose Bootstrap CSS Options',
-				'section_options' => array(
-					array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,		'Bootstrap Option', 'Choose Your Preferred Bootstrap Option', '' ),
-					array( 'inc_responsive_css',	'',		'N', 		'checkbox',		'Responsive CSS', 'Include Bootstrap Responsive CSS', "Alone, this doesn't make your WordPress site 'responsive'." ),
-					array( 'customcss',				'',		'N', 		'checkbox',		'Custom Reset CSS', 'Enable custom CSS link', '(note: linked after any bootstrap/reset CSS selected above)' ),
-					array( 'customcss_url',			'',		'http://', 	'text',			'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
+			'section_title' => 'Choose Bootstrap CSS Options',
+			'section_options' => array(
+				array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,		'Bootstrap Option', 'Choose Your Preferred Bootstrap Option', '' ),
+				array( 'inc_responsive_css',	'',		'N', 		'checkbox',		'Responsive CSS', 'Include Bootstrap Responsive CSS', "Alone, this doesn't make your WordPress site 'responsive'." ),
+				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',		'Use WordPress', "Not recommended. With WordPress there's NO guarantee the CSS will come first (which it should). But check this box if you have problems." ),
+				array( 'customcss',				'',		'N', 		'checkbox',		'Custom Reset CSS', 'Enable custom CSS link', '(note: linked after any bootstrap/reset CSS selected above)' ),
+				array( 'customcss_url',			'',		'http://', 	'text',			'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
 			),
 		);
 		$this->m_aPluginOptions_TwitterBootstrapSection = 	array(
-				'section_title' => 'Twitter Bootstrap Javascript Library Options',
-				'section_options' => array(
-					array( 'all_js',		'',		'none', 	'checkbox',		'All Javascript Libraries', 'Include ALL Bootstrap Javascript libraries', 'This will also include the jQuery library if it is not already included' ),
-					array( 'js_head',		'',		'N', 		'checkbox',		'JavaScript Placement', 'Place Javascript in &lt;HEAD&gt;', 'Only check this option if know you need it.' ),
+			'section_title' => 'Twitter Bootstrap Javascript Library Options',
+			'section_options' => array(
+				array( 'all_js',		'',		'none', 	'checkbox',		'All Javascript Libraries', 'Include ALL Bootstrap Javascript libraries', 'This will also include the jQuery library if it is not already included' ),
+				array( 'js_head',		'',		'N', 		'checkbox',		'JavaScript Placement', 'Place Javascript in &lt;HEAD&gt;', 'Only check this option if know you need it.' ),
 			),
 		);
 		$this->m_aPluginOptions_ExtraTwitterSection = 	array(
-				'section_title' => 'Extra Twitter Bootstrap Options',
-				'section_options' => array(
-					array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes', 'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
-					array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified', 'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
-					array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS', 'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
-					array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery', 'Replace JQuery library with JQuery from CDNJS', 'In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS.' ),
+			'section_title' => 'Extra Twitter Bootstrap Options',
+			'section_options' => array(
+				array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes', 'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
+				array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified', 'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
+				array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS', 'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
+				array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery', 'Replace JQuery library with JQuery from CDNJS', 'In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS.' ),
 			),
 		);
 		$this->m_aPluginOptions_MiscOptionsSection = 	array(
-				'section_title' => 'Miscellaneous Plugin Options',
-				'section_options' => array(
-					array( 'use_cdnjs',							'',		'N', 		'checkbox',		'Use CDNJS', 'Link to CDNJS libraries', 'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).' ),
-					array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
-					array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor', 'Only select this if you want to have Bootstrap styles show in the editor.' ),
-					array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
-					array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the Worpit Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
-					array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
-					array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
+			'section_title' => 'Miscellaneous Plugin Options',
+			'section_options' => array(
+				array( 'use_cdnjs',							'',		'N', 		'checkbox',		'Use CDNJS', 'Link to CDNJS libraries', 'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).' ),
+				array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
+				array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor', 'Only select this if you want to have Bootstrap styles show in the editor.' ),
+				array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
+				array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the iControlWP Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
+				array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
+				array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
 											Google Prettify Javascript library for use with these code blocks.' ),
 			),
 		);
@@ -150,12 +151,19 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		return true;
 		
 	}//initPluginOptions
+	
+	public function onWpPluginsLoaded() {
+		parent::onWpPluginsLoaded();
+	}//onWpPluginsLoaded
 
 	public function onWpInit() {
 		parent::onWpInit();
 		
 		if ( !is_admin() && !in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php')) && !isset( $_GET['thesis_editor'] ) ) {
-			ob_start( array( &$this, 'onOutputBufferFlush' ) );
+			
+			if ( self::getOption( 'enq_using_wordpress' ) !== 'Y' ) { //see end of file for the alternative (enqueueing)
+				ob_start( array( &$this, 'onOutputBufferFlush' ) );
+			}
 		}
 
 		add_action( 'wp_enqueue_scripts', array( &$this, 'onWpPrintStyles' ) );
@@ -188,7 +196,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
-		if ( $this->isWorpitPluginAdminPage()) {
+		if ( $this->isIcwpPluginAdminPage()) {
 			
 			//JS color picker for the Bootstrap LESS
 			if ( $_GET['page'] == $this->getSubmenuId( 'bootstrap-less' ) ) {
@@ -201,8 +209,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			
 		}
 		
-		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a Worpit admin page.
-		if ( $this->isWorpitPluginAdminPage() || ( is_admin() && self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) ) {
+		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a iControlWP admin page.
+		if ( $this->isIcwpPluginAdminPage() || ( is_admin() && self::getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) ) {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'enqueueBootstrapAdminCss' ), 99 );
 		}
 		
@@ -354,16 +362,16 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			ob_start();
 			?>
 				<style>
-					a#fromWorpit { padding: 0 5px; border-bottom: 1px dashed rgba(0,0,0,0.1); color: blue; font-weight: bold; }
+					a#fromIcwp { padding: 0 5px; border-bottom: 1px dashed rgba(0,0,0,0.1); color: blue; font-weight: bold; }
 				</style>
-				<form id="WorpitUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
+				<form id="IcwpUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
 					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 					<input type="hidden" value="<?php echo $user_id; ?>" name="hlt_user_id" id="hlt_user_id">
-					<h4 style="margin:10px 0 3px;">Quick question: Do you manage more than 1 WordPress site and all those plugin updates every day?</h4>
-					<input type="submit" value="Cool, just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
+					<h4 style="margin:10px 0 3px;">Quick question: Do you manage multiple WordPress sites and need a better way to do it?</h4>
+					<input type="submit" value="Cool, but just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
 					<p>
-						Free up your admin time today and do it all from 1 place in a few clicks.
-						<a href="http://icwp.io/5" id="fromWorpit" title="Manage Multiple WordPress Sites Better" target="_blank">Wanna know how</a>?<br />
+						Free up your time today and do it all from 1 place in a few clicks.
+						<a href="http://icwp.io/5" id="fromIcwp" title="iControlWP: Secure WordPress Management" target="_blank">Tell me how</a>!<br />
 					</p>
 					<div class=""></div>
 				</form>
@@ -572,6 +580,28 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 	}//onWpEnqueueScripts
 	
+	public function onEnqueueResetCss() {
+		if ( is_admin()
+				|| in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))
+				|| isset( $_GET['thesis_editor'] )
+				|| ( self::getOption( 'enq_using_wordpress' ) !== 'Y' )
+			) {
+			return true;
+		}
+
+		$aIncludesList = $this->getCssIncludeUrls();
+		
+		if ( empty( $aIncludesList ) ) {
+			return true;
+		}
+		
+		foreach( $aIncludesList as $sKey => $sCssLinkUrl ) {
+			wp_register_style( $sKey, $sCssLinkUrl );
+			wp_enqueue_style( $sKey );
+		}
+
+	}
+	
 	public function onOutputBufferFlush( $insContent ) {
 		return $this->rewriteHead( $insContent );
 	}
@@ -583,104 +613,146 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	 */
 	public function rewriteHead( $insContents ) {
 		
-		/** TODO : this whole thing should be optimized to run only once or upon a plugin upgrade **/
+		$aIncludesList = $this->getCssIncludeUrls();
 		
-		$aIncludesList = self::getOption( 'includes_list' );
-		
-		if ( !is_array($aIncludesList) ) { //fallback to the original method of inclusion
-			
-			$aIncludesList = array();
-			
-			$aPossibleOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
-			
-			$sIncludeOption = self::getOption( 'option' );
-			$fResponsive = ( self::getOption( 'inc_responsive_css' ) == 'Y' );
-			$fCustomCss = ( self::getOption( 'customcss' ) == 'Y' );
-			
-			$sMinifiedCssOption = ( self::getOption( 'use_minified_css' ) == 'Y' )? '.min.css' : '.css';
-			
-			if ( !in_array( $sIncludeOption, $aPossibleOptions ) && !$fCustomCss ) {
-				return $insContents;
-			}
-			
-			$aLocalCss = array(
-				'twitter_less'				=> self::$BOOSTRAP_URL.'css/bootstrap.less'.$sMinifiedCssOption,
-				'twitter_responsive_less'	=> self::$BOOSTRAP_URL.'css/bootstrap-responsive.less'.$sMinifiedCssOption,
-				'yahoo-reset'				=> $this->getCssURL( 'yahoo-2.9.0.min.css' ),
-				'yahoo-reset-3'				=> $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version,
-			);
-			
-			$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; //default is to serve it "local"
-			
-			//Use CDNJS only if chosen to do so AND you're not using LESS-compiled libraries
-			if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
-				
-				// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css 
-				$aLocalCss[ 'normalize' ] = self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css';
-				
-				//only if not using less-compiler
-				if ( self::getOption( 'use_compiled_css' ) != 'Y' ) {
-					$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
-				}
-				
-			}
-			else {
-				$aLocalCss[ 'normalize' ] = $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion;
-			}
-			$aLocalCss[ 'twitter' ] = $sTwitterStem.$sMinifiedCssOption;
-			$aLocalCss[ 'twitter_responsive' ] = $sTwitterStem.'-responsive'.$sMinifiedCssOption;
-			
-			//link to the Twitter LESS-compiled CSS (only if the file exists)
-			if ( $sIncludeOption == 'twitter' && self::getOption( 'use_compiled_css' ) == 'Y'
-					&& file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap.less'.$sMinifiedCssOption )
-					) {
-				$sIncludeLink = $aLocalCss[ 'twitter_less' ];
-			}
-			else {
-				$sIncludeLink = $aLocalCss[ $sIncludeOption ];
-			}
-			
-			$aIncludesList[] = $sIncludeLink;
-			
-			//Add the Responsive CSS link
-			if ( $fResponsive && $sIncludeOption == 'twitter' ) {
-				
-				//link to the Twitter LESS-compiled CSS (only if the file exists)
-				if ( self::getOption( 'use_compiled_css' ) == 'Y' && file_exists( self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap-responsive.less'.$sMinifiedCssOption ) ) {
-					$sResponsiveCssLink = $aLocalCss['twitter_responsive_less'];
-				}
-				else {
-					$sResponsiveCssLink = $aLocalCss['twitter_responsive'];
-				}
-				$aIncludesList[] = $sResponsiveCssLink;
-			}
-			
-			//Custom/Reset CSS
-			if ( $fCustomCss ) {
-				$sCustomCssUrl = self::getOption( 'customcss_url' );
-				if ( !empty($sCustomCssUrl) ) {
-					$aIncludesList[] = $sCustomCssUrl;
-				}
-			}
-			
-			self::updateOption( 'includes_list', $aIncludesList );
-		}
-		else {
-			//
+		if ( empty( $aIncludesList ) ) {
+			return $insContents;
 		}
 		
 		//Add the CSS link
 		$sReplace = '${1}';
-		$sReplace .= "\n<!-- This site uses WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from Worpit http://icwp.io/w/ -->";
+		$sReplace .= "\n<!-- This site uses the WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from iControlWP http://icwp.io/w/ -->";
 		
-		foreach ( $aIncludesList as $sInclude ) {
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sInclude.'" />';
+		foreach ( $aIncludesList as $sKey => $sIncludeLink ) {
+			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sIncludeLink.'" />';
 		}
 
-		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from Worpit. -->";
+		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from iControlWP. -->";
 		
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
-		return preg_replace( $sRegExp, $sReplace, $insContents );
+		return preg_replace( $sRegExp, $sReplace, $insContents, 1 );
+	}
+	
+	protected function getCssIncludeUrls() {
+		
+		$aPossibleIncludeOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
+		$sIncludeOption = self::getOption( 'option' );
+		
+		// An unsupported option, so just return add the custom CSS.
+		if ( !in_array( $sIncludeOption, $aPossibleIncludeOptions ) ) {
+			
+			$aIncludesList = array();
+			$this->addCustomCssLink( $aIncludesList );
+			return $aIncludesList;
+		}
+
+		// We save the inclusions list so we don't work it out every page load.
+		$aIncludesList = self::getOption( 'includes_list' );
+
+		if ( !is_array($aIncludesList) ) { //process the list of CSS to be included
+
+			$aIncludesList = array();
+
+			// 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize'
+			switch ( $sIncludeOption ) {
+				case 'twitter':
+					$aIncludesList = $this->getTwitterCssUrls( self::getOption( 'use_minified_css' ) == 'Y' );
+					break;
+				case 'normalize':
+					if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+						// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css
+						$aIncludesList = array( self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css' );
+					}
+					else {
+						$aIncludesList = array( 'normalize' => $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion );
+					}
+					break;
+				case 'yahoo-reset':
+					$aIncludesList = array( 'yahoo-reset-290' => $this->getCssURL( 'yahoo-2.9.0.min.css' ) );
+					break;
+				case 'yahoo-reset-3':
+					$aIncludesList = array( 'yahoo-reset-3' => $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version );
+					break;
+				default:
+					break;
+			}
+			
+			// At this point $aIncludesList should be an array of all the URLs to be included with their labels. 
+				
+			// Now add Custom/Reset CSS.
+			$this->addCustomCssLink( $aIncludesList );
+				
+			self::updateOption( 'includes_list', $aIncludesList ); //update our cached list
+		}
+
+		return $aIncludesList;
+	}
+	
+	protected function addCustomCssLink( &$inaCssList = array() ) {
+
+		if ( self::getOption( 'customcss' ) == 'Y' ) {
+			$sCustomCssUrl = self::getOption( 'customcss_url' );
+			if ( !empty( $sCustomCssUrl ) ) {
+				$inaCssList[ 'custom-reset' ] = $sCustomCssUrl;
+			}
+		}
+	}
+	
+	/**
+	 * Depending on the configuration options set, will provide an array of the Twitter URLs to be included
+	 *  
+	 * @param $infMinified
+	 * @return Array
+	 */
+	protected function getTwitterCssUrls( $infMinified = false ) {
+
+		$sCssFileExtension = $infMinified? '.min.css' : '.css';
+		$fResponsive = self::getOption( 'inc_responsive_css' ) == 'Y';
+				
+		// link to the Twitter LESS-compiled CSS (only if the files exists)
+		if ( self::getOption( 'use_compiled_css' ) == 'Y' ) {
+			$aUrls = array();
+			$fValid = false;
+			$sLessStemDir = self::$BOOSTRAP_DIR.'css'.WORPIT_DS.'bootstrap';
+			$sLessStemUrl = self::$BOOSTRAP_URL.'css/bootstrap';
+			if ( file_exists( $sLessStemDir.'.less'.$sCssFileExtension ) ) {
+				$aUrls[ 'twitter-bootstrap-less' ] = $sLessStemUrl.'.less'.$sCssFileExtension;
+				$fValid = true;
+				if ( $fResponsive ) {
+//It seems the less compiler isn't (or never has?) created the responsive less files
+// 					if ( file_exists( $sLessStemDir.'-responsive.less'.$sCssFileExtension ) ) {
+// 						$aUrls[ 'twitter-bootstrap-responsive-less' ] = $sLessStemUrl.'-responsive.less'.$sCssFileExtension;
+					if ( file_exists( $sLessStemDir.'-responsive'.$sCssFileExtension ) ) {
+						$aUrls[ 'twitter-bootstrap-responsive-less' ] = $sLessStemUrl.'-responsive'.$sCssFileExtension;
+						$fValid = true;
+					}
+					else {
+						$fValid = false;
+					}
+				}
+			}
+			// If we were able to get all the URLs we were supposed to for LESS, return them now.
+			if ( $fValid ) {
+				return $aUrls;
+			}
+		}
+
+		// Determine the Twitter URL stem based on local or if CDNJS selected
+		if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
+			$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
+		}
+		else {
+			$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; // default is to serve it "local"
+		}
+
+		$aUrls = array();
+		// Add the Twitter URLs
+		$aUrls[ 'twitter-bootstrap' ] = $sTwitterStem.$sCssFileExtension;
+		if ( $fResponsive ) {
+			$aUrls[ 'twitter-bootstrap-responsive' ] = $sTwitterStem.'-responsive'.$sCssFileExtension;
+		}
+		
+		return $aUrls;
 	}
 	
 	protected function checkUrlValid( $insUrl ) {
@@ -763,3 +835,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 endif;
 
 $oHLT_BootstrapCss = new HLT_BootstrapCss();
+
+// Trying to enque the style as early as possible.
+add_action( 'wp_enqueue_scripts', array( $oHLT_BootstrapCss, 'onEnqueueResetCss' ), 0 );

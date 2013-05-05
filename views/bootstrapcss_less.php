@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2012 Worpit <support@worpit.com>
+ * Copyright (c) 2012 iControlWP <support@icontrolwp.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -114,8 +114,8 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 	
 	<div class="bootstrap-wpadmin">
 		<div class="page-header">
-			<a href="http://worpit.com/"><div class="icon32" id="worpit-icon">&nbsp;</div></a>
-			<h2><?php _hlt_e( 'LESS Compiler :: Twitter Bootstrap Plugin from Worpit' ); ?></h2>
+			<a href="http://www.icontrolwp.com/"><div class="icon32" id="icontrolwp-icon">&nbsp;</div></a>
+			<h2><?php _hlt_e( 'LESS Compiler :: Twitter Bootstrap Plugin (from iControlWP)' ); ?></h2>
 		</div>
 
 		<div class="row">
