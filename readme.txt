@@ -4,7 +4,7 @@ Donate link: http://icwp.io/q
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.5.1
-Stable tag: 2.3.1-1
+Stable tag: 2.3.1-2
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -182,15 +182,17 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
-* Allow user to toggle include method for libraries.
 
 = 2.3.1-2 =
 * ADDED: The option to enqueue the CSS styles using the WordPress styles enqueue option. There's no guarantee that this will add the files so that they're first CSS, so not recommended.
 * CHANGED: Vastly simplified the logic for CSS files being included so it's a little easier to maintain.
 * CHANGED: references to Worpit are now iControlWP.
+* FIX: Using use the plugin's original method to include the CSS will only ever make the necessary code replacement on the head element once. (http://wordpress.org/support/topic/css-added-outside-the-head)
+* UPDATED: Normalize to version 2.1.1
+* CHANGED: Yahoo! Reset to version 3.10.0.
 
 = 2.3.1-1 =
-* FIX: CDNJS changed their path for their Bootstrap Javscript files since versin 2.3.0 so the code now reflects this.
+* FIX: CDNJS changed their path for their Bootstrap Javscript files since version 2.3.0 so the code now reflects this.
 
 = 2.3.1.b =
 * UPDATED: LESS PHP to version 0.3.9 for full compatibility with Twitter Bootstrap 2.3

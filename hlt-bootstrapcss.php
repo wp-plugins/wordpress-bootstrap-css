@@ -50,8 +50,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const TwitterVersion			= '2.3.1'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '1.4.0';
-	const NormalizeVersion			= '2.0.1';
-	const YUI3Version				= '3.6.0';
+	const NormalizeVersion			= '2.1.1';
+	const YUI3Version				= '3.10.0';
 	
 	const CdnjsStem					= '//cdnjs.cloudflare.com/ajax/libs/'; //All cdnjs libraries are under this path
 	
@@ -99,7 +99,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			array( 'twitter',		'Twitter Bootstrap CSS v'.self::TwitterVersion ),
 			array( 'yahoo-reset',	'Yahoo UI Reset CSS v2.9.0' ),
 			array( 'yahoo-reset-3',	'Yahoo UI Reset CSS v'.self::YUI3Version ),
-			array( 'normalize',		'Normalize CSS' )
+			array( 'normalize',		'Normalize CSS v'.self::NormalizeVersion )
 		);
 
 		$this->m_aPluginOptions_BootstrapSection = 	array(
@@ -107,7 +107,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'section_options' => array(
 				array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,		'Bootstrap Option', 'Choose Your Preferred Bootstrap Option', '' ),
 				array( 'inc_responsive_css',	'',		'N', 		'checkbox',		'Responsive CSS', 'Include Bootstrap Responsive CSS', "Alone, this doesn't make your WordPress site 'responsive'." ),
-				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',		'Use WordPress', "Not recommended. With WordPress there's NO guarantee the CSS will come first (which it should). But check this box if you have problems." ),
+				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',		'Use WordPress System', "Not recommended. Use the WordPress CSS enqueue system to include the CSS links. This can't guarantee the file will be loaded first (which they should be)." ),
 				array( 'customcss',				'',		'N', 		'checkbox',		'Custom Reset CSS', 'Enable custom CSS link', '(note: linked after any bootstrap/reset CSS selected above)' ),
 				array( 'customcss_url',			'',		'http://', 	'text',			'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
 			),
@@ -661,7 +661,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				case 'normalize':
 					if ( self::getOption( 'use_cdnjs' ) == 'Y' ) {
 						// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css
-						$aIncludesList = array( self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css' );
+						$aIncludesList = array( 'normalize' => self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css' );
 					}
 					else {
 						$aIncludesList = array( 'normalize' => $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion );
