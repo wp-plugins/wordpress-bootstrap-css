@@ -12,6 +12,7 @@
 
 		<?php include_once( dirname(__FILE__).'/widgets/bootstrapcss_common_widgets.php' ); ?>
 
+		<?php if ( $worpit_fShowAds ) : ?>
 		<div class="row" id="worpit_promo">
 		  <div class="span12">
 		  	<?php echo getWidgetIframeHtml( 'dashboard-widget-worpit-wtb' ); ?>
@@ -23,6 +24,8 @@
 		  	<?php echo getWidgetIframeHtml('dashboard-widget-developerchannel-wtb'); ?>
 		  </div>
 		</div><!-- / row -->
+		
+		<?php endif; ?>
 		
 		<div class="row" id="tbs_docs">
 		  <div class="span6" id="tbs_docs_shortcodes">

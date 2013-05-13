@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2012 iControlWP <support@icontrolwp.com>
+ * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -131,7 +131,7 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 			</div>
 		</div>
 		<div class="row">
-			<div class="span9 <?php echo ( $worpit_compiler_enabled? 'enabled_section': 'disabled_section' ); ?>">
+			<div class="<?php echo $worpit_fShowAds? 'span9' : 'span12'; ?> <?php echo ( $worpit_compiler_enabled? 'enabled_section': 'disabled_section' ); ?>">
 				<form action="<?php echo ( $worpit_compiler_enabled? $worpit_form_action: '' ) ; ?>" method="post" class="form-horizontal">
 				<?php
 					wp_nonce_field( $worpit_nonce_field );
@@ -147,9 +147,12 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 				</div>
 				</form>
 			</div><!-- / span9 -->
+		
+			<?php if ( $worpit_fShowAds ) : ?>
 			<div class="span3" id="side_widgets">
-	  			<?php echo getWidgetIframeHtml( 'side-widgets-wtb' ); ?>
+		  		<?php echo getWidgetIframeHtml( 'side-widgets-wtb' ); ?>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div><!-- / bootstrap-wpadmin -->
 </div><!-- / wrap -->

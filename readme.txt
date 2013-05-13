@@ -4,11 +4,13 @@ Donate link: http://icwp.io/q
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.5.1
-Stable tag: 2.3.1-2
+Stable tag: 2.3.1-3
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
 == Description ==
+
+Support The Plugin: [Go Ad free](http://www.icontrolwp.com/2013/05/remove-ads-support-wordpress-twitter-bootstrap-plugin/)
 
 What is Twitter Bootstrap?
 It's a CSS and Javascript framework that helps boost your site design and functionality quickly.
@@ -87,6 +89,15 @@ A new menu item will appear on the left-hand side called 'Twitter Bootstrap'.  C
 Bootstrap CSS.
 
 Select the CSS file as desired.
+
+= How can I remove the ads and marketing links? =
+
+Our bread and butter is iControlWP multiple WordPress site management, which costs a few cents a month. Whenever you use iControlWP
+to manage your sites and your site is connected to the service, the plugin will automatically remove all marketing / ads from the admin interface.
+
+So by using our services, you get a great service for one, and also support us by contributing and helping with the ongoing development of our plugins.
+
+To understand why it makes sense to financially support free plugin development, please read: http://blog.pinboard.in/2011/12/don_t_be_a_free_user/
 
 = How can I use the WordPress Twitter Bootstrap Shortcodes? =
 
@@ -182,6 +193,9 @@ Don't select this unless you know you need it - no harm if you do, but no point 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
+
+= 2.3.1-3 =
+* ADDED: The ability/option to hide all ads - this is simply achieved by purchasing an iControlWP subscription. See FAQ.
 
 = 2.3.1-2 =
 * ADDED: The option to enqueue the CSS styles using the WordPress styles enqueue option. There's no guarantee that this will add the files so that they're first CSS, so not recommended.

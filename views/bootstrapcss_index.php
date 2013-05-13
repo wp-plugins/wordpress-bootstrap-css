@@ -11,7 +11,7 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 		</div>
 		
 		<div class="row">
-			<div class="span9">
+			<div class="<?php echo $worpit_fShowAds? 'span9' : 'span12'; ?>">
 			
 				<form action="<?php echo $worpit_form_action; ?>" method="post" class="form-horizontal">
 				<?php
@@ -27,9 +27,11 @@ include_once( dirname(__FILE__).WORPIT_DS.'widgets'.WORPIT_DS.'bootstrapcss_widg
 				
 			</div><!-- / span9 -->
 		
+			<?php if ( $worpit_fShowAds ) : ?>
 			<div class="span3" id="side_widgets">
 		  		<?php echo getWidgetIframeHtml('side-widgets-wtb'); ?>
 			</div>
+			<?php endif; ?>
 		</div><!-- / row -->
 	
 	</div><!-- / bootstrap-wpadmin -->

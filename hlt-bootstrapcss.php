@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 2.3.1-2
+Version: 2.3.1-3
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -57,7 +57,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.1-2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.1-3'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -82,7 +82,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		self::$PLUGIN_PATH	= plugin_basename( dirname(__FILE__) );
 		self::$PLUGIN_DIR	= WP_PLUGIN_DIR.WORPIT_DS.self::$PLUGIN_PATH.WORPIT_DS;
 		self::$PLUGIN_URL	= plugins_url( '/', __FILE__ ) ; //this seems to use SSL more reliably than WP_PLUGIN_URL
-		self::$OPTION_PREFIX = self::BaseOptionPrefix . self::OptionPrefix;
 		self::$OPTION_PREFIX = self::OptionPrefix;
 
 		self::$BOOSTRAP_DIR = self::$PLUGIN_DIR.'resources'.WORPIT_DS.'bootstrap-'.self::TwitterVersion.WORPIT_DS;
@@ -196,6 +195,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			}
 		}
 		
+		// Determine whether to show ads and marketing messages
+		// Currently this is when the site uses the iControlWP service and is linked
+		$this->isShowMarketing();
+		
+		// If it's a plugin admin page, we do certain things we don't do anywhere else.
 		if ( $this->isIcwpPluginAdminPage()) {
 			
 			//JS color picker for the Bootstrap LESS
@@ -206,7 +210,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				wp_register_script( 'miniColors', self::$PLUGIN_URL.'inc/miniColors/jquery.miniColors.min.js', false, self::$VERSION, true );
 				wp_enqueue_script( 'miniColors' );
 			}
-			
 		}
 		
 		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a iControlWP admin page.
@@ -220,6 +223,31 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		//Multilingual support.
 		load_plugin_textdomain( 'hlt-wordpress-bootstrap-css', false, basename( dirname( __FILE__ ) ) . '/languages' );
+	}
+	
+	protected function isShowMarketing() {
+
+		if ( $this->m_fShowMarketing == 'Y' ) {
+			return true;
+		}
+		elseif ( $this->m_fShowMarketing == 'N' ) {
+			return false;
+		}
+		
+		$sServiceClassName = 'Worpit_Plugin';
+		$this->m_fShowMarketing = 'Y';
+		if ( class_exists( 'Worpit_Plugin' ) ) {
+			if ( method_exists( 'Worpit_Plugin', 'IsLinked' ) ) {
+				$this->m_fShowMarketing = Worpit_Plugin::IsLinked() ? 'N' : 'Y';
+			}
+			elseif ( function_exists( 'get_option' )
+					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned' ) == 'Y'
+					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned_to' ) != '' ) {
+		
+				$this->m_fShowMarketing = 'N';
+			}
+		}
+		return $this->m_fShowMarketing == 'N' ? false : true;
 	}
 	
 	protected function createPluginSubMenuItems(){
@@ -335,7 +363,13 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
 			$result = update_user_meta( $_POST['hlt_user_id'], 'hlt_bootstrapcss_current_version', self::$VERSION );
-			header( "Location: admin.php?page=".$this->getFullParentMenuId() );
+			
+			if ( $this->isShowMarketing() ) {
+				header( "Location: admin.php?page=".$this->getFullParentMenuId() );
+			}
+			else {
+				header( "Location: ". $_POST['hlt_redirect_page'] );
+			}
 		}
 		
 	}//handlePluginUpgrade
@@ -359,21 +393,33 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$sCurrentVersion = get_user_meta( $user_id, self::$OPTION_PREFIX.'current_version', true );
 
 		if ( $sCurrentVersion !== self::$VERSION ) {
+			
+			$sRedirectPage = isset( $GLOBALS['pagenow'] ) ? $GLOBALS['pagenow'] : 'index.php';
 			ob_start();
 			?>
 				<style>
 					a#fromIcwp { padding: 0 5px; border-bottom: 1px dashed rgba(0,0,0,0.1); color: blue; font-weight: bold; }
 				</style>
 				<form id="IcwpUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
+					<input type="hidden" value="<?php echo $sRedirectPage; ?>" name="hlt_redirect_page" id="hlt_redirect_page">
 					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 					<input type="hidden" value="<?php echo $user_id; ?>" name="hlt_user_id" id="hlt_user_id">
+			
+					<?php if ( $this->isShowMarketing() ) : ?>
+			
 					<h4 style="margin:10px 0 3px;">Quick question: Do you manage multiple WordPress sites and need a better way to do it?</h4>
 					<input type="submit" value="Cool, but just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
 					<p>
 						Free up your time today and do it all from 1 place in a few clicks.
 						<a href="http://icwp.io/5" id="fromIcwp" title="iControlWP: Secure WordPress Management" target="_blank">Tell me how</a>!<br />
 					</p>
-					<div class=""></div>
+					<?php else : ?>
+			
+					<h4 style="margin:10px 0 3px;">Twitter Bootstrap plugin has been updated- there may be <a href="http://icwp.io/1v" id="fromIcwp" title="Twitter Bootstrap Plugin Shortcodes" target="_blank">updates to shortcodes</a> or the CSS may have changed quite a bit.</h4>
+					<input type="submit" value="Understood. Hide this notice." name="submit" class="button" style="float:left; margin-bottom:10px;">
+					<?php endif; ?>
+			
+					<div style="clear:both;"></div>
 				</form>
 			<?php
 			$sNotice = ob_get_contents();
@@ -408,10 +454,11 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$aData = array(
 			'plugin_url'		=> self::$PLUGIN_URL,
 			'var_prefix'		=> self::$OPTION_PREFIX,
+			'fShowAds'			=> $this->isShowMarketing(),
 			'aAllOptions'		=> $aAvailableOptions,
 			'all_options_input'	=> $sAllFormInputOptions,
 			'nonce_field'		=> $this->getSubmenuId('bootstrap-css').'_wtbcss',
-			'form_action'		=> 'admin.php?page='.$this->getSubmenuId('bootstrap-css')
+			'form_action'		=> 'admin.php?page='.$this->getSubmenuId('bootstrap-css'),
 		);
 
 		$this->display( 'bootstrapcss_index', $aData );
@@ -426,6 +473,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$aData = array(
 			'plugin_url'				=> self::$PLUGIN_URL,
 			'var_prefix'				=> self::$OPTION_PREFIX,
+			'fShowAds'					=> $this->isShowMarketing(),
 			'aAllOptions'				=> $aAvailableOptions,
 			'compiler_enabled'			=> self::getOption( 'use_compiled_css' ) === 'Y',
 
@@ -436,7 +484,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 			'nonce_field'				=> $this->getSubmenuId('bootstrap-css').'_wtbless',
 			'form_action'				=> 'admin.php?page='.$this->getSubmenuId('bootstrap-less')
 		);
-		
 		$this->display( 'bootstrapcss_less', $aData );
 		
 	}//onDisplayLess

@@ -33,6 +33,8 @@ class HLT_Plugin {
 	
 	protected $m_sParentMenuIdSuffix;
 	
+	protected $m_fShowMarketing = '';
+	
 	static protected $m_fUpdateSuccessTracker;
 	static protected $m_aFailedUpdateOptions;
 
@@ -123,6 +125,10 @@ class HLT_Plugin {
 			
 		}
 	}//onWpAdminInit
+	
+	protected function isShowMarketing() {
+		return true;
+	}
 
 	public function onWpAdminMenu() {
 
@@ -165,7 +171,8 @@ class HLT_Plugin {
 	 */
 	public function onDisplayMainMenu() {
 		$aData = array(
-				'plugin_url'	=> self::$PLUGIN_URL
+			'plugin_url'	=> self::$PLUGIN_URL,
+			'fShowAds'		=> $this->m_fShowMarketing
 		);
 		$this->display( 'worpit_'.$this->m_sParentMenuIdSuffix.'_index', $aData );
 	}
