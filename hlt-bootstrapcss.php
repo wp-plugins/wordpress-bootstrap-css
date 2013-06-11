@@ -362,13 +362,15 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
-			$result = update_user_meta( $_POST['hlt_user_id'], 'hlt_bootstrapcss_current_version', self::$VERSION );
+			$result = update_user_meta( $_POST['hlt_user_id'], self::$OPTION_PREFIX.'current_version', self::$VERSION );
 			
 			if ( $this->isShowMarketing() ) {
-				header( "Location: admin.php?page=".$this->getFullParentMenuId() );
+// 				header( "Location: admin.php?page=".$this->getFullParentMenuId() );
+				wp_redirect( admin_url( "admin.php?page=".$this->getFullParentMenuId() ) );
 			}
 			else {
-				header( "Location: ". $_POST['hlt_redirect_page'] );
+// 				wp_header( "Location: ". $_POST['hlt_redirect_page'] );
+				wp_redirect( admin_url( $_POST['hlt_redirect_page'] ) );
 			}
 		}
 		
@@ -385,12 +387,24 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->adminNoticeOptionsUpdated();
 	}
 	
+	/**
+	 * Shows the update notification - will bail out if the current user is not an admin 
+	 */
 	private function adminNoticeVersionUpgrade() {
 
-		global $current_user;
-		$user_id = $current_user->ID;
+		$oCurrentUser = wp_get_current_user();
+		if ( !($oCurrentUser instanceof WP_User) ) {
+			return;
+		}
+		$nUserId = $oCurrentUser->ID;
 
-		$sCurrentVersion = get_user_meta( $user_id, self::$OPTION_PREFIX.'current_version', true );
+		$sCurrentVersion = get_user_meta( $nUserId, self::$OPTION_PREFIX.'current_version', true );
+		// A guard whereby if we can't ever get a value for this meta, it means we can never set it.
+		// If we can never set it, we shouldn't force the Ads on those users who can't get rid of it.
+		if ( $sCurrentVersion === false ) { //the value has never been set, or it's been installed for the first time.
+			$result = update_user_meta( $nUserId, self::$OPTION_PREFIX.'current_version', self::$VERSION );
+			return; //meaning we don't show the update notice upon new installations and for those people who can't set the version in their meta.
+		}
 
 		if ( $sCurrentVersion !== self::$VERSION ) {
 			
@@ -403,7 +417,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 				<form id="IcwpUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
 					<input type="hidden" value="<?php echo $sRedirectPage; ?>" name="hlt_redirect_page" id="hlt_redirect_page">
 					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
-					<input type="hidden" value="<?php echo $user_id; ?>" name="hlt_user_id" id="hlt_user_id">
+					<input type="hidden" value="<?php echo $nUserId; ?>" name="hlt_user_id" id="hlt_user_id">
 			
 					<?php if ( $this->isShowMarketing() ) : ?>
 			
