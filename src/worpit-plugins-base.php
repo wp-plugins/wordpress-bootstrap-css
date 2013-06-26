@@ -126,10 +126,6 @@ class HLT_Plugin {
 		}
 	}//onWpAdminInit
 	
-	protected function isShowMarketing() {
-		return true;
-	}
-
 	public function onWpAdminMenu() {
 
 		$sFullParentMenuId = $this->getFullParentMenuId();
@@ -172,9 +168,34 @@ class HLT_Plugin {
 	public function onDisplayMainMenu() {
 		$aData = array(
 			'plugin_url'	=> self::$PLUGIN_URL,
-			'fShowAds'		=> $this->m_fShowMarketing
+			'fShowAds'		=> $this->isShowMarketing()
 		);
 		$this->display( 'worpit_'.$this->m_sParentMenuIdSuffix.'_index', $aData );
+	}
+	
+	protected function isShowMarketing() {
+
+		if ( $this->m_fShowMarketing == 'Y' ) {
+			return true;
+		}
+		elseif ( $this->m_fShowMarketing == 'N' ) {
+			return false;
+		}
+		
+		$sServiceClassName = 'Worpit_Plugin';
+		$this->m_fShowMarketing = 'Y';
+		if ( class_exists( 'Worpit_Plugin' ) ) {
+			if ( method_exists( 'Worpit_Plugin', 'IsLinked' ) ) {
+				$this->m_fShowMarketing = Worpit_Plugin::IsLinked() ? 'N' : 'Y';
+			}
+			elseif ( function_exists( 'get_option' )
+					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned' ) == 'Y'
+					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned_to' ) != '' ) {
+		
+				$this->m_fShowMarketing = 'N';
+			}
+		}
+		return $this->m_fShowMarketing === 'N' ? false : true;
 	}
 
 	/**

@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 2.3.2-1
+Version: 2.3.2-2
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -50,14 +50,14 @@ class HLT_BootstrapCss extends HLT_Plugin {
 	
 	const TwitterVersion			= '2.3.2'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '1.4.0';
-	const NormalizeVersion			= '2.1.1';
+	const NormalizeVersion			= '2.1.2';
 	const YUI3Version				= '3.10.0';
 	
 	const CdnjsStem					= '//cdnjs.cloudflare.com/ajax/libs/'; //All cdnjs libraries are under this path
 	
 	const CdnJqueryVersion			= '1.8.3';
 
-	static public $VERSION			= '2.3.2-1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	static public $VERSION			= '2.3.2-2'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	static public $BOOSTRAP_DIR;
 	static public $BOOSTRAP_URL;
@@ -104,40 +104,39 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		$this->m_aPluginOptions_BootstrapSection = 	array(
 			'section_title' => 'Choose Bootstrap CSS Options',
 			'section_options' => array(
-				array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,		'Bootstrap Option', 'Choose Your Preferred Bootstrap Option', '' ),
-				array( 'inc_responsive_css',	'',		'N', 		'checkbox',		'Responsive CSS', 'Include Bootstrap Responsive CSS', "Alone, this doesn't make your WordPress site 'responsive'." ),
-				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',		'Use WordPress System', "Not recommended. Use the WordPress CSS enqueue system to include the CSS links. This can't guarantee the file will be loaded first (which they should be)." ),
-				array( 'customcss',				'',		'N', 		'checkbox',		'Custom Reset CSS', 'Enable custom CSS link', '(note: linked after any bootstrap/reset CSS selected above)' ),
-				array( 'customcss_url',			'',		'http://', 	'text',			'Custom CSS URL', 'Provide the <strong>full</strong> URL path.', '' ),
+				array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,	'Bootstrap Option',		'Choose Your Preferred Bootstrap Option',		'' ),
+				array( 'inc_responsive_css',	'',		'N', 		'checkbox',					'Responsive CSS',		'Include Bootstrap Responsive CSS',				"Alone, this doesn't make your WordPress site 'responsive'." ),
+				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',					'Use WordPress System',	"Not recommended. Use the WordPress CSS enqueue system to include the CSS links. This can't guarantee the file will be loaded first (which they should be).", '' ),
+				array( 'customcss',				'',		'N', 		'checkbox',					'Custom Reset CSS',		'Enable custom CSS link',						'(note: linked after any bootstrap/reset CSS selected above)' ),
+				array( 'customcss_url',			'',		'http://', 	'text',						'Custom CSS URL',		'Provide the <strong>full</strong> URL path.',	'' ),
 			),
 		);
 		$this->m_aPluginOptions_TwitterBootstrapSection = 	array(
 			'section_title' => 'Twitter Bootstrap Javascript Library Options',
 			'section_options' => array(
-				array( 'all_js',		'',		'none', 	'checkbox',		'All Javascript Libraries', 'Include ALL Bootstrap Javascript libraries', 'This will also include the jQuery library if it is not already included' ),
-				array( 'js_head',		'',		'N', 		'checkbox',		'JavaScript Placement', 'Place Javascript in &lt;HEAD&gt;', 'Only check this option if know you need it.' ),
+				array( 'all_js',		'',		'none', 	'checkbox',		'All Javascript Libraries',	'Include ALL Bootstrap Javascript libraries',	'This will also include the jQuery library if it is not already included' ),
+				array( 'js_head',		'',		'N', 		'checkbox',		'JavaScript Placement',		'Place Javascript in &lt;HEAD&gt;',				'Only check this option if know you need it.' ),
 			),
 		);
 		$this->m_aPluginOptions_ExtraTwitterSection = 	array(
 			'section_title' => 'Extra Twitter Bootstrap Options',
 			'section_options' => array(
-				array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes', 'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
-				array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified', 'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
-				array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS', 'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
-				array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery', 'Replace JQuery library with JQuery from CDNJS', 'In case your WordPress version is too old and doesn\'t have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS.' ),
+				array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes',	'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
+				array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified',				'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
+				array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS',			'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
+				array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery',		'Replace JQuery library with JQuery from CDNJS', "In case your WordPress version is too old and doesn't have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS." ),
 			),
 		);
 		$this->m_aPluginOptions_MiscOptionsSection = 	array(
 			'section_title' => 'Miscellaneous Plugin Options',
 			'section_options' => array(
 				array( 'use_cdnjs',							'',		'N', 		'checkbox',		'Use CDNJS', 'Link to CDNJS libraries', 'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).' ),
-				array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets', 'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
-				array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor', 'Only select this if you want to have Bootstrap styles show in the editor.' ),
-				array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin', 'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
-				array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the iControlWP Blog news feed from the Dashboard', 'Hides our news feed from inside your Dashboard.' ),
+				array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets',					'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
+				array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor',	'Only select this if you want to have Bootstrap styles show in the editor.' ),
+				array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin',	'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
+				array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the iControlWP Blog news feed from the Dashboard',	'Hides our news feed from inside your Dashboard.' ),
 				array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Setting Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
-				array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript', 'If you display code snippets or similar on your site, enabling this option will include the
-											Google Prettify Javascript library for use with these code blocks.' ),
+				array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript',		'If you display code snippets or similar on your site, enabling this option will include the Google Prettify Javascript library for use with these code blocks.' ),
 			),
 		);
 
@@ -157,11 +156,10 @@ class HLT_BootstrapCss extends HLT_Plugin {
 
 	public function onWpInit() {
 		parent::onWpInit();
-		
 		if ( !is_admin() && !in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php')) && !isset( $_GET['thesis_editor'] ) ) {
 			
 			if ( self::getOption( 'enq_using_wordpress' ) !== 'Y' ) { //see end of file for the alternative (enqueueing)
-				ob_start( array( &$this, 'onOutputBufferFlush' ) );
+				ob_start( array( $this, 'onOutputBufferFlush' ) );
 			}
 		}
 
@@ -223,31 +221,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		
 		//Multilingual support.
 		load_plugin_textdomain( 'hlt-wordpress-bootstrap-css', false, basename( dirname( __FILE__ ) ) . '/languages' );
-	}
-	
-	protected function isShowMarketing() {
-
-		if ( $this->m_fShowMarketing == 'Y' ) {
-			return true;
-		}
-		elseif ( $this->m_fShowMarketing == 'N' ) {
-			return false;
-		}
-		
-		$sServiceClassName = 'Worpit_Plugin';
-		$this->m_fShowMarketing = 'Y';
-		if ( class_exists( 'Worpit_Plugin' ) ) {
-			if ( method_exists( 'Worpit_Plugin', 'IsLinked' ) ) {
-				$this->m_fShowMarketing = Worpit_Plugin::IsLinked() ? 'N' : 'Y';
-			}
-			elseif ( function_exists( 'get_option' )
-					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned' ) == 'Y'
-					&& get_option( Worpit_Plugin::$VariablePrefix.'assigned_to' ) != '' ) {
-		
-				$this->m_fShowMarketing = 'N';
-			}
-		}
-		return $this->m_fShowMarketing == 'N' ? false : true;
 	}
 	
 	protected function createPluginSubMenuItems(){
@@ -419,7 +392,7 @@ class HLT_BootstrapCss extends HLT_Plugin {
 					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
 					<input type="hidden" value="<?php echo $nUserId; ?>" name="hlt_user_id" id="hlt_user_id">
 			
-					<?php if ( $this->isShowMarketing() ) : ?>
+					<?php if ( false && $this->isShowMarketing() ) : ?>
 			
 					<h4 style="margin:10px 0 3px;">Quick question: Do you manage multiple WordPress sites and need a better way to do it?</h4>
 					<input type="submit" value="Cool, but just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
@@ -429,8 +402,8 @@ class HLT_BootstrapCss extends HLT_Plugin {
 					</p>
 					<?php else : ?>
 			
-					<h4 style="margin:10px 0 3px;">Twitter Bootstrap plugin has been updated- there may be <a href="http://icwp.io/1v" id="fromIcwp" title="Twitter Bootstrap Plugin Shortcodes" target="_blank">updates to shortcodes</a> or the CSS may have changed quite a bit.</h4>
-					<input type="submit" value="Understood. Hide this notice." name="submit" class="button" style="float:left; margin-bottom:10px;">
+					<h4 style="margin:10px 0 3px;">Twitter Bootstrap plugin has been updated- there may or may not be <a href="http://icwp.io/1v" id="fromIcwp" title="Twitter Bootstrap Plugin Shortcodes" target="_blank">updates to shortcodes</a> or the Bootstrap CSS may have changed quite a bit.</h4>
+					<input type="submit" value="Show me and hide this notice." name="submit" class="button" style="float:left; margin-bottom:10px;">
 					<?php endif; ?>
 			
 					<div style="clear:both;"></div>
@@ -679,7 +652,6 @@ class HLT_BootstrapCss extends HLT_Plugin {
 		if ( empty( $aIncludesList ) ) {
 			return $insContents;
 		}
-		
 		//Add the CSS link
 		$sReplace = '${1}';
 		$sReplace .= "\n<!-- This site uses the WordPress Twitter Bootstrap CSS plugin v".self::$VERSION." from iControlWP http://icwp.io/w/ -->";

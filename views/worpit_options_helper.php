@@ -95,6 +95,7 @@ function getPluginOptionSpan( $inaOption, $iSpanSize, $insVarPrefix = '' ) {
 		$sAdditionalClass = '';
 		$sTextInput = '';
 		$sChecked = '';
+		$sHelpSection = '';
 		
 		if ( $mOptionType === 'checkbox' ) {
 			
