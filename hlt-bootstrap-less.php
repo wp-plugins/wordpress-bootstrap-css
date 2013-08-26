@@ -28,20 +28,22 @@ class HLT_BootstrapLess {
 	
 	const LessOptionsPrefix = 'less_';
 	
-	static public $LESS_PREFIX;
-	static public $LESS_OPTIONS_DB_KEY = 'all_less_options';
-	
+	/**
+	 * @var string
+	 */
+	protected $m_sOptionsKey;
+	/**
+	 * @var array
+	 */
 	protected $m_aAllBootstrapLessOptions;
 	
-	public function __construct() {
-		
-		self::$LESS_PREFIX = self::LessOptionsPrefix;
-
-	}//__construct
+	public function __construct( $insKey ) {
+		$this->m_sOptionsKey = $insKey;
+	}
 	
 	protected function initPluginOptions() {
 		
-		$this->m_aAllBootstrapLessOptions = HLT_BootstrapCss::getOption( self::$LESS_OPTIONS_DB_KEY );
+		$this->m_aAllBootstrapLessOptions = get_option( $this->m_sOptionsKey );
 
 		if ( !empty($this->m_aAllBootstrapLessOptions) ) {
 			return true;
@@ -140,11 +142,11 @@ class HLT_BootstrapLess {
 		
 		return true;
 		
-	}//initPluginOptions
+	}
 	
 	public function getAllBootstrapLessOptions( $fPopulate = false ) {
 		
-		if ($fPopulate) {
+		if ( $fPopulate ) {
 			$this->processLessOptions('populate');
 		}
 		
@@ -153,8 +155,7 @@ class HLT_BootstrapLess {
 		}
 		
 		return $this->m_aAllBootstrapLessOptions;
-		
-	}//getAllBootstrapLessOptions
+	}
 	
 	public function processLessOptions( $insFunction, $inaData = array() ) {
 
@@ -163,7 +164,7 @@ class HLT_BootstrapLess {
 		}
 		
 		if ( $insFunction == 'delete') {
-			HLT_BootstrapCss::deleteOption( self::$LESS_OPTIONS_DB_KEY );
+			delete_option( $this->m_sOptionsKey );
 			$this->m_aAllBootstrapLessOptions = null;
 			return;
 		}
@@ -227,14 +228,14 @@ class HLT_BootstrapLess {
 		}//foreach
 		
 		if ( $insFunction == 'process-post' ) {
-			HLT_BootstrapCss::updateOption( self::$LESS_OPTIONS_DB_KEY, $this->m_aAllBootstrapLessOptions );
+			update_option( $this->m_sOptionsKey, $this->m_aAllBootstrapLessOptions );
 		}
 		
 		if ( $insFunction == 'rewrite-variablesless' ) {
 			return $inaData['file-contents'];
 		}
 		
-	}//processLessOptions
+	}
 	
 	public function resetToDefaultAllLessOptions( $insBootstrapDir ) {
 
@@ -264,42 +265,39 @@ class HLT_BootstrapLess {
 
 		$fSuccess = true;
 		
-		$sFilePathVariablesLess = $insBootstrapDir.'less'.WORPIT_DS.'variables.less';
+		$sFilePathVariablesLess = $insBootstrapDir.'less'.ICWP_DS.'variables.less';
 		
 		if ( $infUseOriginalLessFile ) {
 			$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
-		} else {
+		}
+		else {
 			$sContents = file_get_contents( $sFilePathVariablesLess );
 		}
 		
 		if ( !$sContents ) {
 			//The Variable.less file couldn't be read: bail!
 			$fSuccess = false;
-		} else {
-
+		}
+		else {
 			$sContents = $this->processLessOptions( 'rewrite-variablesless', array( 'file-contents' => $sContents) );
-			
 			file_put_contents( $sFilePathVariablesLess, $sContents );
 		}
 		return $fSuccess;
 	
-	}//reWriteVariablesLess
+	}
 	
 	public function compileAllBootstrapLess( $insBootstrapDir ) {
 		
 		if ( empty($insBootstrapDir) ) {
 			return false;
 		}
-		
 		$this->compileLess( $insBootstrapDir, 'bootstrap' );
-		$this->compileLess( $insBootstrapDir, 'responsive' );
-		
-	}//compileAllBootstrapLess
+	}
 	
 	/**
 	 * 
 	 * @param $insBootstrapDir
-	 * @param $insCompileTarget - currently only either 'bootstrap' or 'responsive'
+	 * @param $insCompileTarget - currently only 'bootstrap'
 	 */
 	public function compileLess( $insBootstrapDir, $insCompileTarget = 'bootstrap' ) {
 		
@@ -307,7 +305,7 @@ class HLT_BootstrapLess {
 			return false;
 		}
 		
-		$sFilePathToLess = $insBootstrapDir.'less'.WORPIT_DS.$insCompileTarget.'.less';
+		$sFilePathToLess = $insBootstrapDir.'less'.ICWP_DS.$insCompileTarget.'.less';
 		
 		//parse LESS
 		if ( !class_exists('lessc') ) {
@@ -334,12 +332,11 @@ class HLT_BootstrapLess {
 			 * 3. Compile + compress + write to disk
 			 */
 			
-			if ($insCompileTarget == 'responsive') {
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap-responsive.less';
-			} else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
+			//Remove 'responsive' as an option since 3.0.0 as it's not necessary
+			if ( $insCompileTarget == 'bootstrap' ) {
+				$sLessFile = $insBootstrapDir.'css'.ICWP_DS.'bootstrap.less';
 			} else { //Are there others?
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.ICWP_DS.'bootstrap.less';
 			}
 			
 			// Write normal CSS
@@ -362,11 +359,11 @@ class HLT_BootstrapLess {
 			$sCompiledCss = $oLessCompiler->parse();
 			
 			if ($insCompileTarget == 'responsive') {
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap-responsive.less';
+				$sLessFile = $insBootstrapDir.'css'.ICWP_DS.'bootstrap-responsive.less';
 			} else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.ICWP_DS.'bootstrap.less';
 			} else { //Are there others?
-				$sLessFile = $insBootstrapDir.'css'.WORPIT_DS.'bootstrap.less';
+				$sLessFile = $insBootstrapDir.'css'.ICWP_DS.'bootstrap.less';
 			}
 			
 			file_put_contents( $sLessFile.'.css', $sCompiledCss );
