@@ -125,17 +125,17 @@ class ICWP_WptbProcessor {
 				case 'normalize':
 					if ( $this->m_oWptbOptions->getOpt( 'use_cdnjs' ) == 'Y' ) {
 						// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css
-						$aIncludesList = array( 'normalize' => self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css' );
+						$aIncludesList = array( 'normalize' => self::CdnjsStem.'normalize/'.ICWP_OptionsHandler_Wptb::NormalizeVersion.'/normalize.css' );
 					}
 					else {
-						$aIncludesList = array( 'normalize' => $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion );
+						$aIncludesList = array( 'normalize' => $this->getCssURL( 'normalize.css' ) . '?ver='.ICWP_OptionsHandler_Wptb::NormalizeVersion );
 					}
 					break;
 				case 'yahoo-reset':
 					$aIncludesList = array( 'yahoo-reset-290' => $this->getCssURL( 'yahoo-2.9.0.min.css' ) );
 					break;
 				case 'yahoo-reset-3':
-					$aIncludesList = array( 'yahoo-reset-3' => $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version );
+					$aIncludesList = array( 'yahoo-reset-3' => $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.ICWP_OptionsHandler_Wptb::YUI3Version );
 					break;
 				default: //twitter
 					$aIncludesList = $this->getTwitterCssUrls( $this->m_oWptbOptions->getOpt( 'use_minified_css' ) == 'Y' );

@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.0.0-3
+Version: 3.0.0-4
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -36,14 +36,9 @@ if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	
-	const PluginVersion				= '3.0.0-3';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
-	
+	const PluginVersion				= '3.0.0-4';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
-	
-	const TwitterVersion			= '3.0.0'; //should reflect the Bootstrap version folder name
-	const NormalizeVersion			= '2.1.2';
-	const YUI3Version				= '3.10.0';
 
 	/**
 	 * @var string

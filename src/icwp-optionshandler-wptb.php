@@ -23,7 +23,7 @@ class ICWP_OptionsHandler_Wptb extends ICWP_OptionsHandler_Base_WPTB {
 
 	const TwitterVersion			= '3.0.0'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '2.3.2'; //should reflect the Bootstrap version folder name
-	const NormalizeVersion			= '2.1.2';
+	const NormalizeVersion			= '2.1.3';
 	const YUI3Version				= '3.10.0';
 	
 	public function getTwitterBootstrapVersion() {
@@ -65,9 +65,9 @@ class ICWP_OptionsHandler_Wptb extends ICWP_OptionsHandler_Base_WPTB {
 			array( 'none', 				'None' ),
 			array( 'twitter',			'Twitter Bootstrap CSS v'.self::TwitterVersion ),
 			array( 'twitter-legacy',	'Twitter Bootstrap CSS v'.self::TwitterVersionLegacy ),
+			array( 'normalize',			'Normalize CSS v'.self::NormalizeVersion ),
 			array( 'yahoo-reset',		'Yahoo UI Reset CSS v2.9.0' ),
-			array( 'yahoo-reset-3',		'Yahoo UI Reset CSS v'.self::YUI3Version ),
-			array( 'normalize',			'Normalize CSS v'.self::NormalizeVersion )
+			array( 'yahoo-reset-3',		'Yahoo UI Reset CSS v'.self::YUI3Version )
 		);
 
 		$aBootstrapSection = 	array(
