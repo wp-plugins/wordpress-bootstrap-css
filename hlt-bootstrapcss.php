@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.0.0-1
+Version: 3.0.0-2
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -27,16 +27,16 @@ Author URI: http://icwp.io/v
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 require_once( dirname(__FILE__).'/src/worpit-plugins-base.php' );
-include_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
-include_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+require_once( dirname(__FILE__).'/src/icwp-optionshandler-wptb.php' );
 
 if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
+	
+	const PluginVersion				= '3.0.0-2';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
@@ -44,10 +44,6 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	const TwitterVersion			= '3.0.0'; //should reflect the Bootstrap version folder name
 	const NormalizeVersion			= '2.1.2';
 	const YUI3Version				= '3.10.0';
-	
-	const CdnjsStem					= '//cdnjs.cloudflare.com/ajax/libs/'; //All cdnjs libraries are under this path
-	
-	const CdnJqueryVersion			= '1.8.3';
 
 	/**
 	 * @var string
@@ -91,85 +87,83 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	 * @var array
 	 */
 	protected $m_aPluginOptions_MiscOptionsSection;
+
+	/**
+	 * @var HLT_BootstrapLess
+	 */
+	protected $m_oBsLess;
+
+	/**
+	 * @var ICWP_OptionsHandler_Wptb
+	 */
+	protected $m_oWptbOptions;
+	
+	/**
+	 * @var ICWP_WptbProcessor
+	 */
+	protected $m_oWptbProcessor;
 	
 	public function __construct() {
 		
 		$this->m_sPluginRootFile = __FILE__; //ensure all relative paths etc. are setup.
 		parent::__construct();
 		
-		$this->m_sVersion			= '3.0.0-1'; //SHOULD BE UPDATED UPON EACH NEW RELEASE
+		$this->m_sVersion			= self::PluginVersion;
 		$this->m_sPluginHumanName	= "WordPress Twitter Bootstrap";
 		$this->m_sPluginMenuTitle	= "Twitter Bootstrap";
 		$this->m_sOptionPrefix		= self::OptionPrefix;
 
-		self::$BOOSTRAP_DIR			= $this->m_sPluginDir.'resources'.ICWP_DS.'bootstrap-'.self::TwitterVersion.ICWP_DS;
-		self::$BOOSTRAP_URL			= plugins_url( 'resources/bootstrap-'.self::TwitterVersion.'/', $this->m_sPluginRootFile ) ;
-
 		$this->m_sParentMenuIdSuffix = 'wtb';
-		$this->setLessOptionsKey();
+		$this->loadWptbOptions();
+
+		self::$BOOSTRAP_DIR			= $this->m_sPluginDir.'resources'.ICWP_DS.'bootstrap-'.$this->m_oWptbOptions->getTwitterBootstrapVersion().ICWP_DS;
+		self::$BOOSTRAP_URL			= plugins_url( 'resources/bootstrap-'.$this->m_oWptbOptions->getTwitterBootstrapVersion().'/', $this->m_sPluginRootFile ) ;
+	}
+
+	protected function loadAllOptions() {
+		$this->loadWptbOptions();
 	}
 	
-	protected function initPluginOptions() {
-		
-		$this->m_aBootstrapOptions = array( 'select',
-			array( 'none', 			'None' ),
-			array( 'twitter',		'Twitter Bootstrap CSS v'.self::TwitterVersion ),
-			array( 'yahoo-reset',	'Yahoo UI Reset CSS v2.9.0' ),
-			array( 'yahoo-reset-3',	'Yahoo UI Reset CSS v'.self::YUI3Version ),
-			array( 'normalize',		'Normalize CSS v'.self::NormalizeVersion )
-		);
-
-		$this->m_aPluginOptions_BootstrapSection = 	array(
-			'section_title' => 'Choose Bootstrap CSS Options',
-			'section_options' => array(
-				array( 'option',				'',		'none', 	$this->m_aBootstrapOptions,	'Bootstrap Option',		'Choose Your Preferred Bootstrap Option',		'' ),
-				array( 'enq_using_wordpress',	'',		'N', 		'checkbox',					'Use WordPress System',	"Not recommended. Use the WordPress CSS enqueue system to include the CSS links. This can't guarantee the file will be loaded first (which they should be).", '' ),
-				array( 'customcss',				'',		'N', 		'checkbox',					'Custom Reset CSS',		'Enable custom CSS link',						'(note: linked after any bootstrap/reset CSS selected above)' ),
-				array( 'customcss_url',			'',		'http://', 	'text',						'Custom CSS URL',		'Provide the <strong>full</strong> URL path.',	'' ),
-			),
-		);
-		$this->m_aPluginOptions_TwitterBootstrapSection = 	array(
-			'section_title' => 'Twitter Bootstrap Javascript Library Options',
-			'section_options' => array(
-				array( 'all_js',		'',		'none', 	'checkbox',		'All Javascript Libraries',	'Include ALL Bootstrap Javascript libraries',	'This will also include the jQuery library if it is not already included' ),
-				array( 'js_head',		'',		'N', 		'checkbox',		'JavaScript Placement',		'Place Javascript in &lt;HEAD&gt;',				'Only check this option if know you need it.' ),
-			),
-		);
-		$this->m_aPluginOptions_ExtraTwitterSection = 	array(
-			'section_title' => 'Extra Twitter Bootstrap Options',
-			'section_options' => array(
-				array( 'useshortcodes',			'',		'N', 		'checkbox',		'Bootstrap Shortcodes',	'Enable Twitter Bootstrap Shortcodes', 'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.' ),
-				array( 'use_minified_css',		'',		'N', 		'checkbox',		'Minified',				'Use Minified CSS/JS libraries', 'Uses minified CSS libraries where available.' ),
-				array( 'use_compiled_css',		'',		'N', 		'checkbox',		'Enabled LESS',			'Enables LESS Compiler Section', 'Use the LESS Compiler to customize your Twitter Bootstrap CSS.' ),
-				array( 'replace_jquery_cdn',	'',		'N', 		'checkbox',		'Replace JQuery',		'Replace JQuery library with JQuery from CDNJS', "In case your WordPress version is too old and doesn't have the necessary JQuery version, this will replace your JQuery with a compatible version served from CDNJS." ),
-			),
-		);
-		$this->m_aPluginOptions_MiscOptionsSection = 	array(
-			'section_title' => 'Miscellaneous Plugin Options',
-			'section_options' => array(
-				array( 'use_cdnjs',							'',		'N', 		'checkbox',		'Use CDNJS', 'Link to CDNJS libraries', 'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).' ),
-				array( 'enable_shortcodes_sidebarwidgets',	'',		'N', 		'checkbox',		'Sidebar Shortcodes', 'Enable Shortcodes in Sidebar Widgets',					'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.' ),
-				array( 'inc_bootstrap_css_in_editor',		'',		'N', 		'checkbox',		'CSS in Editor', 'Include Twitter Bootstrap CSS in the WordPress Post Editor',	'Only select this if you want to have Bootstrap styles show in the editor.' ),
-				array( 'inc_bootstrap_css_wpadmin',			'',		'N', 		'checkbox',		'Admin Bootstrap CSS', 'Include Twitter Bootstrap CSS in the WordPress Admin',	'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>' ),
-				array( 'hide_dashboard_rss_feed',			'',		'N', 		'checkbox',		'Hide RSS News Feed', 'Hide the iControlWP Blog news feed from the Dashboard',	'Hides our news feed from inside your Dashboard.' ),
-				array( 'delete_on_deactivate',				'',		'N', 		'checkbox',		'Delete Plugin Settings', 'Delete All Plugin Settings Upon Plugin Deactivation', 'Careful: Removes all plugin options when you deactivite the plugin.' ),
-				array( 'prettify',							'',		'N', 		'checkbox',		'Display Code Snippets', 'Include Google Prettify/Pretty Links Javascript',		'If you display code snippets or similar on your site, enabling this option will include the Google Prettify Javascript library for use with these code blocks.' ),
-			),
-		);
-
-		$this->m_aAllPluginOptions = array( &$this->m_aPluginOptions_BootstrapSection,
-											&$this->m_aPluginOptions_TwitterBootstrapSection,
-											&$this->m_aPluginOptions_ExtraTwitterSection,
-											&$this->m_aPluginOptions_MiscOptionsSection
-		);
-
-		return true;
-		
+	/**
+	 * @return void
+	 */
+	protected function loadWptbOptions() {
+		if ( !isset( $this->m_oWptbOptions ) ) {
+			$this->m_oWptbOptions = new ICWP_OptionsHandler_Wptb( self::OptionPrefix, 'plugin_options', $this->m_sVersion );
+		}
 	}
 
+	/**
+	 * @return void
+	 */
+	protected function loadBootstrapLess() {
+		if ( isset( $this->m_oBsLess ) ) {
+			return;
+		}
+		
+		if ( $this->m_oWptbOptions->getOpt( 'option' ) == 'twitter' ) {
+			require_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+		}
+		else {
+			require_once( dirname(__FILE__).'/hlt-bootstrap-less-legacy.php' );
+		}
+		
+		$this->setLessOptionsKey();
+		$this->m_oBsLess = new HLT_BootstrapLess( self::$BOOSTRAP_DIR, $this->m_sLessOptionsKey );
+	}
+	
 	protected function setLessOptionsKey() {
 		if ( !isset( $this->m_sLessOptionsKey ) ) {
 			$this->m_sLessOptionsKey = $this->m_sOptionPrefix . 'all_less_options';
+		}
+	}
+	
+	protected function loadWptbProcessor() {
+		if ( !isset( $this->m_oWptbProcessor ) ) {
+			require_once( dirname(__FILE__).'/src/icwp-processor-wptb.php' );
+			$this->loadWptbOptions();
+			$this->m_oWptbProcessor = new ICWP_WptbProcessor( $this->m_oWptbOptions );
+			$this->m_oWptbProcessor->setPaths( $this->m_sPluginDir, $this->m_sPluginUrl );
 		}
 	}
 	
@@ -177,36 +171,42 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		parent::onWpInit();
 		if ( !is_admin() && !in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php')) && !isset( $_GET['thesis_editor'] ) ) {
 			
-			if ( $this->getOption( 'enq_using_wordpress' ) !== 'Y' ) { //see end of file for the alternative (enqueueing)
-				ob_start( array( $this, 'onOutputBufferFlush' ) );
+			if ( $this->m_oWptbOptions->getOpt( 'enq_using_wordpress' ) !== 'Y' ) { // see end of file for the alternative (enqueueing)
+				$this->loadWptbProcessor();
+				ob_start( array( $this->m_oWptbProcessor, 'onOutputBufferFlush' ) );
 			}
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'onWpEnqueueScripts' ) );
 		
-		//if shortcodes are enabled, instantiate
-		$sBootstrapOption = $this->getOption( 'option' );
-		if ( $sBootstrapOption == 'twitter' && $this->getOption( 'useshortcodes' ) == 'Y' ) {
+		// if shortcodes are enabled, instantiatetwitter-legacy
+		$sBootstrapOption = $this->m_oWptbOptions->getOpt( 'option' );
+		if ( strpos( $sBootstrapOption, 'twitter' ) !== false && $this->m_oWptbOptions->getOpt( 'useshortcodes' ) == 'Y' ) {
+			if ( $sBootstrapOption == 'twitter' ) {
+				require_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
+			}
+			else {
+				require_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes-legacy.php' );
+			}
 			$oShortCodes = new HLT_BootstrapShortcodes();
 		}
 		
-		//if option to enable shortcodes in sidebar is on, add filter
-		$sShortcodeSidebarOption = $this->getOption( 'enable_shortcodes_sidebarwidgets' );
+		// if option to enable shortcodes in sidebar is on, add filter
+		$sShortcodeSidebarOption = $this->m_oWptbOptions->getOpt( 'enable_shortcodes_sidebarwidgets' );
 		if ( $sShortcodeSidebarOption == 'Y' ) {
 			add_filter('widget_text', 'do_shortcode');
 		}
-		
-	}//onWpInit
+	}
 	
 	public function onWpAdminInit() {
 		parent::onWpAdminInit();
-		
+
 		global $pagenow;
 		//Loads the news widget on the Dashboard (if it hasn't been disabled)
 		if ( $pagenow == 'index.php' ) {
-			$sDashboardRssOption = $this->getOption( 'hide_dashboard_rss_feed' );
-			if ( empty( $sDashboardRssOption ) || $this->getOption( 'hide_dashboard_rss_feed' ) == 'N' ) {
+			$sDashboardRssOption = $this->m_oWptbOptions->getOpt( 'hide_dashboard_rss_feed' );
+			if ( empty( $sDashboardRssOption ) || $this->m_oWptbOptions->getOpt( 'hide_dashboard_rss_feed' ) == 'N' ) {
 				include_once( dirname(__FILE__).'/hlt-rssfeed-widget.php' );
 				$oHLT_DashboardRssWidget = new HLT_DashboardRssWidget();
 			}
@@ -230,11 +230,11 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		}
 		
 		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a iControlWP admin page.
-		if ( is_admin() && $this->getOption( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
+		if ( is_admin() && $this->m_oWptbOptions->getOpt( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueBootstrapAdminCss' ), 99 );
 		}
 		
-		if ( is_admin() && $this->getOption( 'inc_bootstrap_css_in_editor' ) == 'Y' ) {
+		if ( is_admin() && $this->m_oWptbOptions->getOpt( 'inc_bootstrap_css_in_editor' ) == 'Y' ) {
 			add_filter( 'mce_css', array( $this, 'filter_include_bootstrap_in_editor' ) );
 		}
 		
@@ -253,28 +253,27 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	/**
 	 */
 	protected function handlePluginUpgrade() {
-		
-		$sCurrentPluginVersion = $this->getOption( 'current_plugin_version' );
+		$sCurrentPluginVersion = $this->m_oWptbOptions->getOpt( 'current_plugin_version' );
 		
 		// Forces a rebuild for the list of CSS includes
 		if ( $sCurrentPluginVersion !== $this->m_sVersion ) {
-			$this->deleteOption( 'includes_list' );
+			$this->m_oWptbOptions->setOpt( 'includes_list', false );
 		}
 		
-		//current_user_can( 'manage_options' ) ensure only valid users attempt this.
+		// ensure only valid users attempt this.
 		if ( $sCurrentPluginVersion !== $this->m_sVersion && current_user_can( 'manage_options' ) ) {
 
 			//Recompile LESS CSS if applicable
-			if ( $this->getOption('use_compiled_css') == 'Y' ) {
+			if ( $this->m_oWptbOptions->getOpt('use_compiled_css') == 'Y' ) {
 				
-				$oBoostrapLess = new HLT_BootstrapLess( $this->m_sLessOptionsKey );
-				if ( $oBoostrapLess->reWriteVariablesLess( self::$BOOSTRAP_DIR ) ) {
-					$oBoostrapLess->compileAllBootstrapLess( self::$BOOSTRAP_DIR );
+				$this->loadBootstrapLess();
+				if ( $this->m_oBsLess->reWriteVariablesLess() ) {
+					$this->m_oBsLess->compileAllBootstrapLess();
 				}
 			}
 		
 			//Set the flag so that this update handler isn't run again for this version.
-			$this->updateOption( 'current_plugin_version', $this->m_sVersion );
+			$this->m_oWptbOptions->setOpt( 'current_plugin_version', $this->m_sVersion );
 		}
 
 		//Someone clicked the button to acknowledge the update
@@ -282,16 +281,14 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 			$result = update_user_meta( $_POST['hlt_user_id'], $this->m_sOptionPrefix.'current_version', $this->m_sVersion );
 			
 			if ( $this->isShowMarketing() ) {
-// 				header( "Location: admin.php?page=".$this->getFullParentMenuId() );
 				wp_redirect( admin_url( "admin.php?page=".$this->getFullParentMenuId() ) );
 			}
 			else {
-// 				wp_header( "Location: ". $_POST['hlt_redirect_page'] );
 				wp_redirect( admin_url( $_POST['hlt_redirect_page'] ) );
 			}
 		}
 		
-	}//handlePluginUpgrade
+	}
 	
 	public function onWpAdminNotices() {
 		
@@ -299,7 +296,6 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		if ( !current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
 		$this->adminNoticeVersionUpgrade();
 		$this->adminNoticeOptionsUpdated();
 	}
@@ -362,25 +358,18 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	}//adminNoticeVersionUpgrade
 	
 	private function adminNoticeOptionsUpdated() {
-		
-		$sAdminFeedbackNotice = $this->getOption( 'feedback_admin_notice' );
+		$sAdminFeedbackNotice = $this->m_oWptbOptions->getOpt( 'feedback_admin_notice' );
 		if ( !empty( $sAdminFeedbackNotice ) ) {
 			$sNotice = '<p>'.$sAdminFeedbackNotice.'</p>';
 			$this->getAdminNotice( $sNotice, 'updated', true );
-			$this->updateOption( 'feedback_admin_notice', '' );
+			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', '' );
 		}
-		
-	}//adminNoticeOptionsUpdated
+	}
 	
 	public function onDisplayWtbCss() {
-		
-		//populates plugin options with existing configuration
-		$this->readyAllPluginOptions();
-		
-		//Specify what set of options are available for this page
-		$aAvailableOptions = array( &$this->m_aPluginOptions_BootstrapSection, &$this->m_aPluginOptions_TwitterBootstrapSection, &$this->m_aPluginOptions_ExtraTwitterSection, &$this->m_aPluginOptions_MiscOptionsSection ) ;
 
-		$sAllFormInputOptions = $this->collateAllFormInputsForAllOptions($aAvailableOptions);
+		$aAvailableOptions = $this->m_oWptbOptions->getOptions();
+		$sAllFormInputOptions = $this->m_oWptbOptions->collateAllFormInputsForAllOptions();
 		
 		$aData = array(
 			'plugin_url'		=> $this->m_sPluginUrl,
@@ -388,34 +377,32 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 			'fShowAds'			=> $this->isShowMarketing(),
 			'aAllOptions'		=> $aAvailableOptions,
 			'all_options_input'	=> $sAllFormInputOptions,
-			'nonce_field'		=> $this->getSubmenuId('bootstrap-css').'_wtbcss',
+			'nonce_field'		=> $this->getSubmenuId('bootstrap_css_wtbcss'),
 			'form_action'		=> 'admin.php?page='.$this->getSubmenuId('bootstrap-css'),
 		);
-
 		$this->display( 'bootstrapcss_index', $aData );
-	}//onDisplayWtbCss
+	}
 	
 	public function onDisplayWtbLess() {
 		
-		$oBoostrapLess = new HLT_BootstrapLess( $this->m_sLessOptionsKey );
-		$aAvailableOptions = $oBoostrapLess->getAllBootstrapLessOptions(false);
+		$this->loadBootstrapLess();
+		$aAvailableOptions = $this->m_oBsLess->getAllBootstrapLessOptions( false );
 		
 		$aData = array(
 			'plugin_url'				=> $this->m_sPluginUrl,
 			'var_prefix'				=> $this->m_sOptionPrefix,
 			'fShowAds'					=> $this->isShowMarketing(),
 			'aAllOptions'				=> $aAvailableOptions,
-			'compiler_enabled'			=> $this->getOption( 'use_compiled_css' ) === 'Y',
+			'compiler_enabled'			=> $this->m_oWptbOptions->getOpt( 'use_compiled_css' ) === 'Y',
 
-			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
+			'less_prefix'				=> $this->m_oBsLess->LessOptionsPrefix,
 			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.ICWP_DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' ),
 			'page_link_options'			=> $this->getSubmenuId('bootstrap-css'),
 			
-			'nonce_field'				=> $this->getSubmenuId('bootstrap-css').'_wtbless',
+			'nonce_field'				=> $this->getSubmenuId('bootstrap_css_wtbcss'),
 			'form_action'				=> 'admin.php?page='.$this->getSubmenuId('bootstrap-less')
 		);
 		$this->display( 'bootstrapcss_less', $aData );
-		
 	}
 	
 	/**
@@ -438,61 +425,42 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 					break;
 			}
 		}
+		$this->loadWptbProcessor();
+		$this->m_oWptbProcessor->updateIncludesCache(); //clear it
+		$this->flushCaches();
 		
 		if ( !self::$m_fUpdateSuccessTracker ) {
-			$this->updateOption( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Failed</strong>.' );
+			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Failed</strong>.' );
 		}
 		else {
-			$this->updateOption( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Succeeded</strong>.' );
+			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Succeeded</strong>.' );
 		}
-		$this->flushCaches();
 	}
 
 	protected function handleSubmit_BootstrapCssOptions() {
 
 		//Ensures we're actually getting this request from WP.
-		check_admin_referer( $this->getSubmenuId('bootstrap-css').'_wtbcss' );
+		check_admin_referer( $this->getSubmenuId('bootstrap_css_wtbcss') );
 		
 		if ( !isset($_POST[$this->m_sOptionPrefix.'all_options_input']) ) {
 			return;
 		}
-		$this->updatePluginOptionsFromSubmit( $_POST[$this->m_sOptionPrefix.'all_options_input'] );
-		
-		$this->deleteOption( 'includes_list' );
-
-		//DEBUG error problem reported: http://wordpress.org/support/topic/plugin-wordpress-twitter-bootstrap-css-noticeswarningsdb-option-usage
-		$sCustomUrl = (isset( $_POST[$this->m_sOptionPrefix.'customcss_url'] ))? $_POST[$this->m_sOptionPrefix.'customcss_url'] : '';
-		$fCustomCss = ($this->getAnswerFromPost( 'customcss' ) === 'Y');
-		if ( $fCustomCss && !empty( $sCustomUrl ) ) {
-			if ( $this->checkUrlValid( $sCustomUrl ) ) {
-				$this->updateOption( 'customcss_url', $sCustomUrl );
-			}
-			else {
-				$this->updateOption( 'customcss_url', '' );
-			}
-		}
+		$this->m_oWptbOptions->updatePluginOptionsFromSubmit( $_POST[self::OptionPrefix.'all_options_input'] );
 	}
 	
 	protected function handleSubmit_BootstrapLess() {
 
 		// Ensures we're actually getting this request from WP.
-		check_admin_referer( $this->getSubmenuId('bootstrap-css').'_wtbless' );
+		check_admin_referer( $this->getSubmenuId('bootstrap_css_wtbcss') );
 		
-		// Compile LESS files
-		$oBoostrapLess = new HLT_BootstrapLess( $this->m_sLessOptionsKey );
+		$this->loadBootstrapLess();
 
 		if ( isset( $_POST['submit_reset'] ) ) {
-			$oBoostrapLess->resetToDefaultAllLessOptions( self::$BOOSTRAP_DIR );
+			$this->m_oBsLess->resetToDefaultAllLessOptions();
 			return;
 		}
 
-		if ( isset( $_POST['submit_preserve'] ) ) { //don't use the original variables.less
-			$oBoostrapLess->processNewLessOptions( $this->m_sOptionPrefix, self::$BOOSTRAP_DIR, FALSE );
-			return;
-		}
-		
-		$oBoostrapLess->processNewLessOptions( $this->m_sOptionPrefix, self::$BOOSTRAP_DIR, TRUE );
-
+		$this->m_oBsLess->processNewLessOptions( $this->m_sOptionPrefix, !isset( $_POST['submit_preserve'] ) );
 	}
 
 	public function filter_include_bootstrap_in_editor( $mce_css ) {
@@ -503,7 +471,7 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	}
 	
 	public function onWpPrintStyles() {
-		if ( $this->getOption( 'prettify' ) == 'Y' ) {
+		if ( $this->m_oWptbOptions->getOpt( 'prettify' ) == 'Y' ) {
 			$sUrl = $this->getCssUrl( 'google-code-prettify/prettify.css' );
 			wp_register_style( 'prettify_style', $sUrl );
 			wp_enqueue_style( 'prettify_style' );
@@ -511,224 +479,15 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	}
 	
 	public function onWpEnqueueScripts() {
-		
-		$fJsInFooter = ($this->getOption( 'js_head' ) == 'Y'? false : true);
-		$sBootstrapOption = $this->getOption( 'option' );
-		
-		if ( $sBootstrapOption == 'twitter' && $this->getOption( 'all_js' ) == 'Y' ) {
-			
-			$sExtension = ( $this->getOption( 'use_minified_css' ) == 'Y' )? '.min.js' : '.js';
-
-			if ( $this->getOption( 'use_cdnjs' ) == 'Y' ) {
-				//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js
-				//Since version 2.3.0, now changed to:
-				////cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js
-				$sUrlBootstrapJs = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/js/bootstrap'.$sExtension;
-			}
-			else {
-				$sUrlBootstrapJs = self::$BOOSTRAP_URL.'js/bootstrap'.$sExtension;
-			}
-
-			if ( $this->getOption( 'replace_jquery_cdn' ) == 'Y' ) {
-				wp_deregister_script('jquery');
-				
-				//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js
-				$sJqueryCdnUri = self::CdnjsStem.'jquery/'.self::CdnJqueryVersion.'/jquery'.$sExtension;
-				
-				wp_register_script( 'jquery', $sJqueryCdnUri, '', self::CdnJqueryVersion, false );
-			}
-			
-			wp_enqueue_script( 'jquery' );
-			
-			wp_register_script( 'bootstrap-all-min', $sUrlBootstrapJs, array('jquery'), $this->m_sVersion, $fJsInFooter );
-			wp_enqueue_script( 'bootstrap-all-min' );
-		}
-		
-		if ( $this->getOption( 'prettify' ) == 'Y' ) {
-			$sUrl = $this->getJsUrl( 'google-code-prettify/prettify.js' );
-			wp_register_script( 'prettify_script', $sUrl, false, $this->m_sVersion, $fJsInFooter );
-			wp_enqueue_script( 'prettify_script' );
-		}
-
-	}//onWpEnqueueScripts
+		$this->loadWptbProcessor();
+		$this->m_oWptbProcessor->doEnqueueScripts();
+	}
 	
 	public function onEnqueueResetCss() {
-		if ( is_admin()
-				|| in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))
-				|| isset( $_GET['thesis_editor'] )
-				|| ( $this->getOption( 'enq_using_wordpress' ) !== 'Y' )
-			) {
-			return true;
-		}
-
-		$aIncludesList = $this->getCssIncludeUrls();
-		
-		if ( empty( $aIncludesList ) ) {
-			return true;
-		}
-		
-		foreach( $aIncludesList as $sKey => $sCssLinkUrl ) {
-			wp_register_style( $sKey, $sCssLinkUrl );
-			wp_enqueue_style( $sKey );
-		}
-
+		$this->loadWptbProcessor();
+		$this->m_oWptbProcessor->doEnqueueResetCss();
 	}
 	
-	public function onOutputBufferFlush( $insContent ) {
-		return $this->rewriteHead( $insContent );
-	}
-	
-	/**
-	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
-	 *
-	 * @param $insContents
-	 */
-	public function rewriteHead( $insContents ) {
-		
-		$aIncludesList = $this->getCssIncludeUrls();
-		
-		if ( empty( $aIncludesList ) ) {
-			return $insContents;
-		}
-		//Add the CSS link
-		$sReplace = '${1}';
-		$sReplace .= "\n<!-- This site uses the WordPress Twitter Bootstrap CSS plugin v".$this->m_sVersion." from iControlWP http://icwp.io/w/ -->";
-		
-		foreach ( $aIncludesList as $sKey => $sIncludeLink ) {
-			$sReplace .= "\n".'<link rel="stylesheet" type="text/css" href="'.$sIncludeLink.'" />';
-		}
-
-		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from iControlWP. -->";
-		
-		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
-		return preg_replace( $sRegExp, $sReplace, $insContents, 1 );
-	}
-	
-	protected function getCssIncludeUrls() {
-		
-		$aPossibleIncludeOptions = array( 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize' );
-		$sIncludeOption = $this->getOption( 'option' );
-		
-		// An unsupported option, so just return add the custom CSS.
-		if ( !in_array( $sIncludeOption, $aPossibleIncludeOptions ) ) {
-			
-			$aIncludesList = array();
-			$this->addCustomCssLink( $aIncludesList );
-			return $aIncludesList;
-		}
-
-		// We save the inclusions list so we don't work it out every page load.
-		$aIncludesList = $this->getOption( 'includes_list' );
-
-		if ( !is_array($aIncludesList) ) { //process the list of CSS to be included
-
-			$aIncludesList = array();
-
-			// 'twitter', 'yahoo-reset', 'yahoo-reset-3', 'normalize'
-			switch ( $sIncludeOption ) {
-				case 'twitter':
-					$aIncludesList = $this->getTwitterCssUrls( $this->getOption( 'use_minified_css' ) == 'Y' );
-					break;
-				case 'normalize':
-					if ( $this->getOption( 'use_cdnjs' ) == 'Y' ) {
-						// cdnjs.cloudflare.com/ajax/libs/normalize/2.0.1/normalize.css
-						$aIncludesList = array( 'normalize' => self::CdnjsStem.'normalize/'.self::NormalizeVersion.'/normalize.css' );
-					}
-					else {
-						$aIncludesList = array( 'normalize' => $this->getCssURL( 'normalize.css' ) . '?ver='.self::NormalizeVersion );
-					}
-					break;
-				case 'yahoo-reset':
-					$aIncludesList = array( 'yahoo-reset-290' => $this->getCssURL( 'yahoo-2.9.0.min.css' ) );
-					break;
-				case 'yahoo-reset-3':
-					$aIncludesList = array( 'yahoo-reset-3' => $this->getCssURL( 'yahoo-cssreset-min.css' ) . '?ver='.self::YUI3Version );
-					break;
-				default:
-					break;
-			}
-			
-			// At this point $aIncludesList should be an array of all the URLs to be included with their labels. 
-				
-			// Now add Custom/Reset CSS.
-			$this->addCustomCssLink( $aIncludesList );
-				
-			$this->updateOption( 'includes_list', $aIncludesList ); //update our cached list
-		}
-
-		return $aIncludesList;
-	}
-	
-	protected function addCustomCssLink( &$inaCssList = array() ) {
-
-		if ( $this->getOption( 'customcss' ) == 'Y' ) {
-			$sCustomCssUrl = $this->getOption( 'customcss_url' );
-			if ( !empty( $sCustomCssUrl ) ) {
-				$inaCssList[ 'custom-reset' ] = $sCustomCssUrl;
-			}
-		}
-	}
-	
-	/**
-	 * Depending on the configuration options set, will provide an array of the Twitter URLs to be included
-	 *  
-	 * @param $infMinified
-	 * @return Array
-	 */
-	protected function getTwitterCssUrls( $infMinified = false ) {
-
-		$sCssFileExtension = $infMinified? '.min.css' : '.css';
-
-		// link to the Twitter LESS-compiled CSS (only if the files exists)
-		if ( $this->getOption( 'use_compiled_css' ) == 'Y' ) {
-			$aUrls = array();
-			$fValid = false;
-			$sLessStemDir = self::$BOOSTRAP_DIR.'css'.ICWP_DS.'bootstrap';
-			$sLessStemUrl = self::$BOOSTRAP_URL.'css/bootstrap';
-			if ( file_exists( $sLessStemDir.'.less'.$sCssFileExtension ) ) {
-				$aUrls[ 'twitter-bootstrap-less' ] = $sLessStemUrl.'.less'.$sCssFileExtension;
-				$fValid = true;
-			}
-			// If we were able to get all the URLs we were supposed to for LESS, return them now.
-			if ( $fValid ) {
-				return $aUrls;
-			}
-		}
-
-		// Determine the Twitter URL stem based on local or if CDNJS selected
-		if ( $this->getOption( 'use_cdnjs' ) == 'Y' ) {
-			$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/'.self::TwitterVersion.'/css/bootstrap';
-		}
-		else {
-			$sTwitterStem = self::$BOOSTRAP_URL.'css/bootstrap'; // default is to serve it "local"
-		}
-
-		$aUrls = array();
-		// Add the Twitter URLs
-		$aUrls[ 'twitter-bootstrap' ] = $sTwitterStem.$sCssFileExtension;
-		return $aUrls;
-	}
-	
-	protected function checkUrlValid( $insUrl ) {
-		$oCurl = curl_init();
-		curl_setopt( $oCurl, CURLOPT_URL, $insUrl );
-		curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $oCurl, CURLOPT_CONNECTTIMEOUT, 10 );
-		
-		$sContent = curl_exec( $oCurl );
-		$sHttpCode = curl_getinfo( $oCurl, CURLINFO_HTTP_CODE );
-		curl_close( $oCurl );
-		
-		return ( intval( $sHttpCode ) === 200 );
-	}
-	/*
-	protected function getAnswerFromPost( $insKey, $insPrefix = null ) {
-		if ( is_null( $insPrefix ) ) {
-			$insKey = self::InputPrefix.$insKey;
-		}
-		return ( isset( $_POST[$insKey] )? 'Y': 'N' );
-	}
-	*/
 	/**
 	 * Not currently used, but could be useful once we work out what way the JS should be included.
 	 * @param $insHandle	For example: 'prettify/prettify.css'
@@ -749,6 +508,17 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		}
 		return $inaLinks;
 	}
+
+	public function onWpShutdown() {
+		parent::onWpShutdown();
+		$this->saveProcessors_Action();
+	}
+
+	protected function saveProcessors_Action() {
+		if ( isset( $this->m_oWptbOptions ) ) {
+			$this->m_oWptbOptions->savePluginOptions( false );
+		}
+	}
 	
 	protected function deleteAllPluginDbOptions() {
 		
@@ -757,24 +527,24 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		if ( !current_user_can( 'manage_options' ) ) {
 			return;
 		}
+		$this->loadWptbOptions();
+		$this->m_oWptbOptions->deletePluginOptions();
 		
-		$oBoostrapLess = new HLT_BootstrapLess( $this->m_sLessOptionsKey );
-		$oBoostrapLess->processLessOptions( 'delete' );
+		$this->loadBootstrapLess();
+		$this->m_oBsLess->processLessOptions( 'delete' );
+		
+		//legacy options
+		$this->deleteOption( 'upgraded1to2' );
+		
+		remove_action( 'shutdown', array( $this, 'onWpShutdown' ) );
 	}
 	
 	public function onWpDeactivatePlugin() {
-
-		if ( $this->getOption( 'delete_on_deactivate' ) == 'Y' ) {
+		if ( $this->m_oWptbOptions->getOpt( 'delete_on_deactivate' ) == 'Y' ) {
 			$this->deleteAllPluginDbOptions();
 		}
-		$this->deleteOption( 'current_plugin_version' );
-		$this->deleteOption( 'feedback_admin_notice' );
-		//legacy options
-		$this->deleteOption( 'inc_responsive_css' );
-		$this->deleteOption( 'upgraded1to2' );
 	}
-	
-}//HLT_BootstrapCss
+}
 
 endif;
 

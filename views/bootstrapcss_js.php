@@ -101,7 +101,7 @@
 		var sValue = jQuery( this ).val();
 
 		/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
-		if ( sValue == 'twitter' ) {
+		if ( sValue == 'twitter' || sValue == 'twitter-legacy' ) {
 			jQuery( '#TwitterBootstrapJavascriptLibraryOptions' ).slideDown( 150 );
 			jQuery( '#ExtraTwitterBootstrapOptions' ).slideDown( 150 );
 			

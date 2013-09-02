@@ -17,9 +17,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if ( !class_exists('ICWP_WpFunctions') ):
+if ( !class_exists('ICWP_WpFunctions_WPTB') ):
 
-class ICWP_WpFunctions {
+class ICWP_WpFunctions_WPTB {
 
 	/**
 	 * @var string
@@ -29,6 +29,15 @@ class ICWP_WpFunctions {
 	public function __construct() {
 	}
 
+	/**
+	 * @param string $insUrl
+	 * @return boolean
+	 */
+	public function isUrlValid( $insUrl ) {
+		$aResponse = wp_remote_get( $insUrl );
+		return !is_wp_error($aResponse) && $aResponse['response']['code'] == 200;
+	}
+	
 	/**
 	 * @param string $insPluginFile
 	 * @return boolean|stdClass

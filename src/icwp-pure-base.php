@@ -17,9 +17,9 @@ if ( !function_exists( '_hlt__' ) ) {
 
 require_once( dirname(__FILE__).'/icwp-wpfunctions.php' );
 
-if ( !class_exists('ICWP_Pure_Base') ):
+if ( !class_exists('ICWP_Pure_Base_WPTB') ):
 
-class ICWP_Pure_Base {
+class ICWP_Pure_Base_WPTB {
 
 	const BaseTitle			= 'iControlWP Plugins';
 	const BasePermissions	= 'manage_options';
@@ -79,7 +79,7 @@ class ICWP_Pure_Base {
 	protected $m_fAutoPluginUpgrade = false;
 	
 	/**
-	 * @var ICWP_WpFunctions;
+	 * @var ICWP_WpFunctions_WPTB;
 	 */
 	protected $m_oWpFunctions;
 
@@ -552,12 +552,11 @@ class ICWP_Pure_Base {
 	
 	protected function loadWpFunctions() {
 		if ( !isset( $this->m_oWpFunctions ) ) {
-			$this->m_oWpFunctions = new ICWP_WpFunctions();
+			$this->m_oWpFunctions = new ICWP_WpFunctions_WPTB();
 		}
 	}
 
 	protected function flushCaches() {
-		// Flush W3 Total Cache (compatible up to version 0.9.2.4)
 		if (function_exists('w3tc_pgcache_flush')) {
 			w3tc_pgcache_flush();
 		}

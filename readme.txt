@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: dlgoodchild, paultgoodchild
+Contributors: paultgoodchild, dlgoodchild
 Donate link: http://icwp.io/q
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
 Tested up to: 3.6
-Stable tag: 3.0.0-1
+Stable tag: 3.0.0-2
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
 
@@ -198,20 +198,29 @@ you should be aware of before you upgrade!
 *	The Twitter Bootstrap v3+ library is quite different to previous versions. If your current WordPress theme is heavily customized
 	and built around Bootstrap v2+ you should take great care before upgrading. Always have a [valid WordPress backup](http://www.worpdrive.com)
 	before upgrading your sites.
-*	The PHP LESS compiler doesn't work in v3.0.0.  This is not a fault of the plugin, but rather the less.php library that this
-	plugin uses. A future release will include a fix for this as soon as its made available.
 *	Javascript-based Bootstrap components have also changed quite a bit. I've attempted to maintain the shortcodes, but they might
 	break. If something breaks for your site, please report them in the forums.
-*	Upgrade code I kept in previous versions for those that moved from v1 to v2 of the plugin has been completely removed. Going
-	forward I will only maintain options for upgrades between minor v3 releases.  What does this mean exactly?  It means if I change
-	(and I haven't yet) any plugin options between v2 and v3, I wont necessarily have upgrade code to cater for that.  It's just too
-	much work to maintain backwards compatibility ad infinitum.
-*	Future versions of the plugin v3+ will have an in-built automatic upgrade system for minor releases. Much the same as I've done
+*	Upgrade code I kept in previous versions for those that moved from v1 to v2 of the plugin has been completely removed.
+*	Future versions of the plugin v3+ will have an in-built automatic upgrade system for *minor* releases. Much the same as I've done
 	for the [WordPress Simple Firewall](http://wordpress.org/plugins/wp-simple-firewall/).
 
 = TODO =
 * Provide better upgrade support for customized Variable.less files. Currently if you've customized your Variables.less file manually
 you'll need to back it up before you upgrade your Bootstrap plugin.
+
+= 3.0.0-2 =
+
+* UPDATED:	Given the [courteous](http://wordpress.org/support/topic/can-you-add-back-bootstrap-v2-as-an-option-in-the-new-plugin) and
+			[not-so-courteous](http://wordpress.org/support/topic/beware-of-short-codes) feedback that you'd like to have the option for
+			both Bootstrap v2.3.x and Bootstrap v3+ I've added the option for both.
+			It adds more complexity to the plugin and I cannot guarantee for how long both branches of the Bootstrap libraries will
+			remain in this v3 plugin branch.
+* UPDATED:	The plugin now employs our new Options Object system, so in place of 15+ WordPress options it now uses a single WordPress Option
+			to store everything. TODO: apply the same to the LESS compiler options.
+* UPDATED:	The version of the JQuery library included if you use the CDNJS option (to align with WordPress 3.6)
+* UPDATED:	Support for the latest W3 Total Cache plugin version.
+* CHANGED:	A lot of code refactoring to improve its reliability and performance (and also to cater for v2 and v3 of the Bootstrap libraries)
+* FIX:		LESS Compiler for Bootstrap v3.0
 
 = 3.0.0-1 =
 
@@ -220,6 +229,7 @@ you'll need to back it up before you upgrade your Bootstrap plugin.
 * CHANGED: Refactored a lot of code (with more to come!)
 
 = 2.3.2-2 =
+
 * UPDATED: Removed dashboard ad link.
 * UPDATED: Normalize CSS to version 2.1.2
 * FIX: Undefined variable warning.

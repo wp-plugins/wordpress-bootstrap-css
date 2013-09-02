@@ -4,7 +4,7 @@ require_once( dirname(__FILE__).'/icwp-pure-base.php' );
 
 if ( !class_exists('ICWP_WTB_Base_Plugin') ):
 
-class ICWP_WTB_Base_Plugin extends ICWP_Pure_Base {
+class ICWP_WTB_Base_Plugin extends ICWP_Pure_Base_WPTB {
 
 	const ParentName		= 'Twitter Bootstrap';
 
@@ -13,11 +13,6 @@ class ICWP_WTB_Base_Plugin extends ICWP_Pure_Base {
 	static protected $m_fUpdateSuccessTracker;
 	static protected $m_aFailedUpdateOptions;
 	
-	/**
-	 * @var ICWP_WpFunctions;
-	 */
-	protected $m_oWpFunctions;
-
 	public function __construct() {
 		parent::__construct();
 		
