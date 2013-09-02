@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.0.0-2
+Version: 3.0.0-3
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -36,7 +36,7 @@ if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	
-	const PluginVersion				= '3.0.0-2';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	const PluginVersion				= '3.0.0-3';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
@@ -176,7 +176,7 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 				ob_start( array( $this->m_oWptbProcessor, 'onOutputBufferFlush' ) );
 			}
 		}
-
+		
 		add_action( 'wp_enqueue_scripts', array( $this, 'onWpPrintStyles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'onWpEnqueueScripts' ) );
 		
@@ -515,6 +515,7 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	}
 
 	protected function saveProcessors_Action() {
+
 		if ( isset( $this->m_oWptbOptions ) ) {
 			$this->m_oWptbOptions->savePluginOptions( false );
 		}

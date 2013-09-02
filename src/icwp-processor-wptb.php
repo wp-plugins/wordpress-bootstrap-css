@@ -113,7 +113,6 @@ class ICWP_WptbProcessor {
 			$this->addCustomCssLink( $aIncludesList );
 			return $aIncludesList;
 		}
-
 		// We save the inclusions list so we don't work it out every page load.
 		$aIncludesList = $this->m_oWptbOptions->getOpt( 'includes_list' );
 
@@ -146,6 +145,7 @@ class ICWP_WptbProcessor {
 			// At this point $aIncludesList should be an array of all the URLs to be included with their labels. 
 			// Now add Custom/Reset CSS.
 			$this->addCustomCssLink( $aIncludesList );
+			$this->updateIncludesCache( $aIncludesList );
 		}
 		return $aIncludesList;
 	}
@@ -182,11 +182,20 @@ class ICWP_WptbProcessor {
 		else {
 			$sTwitterStem = $this->getBootstrapUrl( 'css/bootstrap' ); // default is to serve it "local"
 		}
-		
-		if ( $inc_responsive_css )
-		
-		// Add the Twitter URLs
 		$aUrls[ 'twitter-bootstrap' ] = $sTwitterStem.$sCssFileExtension;
+		
+		if ( $this->m_oWptbOptions->getOpt( 'inc_responsive_css' ) == 'Y' && $this->m_oWptbOptions->getOpt( 'option' ) == 'twitter-legacy' ) {
+			
+			if ( $this->m_oWptbOptions->getOpt( 'use_cdnjs' ) == 'Y' ) {
+				$sTwitterStem = self::CdnjsStem.'twitter-bootstrap/%s/css/bootstrap-responsive';
+				$sTwitterStem = sprintf( $sTwitterStem, $this->getTwitterBootstrapVersion() );
+			}
+			else {
+				$sTwitterStem = $this->getBootstrapUrl( 'css/bootstrap-responsive' ); // default is to serve it "local"
+			}
+			$aUrls[ 'twitter-bootstrap-responsive' ] = $sTwitterStem.$sCssFileExtension;
+		}
+		
 		return $aUrls;
 	}
 	
