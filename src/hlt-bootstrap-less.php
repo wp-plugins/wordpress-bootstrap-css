@@ -26,6 +26,13 @@ require_once( dirname(__FILE__).'/hlt-bootstrap-less-base.php' );
 
 if ( !class_exists('HLT_BootstrapLess') ):
 
-class HLT_BootstrapLess extends HLT_BootstrapLess_Base { }
+class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 
+	public function handleUpgrade( $insCurrentVersion ) {
+		if ( version_compare( $insCurrentVersion, '3.0.0-5', '<' ) ) {
+			delete_option( $this->m_sOptionsKey ); //force it to regenerate the less options completely with new variables
+		}
+	}
+	
+}
 endif;

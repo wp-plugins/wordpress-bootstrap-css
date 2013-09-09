@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.0.0-4
+Version: 3.0.0-5
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -36,7 +36,7 @@ if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	
-	const PluginVersion				= '3.0.0-4';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	const PluginVersion				= '3.0.0-5';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 
@@ -135,12 +135,11 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		if ( isset( $this->m_oBsLess ) ) {
 			return;
 		}
-		
 		if ( $this->m_oWptbOptions->getOpt( 'option' ) == 'twitter' ) {
-			require_once( dirname(__FILE__).'/hlt-bootstrap-less.php' );
+			require_once( dirname(__FILE__).'/src/hlt-bootstrap-less.php' );
 		}
 		else {
-			require_once( dirname(__FILE__).'/hlt-bootstrap-less-legacy.php' );
+			require_once( dirname(__FILE__).'/src/hlt-bootstrap-less-legacy.php' );
 		}
 		
 		$this->setLessOptionsKey();
@@ -179,10 +178,10 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		$sBootstrapOption = $this->m_oWptbOptions->getOpt( 'option' );
 		if ( strpos( $sBootstrapOption, 'twitter' ) !== false && $this->m_oWptbOptions->getOpt( 'useshortcodes' ) == 'Y' ) {
 			if ( $sBootstrapOption == 'twitter' ) {
-				require_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes.php' );
+				require_once( dirname(__FILE__).'/src/hlt-bootstrap-shortcodes.php' );
 			}
 			else {
-				require_once( dirname(__FILE__).'/hlt-bootstrap-shortcodes-legacy.php' );
+				require_once( dirname(__FILE__).'/src/hlt-bootstrap-shortcodes-legacy.php' );
 			}
 			$oShortCodes = new HLT_BootstrapShortcodes();
 		}
@@ -250,6 +249,10 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	protected function handlePluginUpgrade() {
 		$sCurrentPluginVersion = $this->m_oWptbOptions->getOpt( 'current_plugin_version' );
 		
+		if ( empty($sCurrentPluginVersion) ) {
+			$sCurrentPluginVersion = '0.0';
+		}
+		
 		// Forces a rebuild for the list of CSS includes
 		if ( $sCurrentPluginVersion !== $this->m_sVersion ) {
 			$this->m_oWptbOptions->setOpt( 'includes_list', false );
@@ -258,10 +261,11 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		// ensure only valid users attempt this.
 		if ( $sCurrentPluginVersion !== $this->m_sVersion && current_user_can( 'manage_options' ) ) {
 
+			$this->loadBootstrapLess();
+			$this->m_oBsLess->handleUpgrade( $sCurrentPluginVersion );
+	
 			//Recompile LESS CSS if applicable
 			if ( $this->m_oWptbOptions->getOpt('use_compiled_css') == 'Y' ) {
-				
-				$this->loadBootstrapLess();
 				if ( $this->m_oBsLess->reWriteVariablesLess() ) {
 					$this->m_oBsLess->compileAllBootstrapLess();
 				}
@@ -275,12 +279,10 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
 			$result = update_user_meta( $_POST['hlt_user_id'], $this->m_sOptionPrefix.'current_version', $this->m_sVersion );
 			
-			if ( $this->isShowMarketing() ) {
-				wp_redirect( admin_url( "admin.php?page=".$this->getFullParentMenuId() ) );
-			}
-			else {
-				wp_redirect( admin_url( $_POST['hlt_redirect_page'] ) );
-			}
+			$sUrl = $this->isShowMarketing()? "admin.php?page=".$this->getFullParentMenuId() : $_POST['hlt_redirect_page'];
+			$sUrl = admin_url( $sUrl );
+			header( sprintf( 'Location: %s', $sUrl ) );
+			exit();
 		}
 		
 	}
@@ -382,7 +384,7 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		
 		$this->loadBootstrapLess();
 		$aAvailableOptions = $this->m_oBsLess->getAllBootstrapLessOptions( false );
-		
+
 		$aData = array(
 			'plugin_url'				=> $this->m_sPluginUrl,
 			'var_prefix'				=> $this->m_sOptionPrefix,
