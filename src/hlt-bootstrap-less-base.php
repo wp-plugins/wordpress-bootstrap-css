@@ -429,7 +429,8 @@ class HLT_BootstrapLess_Base {
 			echo "lessphp fatal error: ".$oE->getMessage();
 		}
 	}
-	
+
+	public function handleUpgrade( $insCurrentVersion ) { }
 }
 
 endif;

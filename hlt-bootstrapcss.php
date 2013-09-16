@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.0.0-5
+Version: 3.0.0-6
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -36,7 +36,7 @@ if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 	
-	const PluginVersion				= '3.0.0-5';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	const PluginVersion				= '3.0.0-6';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
 	const InputPrefix				= 'hlt_bootstrap_';
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 
@@ -277,14 +277,34 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
-			$result = update_user_meta( $_POST['hlt_user_id'], $this->m_sOptionPrefix.'current_version', $this->m_sVersion );
-			
-			$sUrl = $this->isShowMarketing()? "admin.php?page=".$this->getFullParentMenuId() : $_POST['hlt_redirect_page'];
-			$sUrl = admin_url( $sUrl );
-			header( sprintf( 'Location: %s', $sUrl ) );
+			$this->updateVersionUserMeta( $_POST['user_id'] );
+			if ( $this->isShowMarketing() ) {
+				wp_redirect( admin_url( "admin.php?page=".$this->getFullParentMenuId() ) );
+			}
+			else {
+				wp_redirect( admin_url( $_POST['redirect_page'] ) );
+			}
 			exit();
 		}
-		
+	}
+	
+	/**
+	 * Updates the current (or supplied user ID) user meta data with the version of the plugin
+	 *  
+	 * @param unknown_type $innId
+	 */
+	protected function updateVersionUserMeta( $innId = null ) {
+		if ( is_null( $innId ) ) {
+			$oCurrentUser = wp_get_current_user();
+			if ( !($oCurrentUser instanceof WP_User) ) {
+				return;
+			}
+			$nUserId = $oCurrentUser->ID;
+		}
+		else {
+			$nUserId = $innId;
+		}
+		update_user_meta( $nUserId, self::OptionPrefix.'current_version', $this->m_sVersion );
 	}
 	
 	public function onWpAdminNotices() {
@@ -361,6 +381,14 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 			$this->getAdminNotice( $sNotice, 'updated', true );
 			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', '' );
 		}
+	}
+	
+	public function onDisplayMainMenu() {
+
+		// To ensure the nag bar disappears if/when they visit the dashboard
+		// regardless of clicking the button.
+		$this->updateVersionUserMeta();
+		parent::onDisplayMainMenu();
 	}
 	
 	public function onDisplayWtbCss() {

@@ -54,9 +54,9 @@ class ICWP_WptbProcessor {
 	
 	public function doEnqueueResetCss() {
 		if ( is_admin()
+				|| ( $this->m_oWptbOptions->getOpt( 'enq_using_wordpress' ) !== 'Y' )
 				|| in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))
 				|| isset( $_GET['thesis_editor'] )
-				|| ( $this->m_oWptbOptions->getOpt( 'enq_using_wordpress' ) !== 'Y' )
 			) {
 			return true;
 		}
