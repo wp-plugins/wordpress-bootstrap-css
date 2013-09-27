@@ -151,10 +151,8 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 		$sFilePathToLess = $this->m_sBsDir.'less'.ICWP_DS.$insCompileTarget.'.less';
 		
 		//parse LESS
-		if ( !class_exists( 'lessc' ) ) {
-			include_once( dirname(__FILE__).'/inc/lessc/lessc.inc.php' );
-		}
-		elseif ( lessc::$VERSION != 'v0.4.0' ) { //not running a supported version of the less compiler for bootstrap
+		$this->includeLess();
+		if ( lessc::$VERSION != 'v0.4.0' ) { //not running a supported version of the less compiler for bootstrap
 			return false;
 		}
 
@@ -225,6 +223,7 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 			echo "lessphp fatal error: ".$oE->getMessage();
 		}
 	}
+
 	
 }
 
