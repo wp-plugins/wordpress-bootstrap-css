@@ -188,7 +188,7 @@ class ICWP_Pure_Base_WPTB {
 	public function onWpAdminInit() {
 		//Do Plugin-Specific Admin Work
 		if ( $this->isIcwpPluginAdminPage() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueBootstrapAdminCss' ), 99 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueBootstrapLegacyAdminCss' ), 99 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueuePluginAdminCss' ), 99 );
 		}
 	}
@@ -327,7 +327,12 @@ class ICWP_Pure_Base_WPTB {
 	public function enqueueBootstrapAdminCss() {
 		wp_register_style( 'worpit_bootstrap_wpadmin_css', $this->getCssUrl( 'bootstrap-wpadmin.css' ), false, $this->m_sVersion );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css' );
-		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes', $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_css'), $this->m_sVersion );
+	}
+
+	public function enqueueBootstrapLegacyAdminCss() {
+		wp_register_style( 'worpit_bootstrap_wpadmin_legacy_css', $this->getCssUrl( 'bootstrap-wpadmin-legacy.css' ), false, $this->m_sVersion );
+		wp_enqueue_style( 'worpit_bootstrap_wpadmin_legacy_css' );
+		wp_register_style( 'worpit_bootstrap_wpadmin_css_fixes', $this->getCssUrl('bootstrap-wpadmin-fixes.css'),  array('worpit_bootstrap_wpadmin_legacy_css'), $this->m_sVersion );
 		wp_enqueue_style( 'worpit_bootstrap_wpadmin_css_fixes' );
 	}
 

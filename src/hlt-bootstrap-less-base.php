@@ -43,12 +43,25 @@ class HLT_BootstrapLess_Base {
 	protected $m_aAllBootstrapLessOptions;
 	
 	/**
+	 * @var strings
+	 */
+	protected $m_sVariableLessFile;
+	
+	/**
 	 * @param string $insBsDir
 	 * @param string $insKey
 	 */
 	public function __construct( $insBsDir, $insKey ) {
 		$this->m_sOptionsKey = $insKey;
 		$this->m_sBsDir = $insBsDir;
+		$this->m_sVariableLessFile = $this->m_sBsDir.'less'.ICWP_DS.'variables.less.orig';
+		$this->writeVariableOrig();
+	}
+	
+	protected function writeVariableOrig() {
+		if ( !is_file($this->m_sVariableLessFile.'.orig' ) ) {
+			copy( $this->m_sVariableLessFile, $this->m_sVariableLessFile.'.orig' );
+		}
 	}
 	
 	protected function initPluginOptions() {
@@ -88,7 +101,7 @@ class HLT_BootstrapLess_Base {
 					'section_options' => array(
 						array( self::LessOptionsPrefix.'body-bg',					'', '#fff',												'less_color',	'Body Background Colour',		'@body-bg' ), //@white
 						array( self::LessOptionsPrefix.'text-color',				'', '@gray-dark',										'less_color',	'Text Colour',					'@text-color' ),
-						array( self::LessOptionsPrefix.'link-color',				'', '@brand-primary',												'less_color',	'Link Colour',					'@link-color' ),
+						array( self::LessOptionsPrefix.'link-color',				'', '@brand-primary',									'less_color',	'Link Colour',					'@link-color' ),
 						array( self::LessOptionsPrefix.'link-hover-color',		 	'', 'darken(@link-color, 15%)',							'less_color',	'Link Hover Colour',			'@link-hover-color' ), //darken(@linkColor, 15%)
 						array( self::LessOptionsPrefix.'font-size-base',			'', '14px',												'less_size',	'Font Size Base',				'@baseFontSize' ),
 						array( self::LessOptionsPrefix.'font-size-large',			'', 'ceil(@font-size-base * 1.25)',						'less_size',	'Font Size Large',				'@baseFontSize' ),
@@ -264,7 +277,7 @@ class HLT_BootstrapLess_Base {
 								$sPostValue = $sPostValue.'px';
 							}
 							if ( !preg_match( '/^\d+(px|em|pt)$/', $sPostValue ) ) {
-								$sPostValue = $sOptionDefault;
+							//	$sPostValue = $sOptionDefault; //remove this validation
 							}
 						}
 						
@@ -316,12 +329,11 @@ class HLT_BootstrapLess_Base {
 
 		$fSuccess = true;
 		
-		$sFilePathVariablesLess = $this->m_sBsDir.'less'.ICWP_DS.'variables.less';
 		if ( $infUseOriginalLessFile ) {
-			$sContents = file_get_contents( $sFilePathVariablesLess.'.orig' );
+			$sContents = file_get_contents( $this->m_sVariableLessFile.'.orig' );
 		}
 		else {
-			$sContents = file_get_contents( $sFilePathVariablesLess );
+			$sContents = file_get_contents( $this->m_sVariableLessFile );
 		}
 		
 		if ( !$sContents ) {
@@ -330,7 +342,7 @@ class HLT_BootstrapLess_Base {
 		}
 		else {
 			$sContents = $this->processLessOptions( 'rewrite-variablesless', array( 'file-contents' => $sContents) );
-			file_put_contents( $sFilePathVariablesLess, $sContents );
+			file_put_contents( $this->m_sVariableLessFile, $sContents );
 		}
 		return $fSuccess;
 	
