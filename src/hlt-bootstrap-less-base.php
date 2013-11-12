@@ -54,7 +54,7 @@ class HLT_BootstrapLess_Base {
 	public function __construct( $insBsDir, $insKey ) {
 		$this->m_sOptionsKey = $insKey;
 		$this->m_sBsDir = $insBsDir;
-		$this->m_sVariableLessFile = $this->m_sBsDir.'less'.ICWP_DS.'variables.less.orig';
+		$this->m_sVariableLessFile = $this->m_sBsDir.'less'.ICWP_DS.'variables.less';
 		$this->writeVariableOrig();
 	}
 	
