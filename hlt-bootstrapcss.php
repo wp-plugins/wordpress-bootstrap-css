@@ -103,12 +103,13 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		$this->m_sPluginRootFile = __FILE__; //ensure all relative paths etc. are setup.
 		parent::__construct();
 		
-		$this->m_sVersion			= self::PluginVersion;
-		$this->m_sPluginHumanName	= "WordPress Twitter Bootstrap";
-		$this->m_sPluginMenuTitle	= "Twitter Bootstrap";
-		$this->m_sOptionPrefix		= self::OptionPrefix;
-
-		$this->m_sParentMenuIdSuffix = 'wtb';
+		$this->m_sVersion				= self::PluginVersion;
+		$this->m_sPluginHumanName		= "WordPress Twitter Bootstrap";
+		$this->m_sPluginTextDomain		= self::PluginTextDomain;
+		$this->m_sPluginMenuTitle		= "Twitter Bootstrap";
+		$this->m_sOptionPrefix			= self::OptionPrefix;
+		$this->m_sParentMenuIdSuffix	= 'wtb';
+		
 		$this->loadWptbOptions();
 
 		self::$BOOSTRAP_DIR			= $this->m_sPluginDir.'resources'.ICWP_DS.'bootstrap-'.$this->m_oWptbOptions->getTwitterBootstrapVersion().ICWP_DS;
@@ -231,9 +232,6 @@ class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
 		if ( is_admin() && $this->m_oWptbOptions->getOpt( 'inc_bootstrap_css_in_editor' ) == 'Y' ) {
 			add_filter( 'mce_css', array( $this, 'filter_include_bootstrap_in_editor' ) );
 		}
-		
-		//Multilingual support.
-		load_plugin_textdomain( 'hlt-wordpress-bootstrap-css', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	}
 	
 	protected function createPluginSubMenuItems(){

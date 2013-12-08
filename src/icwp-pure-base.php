@@ -41,6 +41,10 @@ class ICWP_Pure_Base_WPTB {
 	/**
 	 * @var string
 	 */
+	protected $m_sPluginTextDomain;
+	/**
+	 * @var string
+	 */
 	protected $m_sPluginMenuTitle;
 
 	/**
@@ -176,11 +180,19 @@ class ICWP_Pure_Base_WPTB {
 			//Handle plugin upgrades
 			$this->handlePluginUpgrade();
 			$this->doPluginUpdateCheck();
+			$this->load_textdomain();
 		}
 
 		if ( $this->isIcwpPluginFormSubmit() ) {
 			$this->handlePluginFormSubmit();
 		}
+	}
+	
+	/**
+	 * Load the multilingual aspect of the plugin
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain( $this->m_sPluginTextDomain, false, dirname( $this->m_sPluginRootFile ) . '/languages/' );
 	}
 
 	public function onWpInit() { }
@@ -269,7 +281,9 @@ class ICWP_Pure_Base_WPTB {
 	 * @param $inaLinks
 	 * @param $insFile
 	 */
-	public function onWpPluginActionLinks( $inaLinks, $insFile ) { }
+	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
+		return $inaLinks;
+	}
 
 	/**
 	 * Override this method to handle all the admin notices
