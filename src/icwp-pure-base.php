@@ -30,6 +30,11 @@ class ICWP_Pure_Base_WPTB {
 	const VariablePrefix	= 'worpit';
 
 	/**
+	 * @var integer
+	 */
+	const HourInSeconds		= 3600;
+
+	/**
 	 * @var string
 	 */
 	protected $m_sVersion;
@@ -525,6 +530,26 @@ class ICWP_Pure_Base_WPTB {
 			$insKey = $this->m_sOptionPrefix.$insKey;
 		}
 		return ( isset( $_POST[$insKey] )? $_POST[$insKey]: null );
+	}
+
+	/**
+	 * Gets the WordPress option based on this object's option prefix.
+	 * @param string $insKey
+	 * @return mixed
+	 */
+	public function getTransOption( $insKey ) {
+		$this->loadWpFunctions();
+		$this->m_oWpFunctions->getTransient( $this->m_sOptionPrefix.$insKey );
+	}
+	
+	/**
+	 * Gets the WordPress option based on this object's option prefix.
+	 * @param string $insKey
+	 * @return mixed
+	 */
+	public function setTransOption( $insKey, $inmValue, $innHours = 24 ) {
+		$this->loadWpFunctions();
+		$this->m_oWpFunctions->setTransient( $this->m_sOptionPrefix.$insKey, $innHours * self::HourInSeconds );
 	}
 
 	/**

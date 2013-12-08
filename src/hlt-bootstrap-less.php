@@ -60,9 +60,9 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 		$oLessCompiler = new Less_Parser( $aCompileOptions );
 		$oLessCompiler->parseFile( $sFilePathToLess );
 		$sCompiledCss = $oLessCompiler->getCss();
+		*/
 		$sTargetCssFile = $this->m_sCssBaseDir.'bootstrap.less.min.css';
 		file_put_contents( $sTargetCssFile, $sCompiledCss );
-		*/
 	}
 	
 	protected function includeLessLibrary() {
