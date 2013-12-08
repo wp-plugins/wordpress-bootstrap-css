@@ -35,9 +35,23 @@ require_once( dirname(__FILE__).'/src/icwp-optionshandler-wptb.php' );
 if ( !class_exists('HLT_BootstrapCss') ):
 
 class HLT_BootstrapCss extends ICWP_WTB_Base_Plugin {
-	
-	const PluginVersion				= '3.0.2-2';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
+
+	/**
+	 * Should be updated each new release.
+	 * @var string
+	 */
+	const PluginVersion				= '3.0.3-0';  //SHOULD BE UPDATED UPON EACH NEW RELEASE
+	/**
+	 * @var string
+	 */
+	const PluginTextDomain			= 'wordpress-twitter-bootstrap-css';
+	/**
+	 * @var string
+	 */
 	const InputPrefix				= 'hlt_bootstrap_';
+	/**
+	 * @var string
+	 */
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 
 	/**
