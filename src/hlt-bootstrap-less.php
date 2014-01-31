@@ -35,8 +35,8 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 	}
 
 	/**
-	 * @param $insBootstrapDir
 	 * @param $insCompileTarget - currently only 'bootstrap'
+	 * @return boolean
 	 */
 	public function compileLess( $insCompileTarget = 'bootstrap' ) {
 	
@@ -62,17 +62,20 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 		$sCompiledCss = $oLessCompiler->getCss();
 		*/
 		$sTargetCssFile = $this->m_sCssBaseDir.'bootstrap.less.min.css';
-		file_put_contents( $sTargetCssFile, $sCompiledCss );
+		return file_put_contents( $sTargetCssFile, $sCompiledCss );
 	}
 	
 	protected function includeLessLibrary() {
-		$sRoot = dirname(__FILE__).'/../inc/Less.php/';
-		$this->includeLibrary( $sRoot, true );
+		require_once ( dirname(__FILE__).'/../inc/Less.php/Autoloader.php' );
+		Less_Autoloader::register();
+//		$sRoot = dirname(__FILE__).'/../inc/Less.php/';
+//		$this->includeLibrary( $sRoot, true );
 	}
 	
 	/**
 	 * Given a directory, will include all PHP files found within it, with a recursive option.
-	 * @param unknown_type $insDir
+	 * @param string $insDir
+	 * @param boolean $infRecursive
 	 */
 	protected function includeLibrary( $insDir, $infRecursive = true ) {
 		
