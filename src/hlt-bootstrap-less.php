@@ -54,13 +54,13 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 		$sTargetCssFile = $this->m_sCssBaseDir.'bootstrap.less.css';
 		file_put_contents( $sTargetCssFile, $sCompiledCss );
 		
-		/* currently broken.
-			// Write compress CSS
+		// Write compressed CSS - it doesn't work to use the SetOption and recompile
+//		$oLessCompiler->SetOption( 'compress', true );
 		$aCompileOptions = array( 'compress' => true );
 		$oLessCompiler = new Less_Parser( $aCompileOptions );
 		$oLessCompiler->parseFile( $sFilePathToLess );
 		$sCompiledCss = $oLessCompiler->getCss();
-		*/
+
 		$sTargetCssFile = $this->m_sCssBaseDir.'bootstrap.less.min.css';
 		return file_put_contents( $sTargetCssFile, $sCompiledCss );
 	}
