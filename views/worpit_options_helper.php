@@ -4,7 +4,7 @@ function printOptionsPageHeader( $insSection = '' ) {
 	$sLinkedIcwp = '<a href="http://icwp.io/3a" target="_blank">iControlWP</a>';
 	echo '<div class="page-header">';
 	echo '<h2><a id="pluginlogo_32" class="header-icon32" href="http://icwp.io/2k" target="_blank"></a>';
-	$sBaseTitle = sprintf( _wpsf__( 'Twitter Bootstrap Plugin (from %s)' ), $sLinkedIcwp );
+	$sBaseTitle = sprintf( 'Twitter Bootstrap Plugin (from %s)', $sLinkedIcwp );
 	if ( !empty($insSection) ) {
 		echo sprintf( '%s :: %s', $insSection, $sBaseTitle );
 	}
@@ -26,8 +26,7 @@ function printAllPluginOptionsForm( $inaAllPluginOptions, $insVarPrefix = '', $i
 
 	$iRowWidth = 8; //8 spans.
 	$iOptionWidth = $iRowWidth / $iOptionsPerRow;
-	$sOptionValue;
-	
+
 	//Take each Options Section in turn
 	foreach ( $inaAllPluginOptions as $sOptionSection ) {
 		
