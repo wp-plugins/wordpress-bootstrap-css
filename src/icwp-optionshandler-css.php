@@ -17,21 +17,49 @@
 
 require_once( dirname(__FILE__).'/icwp-optionshandler-base.php' );
 
-if ( !class_exists('ICWP_OptionsHandler_Wptb') ):
+if ( !class_exists('ICWP_WPTB_FeatureHandler_Css') ):
 
-class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
+class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 
 	const TwitterVersion			= '3.1.1'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '2.3.2'; //should reflect the Bootstrap version folder name
 	const NormalizeVersion			= '3.0.0';
 	const YUI3Version				= '3.10.0';
-	
+
+	/**
+	 * @var ICWP_WPTB_CssProcessor
+	 */
+	protected $oFeatureProcessor;
 	/**
 	 * How long the CSS cache will be maintained before it is automatically rebuilt (to ensure files and links work)
-	 * @var integer
+	 * @const integer
 	 */
 	const CssCacheExpire			= 172800; // 48hours
-	
+
+	/**
+	 * @param $oPluginVo
+	 */
+	public function __construct( $oPluginVo ) {
+		$this->sFeatureName = _wptb__('Bootstrap CSS');
+		$this->sFeatureSlug = 'bootstrapcss';
+		parent::__construct( $oPluginVo );
+	}
+
+	/**
+	 * @return ICWP_WPTB_CssProcessor|null
+	 */
+	protected function loadFeatureProcessor() {
+		if ( !isset( $this->oFeatureProcessor ) ) {
+			require_once( dirname(__FILE__).'/icwp-processor-css.php' );
+			$this->oFeatureProcessor = new ICWP_WPTB_CssProcessor( $this );
+		}
+//		ob_start( array( $this->oFeatureProcessor, 'onOutputBufferFlush' ) );
+		return $this->oFeatureProcessor;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getTwitterBootstrapVersion() {
 		if ( $this->getOpt( 'option' ) == 'twitter-legacy' ) {
 			return self::TwitterVersionLegacy;
@@ -39,54 +67,46 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 		return self::TwitterVersion;
 	}
 
-	/**
-	 * Clears the CSS Includes cache if the time has expired.
-	 */
-	public function maybeClearIncludesCache( $infForce = false ) {
-		if ( $infForce || time() - $this->getOpt( 'css_cache_expire' ) > self::CssCacheExpire ) {
-			$this->setOpt( 'includes_list', false ); //clear the cached css list
-		}
-	}
-	
-	public function updatePluginOptionsFromSubmit( $insAllOptionsInput ) {
-		parent::updatePluginOptionsFromSubmit( $insAllOptionsInput );
-
-		$sCustomUrl = $this->getOpt( 'customcss_url' );
-		if ( !empty($sCustomUrl) && $this->getOpt( 'customcss' ) == 'Y' ) {
-
-			$oWpFs = $this->loadFileSystemProcessor();
-			if ( $oWpFs->getIsUrlValid( $sCustomUrl ) ) {
-				$this->setOpt( 'customcss_url', $sCustomUrl );
-			}
-			else {
-				$this->setOpt( 'customcss_url', '' );
-			}
-		}
-	}
-	
-	public function definePluginOptions() {
-
-		$this->m_aDirectSaveOptions = array();
-		
+	public function getNonUiOptions() {
 		$aNonUiOptions = array(
 			'feedback_admin_notice',
 			'includes_list',
 			'css_cache_expire',
 			'inc_responsive_css'
 		);
-		$this->mergeNonUiOptions( $aNonUiOptions );
-		
+		return $aNonUiOptions;
+	}
+
+	public function getOptionsDefinitions() {
+
+		$aBase = array(
+			'section_title' => 'Enable or Disable The CSS Include Feature',
+			'section_options' => array(
+				array(
+					'enable_bootstrapcss',
+					'',
+					'Y',
+					'checkbox',
+					'Enable Feature',
+					'Enable or Disable The CSS Includes Feature',
+					'Checking this will completely enable or disable the CSS includes feature of the plugin.'
+					.'<br />'.'Once enabled please select your options below.'
+				)
+			)
+		);
+
 		$aBootstrapOptions = array( 'select',
 			array( 'none', 				'None' ),
 			array( 'twitter',			'Twitter Bootstrap CSS v'.self::TwitterVersion ),
 			array( 'twitter-legacy',	'Twitter Bootstrap CSS v'.self::TwitterVersionLegacy ),
+			array( 'twitter-less',		'Customised Twitter Bootstrap CSS Using LESS' ),
 			array( 'normalize',			'Normalize CSS v'.self::NormalizeVersion ),
 			array( 'yahoo-reset',		'Yahoo UI Reset CSS v2.9.0' ),
 			array( 'yahoo-reset-3',		'Yahoo UI Reset CSS v'.self::YUI3Version )
 		);
 
 		$aBootstrapSection = 	array(
-			'section_title' => 'Choose Bootstrap CSS Options',
+			'section_title' => 'Choose CSS Include Options',
 			'section_options' => array(
 				array(
 					'option',
@@ -162,6 +182,15 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 					'Loads WordPress shortcodes for fast use of Twitter Bootstrap Components.'
 				),
 				array(
+					'enable_shortcodes_sidebarwidgets',
+					'',
+					'N',
+					'checkbox',
+					'Sidebar Shortcodes',
+					'Enable Shortcodes in Sidebar Widgets',
+					'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.'
+				),
+				array(
 					'use_minified_css',
 					'',
 					'N',
@@ -204,15 +233,6 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 					'Instead of serving libraries locally, use a dedicated CDN to serve files (<a href="http://wordpress.org/extend/plugins/cdnjs/" target="_blank">CDNJS</a>).'
 				),
 				array(
-					'enable_shortcodes_sidebarwidgets',
-					'',
-					'N',
-					'checkbox',
-					'Sidebar Shortcodes',
-					'Enable Shortcodes in Sidebar Widgets',
-					'Allows you to use Twitter Bootstrap (and any other) shortcodes in your Sidebar Widgets.'
-				),
-				array(
 					'inc_bootstrap_css_in_editor',
 					'',
 					'N',
@@ -231,24 +251,6 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 					'Not a standard Twitter Bootstrap CSS. <a href="http://bit.ly/HgwlZI" target="_blank"><span class="label label-info">more info</span></a>'
 				),
 				array(
-					'hide_dashboard_rss_feed',
-					'',
-					'N',
-					'checkbox',
-					'Hide RSS News Feed',
-					'Hide the iControlWP Blog news feed from the Dashboard',
-					'Hides our news feed from inside your Dashboard.'
-				),
-				array(
-					'delete_on_deactivate',
-					'',
-					'N',
-					'checkbox',
-					'Delete Plugin Settings',
-					'Delete All Plugin Settings Upon Plugin Deactivation',
-					'Careful: Removes all plugin options when you deactivite the plugin.'
-				),
-				array(
 					'prettify',
 					'',
 					'N',
@@ -260,7 +262,8 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 			)
 		);
 
-		$this->m_aOptions = array(
+		return array(
+			$aBase,
 			$aBootstrapSection,
 			$aTwitterBootstrapSection,
 			$aExtraTwitterSection,
@@ -268,49 +271,36 @@ class ICWP_OptionsHandler_Wptb extends ICWP_WPTB_FeatureHandler_Base {
 		);
 	}
 
-	public function updateHandler() {
-		
-		$sCurrentVersion = $this->getPluginOptionsVersion();
+	/**
+	 * This is the point where you would want to do any options verification
+	 */
+	protected function doPrePluginOptionsSave() {
 
-		if ( version_compare( $sCurrentVersion, '3.0.0-2', '<' ) ) {
-			$aOptions = array(
-				'option',
-				'enq_using_wordpress',
-				'js_head',
-				'all_js',
-				'use_cdnjs',
-				'use_compiled_css',
-				'use_minified_css',
-				'customcss',
-				'customcss_url',
-				'delete_on_deactivate',
-				'enable_shortcodes_sidebarwidgets',
-				'hide_dashboard_rss_feed',
-				'inc_bootstrap_css_in_editor',
-				'inc_bootstrap_css_wpadmin',
-				'inc_responsive_css',
-				'replace_jquery_cdn',
-				'useshortcodes',
-				'prettify',
-				'feedback_admin_notice',
-				'current_plugin_version',
-				'includes_list'
-			);
-			foreach( $aOptions as $sOption ) {
-				$mPreviousOption = $this->getOption( $sOption );
-				if ( $mPreviousOption !== false ) {
-					$this->setOpt( $sOption, $this->getOption( $sOption ) );
-				}
-				$this->deleteOption( $sOption );
+		$sCustomUrl = $this->getOpt( 'customcss_url' );
+		if ( !empty($sCustomUrl) && $this->getOpt( 'customcss' ) == 'Y' ) {
+
+			$oWpFs = $this->loadFileSystemProcessor();
+			if ( $oWpFs->getIsUrlValid( $sCustomUrl ) ) {
+				$this->setOpt( 'customcss_url', $sCustomUrl );
+			}
+			else {
+				$this->setOpt( 'customcss_url', '' );
 			}
 		}
-		
-		if ( version_compare( $sCurrentVersion, '3.0.0-1', '<' ) ) {
-			if ( $this->getOpt( 'option' ) == 'twitter' ) {
-				$this->setOpt( 'option', 'twitter-legacy' );
-			}
+
+		$this->maybeClearIncludesCache();
+	}
+
+	/**
+	 * Clears the CSS Includes cache if the time has expired.
+	 */
+	public function maybeClearIncludesCache( $infForce = false ) {
+		if ( $infForce || time() - $this->getOpt( 'css_cache_expire' ) > self::CssCacheExpire ) {
+			$this->setOpt( 'includes_list', false ); //clear the cached css list
 		}
 	}
+
+	public function updateHandler() { }
 }
 
 endif;

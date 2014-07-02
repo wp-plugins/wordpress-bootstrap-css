@@ -85,6 +85,7 @@ class HLT_BootstrapLess_Base {
 	
 		//Basically if the array is empty from the WP Options table, create it from scratch.
 		$this->m_aAllBootstrapLessOptions = array(
+
 				array(
 					'section_title' => 'Grays',
 					'section_options' => array(

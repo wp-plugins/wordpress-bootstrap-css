@@ -23,5 +23,5 @@ function getWidgetIframeHtml( $insSnippet ) {
 		width="'.$sWidth.'" height="'.$sHeight.'" frameborder="0" scrolling="no" style="background-color:'.$sBackgroundColor.';" ></iframe>
 	';
 	
-}//getWidgetIframeHtml
-?>
+}
+

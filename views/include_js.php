@@ -3,9 +3,9 @@
 	jQuery( document ).ready(
 		function () {
 
-			jQuery( 'select[name=<?php echo $worpit_var_prefix; ?>option]' ).on( 'change', onChangeCssBootstrapOption );
+			jQuery( 'select[name=<?php echo $icwp_var_prefix; ?>option]' ).on( 'change', onChangeCssBootstrapOption );
 
-			if ( jQuery( '#<?php echo $worpit_var_prefix; ?>option_twitter' ).is( ':checked' ) === false ) {
+			if ( jQuery( '#<?php echo $icwp_var_prefix; ?>option_twitter' ).is( ':checked' ) === false ) {
 				jQuery( '#TwitterBootstrapJavascriptLibraryOptions' ).hide();
 				jQuery( '#ExtraTwitterBootstrapOptions' ).hide();
 			}
@@ -13,7 +13,7 @@
 			/**
 			 * Enables/Disables the custom CSS text field depending on checkbox
 			 */
-			var $oCustomCss = jQuery( "input[type=checkbox][name='<?php echo $worpit_var_prefix; ?>customcss']" );
+			var $oCustomCss = jQuery( "input[type=checkbox][name='<?php echo $icwp_var_prefix; ?>customcss']" );
 			$oCustomCss.on( 'click', onClickCustomCss );
 			onClickCustomCss.call( $oCustomCss.get( 0 ) );
 			
@@ -48,9 +48,9 @@
 				}
 			);
 
-			jQuery( 'input[name=<?php echo $worpit_var_prefix; ?>popover_js]' ).on( 'click', onChangePopoverJs );
+			jQuery( 'input[name=<?php echo $icwp_var_prefix; ?>popover_js]' ).on( 'click', onChangePopoverJs );
 			
-			jQuery( 'select[name=<?php echo $worpit_var_prefix; ?>option]' ).trigger( 'change' );
+			jQuery( 'select[name=<?php echo $icwp_var_prefix; ?>option]' ).trigger( 'change' );
 		}
 	);
 
@@ -86,12 +86,12 @@
 		 * The onClickCustomCss and onChangePopoverJs requires the live checkbox status in order to determine
 		 * the new state of the input field. So we do this after the state has been handled above.
 		 */
-		var oEl = oDiv.find( 'input[name=<?php echo $worpit_var_prefix; ?>customcss]' );
+		var oEl = oDiv.find( 'input[name=<?php echo $icwp_var_prefix; ?>customcss]' );
 		if ( oEl.length > 0 ) {
 			onClickCustomCss.call( oEl.get( 0 ) );
 		}
 		
-		var oEl = oDiv.find( 'input[name=<?php echo $worpit_var_prefix; ?>popover_js]' );
+		var oEl = oDiv.find( 'input[name=<?php echo $icwp_var_prefix; ?>popover_js]' );
 		if ( oEl.length > 0 ) {
 			onChangePopoverJs.call( oEl.get( 0 ) );
 		}
@@ -101,7 +101,7 @@
 		var sValue = jQuery( this ).val();
 
 		/* Show/Hide Bootstrap Javascript section on Twitter CSS selection */
-		if ( sValue == 'twitter' || sValue == 'twitter-legacy' ) {
+		if ( sValue.indexOf( 'twitter' ) >= 0 ) {
 			jQuery( '#TwitterBootstrapJavascriptLibraryOptions' ).slideDown( 150 );
 			jQuery( '#ExtraTwitterBootstrapOptions' ).slideDown( 150 );
 			
@@ -120,7 +120,7 @@
 			else {
 				jQuery( '#controlIndividualLibrariesList' ).removeClass( 'hidden' );
 			}
-			jQuery( '#controlIndividualLibrariesList div[id^=option_section_<?php echo $worpit_var_prefix; ?>]' ).removeClass( 'hidden' );
+			jQuery( '#controlIndividualLibrariesList div[id^=option_section_<?php echo $icwp_var_prefix; ?>]' ).removeClass( 'hidden' );
 
 			jQuery( '#controlAllJavascriptLibraries' ).unbind( 'click.special' ).bind( 'click.special',
 				function () {
@@ -143,21 +143,21 @@
 		jQuery( '#desc_block .desc' ).addClass( 'hidden' );
 		jQuery( '#desc_'+sValue ).removeClass( 'hidden' );
 	}
-	span_hlt_bootstrapcss_customcss_url
+
 	function onClickCustomCss() {
 		if ( jQuery( this ).attr( 'checked' ) ) {
-			jQuery( '#<?php echo $worpit_var_prefix; ?>customcss_url' ).removeAttr( 'disabled' );
-			jQuery( '#span_<?php echo $worpit_var_prefix; ?>customcss_url' ).slideDown( 150 );
+			jQuery( '#<?php echo $icwp_var_prefix; ?>customcss_url' ).removeAttr( 'disabled' );
+			jQuery( '#span_<?php echo $icwp_var_prefix; ?>customcss_url' ).slideDown( 150 );
 		}
 		else {
-			jQuery( '#<?php echo $worpit_var_prefix; ?>customcss_url' ).attr( 'disabled', 'disabled' );
-			jQuery( '#span_<?php echo $worpit_var_prefix; ?>customcss_url' ).slideUp( 150 );
+			jQuery( '#<?php echo $icwp_var_prefix; ?>customcss_url' ).attr( 'disabled', 'disabled' );
+			jQuery( '#span_<?php echo $icwp_var_prefix; ?>customcss_url' ).slideUp( 150 );
 		}
 	}
 
 	function onChangePopoverJs() {
 		if ( !jQuery( this ).is( ':checked' ) ) {
-			jQuery( 'input[name=<?php echo $worpit_var_prefix; ?>tooltip_js]' ).attr( 'checked', 'checked' ).parents( 'div.option_section' ).addClass( 'active' );
+			jQuery( 'input[name=<?php echo $icwp_var_prefix; ?>tooltip_js]' ).attr( 'checked', 'checked' ).parents( 'div.option_section' ).addClass( 'active' );
 		}
 	}
 </script>

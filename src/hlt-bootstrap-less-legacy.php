@@ -40,6 +40,7 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 	
 		//Basically if the array is empty from the WP Options table, create it from scratch.
 		$this->m_aAllBootstrapLessOptions = array(
+
 				array(
 						'section_title' => 'Grays',
 						'section_options' => array(
@@ -119,13 +120,13 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 						),
 	
 						array(
-						'section_title' => 'The Grid',
-						'section_options' => array(
-						array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_text',	'Grid Columns' ),
-						array( self::LessOptionsPrefix.'gridColumnWidth',	'', '60px',			'less_size',	'Grid Column Width' ),
-						array( self::LessOptionsPrefix.'gridGutterWidth',	'', '20px',			'less_size',	'Grid Gutter Width' ),
-						array( self::LessOptionsPrefix.'gridRowWidth',		'', '(@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1))',	'less_size',	'Grid Row Width' )
-						)
+							'section_title' => 'The Grid',
+							'section_options' => array(
+								array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_text',	'Grid Columns' ),
+								array( self::LessOptionsPrefix.'gridColumnWidth',	'', '60px',			'less_size',	'Grid Column Width' ),
+								array( self::LessOptionsPrefix.'gridGutterWidth',	'', '20px',			'less_size',	'Grid Gutter Width' ),
+								array( self::LessOptionsPrefix.'gridRowWidth',		'', '(@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1))',	'less_size',	'Grid Row Width' )
+							)
 						),
 		);
 		return true;

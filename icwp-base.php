@@ -1,12 +1,4 @@
 <?php
-/*
-Plugin Name: WordPress Twitter Bootstrap CSS
-Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
-Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.1.1-1
-Author: iControlWP
-Author URI: http://icwp.io/v
-*/
 
 /**
  * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
@@ -28,12 +20,11 @@ Author URI: http://icwp.io/v
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+require_once( dirname(__FILE__).'/hlt-bootstrapcss-main.php' );
 
-require_once( dirname(__FILE__).'/icwp-base.php' );
+if ( !class_exists('ICWP_Wordpress_Plugin') ):
 
-if ( !class_exists('ICWP_Wordpress_Twitter_Bootstrap_Plugin') ):
-
-class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
+class ICWP_Wordpress_Plugin {
 
 	/**
 	 * @const string
@@ -78,11 +69,6 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	/**
 	 * @var string
 	 */
-	protected static $fLoggingEnabled;
-
-	/**
-	 * @var string
-	 */
 	protected static $sBasePermissions = 'manage_options';
 
 	/**
@@ -104,6 +90,29 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	 * @var string
 	 */
 	protected static $aFeatures;
+
+	/**
+	 * @var ICWP_Wordpress_Simple_Firewall_Plugin
+	 */
+	public static $oInstance;
+
+	/**
+	 * @return ICWP_Wordpress_Simple_Firewall_Plugin
+	 */
+	public static function GetInstance() {
+		if ( !isset( self::$oInstance ) ) {
+			self::$oInstance = new self();
+		}
+		return self::$oInstance;
+	}
+
+	/**
+	 */
+	protected function __construct() {
+		if ( empty( self::$sRootFile ) ) {
+			self::$sRootFile = __FILE__;
+		}
+	}
 
 	/**
 	 * @return string
@@ -148,13 +157,6 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	 */
 	public function getHumanName() {
 		return self::$sHumanName;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getIsLoggingEnabled() {
-		return self::$fLoggingEnabled;
 	}
 
 	/**
@@ -225,43 +227,5 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	public function getViewDir() {
 		return $this->getRootDir().self::ViewDir.ICWP_DS;
 	}
-
-	/**
-	 * @var ICWP_Wordpress_Twitter_Bootstrap_Plugin
-	 */
-	public static $oInstance;
-
-	/**
-	 * @return ICWP_Wordpress_Twitter_Bootstrap_Plugin
-	 */
-	public static function GetInstance() {
-		if ( !isset( self::$oInstance ) ) {
-			self::$oInstance = new self();
-		}
-		return self::$oInstance;
-	}
-
-	/**
-	 */
-	protected function __construct() {
-		if ( empty( self::$sRootFile ) ) {
-			self::$sRootFile = __FILE__;
-		}
-		self::$aFeatures = array(
-			'plugin',
-			'css',
-			'less'
-		);
-		self::$sVersion = '1.0';
-		self::$sPluginSlug = 'wptb';
-		self::$sHumanName = 'WordPress Twitter Bootstrap';
-		self::$sMenuTitleName = 'Twitter Bootstrap';
-		self::$sTextDomain = 'wordpress-bootstrap-css';
-		self::$fLoggingEnabled = false;
-	}
 }
-
 endif;
-
-require_once( dirname(__FILE__).'/hlt-bootstrapcss-main.php' );
-$oHLT_BootstrapCss = new HLT_BootstrapCss(  ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetInstance() );

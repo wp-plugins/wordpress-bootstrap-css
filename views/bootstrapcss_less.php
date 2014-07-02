@@ -80,7 +80,7 @@ include_once( dirname(__FILE__).ICWP_DS.'widgets'.ICWP_DS.'bootstrapcss_widgets.
 			var $oThis = $( inoEl );
 			var aParts = $oThis.attr( 'id' ).split( '_' );
 			
-			var $oColorInput = $( '#<?php echo $worpit_var_prefix; ?>less_'+ aParts[3] );
+			var $oColorInput = $( '#<?php echo $icwp_var_prefix; ?>less_'+ aParts[3] );
 			
 			if ( $oThis.is( ':checked' ) ) {
 				$oColorInput.miniColors( 'destroy' );
@@ -118,8 +118,8 @@ include_once( dirname(__FILE__).ICWP_DS.'widgets'.ICWP_DS.'bootstrapcss_widgets.
 		<div class="row">
 			<div class="span12">
 				<?php
-				if ( !$worpit_compiler_enabled ) {
-					?><div class="alert alert-error">You need to <a href="admin.php?page=<?php echo $worpit_page_link_options; ?>">enable the LESS compiler option</a> before using this section.</div><?php
+				if ( !$icwp_compiler_enabled ) {
+					?><div class="alert alert-error">You need to <a href="admin.php?page=<?php echo $icwp_page_link_options; ?>">enable the LESS compiler option</a> before using this section.</div><?php
 				}
 				else {
 					?><div class="alert alert-info">Customize the twitter bootstrap options below to tweak the appearance of your website.</div><?php
@@ -128,24 +128,24 @@ include_once( dirname(__FILE__).ICWP_DS.'widgets'.ICWP_DS.'bootstrapcss_widgets.
 			</div>
 		</div>
 		<div class="row">
-			<div class="<?php echo $worpit_fShowAds? 'span9' : 'span12'; ?> <?php echo ( $worpit_compiler_enabled? 'enabled_section': 'disabled_section' ); ?>">
-				<form action="<?php echo ( $worpit_compiler_enabled? $worpit_form_action: '' ) ; ?>" method="post" class="form-horizontal">
+			<div class="<?php echo $icwp_fShowAds? 'span9' : 'span12'; ?> <?php echo ( $icwp_compiler_enabled? 'enabled_section': 'disabled_section' ); ?>">
+				<form action="<?php echo ( $icwp_compiler_enabled? $icwp_form_action: '' ) ; ?>" method="post" class="form-horizontal">
 				<?php
-					wp_nonce_field( $worpit_nonce_field );
-					printAllPluginOptionsForm( $worpit_aAllOptions, $worpit_var_prefix, 2 );
+					wp_nonce_field( $icwp_nonce_field );
+					printAllPluginOptionsForm( $icwp_aAllOptions, $icwp_var_prefix, $icwp_nOptionsPerRow );
 				?>
 				<div class="form-actions">
 					<input type="hidden" name="icwp_plugin_form_submit" value="Y" />
-					<button type="submit" class="btn btn-primary" name="submit" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS'); ?></button>
-					<button type="submit" class="btn btn-danger" name="submit_reset" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset Defaults' ); ?></button>
-					<button type="submit" class="btn btn-warning" name="submit_preserve" <?php echo ($worpit_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS (preserve customizations)'); ?></button>
-					<a class="btn btn-inverse" name="download_less_css" <?php echo ( file_exists( $worpit_less_file_location[0] ) ? 'href="'.$worpit_less_file_location[1].'"' :' disabled'); ?>><?php _hlt_e( 'Download' ); ?></a>
+					<button type="submit" class="btn btn-primary" name="submit" <?php echo ($icwp_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS'); ?></button>
+					<button type="submit" class="btn btn-danger" name="submit_reset" <?php echo ($icwp_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Reset Defaults' ); ?></button>
+					<button type="submit" class="btn btn-warning" name="submit_preserve" <?php echo ($icwp_compiler_enabled ? '':' disabled'); ?>><?php _hlt_e( 'Compile CSS (preserve customizations)'); ?></button>
+					<a class="btn btn-inverse" name="download_less_css" <?php echo ( file_exists( $icwp_less_file_location[0] ) ? 'href="'.$icwp_less_file_location[1].'"' :' disabled'); ?>><?php _hlt_e( 'Download' ); ?></a>
 					<p style="margin-top: 20px;"><strong>Note: </strong>If in doubt or having compile issues, use the 'Compile CSS' or 'Reset' buttons. If you've made any customizations to 'Variable.less', compile with preserve customizations.</p>
 				</div>
 				</form>
 			</div><!-- / span9 -->
 		
-			<?php if ( $worpit_fShowAds ) : ?>
+			<?php if ( $icwp_fShowAds ) : ?>
 			<div class="span3" id="side_widgets">
 		  		<?php echo getWidgetIframeHtml( 'side-widgets-wtb' ); ?>
 			</div>

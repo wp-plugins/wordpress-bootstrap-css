@@ -17,145 +17,270 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-if ( !class_exists('ICWP_WpFunctions_WPTB') ):
+if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 
-class ICWP_WpFunctions_WPTB {
+	class ICWP_WPTB_WpFunctions_V4 {
 
-	/**
-	 * @var string
-	 */
-	protected $m_sWpVersion;
-	
-	public function __construct() {
-	}
+		/**
+		 * @var ICWP_WpFunctions_V4
+		 */
+		protected static $oInstance = NULL;
 
-	/**
-	 * @param string $insUrl
-	 * @return boolean
-	 */
-	public function isUrlValid( $insUrl ) {
-		$aResponse = wp_remote_get( $insUrl );
-		return !is_wp_error($aResponse) && $aResponse['response']['code'] == 200;
-	}
-	
-	/**
-	 * @param string $insPluginFile
-	 * @return boolean|stdClass
-	 */
-	public function getIsPluginUpdateAvailable( $insPluginFile ) {
-		
-		$aUpdates = $this->getWordpressUpdates();
-		if ( empty( $aUpdates ) ) {
+		/**
+		 * @return ICWP_WpFunctions_V4
+		 */
+		public static function GetInstance() {
+			if ( is_null( self::$oInstance ) ) {
+				self::$oInstance = new self();
+			}
+			return self::$oInstance;
+		}
+
+		/**
+		 * @var string
+		 */
+		protected $m_sWpVersion;
+
+		/**
+		 * @var boolean
+		 */
+		protected $fIsMultisite;
+
+		public function __construct() {}
+
+		/**
+		 * @param string $insPluginFile
+		 * @return boolean|stdClass
+		 */
+		public function getIsPluginUpdateAvailable( $insPluginFile ) {
+			$aUpdates = $this->getWordpressUpdates();
+			if ( empty( $aUpdates ) ) {
+				return false;
+			}
+			if ( isset( $aUpdates[ $insPluginFile ] ) ) {
+				return $aUpdates[ $insPluginFile ];
+			}
 			return false;
 		}
-		if ( isset( $aUpdates[ $insPluginFile ] ) ) {
-			return $aUpdates[ $insPluginFile ];
+
+		public function getPluginUpgradeLink( $insPluginFile ) {
+			$sUrl = self_admin_url( 'update.php' ) ;
+			$aQueryArgs = array(
+				'action' 	=> 'upgrade-plugin',
+				'plugin'	=> urlencode( $insPluginFile ),
+				'_wpnonce'	=> wp_create_nonce( 'upgrade-plugin_' . $insPluginFile )
+			);
+			return add_query_arg( $aQueryArgs, $sUrl );
 		}
-		return false;
-	}
 
-	public function getPluginUpgradeLink( $insPluginFile ) {
-		$sUrl = self_admin_url( 'update.php' ) ;
-		$aQueryArgs = array(
-			'action' 	=> 'upgrade-plugin',
-			'plugin'	=> urlencode( $insPluginFile ),
-			'_wpnonce'	=> wp_create_nonce( 'upgrade-plugin_' . $insPluginFile )
-		);
-		return add_query_arg( $aQueryArgs, $sUrl );
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function getWordpressUpdates() {
-		$oCurrent = $this->getTransient( 'update_plugins' );
-		if ( is_object( $oCurrent ) && isset( $oCurrent->response ) ) {
+		public function getWordpressUpdates() {
+			$oCurrent = $this->getTransient( 'update_plugins' );
 			return $oCurrent->response;
 		}
-		return false;
-	}
-	
-	/**
-	 * The full plugin file to be upgraded.
-	 * 
-	 * @param string $insPluginFile
-	 * @return boolean
-	 */
-	public function doPluginUpgrade( $insPluginFile ) {
 
-		if ( !$this->getIsPluginUpdateAvailable($insPluginFile)
-			|| ( isset( $GLOBALS['pagenow'] ) && $GLOBALS['pagenow'] == 'update.php' ) ) {
-			return true;
-		}
-		$sUrl = $this->getPluginUpgradeLink( $insPluginFile );
-		wp_redirect( $sUrl );
-		exit();
-	}
-	/**
-	 * @param string $insKey
-	 * @return object
-	 */
-	public function getTransient( $insKey ) {
-		// TODO: Handle multisite
-	
-		if ( version_compare( $this->getWordPressVersion(), '2.7.9', '<=' ) ) {
-			return get_option( $insKey );
-		}
-	
-		if ( function_exists( 'get_transient' ) ) {
-			return get_transient( $insKey );
-		}
-	
-		if ( version_compare( $this->getWordPressVersion(), '2.9.9', '<=' ) ) {
-			return apply_filters( 'transient_'.$insKey, get_option( '_transient_'.$insKey ) );
-		}
-	
-		return apply_filters( 'site_transient_'.$insKey, get_option( '_site_transient_'.$insKey ) );
-	}
-	
-	/**
-	 * @param string $insKey
-	 * @param mixed $inmData
-	 * @param integer $innExpires
-	 * @return boolean
-	 */
-	public function setTransient( $insKey, $inmData, $innExpires = 0 ) {
-		// TODO: Handle multisite
-		
-		if ( version_compare( $this->getWordPressVersion(), '2.7.9', '<=' ) ) {
-			update_option( $insKey, $inmData );
-		}
+		/**
+		 * The full plugin file to be upgraded.
+		 *
+		 * @param string $insPluginFile
+		 * @return boolean
+		 */
+		public function doPluginUpgrade( $insPluginFile ) {
 
-		// @since 2.9.0
-		if ( function_exists( 'set_transient' ) ) {
-			return set_transient( $insKey, $inmData, $innExpires );
-		}
-		
-		if ( version_compare( $this->getWordPressVersion(), '2.9.9', '<=' ) ) {
-			return update_option( '_transient_'.$insKey, $inmData );
-		}
-		
-		return update_option( '_site_transient_'.$insKey, $inmData );
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getWordPressVersion() {
-		if ( empty( $this->m_sWpVersion ) ) {
-			$sVersionFile = ABSPATH.WPINC.'/version.php';
-			$sVersionContents = file_get_contents( $sVersionFile );
-			
-			if ( preg_match( '/wp_version\s=\s\'([^(\'|")]+)\'/i', $sVersionContents, $aMatches ) ) {
-				$this->m_sWpVersion = $aMatches[1];
+			if ( !$this->getIsPluginUpdateAvailable($insPluginFile)
+				|| ( isset( $GLOBALS['pagenow'] ) && $GLOBALS['pagenow'] == 'update.php' ) ) {
+				return true;
 			}
-			else {
-				global $wp_version;
-				$this->m_sWpVersion = $wp_version;
-			}
+			$sUrl = $this->getPluginUpgradeLink( $insPluginFile );
+			wp_redirect( $sUrl );
+			exit();
 		}
-		return $this->m_sWpVersion;
-	}
-}
 
+		/**
+		 * @param string $insKey
+		 * @return object
+		 */
+		protected function getTransient( $insKey ) {
+
+			// TODO: Handle multisite
+
+			if ( version_compare( $this->getWordpressVersion(), '2.7.9', '<=' ) ) {
+				return get_option( $insKey );
+			}
+
+			if ( function_exists( 'get_site_transient' ) ) {
+				return get_site_transient( $insKey );
+			}
+
+			if ( version_compare( $this->getWordpressVersion(), '2.9.9', '<=' ) ) {
+				return apply_filters( 'transient_'.$insKey, get_option( '_transient_'.$insKey ) );
+			}
+
+			return apply_filters( 'site_transient_'.$insKey, get_option( '_site_transient_'.$insKey ) );
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getWordpressVersion() {
+			global $wp_version;
+
+			if ( empty( $this->m_sWpVersion ) ) {
+				$sVersionFile = ABSPATH.WPINC.'/version.php';
+				$sVersionContents = file_get_contents( $sVersionFile );
+
+				if ( preg_match( '/wp_version\s=\s\'([^(\'|")]+)\'/i', $sVersionContents, $aMatches ) ) {
+					$this->m_sWpVersion = $aMatches[1];
+				}
+			}
+			return empty( $this->m_sWpVersion )? $wp_version : $this->m_sWpVersion;
+		}
+
+		/**
+		 * @param array $aQueryParams
+		 */
+		public function redirectToLogin( $aQueryParams = array() ) {
+			$sLoginUrl = site_url() . '/wp-login.php';
+			$this->doRedirect( $sLoginUrl, $aQueryParams );
+			exit();
+		}
+		/**
+		 * @param $aQueryParams
+		 */
+		public function redirectToAdmin( $aQueryParams = array() ) {
+			$this->doRedirect( is_multisite()? get_admin_url() : admin_url(), $aQueryParams );
+		}
+		/**
+		 * @param $aQueryParams
+		 */
+		public function redirectToHome( $aQueryParams = array() ) {
+			$this->doRedirect( home_url(), $aQueryParams );
+		}
+
+		/**
+		 * @param $sUrl
+		 * @param $aQueryParams
+		 */
+		public function doRedirect( $sUrl, $aQueryParams = array() ) {
+			$sUrl = empty( $aQueryParams ) ? $sUrl : add_query_arg( $aQueryParams, $sUrl ) ;
+			wp_safe_redirect( $sUrl );
+			exit();
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getCurrentPage() {
+			global $pagenow;
+			return $pagenow;
+		}
+
+		/**
+		 * @param string
+		 * @return string
+		 */
+		public function getIsCurrentPage( $sPage ) {
+			return $sPage == $this->getCurrentPage();
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getSiteName() {
+			return function_exists( 'get_bloginfo' )? get_bloginfo('name') : 'WordPress Site';
+		}
+		/**
+		 * @return string
+		 */
+		public function getSiteAdminEmail() {
+			return function_exists( 'get_bloginfo' )? get_bloginfo('admin_email') : '';
+		}
+
+		/**
+		 * @return boolean
+		 */
+		public function getIsAjax() {
+			return defined( 'DOING_AJAX' ) && DOING_AJAX;
+		}
+
+		/**
+		 * @param string $sRedirectUrl
+		 */
+		public function logoutUser( $sRedirectUrl = '' ) {
+			empty( $sRedirectUrl ) ? wp_logout() : wp_logout_url( $sRedirectUrl );
+		}
+
+		/**
+		 * @return bool
+		 */
+		public function isMultisite() {
+			if ( !isset( $this->fIsMultisite ) ) {
+				$this->fIsMultisite = function_exists( 'is_multisite' ) && is_multisite();
+			}
+			return $this->fIsMultisite;
+		}
+
+		/**
+		 * @param string $sKey
+		 * @param $sValue
+		 * @return mixed
+		 */
+		public function addOption( $sKey, $sValue ) {
+			return $this->isMultisite() ? add_site_option( $sKey, $sValue ) : add_option( $sKey, $sValue );
+		}
+
+		/**
+		 * @param string $sKey
+		 * @param $sValue
+		 * @return mixed
+		 */
+		public function updateOption( $sKey, $sValue ) {
+			return $this->isMultisite() ? update_site_option( $sKey, $sValue ) : update_option( $sKey, $sValue );
+		}
+
+		/**
+		 * @param string $sKey
+		 * @param mixed $mDefault
+		 * @return mixed
+		 */
+		public function getOption( $sKey, $mDefault = false ) {
+			return $this->isMultisite() ? get_site_option( $sKey, $mDefault ) : get_option( $sKey, $mDefault );
+		}
+
+		/**
+		 * @param string $sKey
+		 * @return mixed
+		 */
+		public function deleteOption( $sKey ) {
+			return $this->isMultisite() ? delete_site_option( $sKey ) : delete_option( $sKey );
+		}
+
+		/**
+		 */
+		public function getCurrentWpAdminPage() {
+			$sScript = isset( $_SERVER['SCRIPT_NAME'] )? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF'];
+			if ( is_admin() && !empty( $sScript ) && basename( $sScript ) == 'admin.php' && isset( $_GET['page'] ) ) {
+				$sCurrentPage = $_GET['page'];
+			}
+			return empty($sCurrentPage)? '' : $sCurrentPage;
+		}
+
+	}
+
+endif;
+
+
+
+if ( !class_exists('ICWP_WPTB_WpFunctions') ):
+
+	class ICWP_WPTB_WpFunctions extends ICWP_WPTB_WpFunctions_V4 {
+		/**
+		 * @return ICWP_WpFunctions_WPSF
+		 */
+		public static function GetInstance() {
+			if ( is_null( self::$oInstance ) ) {
+				self::$oInstance = new self();
+			}
+			return self::$oInstance;
+		}
+	}
 endif;
