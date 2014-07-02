@@ -54,11 +54,6 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	protected static $nRequestTimestamp;
 
 	/**
-	 * @var array
-	 */
-	protected $aOptions;
-	
-	/**
 	 * @var ICWP_WPTB_FeatureHandler_Base
 	 */
 	protected $oFeatureOptions;
@@ -72,11 +67,12 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	 * Resets the object values to be re-used anew
 	 */
 	public function reset() {
+		$this->loadDataProcessor();
 		if ( !isset( self::$nRequestIp ) ) {
-			self::$nRequestIp = $this->getVisitorIpAddress();
+			self::$nRequestIp = ICWP_WPTB_DataProcessor::GetVisitorIpAddress();
 		}
 		if ( !isset( self::$nRequestTimestamp ) ) {
-			self::$nRequestTimestamp = time();
+			self::$nRequestTimestamp = ICWP_WPTB_DataProcessor::GetRequestTime();
 		}
 		$this->resetLog();
 	}
@@ -93,23 +89,12 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	}
 
 	/**
-	 *
-	 * @param array $aOptions
-	 */
-	public function setOptions( &$aOptions ) {
-		$this->aOptions = $aOptions;
-	}
-
-	/**
 	 * @param $sOptionKey
 	 * @param bool $mDefault
 	 * @return bool
 	 */
 	public function getOption( $sOptionKey, $mDefault = false ) {
-		if ( !isset( $this->aOptions ) ) {
-			$this->aOptions = $this->oFeatureOptions->getPluginOptionsValues();
-		}
-		return isset( $this->aOptions[$sOptionKey] )? $this->aOptions[$sOptionKey] : $mDefault;
+		return $this->oFeatureOptions->getOpt( $sOptionKey, $mDefault );
 	}
 
 	/**
@@ -119,7 +104,7 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	 * @return bool
 	 */
 	public function getIsOption( $sKey, $mValueToTest, $fStrict = false ) {
-		$mOptionValue = $this->getOption($sKey);
+		$mOptionValue = $this->getOption( $sKey );
 		return $fStrict? $mOptionValue === $mValueToTest : $mOptionValue == $mValueToTest;
 	}
 
@@ -221,20 +206,12 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	}
 
 	/**
-	 * @param boolean $infAsLong - visitor IP Address as IP2Long
-	 * @return integer - visitor IP Address as IP2Long
-	 */
-	public function getVisitorIpAddress( $infAsLong = true ) {
-		$this->loadDataProcessor();
-		return ICWP_WPTB_DataProcessor::GetVisitorIpAddress( $infAsLong );
-	}
-
-	/**
 	 * @param array $inaIpList
 	 * @param integer $innIpAddress
+	 * @param string $outsLabel
 	 * @return boolean
 	 */
-	public function isIpOnlist( $inaIpList, $innIpAddress = '', &$outsLabel = '' ) {
+	public function isIpOnlist( $inaIpList, $innIpAddress = 0, &$outsLabel = '' ) {
 
 		if ( empty( $innIpAddress ) || !isset( $inaIpList['ips'] ) ) {
 			return false;
@@ -289,7 +266,7 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	}
 	
 	/**
-	 * @return ICWP_WPSF_EmailProcessor
+	 * @return ICWP_WPTB_Processor_Email
 	 */
 	public function getEmailProcessor() {
 		return $this->oFeatureOptions->getEmailProcessor();
@@ -340,32 +317,28 @@ class ICWP_WPTB_BaseProcessor_V3 {
 	/**
 	 */
 	protected function loadDataProcessor() {
-		if ( !class_exists( 'ICWP_WPTB_DataProcessor' ) ) {
-			require_once( dirname(__FILE__) . '/icwp-data-processor.php' );
-		}
+		$this->oFeatureOptions->loadDataProcessor();
 	}
 
 	/**
 	 * @return ICWP_WPTB_WpFilesystem
 	 */
 	protected function loadFileSystemProcessor() {
-		require_once( dirname(__FILE__) . '/icwp-wpfilesystem.php' );
-		return ICWP_WPTB_WpFilesystem::GetInstance();
+		return $this->oFeatureOptions->loadFileSystemProcessor();
 	}
 
 	/**
 	 * @return ICWP_WPTB_WpFunctions
 	 */
 	protected function loadWpFunctionsProcessor() {
-		require_once( dirname(__FILE__) . '/icwp-wpfunctions.php' );
-		return ICWP_WPTB_WpFunctions::GetInstance();
+		return $this->oFeatureOptions->loadWpFunctionsProcessor();
 	}
 
 	/**
 	 * @return ICWP_Stats_WPSF
 	 */
 	protected function loadWpsfStatsProcessor() {
-		require_once( dirname(__FILE__) . '/icwp-wpsf-stats.php' );
+		return $this->oFeatureOptions->loadWpsfStatsProcessor();
 	}
 
 	/**

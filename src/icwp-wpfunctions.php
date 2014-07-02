@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
+ * Copyright (c) 2014 iControlWP <support@icontrolwp.com>
  * All rights reserved.
- * 
+ *
  * Version: 2013-08-14_A
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -17,17 +17,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once( dirname(__FILE__).'/icwp-data-processor.php' );
+
 if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 
 	class ICWP_WPTB_WpFunctions_V4 {
 
 		/**
-		 * @var ICWP_WpFunctions_V4
+		 * @var ICWP_WPTB_WpFunctions_V4
 		 */
 		protected static $oInstance = NULL;
 
 		/**
-		 * @return ICWP_WpFunctions_V4
+		 * @return ICWP_WPTB_WpFunctions_V4
 		 */
 		public static function GetInstance() {
 			if ( is_null( self::$oInstance ) ) {
@@ -183,6 +185,16 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		}
 
 		/**
+		 * @return bool
+		 */
+		public function getIsLoginRequest() {
+			return ICWP_WPSF_DataProcessor::GetIsRequestPost()
+			&& $this->getIsCurrentPage('wp-login.php')
+			&& !is_null( ICWP_WPSF_DataProcessor::FetchPost('log') )
+			&& !is_null( ICWP_WPSF_DataProcessor::FetchPost('pwd') );
+		}
+
+		/**
 		 * @return string
 		 */
 		public function getSiteName() {
@@ -264,17 +276,39 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 			return empty($sCurrentPage)? '' : $sCurrentPage;
 		}
 
+		/**
+		 * @return null|WP_User
+		 */
+		public function getCurrentWpUser() {
+			if ( is_user_logged_in() ) {
+				$oUser = wp_get_current_user();
+				if ( is_object( $oUser ) && $oUser instanceof WP_User ) {
+					return $oUser;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * @param $sUsername
+		 */
+		public function setUserLoggedIn( $sUsername ) {
+			$oUser = version_compare( $this->getWordpressVersion(), '2.8.0', '<' )? get_userdatabylogin( $sUsername ) : get_user_by( 'login', $sUsername );
+
+			wp_clear_auth_cookie();
+			wp_set_current_user ( $oUser->ID, $oUser->user_login );
+			wp_set_auth_cookie  ( $oUser->ID, true );
+			do_action( 'wp_login', $oUser->user_login, $oUser );
+		}
 	}
-
 endif;
-
 
 
 if ( !class_exists('ICWP_WPTB_WpFunctions') ):
 
 	class ICWP_WPTB_WpFunctions extends ICWP_WPTB_WpFunctions_V4 {
 		/**
-		 * @return ICWP_WpFunctions_WPSF
+		 * @return ICWP_WPTB_WpFunctions
 		 */
 		public static function GetInstance() {
 			if ( is_null( self::$oInstance ) ) {

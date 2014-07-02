@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
+ * Copyright (c) 2014 iControlWP <support@icontrolwp.com>
  * All rights reserved.
- * 
- * Version: 2013-08-27-B
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -29,6 +27,21 @@ if ( !class_exists('ICWP_WPTB_DataProcessor_V2') ):
 		 * @var string
 		 */
 		protected static $sIpAddress;
+
+		/**
+		 * @var integer
+		 */
+		protected static $nRequestTime;
+
+		/**
+		 * @return int
+		 */
+		public static function GetRequestTime() {
+			if ( empty( self::$nRequestTime ) ) {
+				self::$nRequestTime = time();
+			}
+			return self::$nRequestTime;
+		}
 
 		/**
 		 * Cloudflare compatible.
@@ -391,6 +404,14 @@ if ( !class_exists('ICWP_WPTB_DataProcessor_V2') ):
 				$sPassword .= $sCharset[ ( rand() % strlen( $sCharset ) ) ];
 			}
 			return $sPassword;
+		}
+
+		/**
+		 * @return bool
+		 */
+		static public function GetIsRequestPost() {
+			$sRequestMethod = self::ArrayFetch( $_SERVER, 'REQUEST_METHOD' );
+			return strtolower( empty($sRequestMethod)? '' : $sRequestMethod ) == 'post';
 		}
 
 		/**

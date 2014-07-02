@@ -125,12 +125,11 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		public function override() {
-
 			$oWpFs = $this->loadFileSystemProcessor();
-			if ( $oWpFs->exists( path_join( $this->oPluginVo->getRootDir(), 'forceOff') ) ) {
+			if ( $oWpFs->fileExistsInDir( 'forceOff', $this->oPluginVo->getRootDir(), false ) ) {
 				$this->setIsMainFeatureEnabled( false );
 			}
-			else if ( $oWpFs->exists( path_join( $this->oPluginVo->getRootDir(), 'forceOn') ) ) {
+			else if ( $oWpFs->fileExistsInDir( 'forceOn', $this->oPluginVo->getRootDir(), false ) ) {
 				$this->setIsMainFeatureEnabled( true );
 			}
 		}
@@ -460,13 +459,25 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 
 		/**
 		 * @param string $sOptionKey
+		 * @param mixed $mDefault
 		 * @return mixed
 		 */
-		public function getOpt( $sOptionKey ) {
+		public function getOpt( $sOptionKey, $mDefault = false ) {
 			if ( !isset( $this->m_aOptionsValues ) ) {
 				$this->loadStoredOptionsValues();
 			}
-			return ( isset( $this->m_aOptionsValues[ $sOptionKey ] )? $this->m_aOptionsValues[ $sOptionKey ] : false );
+			return ( isset( $this->m_aOptionsValues[ $sOptionKey ] )? $this->m_aOptionsValues[ $sOptionKey ] : $mDefault );
+		}
+
+		/**
+		 * @param $sKey
+		 * @param mixed $mValueToTest
+		 * @param boolean $fStrict
+		 * @return bool
+		 */
+		public function getOptIs( $sKey, $mValueToTest, $fStrict = false ) {
+			$mOptionValue = $this->getOpt( $sKey );
+			return $fStrict? $mOptionValue === $mValueToTest : $mOptionValue == $mValueToTest;
 		}
 
 		/**
@@ -863,11 +874,6 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 			//	return extension_loaded( 'mcrypt' );
 		}
 
-		protected function getVisitorIpAddress( $infAsLong = true ) {
-			$this->loadDataProcessor();
-			return ICWP_WPTB_DataProcessor::GetVisitorIpAddress( $infAsLong );
-		}
-
 		/**
 		 * Prefixes an option key only if it's needed
 		 *
@@ -944,11 +950,13 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 */
 		public function displayFeatureConfigPage( ) {
+
 			if ( !apply_filters( $this->doPluginPrefix( 'has_permission_to_view' ), true ) ) {
 				$this->displayViewAccessRestrictedPage();
 				return;
 			}
 
+//		$aPluginSummaryData = apply_filters( $this->doPluginPrefix( 'get_feature_summary_data' ), array() );
 			$aData = array(
 				'aSummaryData'		=> isset( $aPluginSummaryData ) ? $aPluginSummaryData : array()
 			);
@@ -1028,7 +1036,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 			return true;
 		}
 
-		protected function loadDataProcessor() {
+		public function loadDataProcessor() {
 			if ( !class_exists('ICWP_WPTB_DataProcessor') ) {
 				require_once( dirname(__FILE__).'/icwp-data-processor.php' );
 			}
@@ -1037,20 +1045,43 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 * @return ICWP_WPTB_WpFunctions
 		 */
-		protected function loadWpFunctions() {
-			return ICWP_WPTB_WpFunctions::GetInstance();
+		public function loadWpFunctions() {
+			return $this->loadWpFunctionsProcessor();
 		}
 
 		/**
 		 * @return ICWP_WPTB_WpFilesystem
 		 */
-		protected function loadFileSystemProcessor() {
+		public function loadFileSystemProcessor() {
 			if ( !class_exists('ICWP_WPTB_WpFilesystem') ) {
 				require_once( dirname(__FILE__) . '/icwp-wpfilesystem.php' );
 			}
 			return ICWP_WPTB_WpFilesystem::GetInstance();
 		}
+		/**
+		 * @return ICWP_WPTB_WpFunctions
+		 */
+		public function loadWpFunctionsProcessor() {
+			require_once( dirname(__FILE__) . '/icwp-wpfunctions.php' );
+			return ICWP_WPTB_WpFunctions::GetInstance();
+		}
+
+		/**
+		 * @return ICWP_Stats_WPSF
+		 */
+		public function loadWpsfStatsProcessor() {
+			require_once( dirname(__FILE__) . '/icwp-wpsf-stats.php' );
+		}
+
+		/**
+		 * @param $sStatKey
+		 */
+		public function doStatIncrement( $sStatKey ) {
+			$this->loadWpsfStatsProcessor();
+			ICWP_Stats_WPSF::DoStatIncrement( $sStatKey );
+		}
 	}
+
 endif;
 
 class ICWP_WPTB_FeatureHandler_Base extends ICWP_WPTB_FeatureHandler_Base_V2 { }
