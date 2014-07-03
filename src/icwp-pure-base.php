@@ -120,6 +120,16 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			return sprintf( '%s%s%s', $sPrefix, empty($sSuffix)? '' : $sGlue, empty($sSuffix)? '' : $sSuffix );
 		}
 
+		/**
+		 * Will prefix and return any string with the unique plugin options prefix.
+		 *
+		 * @param string $sSuffix
+		 * @return string
+		 */
+		public function doPluginOptionPrefix( $sSuffix = '' ) {
+			return $this->doPluginPrefix( $sSuffix, '_' );
+		}
+
 		protected function isValidAdminArea() {
 			$oWp = $this->loadWpFunctions();
 			if ( !$oWp->isMultisite() && is_admin() ) {
@@ -631,53 +641,47 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		/**
 		 * Updates the current (or supplied user ID) user meta data with the version of the plugin
 		 *
-		 * @param string $insKey
+		 * @param string $sKey
 		 * @param mixed $mValue
-		 * @param integer $innId		-user ID
+		 * @param integer $nId		-user ID
 		 * @return boolean
 		 */
-		protected function updateUserMeta( $insKey, $mValue, $innId = null ) {
+		protected function updateUserMeta( $sKey, $mValue, $nId = null ) {
 			if ( empty( $innId ) ) {
-				$oCurrentUser = $this->getCurrentUser();
-				if ( !$oCurrentUser ) {
-					return;
+				$oWp = $this->loadWpFunctions();
+				$oCurrentUser = $oWp->getCurrentWpUser();
+				if ( is_null( $oCurrentUser ) ) {
+					return false;
 				}
 				$nUserId = $oCurrentUser->ID;
 			}
 			else {
-				$nUserId = $innId;
+				$nUserId = $nId;
 			}
-			return update_user_meta( $nUserId, self::$sOptionPrefix.$insKey, $mValue );
-		}
-
-		protected function getUserMeta( $sKey ) {
-
-			$oCurrentUser = $this->getCurrentUser();
-			if ( !$oCurrentUser ) {
-				return;
-			}
-			$nUserId = $oCurrentUser->ID;
-
-			$sCurrentMetaValue = get_user_meta( $nUserId, $this->doPluginPrefix( $sKey, '_' ), true );
-			// A guard whereby if we can't ever get a value for this meta, it means we can never set it.
-			if ( empty( $sCurrentMetaValue ) ) {
-				//the value has never been set, or it's been installed for the first time.
-				$this->updateUserMeta( $sKey, 'temp', $nUserId );
-				return ''; //meaning we don't show the update notice upon new installations and for those people who can't set the version in their meta.
-			}
-			return $sCurrentMetaValue;
+			return update_user_meta( $nUserId, $this->doPluginOptionPrefix( $sKey ), $mValue );
 		}
 
 		/**
-		 * @return mixed
+		 * @param $sKey
+		 * @return bool|string
 		 */
-		protected function getCurrentUser() {
-			if( !is_user_logged_in() ) {
+		protected function getUserMeta( $sKey ) {
+
+			$oWp = $this->loadWpFunctions();
+			$oCurrentUser = $oWp->getCurrentWpUser();
+			if ( is_null( $oCurrentUser ) ) {
 				return false;
 			}
-			global $current_user;
-			get_currentuserinfo();
-			return $current_user;
+			$nUserId = $oCurrentUser->ID;
+
+			$sCurrentMetaValue = get_user_meta( $nUserId, $this->doPluginOptionPrefix( $sKey ), true );
+			// A guard whereby if we can't ever get a value for this meta, it means we can never set it.
+			if ( empty( $sCurrentMetaValue ) ) {
+				//the value has never been set, or it's been installed for the first time.
+				$this->updateUserMeta( $this->doPluginOptionPrefix( $sKey ), 'temp', $nUserId );
+				return ''; //meaning we don't show the update notice upon new installations and for those people who can't set the version in their meta.
+			}
+			return $sCurrentMetaValue;
 		}
 
 		protected function handlePluginFormSubmit() {
@@ -705,7 +709,7 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			}
 
 			$aFormSubmitOptions = array(
-				$this->doPluginPrefix( 'plugin_form_submit', '_' ),
+				$this->doPluginOptionPrefix( 'plugin_form_submit' ),
 				'icwp_link_action'
 			);
 			foreach( $aFormSubmitOptions as $sOption ) {
@@ -795,23 +799,6 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		public function onWpDeactivatePlugin() { }
 		public function onWpUninstallPlugin() { }
 
-		/**
-		 * @return ICWP_WPTB_WpFunctions
-		 */
-		protected function loadWpFunctions() {
-			if ( !isset( $this->oWpFunctions ) ) {
-				$this->oWpFunctions = ICWP_WPTB_WpFunctions::GetInstance();
-			}
-			return $this->oWpFunctions;
-		}
-
-		/**
-		 * @return ICWP_WPTB_WpFilesystem
-		 */
-		protected function loadWpFilesystem() {
-			return ICWP_WPTB_WpFilesystem::GetInstance();;
-		}
-
 		protected function flushCaches() {
 			if (function_exists('w3tc_pgcache_flush')) {
 				w3tc_pgcache_flush();
@@ -834,67 +821,35 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		 * @return mixed|null
 		 */
 		protected function fetchRequest( $insKey, $infIncludeCookie = true ) {
-			$mFetchVal = $this->fetchPost( $insKey );
-			if ( is_null( $mFetchVal ) ) {
-				$mFetchVal = $this->fetchGet( $insKey );
-				if ( is_null( $mFetchVal && $infIncludeCookie ) ) {
-					$mFetchVal = $this->fetchCookie( $insKey );
-				}
-			}
-			return $mFetchVal;
-		}
-		/**
-		 * @param string $insKey
-		 * @return mixed|null
-		 */
-		protected function fetchGet( $insKey ) {
-			if ( function_exists( 'filter_input' ) && defined( 'INPUT_GET' ) ) {
-				return filter_input( INPUT_GET, $insKey );
-			}
-			return $this->arrayFetch( $_GET, $insKey );
-		}
-		/**
-		 * @param string $insKey		The $_POST key
-		 * @return mixed|null
-		 */
-		protected function fetchPost( $insKey ) {
-			if ( function_exists( 'filter_input' ) && defined( 'INPUT_POST' ) ) {
-				return filter_input( INPUT_POST, $insKey );
-			}
-			return $this->arrayFetch( $_POST, $insKey );
-		}
-		/**
-		 * @param string $insKey		The $_POST key
-		 * @return mixed|null
-		 */
-		protected function fetchCookie( $insKey ) {
-			if ( function_exists( 'filter_input' ) && defined( 'INPUT_COOKIE' ) ) {
-				return filter_input( INPUT_COOKIE, $insKey );
-			}
-			return $this->arrayFetch( $_COOKIE, $insKey );
+			$this->loadDataProcessor();
+			return ICWP_WPTB_DataProcessor::FetchRequest( $insKey, $infIncludeCookie );
 		}
 
 		/**
-		 * @param array $inaArray
-		 * @param string $insKey		The array key
+		 * @param string $sKey
 		 * @return mixed|null
 		 */
-		protected function arrayFetch( &$inaArray, $insKey ) {
-			if ( empty( $inaArray ) ) {
-				return null;
-			}
-			if ( !isset( $inaArray[$insKey] ) ) {
-				return null;
-			}
-			return $inaArray[$insKey];
+		protected function fetchGet( $sKey ) {
+			$this->loadDataProcessor();
+			return ICWP_WPTB_DataProcessor::FetchGet( $sKey );
 		}
 
 		/**
-		 * Performs a wp_die() but lets us do something first.
+		 * @param string $sKey		The $_POST key
+		 * @return mixed|null
 		 */
-		protected function doWpDie( $insText = '' ) {
-			wp_die( $insText );
-			exit();
+		protected function fetchPost( $sKey ) {
+			$this->loadDataProcessor();
+			return ICWP_WPTB_DataProcessor::FetchPost( $sKey );
+		}
+
+		/**
+		 * @param string $sKey		The $_COOKIE key
+		 * @return mixed|null
+		 */
+		protected function fetchCookie( $sKey ) {
+			$this->loadDataProcessor();
+			return ICWP_WPTB_DataProcessor::FetchCookie( $sKey );
 		}
 
 		/**
@@ -940,6 +895,20 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		 */
 		protected function loadDataProcessor() {
 			require_once( dirname(__FILE__) . '/icwp-data-processor.php' );
+		}
+
+		/**
+		 * @return ICWP_WPTB_WpFunctions
+		 */
+		protected function loadWpFunctions() {
+			return ICWP_WPTB_WpFunctions::GetInstance();
+		}
+
+		/**
+		 * @return ICWP_WPTB_WpFilesystem
+		 */
+		protected function loadWpFilesystem() {
+			return ICWP_WPTB_WpFilesystem::GetInstance();
 		}
 
 	}//CLASS

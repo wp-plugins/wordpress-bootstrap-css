@@ -155,7 +155,6 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 	 * @return void
 	 */
 	protected function loadBootstrapLess() {
-		die( 'here');
 		if ( isset( $this->m_oBsLess ) ) {
 			return;
 		}
@@ -175,15 +174,6 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 			$this->m_sLessOptionsKey = $this->m_sOptionPrefix . 'all_less_options';
 		}
 	}
-	
-//	protected function loadWptbProcessor() {
-//		if ( !isset( $this->m_oWptbProcessor ) ) {
-//			require_once( dirname(__FILE__).'/src/icwp-processor-wptb.php' );
-//			$this->loadWptbOptions();
-//			$this->m_oWptbProcessor = new ICWP_WptbProcessor( $this->m_oWptbOptions );
-//			$this->m_oWptbProcessor->setPaths( $this->m_sPluginDir, $this->m_sPluginUrl );
-//		}
-//	}
 	
 	public function onWpInit() {
 		parent::onWpInit();
@@ -382,95 +372,7 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', '' );
 		}
 	}
-//
-//	public function onDisplayMainMenu() {
-//		// To ensure the nag bar disappears if/when they visit the dashboard
-//		// regardless of clicking the button.
-//		$this->updateVersionUserMeta();
-//		parent::onDisplayMainMenu();
-//	}
-//
-//	public function onDisplayWtbCss() {
-//
-//		$aAvailableOptions = $this->m_oWptbOptions->getOptions();
-//		$sAllFormInputOptions = $this->m_oWptbOptions->collateAllFormInputsForAllOptions();
-//
-//		$aData = array(
-//			'plugin_url'		=> $this->m_sPluginUrl,
-//			'var_prefix'		=> $this->m_sOptionPrefix,
-//			'fShowAds'			=> $this->isShowMarketing(),
-//			'aAllOptions'		=> $aAvailableOptions,
-//			'all_options_input'	=> $sAllFormInputOptions,
-//			'nonce_field'		=> $this->getSubmenuId('bootstrap_css_wtbcss'),
-//			'form_action'		=> 'admin.php?page='.$this->getSubmenuId('bootstrap-css'),
-//		);
-//		$this->display( 'bootstrapcss_index', $aData );
-//	}
-//
-//	public function onDisplayWtbLess() {
-//
-//		$this->loadBootstrapLess();
-//		$aAvailableOptions = $this->m_oBsLess->getAllBootstrapLessOptions( false );
-//
-//		$aData = array(
-//			'plugin_url'				=> $this->m_sPluginUrl,
-//			'var_prefix'				=> $this->m_sOptionPrefix,
-//			'fShowAds'					=> $this->isShowMarketing(),
-//			'aAllOptions'				=> $aAvailableOptions,
-//			'compiler_enabled'			=> $this->m_oWptbOptions->getOpt( 'use_compiled_css' ) === 'Y',
-//
-//			'less_prefix'				=> HLT_BootstrapLess::LessOptionsPrefix,
-//			'less_file_location'		=> array( self::$BOOSTRAP_DIR.'css'.ICWP_DS.'bootstrap.less.css', self::$BOOSTRAP_URL.'css/bootstrap.less.css' ),
-//			'page_link_options'			=> $this->getSubmenuId('bootstrap-css'),
-//
-//			'nonce_field'				=> $this->getSubmenuId('bootstrap_css_wtbcss'),
-//			'form_action'				=> 'admin.php?page='.$this->getSubmenuId('bootstrap-less')
-//		);
-//		$this->display( 'bootstrapcss_less', $aData );
-//	}
-//
-//	/**
-//	 * This would only be called when $this->isIcwpPluginFormSubmit() is true
-//	 * (non-PHPdoc)
-//	 * @see ICWP_Pure_Base::handlePluginFormSubmit()
-//	 */
-//	protected function handlePluginFormSubmit() {
-//		parent::handlePluginFormSubmit();
-//		return;
-//		if ( isset( $_GET['page'] ) ) {
-//			switch ( $_GET['page'] ) {
-//				case $this->getSubmenuId( 'bootstrap-css' ):
-//					$this->handleSubmit_BootstrapCssOptions();
-//					break;
-//
-//				case $this->getSubmenuId( 'bootstrap-less' ):
-//					$this->handleSubmit_BootstrapLess();
-//					break;
-//			}
-//		}
-//		$this->loadWptbProcessor();
-//		$this->m_oWptbOptions->maybeClearIncludesCache( true );
-//		$this->flushCaches();
-//
-//		if ( !self::$m_fUpdateSuccessTracker ) {
-//			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Failed</strong>.' );
-//		}
-//		else {
-//			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', 'Updating Twitter Bootstrap Settings <strong>Succeeded</strong>.' );
-//		}
-//	}
 
-//	protected function handleSubmit_BootstrapCssOptions() {
-//
-//		//Ensures we're actually getting this request from WP.
-//		check_admin_referer( $this->getSubmenuId('bootstrap_css_wtbcss') );
-//
-//		if ( !isset($_POST[$this->m_sOptionPrefix.'all_options_input']) ) {
-//			return;
-//		}
-//		$this->m_oWptbOptions->updatePluginOptionsFromSubmit( $_POST[self::OptionPrefix.'all_options_input'] );
-//	}
-	
 	protected function handleSubmit_BootstrapLess() {
 
 		// Ensures we're actually getting this request from WP.
@@ -485,14 +387,7 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 
 		$this->m_oBsLess->processNewLessOptions( $this->m_sOptionPrefix, !isset( $_POST['submit_preserve'] ) );
 	}
-//
-//	public function filter_include_bootstrap_in_editor( $mce_css ) {
-//		$mce_css = explode( ',', $mce_css);
-//		$mce_css = array_map( 'trim', $mce_css);
-//		array_unshift( $mce_css, self::$BOOSTRAP_URL.'css/bootstrap.min.css' );
-//		return implode( ',', $mce_css );
-//	}
-	
+
 	public function onWpPrintStyles() {
 		if ( $this->m_oWptbOptions->getOpt( 'prettify' ) == 'Y' ) {
 			$sUrl = $this->getCssUrl( 'google-code-prettify/prettify.css' );
@@ -527,18 +422,6 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 		return $inaLinks;
 	}
 
-	public function onWpShutdown() {
-		parent::onWpShutdown();
-		$this->saveProcessors_Action();
-	}
-
-	protected function saveProcessors_Action() {
-
-		if ( isset( $this->m_oWptbOptions ) ) {
-			$this->m_oWptbOptions->savePluginOptions( false );
-		}
-	}
-	
 	protected function deleteAllPluginDbOptions() {
 		
 		parent::deleteAllPluginDbOptions();
@@ -546,22 +429,9 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 		if ( !current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$this->loadWptbOptions();
-		$this->m_oWptbOptions->deletePluginOptions();
-		
 		$this->loadBootstrapLess();
 		$this->m_oBsLess->processLessOptions( 'delete' );
-		
-		//legacy options
-		$this->deleteOption( 'upgraded1to2' );
-		
 		remove_action( 'shutdown', array( $this, 'onWpShutdown' ) );
-	}
-	
-	public function onWpDeactivatePlugin() {
-		if ( $this->m_oWptbOptions->getOpt( 'delete_on_deactivate' ) == 'Y' ) {
-			$this->deleteAllPluginDbOptions();
-		}
 	}
 }
 
