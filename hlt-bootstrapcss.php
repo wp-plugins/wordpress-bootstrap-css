@@ -53,6 +53,11 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	/**
 	 * @var string
 	 */
+	protected static $fLoggingEnabled;
+
+	/**
+	 * @var string
+	 */
 	protected static $sVersion;
 
 	/**
@@ -74,11 +79,6 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 	 * @var string
 	 */
 	protected static $sTextDomain;
-
-	/**
-	 * @var string
-	 */
-	protected static $fLoggingEnabled;
 
 	/**
 	 * @var string

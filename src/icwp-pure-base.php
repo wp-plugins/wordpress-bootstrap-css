@@ -371,10 +371,10 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			$this->display( $this->doPluginPrefix( 'index', '_' ), $aData );
 		}
 
-		protected function getBaseDisplayData( $sSubmenu = '' ) {
+		protected function getBaseDisplayData() {
 			return array(
 				'plugin_url'		=> $this->sPluginUrl,
-				'var_prefix'		=> self::$sOptionPrefix,
+				'var_prefix'		=> $this->oPluginVo->getOptionStoragePrefix(),
 				'sPluginName'		=> $this->oPluginVo->getHumanName(),
 				'fShowAds'			=> $this->isShowMarketing(),
 				'nonce_field'		=> $this->getPluginPrefix(),
@@ -684,7 +684,8 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			if ( !$this->isIcwpPluginFormSubmit() ) {
 				return false;
 			}
-//		check_admin_referer( $this->getPluginPrefix() );
+
+//			check_admin_referer( $this->getPluginPrefix() );
 
 			// do all the plugin feature/options saving
 			do_action( $this->doPluginPrefix( 'form_submit' ) );
@@ -704,9 +705,8 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			}
 
 			$aFormSubmitOptions = array(
-				'icwp_plugin_form_submit',
-				'icwp_link_action',
-				'icwp_wpsf_admin_access_key_request'
+				$this->doPluginPrefix( 'plugin_form_submit', '_' ),
+				'icwp_link_action'
 			);
 			foreach( $aFormSubmitOptions as $sOption ) {
 				if ( !is_null( $this->fetchRequest( $sOption, false ) ) ) {
@@ -733,7 +733,7 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		}
 
 		public function enqueuePluginAdminCss() {
-			$sUnique = $this->doPluginPrefix( 'plugin_css', '_' );
+			$sUnique = $this->doPluginPrefix( 'plugin_css' );
 			wp_register_style( $sUnique, $this->getCssUrl('plugin.css'), array( $this->doPluginPrefix( 'bootstrap_wpadmin_css_fixes' ) ), $this->oPluginVo->getVersion() );
 			wp_enqueue_style( $sUnique );
 		}

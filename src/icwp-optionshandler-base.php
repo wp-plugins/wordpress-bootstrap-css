@@ -780,7 +780,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 			check_admin_referer( $this->oPluginVo->getFullPluginPrefix() );
 
 			$this->loadDataProcessor();
-			$sAllOptions = ICWP_WPTB_DataProcessor::FetchPost( $this->doPluginPrefix( 'all_options_input', '_' ) );
+			$sAllOptions = ICWP_WPTB_DataProcessor::FetchPost( $this->prefixOptionKey( 'all_options_input' ) );
 
 			if ( empty( $sAllOptions ) ) {
 				return true;
@@ -906,7 +906,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 * @return string
 		 */
 		public function getOptionStoragePrefix() {
-			return $this->oPluginVo->getFullPluginPrefix( '_' ).'_';
+			return $this->oPluginVo->getOptionStoragePrefix();
 		}
 
 		/**

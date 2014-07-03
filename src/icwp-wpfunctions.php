@@ -188,10 +188,10 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		 * @return bool
 		 */
 		public function getIsLoginRequest() {
-			return ICWP_WPSF_DataProcessor::GetIsRequestPost()
+			return ICWP_WPTB_DataProcessor::GetIsRequestPost()
 			&& $this->getIsCurrentPage('wp-login.php')
-			&& !is_null( ICWP_WPSF_DataProcessor::FetchPost('log') )
-			&& !is_null( ICWP_WPSF_DataProcessor::FetchPost('pwd') );
+			&& !is_null( ICWP_WPTB_DataProcessor::FetchPost('log') )
+			&& !is_null( ICWP_WPTB_DataProcessor::FetchPost('pwd') );
 		}
 
 		/**
