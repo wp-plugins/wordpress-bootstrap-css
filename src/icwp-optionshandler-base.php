@@ -383,7 +383,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 				return false;
 			}
 
-			$oWpFunc = $this->loadWpFunctions();
+			$oWpFunc = $this->loadWpFunctionsProcessor();
 			if ( is_admin() && !$oWpFunc->isMultisite() ) {
 				return true;
 			}
@@ -514,7 +514,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 				return true;
 			}
 
-			$oWpFunc = $this->loadWpFunctions();
+			$oWpFunc = $this->loadWpFunctionsProcessor();
 			$oWpFunc->updateOption( $this->sOptionsStoreKey, $this->m_aOptionsValues );
 			$this->fNeedSave = false;
 			return true;
@@ -576,7 +576,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 */
 		protected function loadStoredOptionsValues() {
 			if ( empty( $this->m_aOptionsValues ) ) {
-				$oWpFunc = $this->loadWpFunctions();
+				$oWpFunc = $this->loadWpFunctionsProcessor();
 				$this->m_aOptionsValues = $oWpFunc->getOption( $this->sOptionsStoreKey, array() );
 				if ( empty( $this->m_aOptionsValues ) ) {
 					$this->fNeedSave = true;
@@ -731,7 +731,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 */
 		public function deletePluginOptions() {
 			if ( apply_filters( $this->doPluginPrefix( 'has_permission_to_submit' ), true ) ) {
-				$oWpFunc = $this->loadWpFunctions();
+				$oWpFunc = $this->loadWpFunctionsProcessor();
 				$oWpFunc->deleteOption( $this->sOptionsStoreKey );
 
 				$this->getProcessor()->deleteAndCleanUp(); // gets rid of the databases used by the processors.
@@ -860,7 +860,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 */
 		protected function updateHandler() {
 			if ( version_compare( $this->getVersion(), '3.0.0', '<' ) ) {
-				$oWpFunctions = $this->loadWpFunctions();
+				$oWpFunctions = $this->loadWpFunctionsProcessor();
 				$sKey = $this->doPluginPrefix( $this->getFeatureSlug().'_processor', '_' );
 				$oWpFunctions->deleteOption( $sKey );
 			}
@@ -965,17 +965,14 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		public function getIsCurrentPageConfig() {
-			$oWpFunctions = $this->loadWpFunctions();
+			$oWpFunctions = $this->loadWpFunctionsProcessor();
 			return $oWpFunctions->getCurrentWpAdminPage() == $this->doPluginPrefix( $this->sFeatureSlug );
 		}
 
 		/**
 		 */
 		public function displayViewAccessRestrictedPage( ) {
-			$aData = array(
-				'requested_page'	=> $this->doPluginPrefix( $this->sFeatureSlug )
-			);
-			$aData = array_merge( $this->getBaseDisplayData(), $aData );
+			$aData = $this->getBaseDisplayData();
 			$this->display( $aData, 'access_restricted_index' );
 		}
 
@@ -1002,11 +999,11 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		/**
-		 * @param array $inaData
+		 * @param array $aData
 		 * @param string $sView
 		 * @return bool
 		 */
-		protected function display( $inaData = array(), $sView = '' ) {
+		protected function display( $aData = array(), $sView = '' ) {
 
 			if ( empty( $sView ) ) {
 				$oWpFs = $this->loadFileSystemProcessor();
@@ -1023,8 +1020,8 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 				return false;
 			}
 
-			if ( count( $inaData ) > 0 ) {
-				extract( $inaData, EXTR_PREFIX_ALL, $this->oPluginVo->getParentSlug() ); //slug being 'icwp'
+			if ( count( $aData ) > 0 ) {
+				extract( $aData, EXTR_PREFIX_ALL, $this->oPluginVo->getParentSlug() ); //slug being 'icwp'
 			}
 
 			ob_start();
@@ -1040,13 +1037,6 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 			if ( !class_exists('ICWP_WPTB_DataProcessor') ) {
 				require_once( dirname(__FILE__).'/icwp-data-processor.php' );
 			}
-		}
-
-		/**
-		 * @return ICWP_WPTB_WpFunctions
-		 */
-		public function loadWpFunctions() {
-			return $this->loadWpFunctionsProcessor();
 		}
 
 		/**
@@ -1069,7 +1059,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 * @return ICWP_Stats_WPSF
 		 */
-		public function loadWpsfStatsProcessor() {
+		public function loadStatsProcessor() {
 			require_once( dirname(__FILE__) . '/icwp-wpsf-stats.php' );
 		}
 
@@ -1077,7 +1067,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 * @param $sStatKey
 		 */
 		public function doStatIncrement( $sStatKey ) {
-			$this->loadWpsfStatsProcessor();
+			$this->loadStatsProcessor();
 			ICWP_Stats_WPSF::DoStatIncrement( $sStatKey );
 		}
 	}

@@ -119,7 +119,7 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 			return $this->{$sOptionsVarName};
 		}
 		$sSourceFile = $this->oPluginVo->getSourceDir().'icwp-optionshandler-'.$sFeatureSlug.'.php'; // e.g. icwp-optionshandler-plugin.php
-		$sClassName = 'ICWP_WPTB_FeatureHandler_'.$sFeatureName; // e.g. ICWP_WPSF_FeatureHandler_Plugin
+		$sClassName = 'ICWP_WPTB_FeatureHandler_'.$sFeatureName;
 
 		require_once( $sSourceFile );
 		if ( $infRecreate || !isset( $this->{$sOptionsVarName} ) ) {
