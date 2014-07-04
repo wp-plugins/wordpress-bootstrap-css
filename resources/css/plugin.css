@@ -1,7 +1,53 @@
 @CHARSET "ISO-8859-1";
 
 /* GENERAL STYLES */
-	
+
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .row.row_number_1 {
+	padding-top: 18px;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .span4 {
+	width: 325px;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group {
+	border: 1px dashed #DDDDDD;
+	border-radius: 8px;
+	padding: 10px;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group:hover {
+	background-color: #f8f8f8;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group .control-label {
+	font-weight: bold;
+	font-size: 12px;
+	width: 110px;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group span.label-less-name {
+	font-weight: normal;
+	font-size: 11px;
+	display: block;
+	margin-bottom: 2px;
+	clear: both;
+	float: left;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group .controls {
+	margin-left: 120px;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .control-group .option_section {
+	border: 1px solid transparent;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .help_section  {
+	padding-top: 8px;
+	border-top: 1px solid #DDDDDD;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .toggle_checkbox {
+	float:right;
+}
+.bootstrap-wpadmin.icwp-wptb-bootstrapless .form-horizontal .form-actions {
+	padding-left: 75px;
+	padding-right: 75px;
+}
+
+
 .bootstrap-wpadmin {
 }
 .bootstrap-wpadmin .row {
@@ -77,6 +123,24 @@ p.code-description {
 .submit span {
 	font-size: smaller;
 	font-style: italic;
+}
+.form-horizontal legend {
+	border-bottom: 1px dashed #aaa;
+	margin-bottom: 8px;
+	margin-top: 30px;
+}
+.form-horizontal .item_group .control-group {
+	margin-bottom: 0;
+}
+.form-horizontal .item_group {
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin-bottom: 10px;
+	padding: 20px 20px 20px 0;
+}
+.form-horizontal .selected_item_group {
+	border: 1px solid rgba(135, 232, 38, 0.55);
+	background-color: rgba(135, 232, 38, 0.1);
 }
 .option_section {
 	background-color: rgba(0, 0, 0, 0.008);
