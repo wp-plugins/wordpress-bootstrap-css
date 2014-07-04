@@ -252,7 +252,7 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin {
 			'css',
 			'less'
 		);
-		self::$sVersion = '1.0';
+		self::$sVersion = '1.4';
 		self::$sPluginSlug = 'wptb';
 		self::$sHumanName = 'WordPress Twitter Bootstrap';
 		self::$sMenuTitleName = 'Twitter Bootstrap';

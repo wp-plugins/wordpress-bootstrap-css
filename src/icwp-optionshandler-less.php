@@ -84,11 +84,18 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 
 	public function handleFormSubmit() {
 		if ( parent::handleFormSubmit() ) {
-			$oWpFs = $this->loadFileSystemProcessor();
-			$oWpFs->deleteFile( $this->getPathToCss('bootstrap.less.css') );
-			$oWpFs->deleteFile( $this->getPathToCss('bootstrap.less.min.css') );
+			$this->deleteLessCompiledCss();
 		}
 	}
+
+	/**
+	 */
+	protected function deleteLessCompiledCss() {
+		$oWpFs = $this->loadFileSystemProcessor();
+		$oWpFs->deleteFile( $this->getPathToCss('bootstrap.less.css') );
+		$oWpFs->deleteFile( $this->getPathToCss('bootstrap.less.min.css') );
+	}
+
 
 	public function getPath_TargetLessFileStem() {
 		return $this->getPathToCss( 'bootstrap.less' );
@@ -132,8 +139,9 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 	 */
 	protected function doPrePluginOptionsSave() { }
 
-	public function updateHandler() { }
-
+	/**
+	 * @return array
+	 */
 	protected function getLessOptionsLegacy() {
 		return array(
 			array(
@@ -226,6 +234,9 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function getLessOptions() {
 		$aLessOptions = array(
 			array(
@@ -365,6 +376,13 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 			)
 		);
 		return $aLessOptions;
+	}
+
+	protected function updateHandler() {
+		parent::updateHandler();
+		if ( $this->getIsUpgrading() ) {
+			$this->deleteLessCompiledCss();
+		}
 	}
 }
 

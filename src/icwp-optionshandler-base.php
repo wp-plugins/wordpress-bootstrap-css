@@ -137,7 +137,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 */
 		public function onWpPluginsLoaded() {
-
+			$this->updateHandler();
 			if ( $this->getIsMainFeatureEnabled() ) {
 				$oProcessor = $this->loadFeatureProcessor();
 				if ( is_object( $oProcessor ) && $oProcessor instanceof ICWP_WPTB_BaseProcessor ) {
@@ -150,7 +150,6 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 * A action added to WordPress 'plugins_loaded' hook
 		 */
 		public function onWpInit() {
-			$this->updateHandler();
 		}
 
 		/**
@@ -547,7 +546,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 * Loads the options and their stored values from the WordPress Options store.
 		 */
-		protected function loadStoredOptionsValues() {
+		public function loadStoredOptionsValues() {
 			if ( empty( $this->m_aOptionsValues ) ) {
 				$oWpFunc = $this->loadWpFunctionsProcessor();
 				$this->m_aOptionsValues = $oWpFunc->getOption( $this->sOptionsStoreKey, array() );

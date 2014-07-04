@@ -300,7 +300,11 @@ class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 		}
 	}
 
-	public function updateHandler() { }
+	public function updateHandler() {
+		if ( $this->getIsUpgrading() ) {
+			$this->maybeClearIncludesCache( true );
+		}
+	}
 }
 
 endif;

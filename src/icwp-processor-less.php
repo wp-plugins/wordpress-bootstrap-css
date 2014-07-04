@@ -22,6 +22,11 @@ if ( !class_exists('ICWP_WPTB_LessProcessor_V1') ):
 class ICWP_WPTB_LessProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 	/**
+	 * @const string
+	 */
+	const LessOptionsPrefix = 'less_';
+
+	/**
 	 * @param ICWP_WPTB_FeatureHandler_Less $oFeatureOptions
 	 */
 	public function __construct( ICWP_WPTB_FeatureHandler_Less $oFeatureOptions ) {
@@ -31,21 +36,60 @@ class ICWP_WPTB_LessProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	/**
 	 */
 	public function run() {
-		$this->writeVariableOrig();
+
 		//check for existence of LESS file
 		$oWpFs = $this->loadFileSystemProcessor();
-
 		if ( $oWpFs->exists( $this->oFeatureOptions->getPath_TargetLessFileStem().'.css' ) ) {
 			return;
 		}
-		// compile as necessary
+		$this->buildLessFiles();
+	}
+
+	protected function buildLessFiles() {
+		// 1) backup variables.less
+		$this->backupVariableOrig();
+
+		// 2) Read contents of files and replace with custom vars.  Then write.
+		$this->rewriteVariablesLess();
+
+		// 3) compile the less and write.
 		$this->compileLess();
+	}
+
+	/**
+	 * @param $fUseOriginalLessFile - boolean on whether to use the original less file as the template or not. Defaults to TRUE
+	 * @return boolean
+	 */
+	public function rewriteVariablesLess( $fUseOriginalLessFile = true ) {
+		$oWpFs = $this->loadFileSystemProcessor();
+
+		$sVariablesContents = $oWpFs->getFileContent( $this->getPath_VariablesLessFile( $fUseOriginalLessFile ) );
+		if ( !$sVariablesContents ) {
+			//The Variable.less file couldn't be read: bail!
+			return false;
+		}
+
+		$nPrefixLength = strlen( self::LessOptionsPrefix );
+		foreach( $this->oFeatureOptions->loadStoredOptionsValues() as $sKey => $sLessValue ) {
+
+			$nPos = strpos( $sKey, self::LessOptionsPrefix );
+			if ( $nPos === 0 ) {
+				$sLessKey = substr_replace( $sKey, '', $nPos, $nPrefixLength );
+				$sVariablesContents = preg_replace(
+					'/^\s*(@'.$sLessKey.':\s*)([^;]+)(;.*)$/ium',
+					'${1}'.$sLessValue.'${3}',
+					$sVariablesContents
+				);
+			}
+		}
+
+		return $oWpFs->putFileContent( $this->getPath_VariablesLessFile(), $sVariablesContents );
 	}
 
 	public function compileLess() {
 		$oWpFs = $this->loadFileSystemProcessor();
 
-		$this->includeLessLibrary();
+		$this->loadLessLibrary();
 		$sFilePathToLess = $this->getPath_BootstrapDir().'less'.ICWP_DS.'bootstrap.less';
 		$sTargetCssFileStem = $this->oFeatureOptions->getPath_TargetLessFileStem();
 
@@ -65,19 +109,17 @@ class ICWP_WPTB_LessProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 	/**
 	 */
-	protected function writeVariableOrig() {
+	protected function backupVariableOrig() {
 		$oWpFs = $this->loadFileSystemProcessor();
 		if ( is_admin() ) {
-			$sVariablesLessFile = $this->getPath_VariablesLessFile();
-			if ( !$oWpFs->exists( $sVariablesLessFile.'.orig' ) ) {
-				copy( $sVariablesLessFile, $sVariablesLessFile.'.orig' );
+			if ( !$oWpFs->exists( $this->getPath_VariablesLessFile( true ) ) ) {
+				copy( $this->getPath_VariablesLessFile(), $this->getPath_VariablesLessFile( true ) );
 			}
 		}
 	}
 
-	protected function includeLessLibrary() {
-		$sPathToLessCompiler = $this->oFeatureOptions->getPathToInc( 'Less.php/Autoloader.php' );
-		require_once ( $sPathToLessCompiler );
+	protected function loadLessLibrary() {
+		require_once ( $this->oFeatureOptions->getPathToInc( 'Less.php/Autoloader.php' ) );
 		Less_Autoloader::register();
 	}
 
@@ -88,8 +130,12 @@ class ICWP_WPTB_LessProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 		return $this->oFeatureOptions->getResourcesDir( 'bootstrap-'.$this->oFeatureOptions->getTwitterBootstrapVersion().ICWP_DS );
 	}
 
-	protected function getPath_VariablesLessFile() {
-		return $this->getPath_BootstrapDir().'less'.ICWP_DS.'variables.less';
+	/**
+	 * @param boolean $fOrigBackup
+	 * @return string
+	 */
+	protected function getPath_VariablesLessFile( $fOrigBackup = false ) {
+		return $this->getPath_BootstrapDir().'less'.ICWP_DS.'variables.less' .($fOrigBackup ? '.orig' : '');
 	}
 
 }

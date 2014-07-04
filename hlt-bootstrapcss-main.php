@@ -44,52 +44,6 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 	 */
 	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
 
-	/**
-	 * @var string
-	 */
-	static public $BOOSTRAP_DIR;
-	/**
-	 * @var string
-	 */
-	static public $BOOSTRAP_URL;
-
-	/**
-	 * @var string
-	 */
-	protected $m_sLessOptionsKey;
-
-	/**
-	 * @var array
-	 */
-	protected $m_aPluginOptions_BootstrapSection;
-	/**
-	 * @var array
-	 */
-	protected $m_aPluginOptions_TwitterBootstrapSection;
-	/**
-	 * @var array
-	 */
-	protected $m_aPluginOptions_ExtraTwitterSection;
-	/**
-	 * @var array
-	 */
-	protected $m_aPluginOptions_MiscOptionsSection;
-
-	/**
-	 * @var HLT_BootstrapLess
-	 */
-	protected $m_oBsLess;
-
-	/**
-	 * @var ICWP_OptionsHandler_Wptb
-	 */
-	protected $m_oWptbOptions;
-	
-	/**
-	 * @var ICWP_WptbProcessor
-	 */
-	protected $m_oWptbProcessor;
-	
 	public function __construct( ICWP_Wordpress_Twitter_Bootstrap_Plugin $oPluginVo ) {
 		parent::__construct( $oPluginVo );
 		$this->loadAllFeatures();
@@ -141,78 +95,9 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 		return in_array( $sFeature, $this->oPluginVo->getFeatures() );
 	}
 
-
-	/**
-	 * @return void
-	 */
-	protected function loadWptbOptions() {
-		if ( !isset( $this->m_oWptbOptions ) ) {
-			$this->m_oWptbOptions = new ICWP_OptionsHandler_Wptb( self::OptionPrefix, 'plugin_options', $this->m_sVersion );
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function loadBootstrapLess() {
-		if ( isset( $this->m_oBsLess ) ) {
-			return;
-		}
-		if ( $this->m_oWptbOptions->getOpt( 'option' ) == 'twitter' ) {
-			require_once( dirname(__FILE__).'/src/hlt-bootstrap-less.php' );
-		}
-		else {
-			require_once( dirname(__FILE__).'/src/hlt-bootstrap-less-legacy.php' );
-		}
-		
-		$this->setLessOptionsKey();
-		$this->m_oBsLess = new HLT_BootstrapLess( self::$BOOSTRAP_DIR, $this->m_sLessOptionsKey );
-	}
-	
-	protected function setLessOptionsKey() {
-		if ( !isset( $this->m_sLessOptionsKey ) ) {
-			$this->m_sLessOptionsKey = $this->m_sOptionPrefix . 'all_less_options';
-		}
-	}
-	
-	public function onWpInit() {
-		parent::onWpInit();
-//		if ( !is_admin() && !in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php')) && !isset( $_GET['thesis_editor'] ) ) {
-//
-//			if ( $this->m_oWptbOptions->getOpt( 'enq_using_wordpress' ) !== 'Y' ) { // see end of file for the alternative (enqueueing)
-//				$this->loadWptbProcessor();
-//				ob_start( array( $this->m_oWptbProcessor, 'onOutputBufferFlush' ) );
-//			}
-//		}
-		
-////		add_action( 'wp_enqueue_scripts', array( $this, 'onWpPrintStyles' ) );
-//
-//		// if shortcodes are enabled, instantiatetwitter-legacy
-//		$sBootstrapOption = $this->m_oWptbOptions->getOpt( 'option' );
-//		if ( strpos( $sBootstrapOption, 'twitter' ) !== false && $this->m_oWptbOptions->getOpt( 'useshortcodes' ) == 'Y' ) {
-//			if ( $sBootstrapOption == 'twitter' ) {
-//				require_once( dirname(__FILE__).'/src/hlt-bootstrap-shortcodes.php' );
-//			}
-//			else {
-//				require_once( dirname(__FILE__).'/src/hlt-bootstrap-shortcodes-legacy.php' );
-//			}
-//			$oShortCodes = new HLT_BootstrapShortcodes();
-//		}
-//
-//		// if option to enable shortcodes in sidebar is on, add filter
-//		$sShortcodeSidebarOption = $this->m_oWptbOptions->getOpt( 'enable_shortcodes_sidebarwidgets' );
-//		if ( $sShortcodeSidebarOption == 'Y' ) {
-//			add_filter('widget_text', 'do_shortcode');
-//		}
-	}
-	
 	public function onWpAdminInit() {
 		parent::onWpAdminInit();
 
-//		// Determine whether to show ads and marketing messages
-//		// Currently this is when the site uses the iControlWP service and is linked
-//		$this->isShowMarketing();
-		
 		// If it's a plugin admin page, we do certain things we don't do anywhere else.
 		if ( $this->getIsPage_PluginAdmin() ) {
 
@@ -225,48 +110,11 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 				wp_enqueue_script( 'miniColors' );
 			}
 		}
-//
-//		//Enqueues the WP Admin Twitter Bootstrap files if the option is set or we're in a iControlWP admin page.
-//		if ( is_admin() && $this->m_oWptbOptions->getOpt( 'inc_bootstrap_css_wpadmin' ) == 'Y' ) {
-//			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueBootstrapAdminCss' ), 99 );
-//		}
-		
-//		if ( is_admin() && $this->m_oWptbOptions->getOpt( 'inc_bootstrap_css_in_editor' ) == 'Y' ) {
-//			add_filter( 'mce_css', array( $this, 'filter_include_bootstrap_in_editor' ) );
-//		}
 	}
 	
 	/**
 	 */
 	protected function handlePluginUpgrade() {
-		$sCurrentPluginVersion = $this->m_oWptbOptions->getOpt( 'current_plugin_version' );
-		
-		if ( empty($sCurrentPluginVersion) ) {
-			$sCurrentPluginVersion = '0.0';
-		}
-		
-		// Forces a rebuild for the list of CSS includes
-		if ( $sCurrentPluginVersion !== $this->m_sVersion ) {
-			$this->m_oWptbOptions->maybeClearIncludesCache( true );
-		}
-		
-		// ensure only valid users attempt this.
-		if ( $sCurrentPluginVersion !== $this->m_sVersion && current_user_can( 'manage_options' ) ) {
-
-			$this->loadBootstrapLess();
-			$this->m_oBsLess->handleUpgrade( $sCurrentPluginVersion );
-	
-			//Recompile LESS CSS if applicable
-			if ( $this->m_oWptbOptions->getOpt('use_compiled_css') == 'Y' ) {
-				if ( $this->m_oBsLess->reWriteVariablesLess() ) {
-					$this->m_oBsLess->compileAllBootstrapLess();
-				}
-			}
-		
-			//Set the flag so that this update handler isn't run again for this version.
-			$this->m_oWptbOptions->setOpt( 'current_plugin_version', $this->m_sVersion );
-		}
-
 		//Someone clicked the button to acknowledge the update
 		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
 			$this->updateVersionUserMeta( $_POST['user_id'] );
@@ -298,140 +146,18 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 		}
 		update_user_meta( $nUserId, self::OptionPrefix.'current_version', $this->m_sVersion );
 	}
-	
-	public function onWpAdminNotices() {
-		//Do we have admin priviledges?
-		if ( !current_user_can( 'manage_options' ) ) {
-			return;
-		}
-//		$this->adminNoticeVersionUpgrade();
-//		$this->adminNoticeOptionsUpdated();
-	}
-	
-	/**
-	 * Shows the update notification - will bail out if the current user is not an admin 
-	 */
-	private function adminNoticeVersionUpgrade() {
-		$oCurrentUser = wp_get_current_user();
-		if ( !($oCurrentUser instanceof WP_User) ) {
-			return;
-		}
-		$nUserId = $oCurrentUser->ID;
-
-		$sCurrentVersion = get_user_meta( $nUserId, $this->m_sOptionPrefix.'current_version', true );
-		// A guard whereby if we can't ever get a value for this meta, it means we can never set it.
-		// If we can never set it, we shouldn't force the Ads on those users who can't get rid of it.
-		if ( empty( $sCurrentVersion ) ) { //the value has never been set, or it's been installed for the first time.
-			$result = update_user_meta( $nUserId, $this->m_sOptionPrefix.'current_version', $this->m_sVersion );
-			return; //meaning we don't show the update notice upon new installations and for those people who can't set the version in their meta.
-		}
-
-		if ( $sCurrentVersion !== $this->m_sVersion ) {
-
-			$sRedirectPage = isset( $GLOBALS['pagenow'] ) ? $GLOBALS['pagenow'] : 'index.php';
-			ob_start();
-			?>
-				<style>
-					a#fromIcwp { padding: 0 5px; border-bottom: 1px dashed rgba(0,0,0,0.1); color: blue; font-weight: bold; }
-				</style>
-				<form id="IcwpUpdateNotice" method="post" action="admin.php?page=<?php echo $this->getSubmenuId('bootstrap-css'); ?>">
-					<input type="hidden" value="<?php echo $sRedirectPage; ?>" name="hlt_redirect_page" id="hlt_redirect_page">
-					<input type="hidden" value="1" name="hlt_hide_update_notice" id="hlt_hide_update_notice">
-					<input type="hidden" value="<?php echo $nUserId; ?>" name="hlt_user_id" id="hlt_user_id">
-
-					<?php if ( false && $this->isShowMarketing() ) : ?>
-			
-					<h4 style="margin:10px 0 3px;">Quick question: Do you manage multiple WordPress sites and need a better way to do it?</h4>
-					<input type="submit" value="Cool, but just show me what's new with this update and hide this notice" name="submit" class="button" style="float:right;">
-					<p>
-						Free up your time today and do it all from 1 place in a few clicks.
-						<a href="http://icwp.io/5" id="fromIcwp" title="iControlWP: Secure WordPress Management" target="_blank">Tell me how</a>!<br />
-					</p>
-					<?php else : ?>
-			
-					<h4 style="margin:10px 0 3px;">Twitter Bootstrap plugin has been updated- there may or may not be <a href="http://icwp.io/1v" id="fromIcwp" title="Twitter Bootstrap Plugin Shortcodes" target="_blank">updates to shortcodes</a> or the Bootstrap CSS may have changed quite a bit.</h4>
-					<input type="submit" value="Show me and hide this notice." name="submit" class="button" style="float:left; margin-bottom:10px;">
-					<?php endif; ?>
-			
-					<div style="clear:both;"></div>
-				</form>
-			<?php
-			$sNotice = ob_get_contents();
-			ob_end_clean();
-
-			$this->getAdminNotice( $sNotice, 'updated', true );
-		}
-		
-	}//adminNoticeVersionUpgrade
-	
-	private function adminNoticeOptionsUpdated() {
-		$sAdminFeedbackNotice = $this->m_oWptbOptions->getOpt( 'feedback_admin_notice' );
-		if ( !empty( $sAdminFeedbackNotice ) ) {
-			$sNotice = '<p>'.$sAdminFeedbackNotice.'</p>';
-			$this->getAdminNotice( $sNotice, 'updated', true );
-			$this->m_oWptbOptions->setOpt( 'feedback_admin_notice', '' );
-		}
-	}
-
-	protected function handleSubmit_BootstrapLess() {
-
-		// Ensures we're actually getting this request from WP.
-		check_admin_referer( $this->getSubmenuId('bootstrap_css_wtbcss') );
-		
-		$this->loadBootstrapLess();
-
-		if ( isset( $_POST['submit_reset'] ) ) {
-			$this->m_oBsLess->resetToDefaultAllLessOptions();
-			return;
-		}
-
-		$this->m_oBsLess->processNewLessOptions( $this->m_sOptionPrefix, !isset( $_POST['submit_preserve'] ) );
-	}
-
-	public function onWpPrintStyles() {
-		if ( $this->m_oWptbOptions->getOpt( 'prettify' ) == 'Y' ) {
-			$sUrl = $this->getCssUrl( 'google-code-prettify/prettify.css' );
-			wp_register_style( 'prettify_style', $sUrl );
-			wp_enqueue_style( 'prettify_style' );
-		}
-	}
-	
-	public function onWpEnqueueScripts() {
-//		$this->loadWptbProcessor();
-//		$this->m_oWptbProcessor->doEnqueueScripts();
-	}
 
 	/**
-	 * Not currently used, but could be useful once we work out what way the JS should be included.
-	 * @param $insHandle	For example: 'prettify/prettify.css'
+	 * @param $inaLinks
+	 * @param $insFile
+	 * @return mixed
 	 */
-	protected function isRegistered( $insHandle ) {
-		return (
-			wp_script_is( $insHandle, 'registered' ) ||
-			wp_script_is( $insHandle, 'queue' ) ||
-			wp_script_is( $insHandle, 'done' ) ||
-			wp_script_is( $insHandle, 'to_do' )
-		);
-	}
-	
 	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
 		if ( $insFile == $this->m_sPluginFile ) {
 			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page='.$this->getSubmenuId('bootstrap-css').'">' . _hlt__( 'Settings' ) . '</a>';
 			array_unshift( $inaLinks, $sSettingsLink );
 		}
 		return $inaLinks;
-	}
-
-	protected function deleteAllPluginDbOptions() {
-		
-		parent::deleteAllPluginDbOptions();
-		
-		if ( !current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$this->loadBootstrapLess();
-		$this->m_oBsLess->processLessOptions( 'delete' );
-		remove_action( 'shutdown', array( $this, 'onWpShutdown' ) );
 	}
 }
 

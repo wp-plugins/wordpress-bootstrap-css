@@ -243,13 +243,6 @@ class HLT_BootstrapLess_Base {
 		if ( empty($insFunction) ) {
 			return;
 		}
-		
-		if ( $insFunction == 'delete') {
-			delete_option( $this->m_sOptionsKey );
-			$this->m_aAllBootstrapLessOptions = null;
-			return;
-		}
-		
 		if ( !$this->initPluginOptions() ) {
 			return;
 		}

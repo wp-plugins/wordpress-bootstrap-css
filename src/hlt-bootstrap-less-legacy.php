@@ -26,37 +26,37 @@ require_once( dirname(__FILE__).'/hlt-bootstrap-less-base.php' );
 
 if ( !class_exists('HLT_BootstrapLess') ):
 
-class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
-	
-	static public $LESS_OPTIONS_DB_KEY = 'all_less_options';
+	class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 
-	protected function initPluginOptions() {
-	
-		$this->m_aAllBootstrapLessOptions = get_option( $this->m_sOptionsKey );
-	
-		if ( !empty($this->m_aAllBootstrapLessOptions) ) {
-			return true;
-		}
-	
-		//Basically if the array is empty from the WP Options table, create it from scratch.
-		$this->m_aAllBootstrapLessOptions = array(
+		static public $LESS_OPTIONS_DB_KEY = 'all_less_options';
+
+		protected function initPluginOptions() {
+
+			$this->m_aAllBootstrapLessOptions = get_option( $this->m_sOptionsKey );
+
+			if ( !empty($this->m_aAllBootstrapLessOptions) ) {
+				return true;
+			}
+
+			//Basically if the array is empty from the WP Options table, create it from scratch.
+			$this->m_aAllBootstrapLessOptions = array(
 
 				array(
-						'section_title' => 'Grays',
-						'section_options' => array(
-								array( self::LessOptionsPrefix.'black', 		'', '#000',	'less_color',	'Black',		'@black' ),
-								array( self::LessOptionsPrefix.'grayDarker',	'', '#222',	'less_color',	'Darker Gray',	'@grayDarker' ),
-								array( self::LessOptionsPrefix.'grayDark',		'', '#333',	'less_color',	'Dark Gray',	'@grayDark' ),
-								array( self::LessOptionsPrefix.'gray',			'', '#555',	'less_color',	'Gray',			'@gray' ),
-								array( self::LessOptionsPrefix.'grayLight',		'', '#999',	'less_color',	'Light Gray',	'@grayLight' ),
-								array( self::LessOptionsPrefix.'grayLighter',	'', '#eee',	'less_color',	'Lighter Gray',	'@grayLighter' ),
-								array( self::LessOptionsPrefix.'white',			'', '#fff',	'less_color',	'White',		'@white' )
-						)
+					'section_title' => 'Grays',
+					'section_options' => array(
+						array( self::LessOptionsPrefix.'black', 		'', '#000',	'less_color',	'Black',		'@black' ),
+						array( self::LessOptionsPrefix.'grayDarker',	'', '#222',	'less_color',	'Darker Gray',	'@grayDarker' ),
+						array( self::LessOptionsPrefix.'grayDark',		'', '#333',	'less_color',	'Dark Gray',	'@grayDark' ),
+						array( self::LessOptionsPrefix.'gray',			'', '#555',	'less_color',	'Gray',			'@gray' ),
+						array( self::LessOptionsPrefix.'grayLight',		'', '#999',	'less_color',	'Light Gray',	'@grayLight' ),
+						array( self::LessOptionsPrefix.'grayLighter',	'', '#eee',	'less_color',	'Lighter Gray',	'@grayLighter' ),
+						array( self::LessOptionsPrefix.'white',			'', '#fff',	'less_color',	'White',		'@white' )
+					)
 				),
-	
+
 				array(
-						'section_title' => 'Fonts, Colours & Links',
-						'section_options' => array(
+					'section_title' => 'Fonts, Colours & Links',
+					'section_options' => array(
 						array( self::LessOptionsPrefix.'bodyBackground',	'', '@white',			'less_color',		'Body Background Colour',			'@bodyBackground' ), //@white
 						array( self::LessOptionsPrefix.'textColor',			'', '@grayDark',		'less_color',		'Text Colour',						'@textColor' ),
 						array( self::LessOptionsPrefix.'linkColor',			'', '#08c',				'less_color',		'Link Colour',						'@linkColor' ),
@@ -73,12 +73,12 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 						array( self::LessOptionsPrefix.'baseLineHeight', 	'', '18px',				'less_size',			'Base Line Height',					'@baseLineHeight' ),
 						array( self::LessOptionsPrefix.'baseFontFamily',	'', '"Helvetica Neue", Helvetica, Arial, sans-serif',	'less_font',	'Fonts',	'@baseFontFamily' ),
 						array( self::LessOptionsPrefix.'altFontFamily',		'', 'Georgia, "Times New Roman", Times, serif',	'less_font',	'Alternative Fonts',	'@altFontFamily' ),
-						)
-						),
-	
-						array(
-						'section_title' => 'Button Styling',
-						'section_options' => array(
+					)
+				),
+
+				array(
+					'section_title' => 'Button Styling',
+					'section_options' => array(
 						array( self::LessOptionsPrefix.'btnBackground', 				'', '@white',							'less_color',	'Background' ),				//@white
 						array( self::LessOptionsPrefix.'btnBackgroundHighlight',		'', 'darken(@white, 10%)',				'less_color',	'Background Highlight' ),	//darken(@white, 10%);
 						array( self::LessOptionsPrefix.'btnPrimaryBackground',			'', '@linkColor',						'less_color',	'Primary Btn Background' ),	//@linkColor
@@ -94,12 +94,12 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 						array( self::LessOptionsPrefix.'btnInverseBackground',			'', '@gray',							'less_color',	'Inverse Btn Background' ),	//@gray
 						array( self::LessOptionsPrefix.'btnInverseBackgroundHighlight',	'', '@grayDarker',						'less_color',	'Inverse Btn Highlight' ),	//@grayDarker
 						array( self::LessOptionsPrefix.'btnBorder',						'', 'darken(@white, 20%)',				'less_color',	'Button Border' ),			//darken(@white, 20%)
-						)
-						),
-	
-						array(
-						'section_title' => 'Alerts and Form States',
-						'section_options' => array(
+					)
+				),
+
+				array(
+					'section_title' => 'Alerts and Form States',
+					'section_options' => array(
 						array( self::LessOptionsPrefix.'warningText', 		'', '#c09853',			'less_color',	'Warning Text Colour' ),
 						array( self::LessOptionsPrefix.'warningBackground',	'', '#fcf8e3',			'less_color',	'Warning Background Colour' ),
 						array( self::LessOptionsPrefix.'warningBorder',		'', 'darken(spin(@warningBackground, -10), 3%)',			'less_color',	'Warning Border Colour' ),
@@ -116,117 +116,117 @@ class HLT_BootstrapLess extends HLT_BootstrapLess_Base {
 						array( self::LessOptionsPrefix.'infoBackground',	'', '#d9edf7',			'less_color',	'Info Background Colour' ),
 						array( self::LessOptionsPrefix.'infoBorder',		'', 'darken(spin(@infoBackground, -10), 7%)',			'less_color',	'Info Border Colour' ),
 						array( 'spacer' )
-						)
-						),
-	
-						array(
-							'section_title' => 'The Grid',
-							'section_options' => array(
-								array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_text',	'Grid Columns' ),
-								array( self::LessOptionsPrefix.'gridColumnWidth',	'', '60px',			'less_size',	'Grid Column Width' ),
-								array( self::LessOptionsPrefix.'gridGutterWidth',	'', '20px',			'less_size',	'Grid Gutter Width' ),
-								array( self::LessOptionsPrefix.'gridRowWidth',		'', '(@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1))',	'less_size',	'Grid Row Width' )
-							)
-						),
-		);
-		return true;
-	}
-	
-	public function compileAllBootstrapLess() {
-		parent::compileAllBootstrapLess();
-		$this->compileLess( 'responsive' );
-	}
-	
-	/**
-	 * @param $insCompileTarget - currently only either 'bootstrap' or 'responsive'
-	 */
-	public function compileLess( $insCompileTarget = 'bootstrap' ) {
-		
-		if ( empty($this->m_sBsDir) ) {
-			return false;
-		}
-		
-		$sFilePathToLess = $this->m_sLessSourceDir.$insCompileTarget.'.less';
-		
-		//parse LESS
-		$this->includeLess();
-		if ( lessc::$VERSION != 'v0.4.0' ) { //not running a supported version of the less compiler for bootstrap
-			return false;
+					)
+				),
+
+				array(
+					'section_title' => 'The Grid',
+					'section_options' => array(
+						array( self::LessOptionsPrefix.'gridColumns', 		'', '12',			'less_text',	'Grid Columns' ),
+						array( self::LessOptionsPrefix.'gridColumnWidth',	'', '60px',			'less_size',	'Grid Column Width' ),
+						array( self::LessOptionsPrefix.'gridGutterWidth',	'', '20px',			'less_size',	'Grid Gutter Width' ),
+						array( self::LessOptionsPrefix.'gridRowWidth',		'', '(@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1))',	'less_size',	'Grid Row Width' )
+					)
+				),
+			);
+			return true;
 		}
 
-		// New method
-		$oLessCompiler = new lessc();
+		public function compileAllBootstrapLess() {
+			parent::compileAllBootstrapLess();
+			$this->compileLess( 'responsive' );
+		}
 
-		// Original method
-		//$oLessCompiler = new lessc( $sFilePathToLess );
-		
-		$sCompiledCss = '';
-		
-		try {
-			/**
-			 * New Method (to use new lessphp interface)
-			 * 
-			 * 1. Determine target filename(s)
-			 * 2. Compile + write to disk
-			 * 3. Compile + compress + write to disk
-			 */
-			
-			if ( $insCompileTarget == 'responsive' ) {
-				$sLessFile = $this->m_sCssBaseDir.'bootstrap-responsive.less';
+		/**
+		 * @param $insCompileTarget - currently only either 'bootstrap' or 'responsive'
+		 */
+		public function compileLess( $insCompileTarget = 'bootstrap' ) {
+
+			if ( empty($this->m_sBsDir) ) {
+				return false;
 			}
-			else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $this->m_sCssBaseDir.'bootstrap.less';
+
+			$sFilePathToLess = $this->m_sLessSourceDir.$insCompileTarget.'.less';
+
+			//parse LESS
+			$this->includeLess();
+			if ( lessc::$VERSION != 'v0.4.0' ) { //not running a supported version of the less compiler for bootstrap
+				return false;
 			}
-			else { //Are there others?
-				$sLessFile = $this->m_sCssBaseDir.'bootstrap.less';
-			}
-			
-			// Write normal CSS
+
+			// New method
 			$oLessCompiler = new lessc();
-			$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.css' );
-			
-			// Write compress CSS
-			$oLessCompiler = new lessc(); //as of version 0.4.0 I have to recreate the object.
-			$oLessCompiler->setFormatter( "compressed" );
-			$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.min.css' );
-			
-			/**
-			 * Original method
-			 * 
-			 * 1. Compile
-			 * 2. Determine target filename(s)
-			 * 3. Write to disk
-			 * 4. Compress/Minify
-			 * 5. Write to disk
-			 */
-			/*
-			$sCompiledCss = $oLessCompiler->parse();
-			
-			if ($insCompileTarget == 'responsive') {
-				$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap-responsive.less';
-			} else if ($insCompileTarget == 'bootstrap') {
-				$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap.less';
-			} else { //Are there others?
-				$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap.less';
-			}
-			
-			file_put_contents( $sLessFile.'.css', $sCompiledCss );
-		
-			//Basic Minify
-			$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
-			file_put_contents( $sLessFile.'.min.css', $sCompiledCss );
-			*/
-		}
-		catch ( Exception $oE ) {
-			echo "lessphp fatal error: ".$oE->getMessage();
-		}
-	}
 
-	protected function includeLess() {
-		if ( !class_exists( 'lessc' ) ) {
-			include_once( dirname(__FILE__).'/../inc/lessc/lessc.inc.php' );
+			// Original method
+			//$oLessCompiler = new lessc( $sFilePathToLess );
+
+			$sCompiledCss = '';
+
+			try {
+				/**
+				 * New Method (to use new lessphp interface)
+				 *
+				 * 1. Determine target filename(s)
+				 * 2. Compile + write to disk
+				 * 3. Compile + compress + write to disk
+				 */
+
+				if ( $insCompileTarget == 'responsive' ) {
+					$sLessFile = $this->m_sCssBaseDir.'bootstrap-responsive.less';
+				}
+				else if ($insCompileTarget == 'bootstrap') {
+					$sLessFile = $this->m_sCssBaseDir.'bootstrap.less';
+				}
+				else { //Are there others?
+					$sLessFile = $this->m_sCssBaseDir.'bootstrap.less';
+				}
+
+				// Write normal CSS
+				$oLessCompiler = new lessc();
+				$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.css' );
+
+				// Write compress CSS
+				$oLessCompiler = new lessc(); //as of version 0.4.0 I have to recreate the object.
+				$oLessCompiler->setFormatter( "compressed" );
+				$oLessCompiler->compileFile( $sFilePathToLess, $sLessFile.'.min.css' );
+
+				/**
+				 * Original method
+				 *
+				 * 1. Compile
+				 * 2. Determine target filename(s)
+				 * 3. Write to disk
+				 * 4. Compress/Minify
+				 * 5. Write to disk
+				 */
+				/*
+				$sCompiledCss = $oLessCompiler->parse();
+
+				if ($insCompileTarget == 'responsive') {
+					$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap-responsive.less';
+				} else if ($insCompileTarget == 'bootstrap') {
+					$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap.less';
+				} else { //Are there others?
+					$sLessFile = $this->m_sBsDir.'css'.ICWP_DS.'bootstrap.less';
+				}
+
+				file_put_contents( $sLessFile.'.css', $sCompiledCss );
+
+				//Basic Minify
+				$sCompiledCss = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sCompiledCss);
+				file_put_contents( $sLessFile.'.min.css', $sCompiledCss );
+				*/
+			}
+			catch ( Exception $oE ) {
+				echo "lessphp fatal error: ".$oE->getMessage();
+			}
+		}
+
+		protected function includeLess() {
+			if ( !class_exists( 'lessc' ) ) {
+				include_once( dirname(__FILE__).'/../inc/lessc/lessc.inc.php' );
+			}
 		}
 	}
-}
 
 endif;
