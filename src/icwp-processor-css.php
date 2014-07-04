@@ -153,6 +153,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
 	 *
 	 * @param $insContents
+	 * @return string
 	 */
 	protected function rewriteHead( $insContents ) {
 		$aIncludesList = $this->getCssIncludeUrls();
@@ -181,7 +182,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 		// We've cached the inclusions list so we don't work it out every page load.
 		$aIncludesList = $this->getOption( 'includes_list', null );
-		if ( false && is_array( $aIncludesList ) ) {
+		if ( is_array( $aIncludesList ) ) {
 			return $aIncludesList;
 		}
 		else {
@@ -226,7 +227,6 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	}
 
 	protected function updateIncludesCache( $aIncludesList = false ) {
-		//TODO - set to save on shutdown
 		$this->oFeatureOptions->setOpt( 'includes_list', $aIncludesList ); //update our cached list
 		$this->oFeatureOptions->setOpt( 'css_cache_expire', time() );
 	}

@@ -22,7 +22,6 @@
  */
 
 require_once( dirname(__FILE__).'/src/icwp-pure-base.php' );
-require_once( dirname(__FILE__).'/src/icwp-optionshandler-wptb.php' );
 
 if ( !function_exists( '_wptb_e' ) ) {
 	function _wptb_e( $insStr ) {
@@ -34,7 +33,6 @@ if ( !function_exists( '_wptb__' ) ) {
 		return __( $insStr, ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetTextDomain() );
 	}
 }
-
 
 if ( !class_exists('HLT_BootstrapCss') ):
 
@@ -110,41 +108,6 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 				wp_enqueue_script( 'miniColors' );
 			}
 		}
-	}
-	
-	/**
-	 */
-	protected function handlePluginUpgrade() {
-		//Someone clicked the button to acknowledge the update
-		if ( isset( $_POST['hlt_hide_update_notice'] ) && isset( $_POST['hlt_user_id'] ) ) {
-			$this->updateVersionUserMeta( $_POST['user_id'] );
-			if ( $this->isShowMarketing() ) {
-				wp_redirect( admin_url( "admin.php?page=".$this->getFullParentMenuId() ) );
-			}
-			else {
-				wp_redirect( admin_url( $_POST['redirect_page'] ) );
-			}
-			exit();
-		}
-	}
-	
-	/**
-	 * Updates the current (or supplied user ID) user meta data with the version of the plugin
-	 *  
-	 * @param unknown_type $innId
-	 */
-	protected function updateVersionUserMeta( $innId = null ) {
-		if ( is_null( $innId ) ) {
-			$oCurrentUser = wp_get_current_user();
-			if ( !($oCurrentUser instanceof WP_User) ) {
-				return;
-			}
-			$nUserId = $oCurrentUser->ID;
-		}
-		else {
-			$nUserId = $innId;
-		}
-		update_user_meta( $nUserId, self::OptionPrefix.'current_version', $this->m_sVersion );
 	}
 
 	/**

@@ -119,7 +119,8 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 					$aBootstrapOptions,
 					'Bootstrap Option',
 					'Choose Your Preferred Bootstrap Version',
-					"If you're not using the LESS Compiler to customize your CSS, you should this option off completely - set to 'none'"
+					"You should turn off this option completely if you're not using the LESS Compiler set to 'none'"
+					.'<br /><strong>'."When changing this option you will lose the LESS options you've currently selected.".'</strong>'
 				)
 			)
 		);

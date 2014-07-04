@@ -57,6 +57,14 @@ class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 		return $this->oFeatureProcessor;
 	}
 
+	public function handleFormSubmit() {
+		if ( !parent::handleFormSubmit() ) {
+			return false;
+		}
+
+		$this->maybeClearIncludesCache( true );
+	}
+
 	/**
 	 * @return string
 	 */
