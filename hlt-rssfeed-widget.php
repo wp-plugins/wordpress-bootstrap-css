@@ -33,10 +33,6 @@ class HLT_DashboardRssWidget {
 		add_action( 'wp_dashboard_setup', array( $this, 'addNewsWidget' ) );
 	}
 
-	public function HLT_DashboardRssWidget() {
-		$this->__construct();
-	}
-	
 	public function addFeed( $insReference, $insUrl ) {
 		$this->m_aFeeds[$insReference] = $insUrl;
 	}

@@ -36,15 +36,21 @@ class ICWP_WPTB_LessProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	/**
 	 */
 	public function run() {
-
-		//check for existence of LESS file
-		$oWpFs = $this->loadFileSystemProcessor();
-		if ( $oWpFs->exists( $this->oFeatureOptions->getPath_TargetLessFileStem().'.css' ) ) {
-			return;
-		}
-		$this->buildLessFiles();
+		add_action( 'init', array( $this, 'onWpInit' ) );
 	}
 
+	/**
+	 */
+	public function onWpInit() {
+		//check for existence of LESS file
+		$oWpFs = $this->loadFileSystemProcessor();
+		if ( !$oWpFs->exists( $this->oFeatureOptions->getPath_TargetLessFileStem().'.css' ) ) {
+			$this->buildLessFiles();
+		}
+	}
+
+	/**
+	 */
 	protected function buildLessFiles() {
 		// 1) backup variables.less
 		$this->backupVariableOrig();

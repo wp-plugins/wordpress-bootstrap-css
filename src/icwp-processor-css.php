@@ -36,19 +36,11 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	public function run() {
 		// we do it here to get it in early.
 		add_action( 'wp_enqueue_scripts', array( $this, 'doEnqueueResetCss' ), 0 );
-		add_action( 'init', array( $this, 'onWpInit' ), 0 );
-//		add_action( 'wp_loaded', array( $this, 'onWpLoaded' ), 0 );
 		add_action( 'admin_init', array( $this, 'onWpAdminInit' ) );
+		add_action( 'wp_loaded', array( $this, 'onWpLoaded' ), 0 );
 	}
 
 	public function onWpLoaded() {
-
-		if ( !$this->getIsOption( 'enq_using_wordpress', 'Y' ) ) {
-			ob_start( array( $this, 'onOutputBufferFlush' ) );
-		}
-	}
-
-	public function onWpInit() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'doEnqueueScripts' ), 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'doPrintStyles' ) );
 
@@ -56,6 +48,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 		if ( !$this->getIfIncludeResetCss() ) {
 			return;
 		}
+
 		if ( !$this->getIsOption( 'enq_using_wordpress', 'Y' ) ) {
 			ob_start( array( $this, 'onOutputBufferFlush' ) );
 		}
@@ -87,7 +80,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueueBootstrapAdminCss' ), 99 );
 
 		$oWp = $this->loadWpFunctionsProcessor();
-		if ( $oWp->getIsCurrentPage( 'index.php' ) && $this->getIsOption( 'hide_dashboard_rss_feed', 'N' ) ) {
+		if ( $oWp->getIsCurrentPage( 'index.php' ) && !$this->getIsOption( 'hide_dashboard_rss_feed', 'Y' ) ) {
 			include_once( dirname(__FILE__).'/../hlt-rssfeed-widget.php' );
 			new HLT_DashboardRssWidget();
 		}
@@ -182,7 +175,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 		// We've cached the inclusions list so we don't work it out every page load.
 		$aIncludesList = $this->getOption( 'includes_list', null );
-		if ( is_array( $aIncludesList ) ) {
+		if ( !empty( $aIncludesList ) && is_array( $aIncludesList ) ) {
 			return $aIncludesList;
 		}
 		else {

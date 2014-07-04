@@ -149,8 +149,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		/**
 		 * A action added to WordPress 'plugins_loaded' hook
 		 */
-		public function onWpInit() {
-		}
+		public function onWpInit() { }
 
 		/**
 		 * Override this and adapt per feature
@@ -234,7 +233,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 */
 		public function getIsMainFeatureEnabled() {
 			$this->override();
-			return $this->getOpt( 'enable_'.$this->getFeatureSlug() ) == 'Y';
+			return $this->getOptIs( 'enable_'.$this->getFeatureSlug(), 'Y' );
 		}
 
 		/**

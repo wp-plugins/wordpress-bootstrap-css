@@ -21,7 +21,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Less') ):
 
 class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 
-	const TwitterVersion			= '3.1.1'; //should reflect the Bootstrap version folder name
+	const TwitterVersion			= '3.2.0'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '2.3.2'; //should reflect the Bootstrap version folder name
 
 	const LessOptionsPrefix = 'less_';
@@ -119,7 +119,7 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 					$aBootstrapOptions,
 					'Bootstrap Option',
 					'Choose Your Preferred Bootstrap Version',
-					"You should turn off this option completely if you're not using the LESS Compiler set to 'none'"
+					"You should turn off this option completely if you're not using the LESS Compiler - set to 'none'"
 					.'<br /><strong>'."When changing this option you will lose the LESS options you've currently selected.".'</strong>'
 				)
 			)
@@ -380,9 +380,37 @@ class ICWP_WPTB_FeatureHandler_Less extends ICWP_WPTB_FeatureHandler_Base {
 	}
 
 	protected function updateHandler() {
-		parent::updateHandler();
 		if ( $this->getIsUpgrading() ) {
 			$this->deleteLessCompiledCss();
+		}
+
+		if ( version_compare( $this->getVersion(), '3.2.0', '<' ) ) {
+			$oWp = $this->loadWpFunctionsProcessor();
+			$sOldKey = 'hlt_bootstrapcss_plugin_options';
+			$aCurrentSettings = $oWp->getOption( $sOldKey );
+
+			// The version of the LESS CSS is determined now within the less section, but we migrate from the old way
+			// where we implied the version from that selected in the CSS page.
+			if ( $aCurrentSettings['use_compiled_css'] == 'Y' ) {
+				$this->setOpt( 'less_bootstrap_version', $aCurrentSettings['option'] );
+			}
+			else {
+				$this->setOpt( 'less_bootstrap_version', 'none' );
+			}
+
+			$sOldLessOptionsKey = 'hlt_bootstrapcss_all_less_options';
+			$aCurrentLessSettings = $oWp->getOption( $sOldLessOptionsKey );
+
+			if ( empty( $aCurrentLessSettings ) ) {
+				return;
+			}
+
+			foreach( $aCurrentLessSettings as $aSection ) {
+				$aSectionOptions = $aSection['section_options'];
+				foreach( $aSectionOptions as $aSubOptions ) {
+					$this->setOpt( $aSubOptions[0], $aSubOptions[1] );
+				}
+			}
 		}
 	}
 }

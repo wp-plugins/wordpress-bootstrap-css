@@ -102,6 +102,15 @@ class ICWP_WPTB_FeatureHandler_Plugin extends ICWP_WPTB_FeatureHandler_Base {
 			'section_title' => _wptb__( 'General Plugin Options' ),
 			'section_options' => array(
 				array(
+					'auto_update_minor_releases',
+					'',
+					'Y',
+					'checkbox',
+					'Automatic Updates',
+					'Plugin Automatically Updates For Minor Releases',
+					'When enabled, will only update the plugin for minor releases (typically bug-fixes) - that is, releases where the Twitter Bootstrap version does not change.'
+				),
+				array(
 					'hide_dashboard_rss_feed',
 					'',
 					'N',
@@ -161,9 +170,17 @@ class ICWP_WPTB_FeatureHandler_Plugin extends ICWP_WPTB_FeatureHandler_Base {
 
 	protected function updateHandler() {
 		parent::updateHandler();
-		if ( version_compare( $this->getVersion(), '3.0.0', '<' ) ) {
-			$aAllOptions = apply_filters( $this->doPluginPrefix( 'aggregate_all_plugin_options' ), array() );
-			$this->setOpt( 'block_send_email_address', $aAllOptions['block_send_email_address'] );
+		if ( version_compare( $this->getVersion(), '3.2.0', '<' ) ) {
+			$oWp = $this->loadWpFunctionsProcessor();
+			$sOldKey = 'hlt_bootstrapcss_plugin_options';
+			$aCurrentSettings = $oWp->getOption( $sOldKey );
+			$aOptionsToMigrate = array(
+				'hide_dashboard_rss_feed',
+				'delete_on_deactivate'
+			);
+			foreach( $aOptionsToMigrate as $sOptionKey ) {
+				$this->setOpt( $sOptionKey, $aCurrentSettings[$sOptionKey] );
+			}
 		}
 	}
 }

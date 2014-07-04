@@ -21,9 +21,9 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Css') ):
 
 class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 
-	const TwitterVersion			= '3.1.1'; //should reflect the Bootstrap version folder name
+	const TwitterVersion			= '3.2.0'; //should reflect the Bootstrap version folder name
 	const TwitterVersionLegacy		= '2.3.2'; //should reflect the Bootstrap version folder name
-	const NormalizeVersion			= '3.0.0';
+	const NormalizeVersion			= '3.0.1';
 	const YUI3Version				= '3.10.0';
 
 	/**
@@ -311,6 +311,36 @@ class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 	public function updateHandler() {
 		if ( $this->getIsUpgrading() ) {
 			$this->maybeClearIncludesCache( true );
+		}
+
+		if ( version_compare( $this->getVersion(), '3.2.0', '<' ) ) {
+			$oWp = $this->loadWpFunctionsProcessor();
+			$sOldKey = 'hlt_bootstrapcss_plugin_options';
+			$aCurrentSettings = $oWp->getOption( $sOldKey );
+			$aOptionsToMigrate = array(
+				'option',
+				'enq_using_wordpress',
+				'customcss',
+				'customcss_url',
+				'all_js',
+				'js_head',
+				'useshortcodes',
+				'use_minified_css',
+				'use_compiled_css',
+				'replace_jquery_cdn',
+				'use_cdnjs',
+				'enable_shortcodes_sidebarwidgets',
+				'inc_bootstrap_css_in_editor',
+				'inc_bootstrap_css_wpadmin',
+				'prettify'
+			);
+			foreach( $aOptionsToMigrate as $sOptionKey ) {
+				$this->setOpt( $sOptionKey, $aCurrentSettings[$sOptionKey] );
+			}
+
+			if ( $aCurrentSettings['use_compiled_css'] == 'Y' ) {
+				$this->setOpt( 'option', 'twitter-less' );
+			}
 		}
 	}
 }
