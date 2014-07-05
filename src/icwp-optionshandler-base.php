@@ -967,6 +967,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 * @return boolean
 		 */
 		protected function getIsShowMarketing() {
+			return true;
 			return apply_filters( $this->doPluginPrefix( 'show_marketing' ), true );
 		}
 

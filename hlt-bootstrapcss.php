@@ -9,7 +9,7 @@ Author URI: http://icwp.io/v
 */
 
 /**
- * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
+ * Copyright (c) 2014 iControlWP <support@icontrolwp.com>
  * All rights reserved.
  *
  * "WordPress Twitter Bootstrap CSS" (formerly "WordPress Bootstrap CSS") is
@@ -29,7 +29,7 @@ Author URI: http://icwp.io/v
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once( dirname(__FILE__).'/icwp-base.php' );
+require_once( dirname(__FILE__).'/src/icwp-base.php' );
 
 if ( !class_exists('ICWP_Wordpress_Twitter_Bootstrap_Plugin') ):
 
@@ -72,5 +72,16 @@ class ICWP_Wordpress_Twitter_Bootstrap_Plugin extends ICWP_Wordpress_Plugin {
 
 endif;
 
-require_once( dirname(__FILE__).'/icwp-wptb-main.php' );
-$oHLT_BootstrapCss = new HLT_BootstrapCss(  ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetInstance() );
+if ( !function_exists( '_wptb_e' ) ) {
+	function _wptb_e( $insStr ) {
+		_e( $insStr, ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetTextDomain() );
+	}
+}
+if ( !function_exists( '_wptb__' ) ) {
+	function _wptb__( $insStr ) {
+		return __( $insStr, ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetTextDomain() );
+	}
+}
+
+require_once( dirname(__FILE__).'/src/icwp-wptb-main.php' );
+$oHLT_BootstrapCss = new ICWP_WPTB_BootstrapCss(  ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetInstance() );

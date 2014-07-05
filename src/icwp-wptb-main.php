@@ -21,26 +21,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once( dirname(__FILE__).'/src/icwp-pure-base.php' );
+require_once( dirname(__FILE__).'/icwp-pure-base.php' );
 
-if ( !function_exists( '_wptb_e' ) ) {
-	function _wptb_e( $insStr ) {
-		_e( $insStr, ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetTextDomain() );
-	}
-}
-if ( !function_exists( '_wptb__' ) ) {
-	function _wptb__( $insStr ) {
-		return __( $insStr, ICWP_Wordpress_Twitter_Bootstrap_Plugin::GetTextDomain() );
-	}
-}
+if ( !class_exists('ICWP_WPTB_BootstrapCss') ):
 
-if ( !class_exists('HLT_BootstrapCss') ):
-
-class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
-	/**
-	 * @var string
-	 */
-	const OptionPrefix				= 'hlt_bootstrapcss_'; //ALL database options use this as the prefix.
+class ICWP_WPTB_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 
 	public function __construct( ICWP_Wordpress_Twitter_Bootstrap_Plugin $oPluginVo ) {
 		parent::__construct( $oPluginVo );
@@ -111,16 +96,16 @@ class HLT_BootstrapCss extends ICWP_WPTB_Pure_Base_V1 {
 	}
 
 	/**
-	 * @param $inaLinks
-	 * @param $insFile
+	 * @param $aLinks
+	 * @param $sFile
 	 * @return mixed
 	 */
-	public function onWpPluginActionLinks( $inaLinks, $insFile ) {
-		if ( $insFile == $this->m_sPluginFile ) {
-			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page='.$this->getSubmenuId('bootstrap-css').'">' . _hlt__( 'Settings' ) . '</a>';
-			array_unshift( $inaLinks, $sSettingsLink );
+	public function onWpPluginActionLinks( $aLinks, $sFile ) {
+		if ( $sFile == $this->getPluginBaseFile() ) {
+			$sSettingsLink = '<a href="'.admin_url( "admin.php" ).'?page='.$this->getSubmenuId('plugin').'">' . _wptb__( 'Settings' ) . '</a>';
+			array_unshift( $aLinks, $sSettingsLink );
 		}
-		return $inaLinks;
+		return $aLinks;
 	}
 }
 
