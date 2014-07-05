@@ -20,7 +20,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-require_once( dirname(__FILE__).'/hlt-bootstrapcss-main.php' );
+
+if ( !defined('ICWP_DS') ) {
+	define( 'ICWP_DS', DIRECTORY_SEPARATOR );
+}
 
 if ( !class_exists('ICWP_Wordpress_Plugin') ):
 
@@ -39,17 +42,22 @@ class ICWP_Wordpress_Plugin {
 	/**
 	 * @var string
 	 */
+	protected static $fLoggingEnabled;
+
+	/**
+	 * @var string
+	 */
 	protected static $sParentSlug	= 'icwp';
 
 	/**
 	 * @var string
 	 */
-	protected static $sVersion;
+	protected static $sPluginSlug;
 
 	/**
 	 * @var string
 	 */
-	protected static $sPluginSlug;
+	protected static $sVersion;
 
 	/**
 	 * @var string
@@ -90,21 +98,6 @@ class ICWP_Wordpress_Plugin {
 	 * @var string
 	 */
 	protected static $aFeatures;
-
-	/**
-	 * @var ICWP_Wordpress_Simple_Firewall_Plugin
-	 */
-	public static $oInstance;
-
-	/**
-	 * @return ICWP_Wordpress_Simple_Firewall_Plugin
-	 */
-	public static function GetInstance() {
-		if ( !isset( self::$oInstance ) ) {
-			self::$oInstance = new self();
-		}
-		return self::$oInstance;
-	}
 
 	/**
 	 */
@@ -157,6 +150,13 @@ class ICWP_Wordpress_Plugin {
 	 */
 	public function getHumanName() {
 		return self::$sHumanName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getIsLoggingEnabled() {
+		return self::$fLoggingEnabled;
 	}
 
 	/**

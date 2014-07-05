@@ -56,12 +56,12 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 		if ( $this->getIsUseTwitter() && $this->getIsOption( 'useshortcodes', 'Y' ) ) {
 			$sBootstrapOption = $this->getOption( 'option' );
 			if ( $sBootstrapOption == 'twitter' ) {
-				require_once( $this->oFeatureOptions->getSrcFile( 'hlt-bootstrap-shortcodes.php' ) );
+				require_once( $this->oFeatureOptions->getSrcFile( 'icwp-wptb-bootstrap-shortcodes.php' ) );
 			}
 			else {
-				require_once( $this->oFeatureOptions->getSrcFile( 'hlt-bootstrap-shortcodes-legacy.php' ) );
+				require_once( $this->oFeatureOptions->getSrcFile( 'icwp-wptb-bootstrap-shortcodes-legacy.php' ) );
 			}
-			$oShortCodes = new HLT_BootstrapShortcodes();
+			$oShortCodes = new ICWP_WPTB_BootstrapShortcodes();
 		}
 
 		// if option to enable shortcodes in sidebar is on, add filter
@@ -81,7 +81,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 		$oWp = $this->loadWpFunctionsProcessor();
 		if ( $oWp->getIsCurrentPage( 'index.php' ) && !$this->getIsOption( 'hide_dashboard_rss_feed', 'Y' ) ) {
-			include_once( dirname(__FILE__).'/../hlt-rssfeed-widget.php' );
+			include_once( dirname(__FILE__).'/icwp-rssfeed-widget.php' );
 			new HLT_DashboardRssWidget();
 		}
 	}
