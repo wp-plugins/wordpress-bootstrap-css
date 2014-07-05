@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2013 iControlWP <support@icontrolwp.com>
+ * Copyright (c) 2014 iControlWP <support@icontrolwp.com>
  * All rights reserved.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -123,7 +123,7 @@ class ICWP_WPTB_FeatureHandler_Css extends ICWP_WPTB_FeatureHandler_Base {
 					$aBootstrapOptions,
 					'Bootstrap Option',
 					'Choose Your Preferred Bootstrap Option',
-					''
+					'If you choose customized LESS, you should use the LESS compiler to create your preferred Twitter Bootstrap settings'
 				),
 				array(
 					'enq_using_wordpress',
