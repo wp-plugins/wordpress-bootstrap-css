@@ -2,11 +2,11 @@
 /**
  * Copyright (c) 2014 iControlWP <support@icontrolwp.com>
  * All rights reserved.
- * 
+ *
  * "WordPress Twitter Bootstrap CSS" is distributed under the GNU General Public License, Version 2,
  * June 1991. Copyright (C) 1989, 1991 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -41,23 +41,23 @@ class HLT_DashboardRssWidget {
 	}
 
 	public function renderNewsWidget() {
-		
+
 		$aItems = array();
-		
+
 		$oRss = fetch_feed( $this->m_aFeeds['hlt'] );
-		
+
 		if ( !is_wp_error( $oRss ) ) {
 			$nMaxItems = $oRss->get_item_quantity( 3 );
 			$aItems = $oRss->get_items( 0, $nMaxItems );
 		}
-		
+
 		$oRss = fetch_feed( $this->m_aFeeds['icontrolwp'] );
-		
+
 		if ( !is_wp_error( $oRss ) ) {
 			$nMaxItems = $oRss->get_item_quantity( 3 );
 			$aItems = array_merge( $oRss->get_items( 0, $nMaxItems ), $aItems );
 		}
-		
+
 		$sRssWidget = '
 			<style>
 				.hlt_rss_widget {
@@ -76,12 +76,12 @@ class HLT_DashboardRssWidget {
 				}
 			</style>
 		';
-		
+
 		$sRssWidget .= '<div class="hlt_rss_widget"><ul>';
-		
+
 		if ( !empty( $aItems ) ) {
 			$sDateFormat = get_option( 'date_format' );
-			
+
 			foreach ( $aItems as $oItem ) {
 				$sRssWidget .= '
 					<li class="hlt_rss_listitem">
@@ -98,9 +98,9 @@ class HLT_DashboardRssWidget {
 		}
 
 		$sRssWidget .= '</ul>';
-		
+
 		$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page=worpit-wtb-bootstrap-css">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
-		
+
 		echo $sRssWidget;
 	}
 }//class HLT_DashboardRssWidget

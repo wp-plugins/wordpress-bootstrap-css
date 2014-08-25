@@ -133,9 +133,10 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		/**
+		 * A action added to WordPress 'plugins_loaded' hook
 		 */
 		public function onWpPluginsLoaded() {
-			$this->updateHandler();
+
 			if ( $this->getIsMainFeatureEnabled() ) {
 				$oProcessor = $this->loadFeatureProcessor();
 				if ( is_object( $oProcessor ) && $oProcessor instanceof ICWP_WPTB_BaseProcessor ) {
@@ -145,9 +146,11 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		/**
-		 * A action added to WordPress 'plugins_loaded' hook
+		 * A action added to WordPress 'init' hook
 		 */
-		public function onWpInit() { }
+		public function onWpInit() {
+			$this->updateHandler();
+		}
 
 		/**
 		 * Override this and adapt per feature
@@ -505,31 +508,14 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 *
 		 */
 		protected function cleanOptions() {
+			if ( empty( $this->m_aOptionsValues ) || !is_array( $this->m_aOptionsValues ) ) {
+				return;
+			}
 			foreach( $this->m_aOptionsValues as $sKey => $mValue ) {
 				if ( !$this->getIsOptionKey( $sKey ) ) {
 					unset( $this->m_aOptionsValues[$sKey] );
 				}
 			}
-		}
-
-		public function collateAllFormInputsForAllOptions() {
-
-			if ( !isset( $this->aOptions ) ) {
-				$this->buildOptions();
-			}
-
-			$aToJoin = array();
-			foreach ( $this->aOptions as $aOptionsSection ) {
-
-				if ( empty( $aOptionsSection ) ) {
-					continue;
-				}
-				foreach ( $aOptionsSection['section_options'] as $aOption ) {
-					list($sKey, $fill1, $fill2, $sType) =  $aOption;
-					$aToJoin[] = $sType.':'.$sKey;
-				}
-			}
-			return implode( self::CollateSeparator, $aToJoin );
 		}
 
 		/**
@@ -737,11 +723,36 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		/**
-		 *
+		 * @return string
+		 */
+		protected function collateAllFormInputsForAllOptions() {
+
+			if ( !isset( $this->aOptions ) ) {
+				$this->buildOptions();
+			}
+
+			$aToJoin = array();
+			foreach ( $this->aOptions as $aOptionsSection ) {
+
+				if ( empty( $aOptionsSection ) ) {
+					continue;
+				}
+				foreach ( $aOptionsSection['section_options'] as $aOption ) {
+					list($sKey, $fill1, $fill2, $sType) =  $aOption;
+					if ( is_array( $sType ) ) {
+						$sType = isset( $sType['type'] ) ? $sType['type'] : $sType[0];
+					}
+					$aToJoin[] = $sType.':'.$sKey;
+				}
+			}
+			return implode( self::CollateSeparator, $aToJoin );
+		}
+
+		/**
 		 */
 		public function handleFormSubmit() {
 			if ( !apply_filters( $this->doPluginPrefix( 'has_permission_to_submit' ), true ) ) {
-//			TODO: manage how we react to prohibited submissions
+//				TODO: manage how we react to prohibited submissions
 				return false;
 			}
 
@@ -779,8 +790,9 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 					continue;
 				}
 
+
 				$sOptionValue = ICWP_WPTB_DataProcessor::FetchPost( $this->prefixOptionKey( $sOptionKey ) );
-				if ( is_null($sOptionValue) ) {
+				if ( is_null( $sOptionValue ) ) {
 
 					if ( $sOptionType == 'text' || $sOptionType == 'email' ) { //if it was a text box, and it's null, don't update anything
 						continue;
@@ -794,6 +806,9 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 				}
 				else { //handle any pre-processing we need to.
 
+					if ( $sOptionType == 'text' || $sOptionType == 'email' ) {
+						$sOptionValue = trim( $sOptionValue );
+					}
 					if ( $sOptionType == 'integer' ) {
 						$sOptionValue = intval( $sOptionValue );
 					}
@@ -815,6 +830,8 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 					}
 					else if ( $sOptionType == 'comma_separated_lists' ) {
 						$sOptionValue = ICWP_WPTB_DataProcessor::ExtractCommaSeparatedList( $sOptionValue );
+					}
+					else if ( $sOptionType == 'multiple_select' ) {
 					}
 				}
 				$this->setOpt( $sOptionKey, $sOptionValue );
@@ -965,7 +982,6 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 * @return boolean
 		 */
 		protected function getIsShowMarketing() {
-			return true;
 			return apply_filters( $this->doPluginPrefix( 'show_marketing' ), true );
 		}
 
@@ -1028,7 +1044,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		}
 
 		/**
-		 * @return ICWP_Stats_WPSF
+		 * @return ICWP_Stats_WPTB
 		 */
 		public function loadStatsProcessor() {
 			require_once( dirname(__FILE__) . '/icwp-wpsf-stats.php' );
@@ -1039,7 +1055,7 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 		 */
 		public function doStatIncrement( $sStatKey ) {
 			$this->loadStatsProcessor();
-			ICWP_Stats_WPSF::DoStatIncrement( $sStatKey );
+			ICWP_Stats_WPTB::DoStatIncrement( $sStatKey );
 		}
 	}
 
