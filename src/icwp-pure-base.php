@@ -377,36 +377,31 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		}
 
 		protected function getBaseDisplayData() {
+			$oWp = $this->loadWpFunctions();
 			return array(
 				'plugin_url'		=> $this->sPluginUrl,
 				'var_prefix'		=> $this->oPluginVo->getOptionStoragePrefix(),
 				'sPluginName'		=> $this->oPluginVo->getHumanName(),
 				'fShowAds'			=> $this->isShowMarketing(),
 				'nonce_field'		=> $this->getPluginPrefix(),
-				'form_action'		=> 'admin.php?page='.$this->getCurrentWpAdminPage()
+				'form_action'		=> 'admin.php?page='.$oWp->getCurrentWpAdminPage()
 			);
 		}
 
 		/**
-		 */
-		protected function getCurrentWpAdminPage() {
-			$sScript = isset( $_SERVER['SCRIPT_NAME'] )? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF'];
-			if ( is_admin() && !empty( $sScript ) && basename( $sScript ) == 'admin.php' ) {
-				$sCurrentPage = $this->fetchGet('page');
-			}
-			return empty($sCurrentPage)? '' : $sCurrentPage;
-		}
-
-		/**
+		 * @return bool
 		 */
 		protected function getIsPage_PluginMainDashboard() {
-			return ( $this->getCurrentWpAdminPage() ==  $this->getPluginPrefix() );
+			$oWp = $this->loadWpFunctions();
+			return ( $oWp->getCurrentWpAdminPage() ==  $this->getPluginPrefix() );
 		}
 
 		/**
+		 * @return bool
 		 */
 		protected function getIsPage_PluginAdmin() {
-			return ( strpos( $this->getCurrentWpAdminPage(), $this->getPluginPrefix() ) === 0 );
+			$oWp = $this->loadWpFunctions();
+			return ( strpos( $oWp->getCurrentWpAdminPage(), $this->getPluginPrefix() ) === 0 );
 		}
 
 		/**
@@ -527,7 +522,7 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		/**
 		 *
 		 */
-		protected function doAdminNoticeTranslations(){
+		protected function doAdminNoticeTranslations() {
 
 			$sCurrentMetaValue = $this->getUserMeta( 'plugin_translation_notice' );
 			if ( $sCurrentMetaValue === 'Y' ) {
@@ -690,7 +685,8 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			do_action( $this->doPluginPrefix( 'form_submit' ) );
 
 			if ( $this->getIsPage_PluginAdmin() ) {
-				wp_safe_redirect( $this->getUrl_PluginDashboard( $this->getCurrentWpAdminPage() ) );
+				$oWp = $this->loadWpFunctions();
+				wp_safe_redirect( $this->getUrl_PluginDashboard( $oWp->getCurrentWpAdminPage() ) );
 				return true;
 			}
 		}
@@ -707,8 +703,10 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 				$this->doPluginOptionPrefix( 'plugin_form_submit' ),
 				'icwp_link_action'
 			);
+
+			$oDp = $this->loadDataProcessor();
 			foreach( $aFormSubmitOptions as $sOption ) {
-				if ( !is_null( $this->fetchRequest( $sOption, false ) ) ) {
+				if ( !is_null( $oDp->FetchRequest( $sOption ) ) ) {
 					return true;
 				}
 			}
@@ -817,43 +815,6 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		}
 
 		/**
-		 * @param string $insKey
-		 * @param boolean $infIncludeCookie
-		 * @return mixed|null
-		 */
-		protected function fetchRequest( $insKey, $infIncludeCookie = true ) {
-			$this->loadDataProcessor();
-			return ICWP_WPTB_DataProcessor::FetchRequest( $insKey, $infIncludeCookie );
-		}
-
-		/**
-		 * @param string $sKey
-		 * @return mixed|null
-		 */
-		protected function fetchGet( $sKey ) {
-			$this->loadDataProcessor();
-			return ICWP_WPTB_DataProcessor::FetchGet( $sKey );
-		}
-
-		/**
-		 * @param string $sKey		The $_POST key
-		 * @return mixed|null
-		 */
-		protected function fetchPost( $sKey ) {
-			$this->loadDataProcessor();
-			return ICWP_WPTB_DataProcessor::FetchPost( $sKey );
-		}
-
-		/**
-		 * @param string $sKey		The $_COOKIE key
-		 * @return mixed|null
-		 */
-		protected function fetchCookie( $sKey ) {
-			$this->loadDataProcessor();
-			return ICWP_WPTB_DataProcessor::FetchCookie( $sKey );
-		}
-
-		/**
 		 */
 		public function onWpAdminBar() {
 			$aNodes = $this->getAdminBarNodes();
@@ -893,9 +854,13 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 		}
 
 		/**
+		 * @return ICWP_WPTB_DataProcessor
 		 */
 		protected function loadDataProcessor() {
-			require_once( dirname(__FILE__) . '/icwp-data-processor.php' );
+			if ( !class_exists('ICWP_WPTB_DataProcessor') ) {
+				require_once( dirname(__FILE__).'/icwp-data-processor.php' );
+			}
+			return ICWP_WPTB_DataProcessor::GetInstance();
 		}
 
 		/**
@@ -912,6 +877,6 @@ if ( !class_exists('ICWP_WPTB_Pure_Base_V1') ):
 			return ICWP_WPTB_WpFilesystem::GetInstance();
 		}
 
-	}//CLASS
+	}
 
 endif;

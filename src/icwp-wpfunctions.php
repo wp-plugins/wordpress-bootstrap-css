@@ -186,10 +186,12 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		 * @return bool
 		 */
 		public function getIsLoginRequest() {
-			return ICWP_WPTB_DataProcessor::GetIsRequestPost()
-			&& $this->getIsCurrentPage('wp-login.php')
-			&& !is_null( ICWP_WPTB_DataProcessor::FetchPost('log') )
-			&& !is_null( ICWP_WPTB_DataProcessor::FetchPost('pwd') );
+			$oDp = $this->loadDataProcessor();
+			return
+				$oDp->GetIsRequestPost()
+				&& $this->getIsCurrentPage( 'wp-login.php' )
+				&& !is_null( $oDp->FetchPost( 'log' ) )
+				&& !is_null( $oDp->FetchPost( 'pwd' ) );
 		}
 
 		/**
@@ -265,13 +267,19 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		}
 
 		/**
+		 * @return string
 		 */
 		public function getCurrentWpAdminPage() {
-			$sScript = isset( $_SERVER['SCRIPT_NAME'] )? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF'];
-			if ( is_admin() && !empty( $sScript ) && basename( $sScript ) == 'admin.php' && isset( $_GET['page'] ) ) {
-				$sCurrentPage = $_GET['page'];
+
+			$oDp = $this->loadDataProcessor();
+			$sScript = $oDp->FetchServer( 'SCRIPT_NAME' );
+			if ( empty( $sScript ) ) {
+				$sScript = $oDp->FetchServer( 'PHP_SELF' );
 			}
-			return empty($sCurrentPage)? '' : $sCurrentPage;
+			if ( is_admin() && !empty( $sScript ) && basename( $sScript ) == 'admin.php' ) {
+				$sCurrentPage = $oDp->FetchGet( 'page' );
+			}
+			return empty( $sCurrentPage ) ? '' : $sCurrentPage;
 		}
 
 		/**
@@ -297,6 +305,16 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 			wp_set_current_user ( $oUser->ID, $oUser->user_login );
 			wp_set_auth_cookie  ( $oUser->ID, true );
 			do_action( 'wp_login', $oUser->user_login, $oUser );
+		}
+
+		/**
+		 * @return ICWP_WPTB_DataProcessor
+		 */
+		public function loadDataProcessor() {
+			if ( !class_exists('ICWP_WPTB_DataProcessor') ) {
+				require_once( dirname(__FILE__).'/icwp-data-processor.php' );
+			}
+			return ICWP_WPTB_DataProcessor::GetInstance();
 		}
 	}
 endif;
