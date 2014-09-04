@@ -269,25 +269,6 @@ function getPluginOptionSpan( $inaOption, $iSpanSize, $insVarPrefix = '' ) {
 
 			$sToggleTextInput = '';
 
-			if ( $mOptionType === 'less_color' ) {
-
-				if ( !getIsHexColour( $sOptionSaved ) ) {
-					$sChecked = ' checked';
-				}
-
-				$sToggleTextInput= '
-							<span class="toggle_checkbox">
-							  <label>
-								<input type="checkbox"
-									name="hlt_toggle_'.$sOptionKey.'"
-									id="hlt_toggle_'.$sOptionKey.'"'.$sChecked.'
-									style="vertical-align: -2px;" /> edit as text
-							  </label>
-							</span>';
-
-			} else if ( $mOptionType === 'less_size' || $mOptionType === 'less_font' ) {
-			}
-
 			$sHelpSection = '
 					<div class="help_section">
 						<span class="label label-less-name">@'.str_replace( 'less_', '', $sOptionKey ).'</span>

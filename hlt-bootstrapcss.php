@@ -3,7 +3,7 @@
 Plugin Name: WordPress Twitter Bootstrap CSS
 Plugin URI: http://www.icontrolwp.com/wordpress-twitter-bootstrap-css-plugin-home/
 Description: Link Twitter Bootstrap CSS and Javascript files before all others regardless of your theme.
-Version: 3.2.0-2
+Version: 3.2.0-3
 Author: iControlWP
 Author URI: http://icwp.io/v
 */
@@ -33,42 +33,42 @@ require_once( dirname(__FILE__).'/src/icwp-base.php' );
 
 if ( !class_exists('ICWP_Wordpress_Twitter_Bootstrap_Plugin') ):
 
-class ICWP_Wordpress_Twitter_Bootstrap_Plugin extends ICWP_Wordpress_Plugin {
+	class ICWP_Wordpress_Twitter_Bootstrap_Plugin extends ICWP_Wordpress_Plugin {
 
-	/**
-	 * @var ICWP_Wordpress_Twitter_Bootstrap_Plugin
-	 */
-	public static $oInstance;
+		/**
+		 * @var ICWP_Wordpress_Twitter_Bootstrap_Plugin
+		 */
+		public static $oInstance;
 
-	/**
-	 * @return ICWP_Wordpress_Twitter_Bootstrap_Plugin
-	 */
-	public static function GetInstance() {
-		if ( !isset( self::$oInstance ) ) {
-			self::$oInstance = new self();
+		/**
+		 * @return ICWP_Wordpress_Twitter_Bootstrap_Plugin
+		 */
+		public static function GetInstance() {
+			if ( !isset( self::$oInstance ) ) {
+				self::$oInstance = new self();
+			}
+			return self::$oInstance;
 		}
-		return self::$oInstance;
-	}
 
-	/**
-	 */
-	protected function __construct() {
-		if ( empty( self::$sRootFile ) ) {
-			self::$sRootFile = __FILE__;
+		/**
+		 */
+		protected function __construct() {
+			if ( empty( self::$sRootFile ) ) {
+				self::$sRootFile = __FILE__;
+			}
+			self::$aFeatures = array(
+				'plugin',
+				'css',
+				'less'
+			);
+			self::$sVersion = '3.2.0-3';
+			self::$sPluginSlug = 'wptb';
+			self::$sHumanName = 'WordPress Twitter Bootstrap';
+			self::$sMenuTitleName = 'Twitter Bootstrap';
+			self::$sTextDomain = 'wordpress-bootstrap-css';
+			self::$fLoggingEnabled = false;
 		}
-		self::$aFeatures = array(
-			'plugin',
-			'css',
-			'less'
-		);
-		self::$sVersion = '3.2.0-2';
-		self::$sPluginSlug = 'wptb';
-		self::$sHumanName = 'WordPress Twitter Bootstrap';
-		self::$sMenuTitleName = 'Twitter Bootstrap';
-		self::$sTextDomain = 'wordpress-bootstrap-css';
-		self::$fLoggingEnabled = false;
 	}
-}
 
 endif;
 

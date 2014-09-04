@@ -81,8 +81,8 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 
 		$oWp = $this->loadWpFunctionsProcessor();
 		if ( $oWp->getIsCurrentPage( 'index.php' ) && !$this->getIsOption( 'hide_dashboard_rss_feed', 'Y' ) ) {
-			include_once( dirname(__FILE__).'/icwp-rssfeed-widget.php' );
-			new HLT_DashboardRssWidget();
+			require_once( dirname(__FILE__).'/icwp-rssfeed-widget.php' );
+			ICWP_DashboardRssWidget::GetInstance();
 		}
 	}
 

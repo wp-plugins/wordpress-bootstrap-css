@@ -20,45 +20,70 @@
  *
  */
 
-if ( !class_exists('HLT_DashboardRssWidget') ):
+if ( !class_exists('ICWP_DashboardRssWidget') ):
 
-class HLT_DashboardRssWidget {
+	class ICWP_DashboardRssWidget {
 
-	protected $m_aFeeds;
-
-	public function __construct() {
-		$this->m_aFeeds = array();
-		$this->addFeed( 'icontrolwp', 'http://feeds.feedburner.com/icontrolwp/' );
-		add_action( 'wp_dashboard_setup', array( $this, 'addNewsWidget' ) );
-	}
-
-	public function addFeed( $insReference, $insUrl ) {
-		$this->m_aFeeds[$insReference] = $insUrl;
-	}
-
-	public function addNewsWidget() {
-		add_meta_box( 'hlt_news_widget', __( 'The iControlWP Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
-	}
-
-	public function renderNewsWidget() {
-
-		$aItems = array();
-
-		$oRss = fetch_feed( $this->m_aFeeds['hlt'] );
-
-		if ( !is_wp_error( $oRss ) ) {
-			$nMaxItems = $oRss->get_item_quantity( 3 );
-			$aItems = $oRss->get_items( 0, $nMaxItems );
+		/**
+		 * @return ICWP_DashboardRssWidget
+		 */
+		public static function GetInstance() {
+			if ( is_null( self::$oInstance ) ) {
+				self::$oInstance = new self();
+			}
+			return self::$oInstance;
 		}
 
-		$oRss = fetch_feed( $this->m_aFeeds['icontrolwp'] );
+		/**
+		 * @var ICWP_DashboardRssWidget
+		 */
+		protected static $oInstance = NULL;
 
-		if ( !is_wp_error( $oRss ) ) {
-			$nMaxItems = $oRss->get_item_quantity( 3 );
-			$aItems = array_merge( $oRss->get_items( 0, $nMaxItems ), $aItems );
+		/**
+		 * @var array
+		 */
+		protected $aFeeds;
+
+		public function __construct() {
+			$this->aFeeds = array();
+			$this->addFeed( 'icontrolwp_blog', 'http://feeds.feedburner.com/icontrolwp/' );
+			add_action( 'wp_dashboard_setup', array( $this, 'addNewsWidget' ) );
 		}
 
-		$sRssWidget = '
+		/**
+		 * @param $sReference
+		 * @param $sUrl
+		 */
+		protected function addFeed( $sReference, $sUrl ) {
+			$this->aFeeds[$sReference] = $sUrl;
+		}
+
+		/**
+		 * @return array
+		 */
+		protected function getFeeds() {
+			return $this->aFeeds;
+		}
+
+		public function addNewsWidget() {
+			add_meta_box( 'icwp_news_widget', __( 'The iControlWP Blog', 'hlt-wordpress-bootstrap-css' ), array( $this, 'renderNewsWidget' ), 'dashboard', 'normal', 'low' );
+		}
+
+		public function renderNewsWidget() {
+
+			$aItems = array();
+			$aFeeds = $this->getFeeds();
+			$nItemsPerFeed = floor( 6 / count( $aFeeds ) );
+			foreach( $aFeeds as $sReference => $sUrl ) {
+				$oRss = fetch_feed( $sUrl );
+				if ( !is_wp_error( $oRss ) ) {
+					$nMaxItems = $oRss->get_item_quantity( $nItemsPerFeed );
+					$aItems = $oRss->get_items( 0, $nMaxItems );
+				}
+
+			}
+
+			$sRssWidget = '
 			<style>
 				.hlt_rss_widget {
 					font-family: verdana;
@@ -74,16 +99,15 @@ class HLT_DashboardRssWidget {
 				.hlt_rss_link:hover {
 					color: #333333;
 				}
-			</style>
-		';
+			</style>';
 
-		$sRssWidget .= '<div class="hlt_rss_widget"><ul>';
+			$sRssWidget .= '<div class="hlt_rss_widget"><ul>%s</ul>';
 
-		if ( !empty( $aItems ) ) {
-			$sDateFormat = get_option( 'date_format' );
-
-			foreach ( $aItems as $oItem ) {
-				$sRssWidget .= '
+			if ( !empty( $aItems ) ) {
+				$sDateFormat = get_option( 'date_format' );
+				$sItems = '';
+				foreach ( $aItems as $oItem ) {
+					$sItems .= '
 					<li class="hlt_rss_listitem">
 						<a class="hlt_rss_link"
 							target="_blank"
@@ -91,18 +115,16 @@ class HLT_DashboardRssWidget {
 							title="'.esc_attr( $oItem->get_description() ).'">'.esc_attr( $oItem->get_title() ).'</a>
 						<span class="hlt_rss_date">('.esc_attr( $oItem->get_date( $sDateFormat ) ).')</span>
 					</li>';
+				}
 			}
+			else {
+				$sItems = '<li><a href="'.$this->m_aFeeds['icontrolwp'].'">'.__('Check out The iControlWP Blog', 'hlt-wordpress-bootstrap-css').'</a></li>';
+			}
+
+			$sRssWidget = sprintf( $sRssWidget, $sItems );
+			$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page=worpit-wtb-bootstrap-css">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
+			echo $sRssWidget;
 		}
-		else {
-			$sRssWidget .= '<li><a href="'.$this->m_aFeeds['icontrolwp'].'">'.__('Check out The iControlWP Blog', 'hlt-wordpress-bootstrap-css').'</a></li>';
-		}
-
-		$sRssWidget .= '</ul>';
-
-		$sRssWidget .= '<p>You can turn off this news widget from the <a href="admin.php?page=worpit-wtb-bootstrap-css">Options Page</a>, but we don\'t recommend that because you\'ll miss our latest news ;)</p></div>';
-
-		echo $sRssWidget;
 	}
-}//class HLT_DashboardRssWidget
 
 endif;

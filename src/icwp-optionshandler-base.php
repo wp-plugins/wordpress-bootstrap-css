@@ -608,6 +608,10 @@ if ( !class_exists('ICWP_WPTB_FeatureHandler_Base_V2') ):
 
 				foreach ( $aOptionsSection['section_options'] as &$aOptionParams ) {
 
+					if ( $aOptionParams[0] == 'spacer' ) {
+						continue;
+					}
+
 					list( $sOptionKey, $sOptionValue, $sOptionDefault, $sOptionType ) = $aOptionParams;
 
 					$this->aOptionsKeys[] = $sOptionKey;
