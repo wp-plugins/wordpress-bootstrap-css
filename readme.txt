@@ -3,7 +3,7 @@ Contributors: paultgoodchild, dlgoodchild
 Donate link: http://icwp.io/q
 Tags: CSS, WordPress Admin, Twitter Bootstrap, Twitter Bootstrap Javascript, Bootstrap CSS, WordPress Bootstrap, normalize, reset, YUI
 Requires at least: 3.2.0
-Tested up to: 3.9
+Tested up to: 4.0
 Stable tag: 3.2.0-3
 
 WordPress Twitter Bootstrap CSS lets you include the latest Twitter Bootstrap CSS and Javascript libraries in your WordPress site.
