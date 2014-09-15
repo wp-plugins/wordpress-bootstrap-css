@@ -145,14 +145,14 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 	/**
 	 * Performs the actual rewrite of the <HEAD> to include the reset file(s)
 	 *
-	 * @param $insContents
+	 * @param $sContents
 	 * @return string
 	 */
-	protected function rewriteHead( $insContents ) {
+	protected function rewriteHead( $sContents ) {
 		$aIncludesList = $this->getCssIncludeUrls();
 
 		if ( empty( $aIncludesList ) ) {
-			return $insContents;
+			return $sContents;
 		}
 		//Add the CSS link
 		$sReplace = '${1}';
@@ -165,7 +165,7 @@ class ICWP_WPTB_CssProcessor_V1 extends ICWP_WPTB_BaseProcessor {
 		$sReplace .= "\n<!-- / WordPress Twitter Bootstrap CSS Plugin from iControlWP. -->";
 
 		$sRegExp = "/(<\bhead\b([^>]*)>)/i";
-		return preg_replace( $sRegExp, $sReplace, $insContents, 1 );
+		return preg_replace( $sRegExp, $sReplace, $sContents, 1 );
 	}
 
 	/**
