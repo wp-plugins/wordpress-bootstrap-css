@@ -39,7 +39,7 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		/**
 		 * @var string
 		 */
-		protected $sWpVersion;
+		protected $m_sWpVersion;
 
 		/**
 		 * @var boolean
@@ -136,15 +136,15 @@ if ( !class_exists('ICWP_WPTB_WpFunctions_V4') ):
 		public function getWordpressVersion() {
 			global $wp_version;
 
-			if ( empty( $this->sWpVersion ) ) {
+			if ( empty( $this->m_sWpVersion ) ) {
 				$sVersionFile = ABSPATH.WPINC.'/version.php';
 				$sVersionContents = file_get_contents( $sVersionFile );
 
 				if ( preg_match( '/wp_version\s=\s\'([^(\'|")]+)\'/i', $sVersionContents, $aMatches ) ) {
-					$this->sWpVersion = $aMatches[1];
+					$this->m_sWpVersion = $aMatches[1];
 				}
 			}
-			return empty( $this->sWpVersion )? $wp_version : $this->sWpVersion;
+			return empty( $this->m_sWpVersion )? $wp_version : $this->m_sWpVersion;
 		}
 
 		/**
